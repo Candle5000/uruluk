@@ -1,14 +1,12 @@
 {
-    "name": "slim/slim-skeleton",
-    "description": "A Slim Framework skeleton application for rapid development",
-    "keywords": ["microframework", "rest", "router", "psr7"],
-    "homepage": "http://github.com/slimphp/Slim-Skeleton",
+    "name": "candle5000/uruluk",
+    "description": "Uruluk - TRIGLAV 攻略サイト",
+    "keywords": ["TRIGLAV", "Candle5000"],
+    "homepage": "http://github.com/Candle5000/uruluk",
     "license": "MIT",
     "authors": [
         {
-            "name": "Josh Lockhart",
-            "email": "info@joshlockhart.com",
-            "homepage": "http://www.joshlockhart.com/"
+            "name": "Candle Doe"
         }
     ],
     "require": {
@@ -19,6 +17,11 @@
     },
     "require-dev": {
         "phpunit/phpunit": ">=5.0"
+    },
+	"autoload": {
+        "psr-4": {
+            "Controller\\": "src/classes/controller/"
+        }
     },
     "autoload-dev": {
         "psr-4": {
