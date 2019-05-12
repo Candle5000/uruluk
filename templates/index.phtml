@@ -7,4 +7,6 @@
   <?php else: ?>
     <p>Try <a href="http://www.slimframework.com">SlimFramework</a></p>
   <?php endif; ?>
+  <p>Today:<?= htmlspecialchars($pv_today) ?></p>
+  <p>Yesterday:<?= htmlspecialchars($pv_yesterday) ?></p>
 <?= $this->fetch('footer.phtml') ?>
