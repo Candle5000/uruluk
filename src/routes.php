@@ -10,4 +10,6 @@ return function (App $app) {
     $app->get('/', TopMenuController::class . ':index');
 
 	$app->get('/items', ItemsController::class . ':index');
+
+	$app->get('/items/rare/{class}', ItemsController::class . ':rareItem');
 };

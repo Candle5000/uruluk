@@ -1,0 +1,9 @@
+<?= $this->fetch('header.phtml') ?>
+  <h1>Hoge</h1>
+
+  <?php if (empty($items)) : ?>
+    <h2>No Data</h2>
+  <?php endif; ?>
+  <?php foreach ($item as $items) : ?>
+  <?php endforeach ?>
+<?= $this->fetch('footer.phtml') ?>
