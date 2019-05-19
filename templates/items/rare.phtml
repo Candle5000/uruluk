@@ -4,6 +4,7 @@
   <?php if (empty($items)) : ?>
     <h2>No Data</h2>
   <?php endif; ?>
-  <?php foreach ($item as $items) : ?>
+  <?php foreach ($items as $item) : ?>
+    <pre><?= var_dump($item) ?></pre>
   <?php endforeach ?>
 <?= $this->fetch('footer.phtml') ?>

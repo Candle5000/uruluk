@@ -4,7 +4,7 @@ namespace Model;
 
 use \PDO;
 
-class AccessCountModel extends Model {
+class ItemModel extends Model {
 
 	const SELECT_TARGET_TODAY = 0;
 	const SELECT_TARGET_YESTERDAY = 1;
@@ -12,6 +12,7 @@ class AccessCountModel extends Model {
 	public function getRareItemsByClass(int $itemClassId) {
 		$sql = 'SELECT'
 			. '  I.item_id'
+			. '  , I.item_class_id'
 			. '  , I.image_name'
 			. '  , I.name_en'
 			. '  , I.name_ja'
@@ -41,8 +42,9 @@ class AccessCountModel extends Model {
 			. '  I.sort_key'
 			. '  , A.sort_key'
 			. '  , IA.flactuable';
+		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
-		$stmt->bindParam(':pageId', $pageId);
+		$stmt->bindParam(':itemClassId', $itemClassId);
 		$stmt->execute();
 		$items = array();
 		$item = array();
@@ -52,6 +54,7 @@ class AccessCountModel extends Model {
 			if ($result['item_id'] !== $prevItemId) {
 				if (!empty($item)) $items[] = $item;
 				$item['item_id'] = $result['item_id'];
+				$item['item_class_id'] = $result['item_class_id'];
 				$item['image_name'] = $result['image_name'];
 				$item['name_en'] = $result['name_en'];
 				$item['name_ja'] = $result['name_ja'];
@@ -67,11 +70,11 @@ class AccessCountModel extends Model {
 
 			if ($result['flactuable']) {
 				$attr_val .= 'Based on '
-					. ($result['based_source'] === 'xp' ? 'XP' : 'Kills') . ' ';
+					. ($result['based_source'] === 'xp' ? 'XP' : 'Kills') . ' [';
 			}
 
 			if ($result['attribute_value'] === 0) {
-				$attr_val .= '?';
+				$attr_val .= '?'
 					. ($result['unit'] === null ? '' : $result['unit']);
 			} else if ($result['attribute_value'] === null) {
 				$attr_val .= 'Axe:'
@@ -108,8 +111,12 @@ class AccessCountModel extends Model {
 				}
 			}
 
+			if ($result['flactuable']) {
+				$attr_val .= ']';
+			}
+
 			$attribute['attribute_value'] = $attr_val;
-			$item['attribute'][] = $attribute;
+			$item['attributes'][] = $attribute;
 		}
 
 		if (!empty($item)) $items[] = $item;
