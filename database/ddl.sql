@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2019/05/12 14:59:21
+-- Date/Time    : 2019/05/19 19:56:48
 -- Author       : Candle
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -11,6 +11,9 @@
 */
 
 -- アクセスカウント
+--* BackupToTempTable
+drop table if exists access_count cascade;
+
 --* RestoreFromTempTable
 create table access_count (
   page_id INT not null comment 'ページID'
@@ -20,12 +23,16 @@ create table access_count (
 ) comment 'アクセスカウント' ;
 
 -- 性能
+--* BackupToTempTable
+drop table if exists attribute cascade;
+
 --* RestoreFromTempTable
 create table attribute (
   attribute_id INT not null AUTO_INCREMENT comment '性能ID'
   , short_name VARCHAR(8) comment '略称'
   , name_en VARCHAR(32) comment '名称(英語)'
   , name_ja VARCHAR(32) comment '名称(日本語)'
+  , unit VARCHAR(16) comment '単位'
   , sort_key INT not null comment 'ソート順'
   , constraint attribute_PKC primary key (attribute_id)
 ) comment '性能' ;
@@ -33,6 +40,9 @@ create table attribute (
 alter table attribute add unique attribute_IX1 (sort_key) ;
 
 -- ベースアイテム
+--* BackupToTempTable
+drop table if exists base_item cascade;
+
 --* RestoreFromTempTable
 create table base_item (
   base_item_id INT not null AUTO_INCREMENT comment 'ベースアイテムID'
@@ -47,6 +57,9 @@ create table base_item (
 alter table base_item add unique base_item_IX1 (sort_key) ;
 
 -- キャラクタークラス性能
+--* BackupToTempTable
+drop table if exists character_attribute cascade;
+
 --* RestoreFromTempTable
 create table character_attribute (
   character_class_id INT not null comment 'キャラクタークラスID'
@@ -56,6 +69,9 @@ create table character_attribute (
 ) comment 'キャラクタークラス性能' ;
 
 -- キャラクタークラス
+--* BackupToTempTable
+drop table if exists character_class cascade;
+
 --* RestoreFromTempTable
 create table character_class (
   character_class_id INT not null AUTO_INCREMENT comment 'キャラクタークラスID'
@@ -69,6 +85,9 @@ create table character_class (
 alter table character_class add unique character_class_IX1 (sort_key) ;
 
 -- クリーチャー
+--* BackupToTempTable
+drop table if exists creature cascade;
+
 --* RestoreFromTempTable
 create table creature (
   creature_id INT not null comment 'クリーチャーID'
@@ -80,6 +99,9 @@ create table creature (
 ) comment 'クリーチャー' ;
 
 -- クリーチャー性能
+--* BackupToTempTable
+drop table if exists creature_attribute cascade;
+
 --* RestoreFromTempTable
 create table creature_attribute (
   creature_id INT not null comment 'クリーチャーID'
@@ -89,6 +111,9 @@ create table creature_attribute (
 ) comment 'クリーチャー性能' ;
 
 -- クリーチャードロップアイテム
+--* BackupToTempTable
+drop table if exists creature_drop_item cascade;
+
 --* RestoreFromTempTable
 create table creature_drop_item (
   creature_id INT not null comment 'クリーチャーID'
@@ -97,6 +122,9 @@ create table creature_drop_item (
 ) comment 'クリーチャードロップアイテム' ;
 
 -- クリーチャースペシャルアタック
+--* BackupToTempTable
+drop table if exists creature_special_attack cascade;
+
 --* RestoreFromTempTable
 create table creature_special_attack (
   creature_id INT not null comment 'クリーチャーID'
@@ -105,6 +133,9 @@ create table creature_special_attack (
 ) comment 'クリーチャースペシャルアタック' ;
 
 -- フロア
+--* BackupToTempTable
+drop table if exists floor cascade;
+
 --* RestoreFromTempTable
 create table floor (
   floor_id INT not null comment 'フロアID'
@@ -119,6 +150,9 @@ create table floor (
 alter table floor add unique floor_IX1 (sort_key) ;
 
 -- フロアクリーチャー
+--* BackupToTempTable
+drop table if exists floor_creature cascade;
+
 --* RestoreFromTempTable
 create table floor_creature (
   floor_id INT not null comment 'フロアID'
@@ -127,6 +161,9 @@ create table floor_creature (
 ) comment 'フロアクリーチャー' ;
 
 -- フロア移動先
+--* BackupToTempTable
+drop table if exists floor_destination cascade;
+
 --* RestoreFromTempTable
 create table floor_destination (
   floor_id INT not null comment '移動元フロアID'
@@ -135,6 +172,9 @@ create table floor_destination (
 ) comment 'フロア移動先' ;
 
 -- フロアドロップアイテム
+--* BackupToTempTable
+drop table if exists floor_drop_item cascade;
+
 --* RestoreFromTempTable
 create table floor_drop_item (
   floor_id INT not null comment 'フロアID'
@@ -143,6 +183,9 @@ create table floor_drop_item (
 ) comment 'フロアドロップアイテム' ;
 
 -- フロアグループ
+--* BackupToTempTable
+drop table if exists floor_group cascade;
+
 --* RestoreFromTempTable
 create table floor_group (
   floor_group_id INT not null AUTO_INCREMENT comment 'フロアグループID'
@@ -155,6 +198,9 @@ create table floor_group (
 alter table floor_group add unique floor_group_IX1 (sort_key) ;
 
 -- アイテム
+--* BackupToTempTable
+drop table if exists item cascade;
+
 --* RestoreFromTempTable
 create table item (
   item_id INT not null AUTO_INCREMENT comment 'アイテムID'
@@ -175,53 +221,58 @@ create table item (
 
 alter table item add unique item_IX1 (sort_key) ;
 
--- アイテム性能
+create unique index item_IX2
+  on item(item_class_id,rarity,sort_key);
+
+-- アイテム変動
+--* BackupToTempTable
+drop table if exists item_attribute cascade;
+
 --* RestoreFromTempTable
 create table item_attribute (
   item_id INT not null comment 'アイテムID'
   , attribute_id INT not null comment '性能ID'
-  , character_class_id INT not null comment 'キャラクタークラスID'
-  , attribute_value FLOAT not null comment '性能値'
-  , constraint item_attribute_PKC primary key (item_id,attribute_id,character_class_id)
-) comment 'アイテム性能' ;
-
--- アイテム変動性能
---* RestoreFromTempTable
-create table item_attribute_flactuable (
-  item_id INT not null comment 'アイテムID'
-  , attribute_id INT not null comment '性能ID'
-  , character_class_id INT not null comment 'キャラクタークラスID'
-  , attribute_value INT not null comment '性能値'
-  , based_on_xp_max INT default 0 not null comment 'EXPベース最大値'
-  , based_on_kills_max INT default 0 not null comment '討伐数ベース最大値'
-  , constraint item_attribute_flactuable_PKC primary key (item_id,attribute_id,character_class_id)
-) comment 'アイテム変動性能' ;
+  , flactuable BIT(1) not null comment '変動'
+  , based_source ENUM('xp', 'kills') comment '変動元'
+  , color ENUM('white', 'yellow', 'red') not null comment '色'
+  , attribute_value INT default 0 not null comment '性能値'
+  , attribute_value_sword INT default 0 not null comment '性能値ソード'
+  , attribute_value_axe INT default 0 not null comment '性能値アックス'
+  , attribute_value_dagger INT default 0 not null comment '性能値ダガー'
+  , max_required INT default 0 not null comment '変動最大要求値'
+  , max_required_sword INT default 0 not null comment '変動最大要求値ソード'
+  , max_required_axe INT default 0 not null comment '変動最大要求値アックス'
+  , max_required_dagger INT default 0 not null comment '変動最大要求値ダガー'
+  , constraint item_attribute_PKC primary key (item_id,attribute_id,flactuable)
+) comment 'アイテム変動' ;
 
 -- アイテム変動性能ログ
+--* BackupToTempTable
+drop table if exists item_attribute_flactuable_log cascade;
+
 --* RestoreFromTempTable
 create table item_attribute_flactuable_log (
   item_log_id INT not null comment 'ログID'
   , attribute_id INT not null comment '性能ID'
-  , character_class_id INT not null comment 'キャラクタークラスID'
-  , attribute_value INT not null comment '性能値'
-  , based_on_xp_max INT default 0 not null comment 'EXPベース最大値'
-  , based_on_kills_max INT default 0 not null comment '討伐数ベース最大値'
+  , flactuable BIT(1) not null comment '変動'
+  , based_source ENUM('xp', 'kills') comment '変動元'
+  , color ENUM('white', 'yellow', 'red') comment '色'
+  , attribute_value INT default 0 comment '性能値'
+  , attribute_value_sword INT default 0 comment '性能値ソード'
+  , attribute_value_axe INT default 0 comment '性能値アックス'
+  , attribute_value_dagger INT default 0 comment '性能値ダガー'
+  , max_required INT default 0 comment '変動最大要求値'
+  , max_required_sword INT default 0 comment '変動最大要求値ソード'
+  , max_required_axe INT default 0 comment '変動最大要求値アックス'
+  , max_required_dagger INT default 0 comment '変動最大要求値ダガー'
   , is_deleted BIT(1) default FALSE not null comment '削除'
-  , constraint item_attribute_flactuable_log_PKC primary key (item_log_id,attribute_id,character_class_id)
+  , constraint item_attribute_flactuable_log_PKC primary key (item_log_id,attribute_id,flactuable)
 ) comment 'アイテム変動性能ログ' ;
 
--- アイテム性能ログ
---* RestoreFromTempTable
-create table item_attribute_log (
-  item_log_id INT not null comment 'ログID'
-  , attribute_id INT not null comment '性能ID'
-  , character_class_id INT not null comment 'キャラクタークラスID'
-  , attribute_value FLOAT not null comment '性能値'
-  , is_deleted BIT(1) default FALSE not null comment '削除'
-  , constraint item_attribute_log_PKC primary key (item_log_id,attribute_id,character_class_id)
-) comment 'アイテム性能ログ' ;
-
 -- アイテムブランド
+--* BackupToTempTable
+drop table if exists item_brand cascade;
+
 --* RestoreFromTempTable
 create table item_brand (
   brand_id INT not null AUTO_INCREMENT comment 'ブランドID'
@@ -234,6 +285,9 @@ create table item_brand (
 alter table item_brand add unique item_brand_IX1 (sort_key) ;
 
 -- アイテムクラス
+--* BackupToTempTable
+drop table if exists item_class cascade;
+
 --* RestoreFromTempTable
 create table item_class (
   item_class_id INT not null AUTO_INCREMENT comment 'アイテムクラスID'
@@ -247,6 +301,9 @@ create table item_class (
 alter table item_class add unique item_class_IX1 (sort_key) ;
 
 -- アイテムログ
+--* BackupToTempTable
+drop table if exists item_log cascade;
+
 --* RestoreFromTempTable
 create table item_log (
   item_log_id INT not null comment 'ログID'
@@ -271,6 +328,9 @@ create table item_log (
 ) comment 'アイテムログ' ;
 
 -- アイテムスキル
+--* BackupToTempTable
+drop table if exists item_skill cascade;
+
 --* RestoreFromTempTable
 create table item_skill (
   item_id INT not null AUTO_INCREMENT comment 'アイテムID'
@@ -280,6 +340,9 @@ create table item_skill (
 ) comment 'アイテムスキル' ;
 
 -- アイテムスキルログ
+--* BackupToTempTable
+drop table if exists item_skill_log cascade;
+
 --* RestoreFromTempTable
 create table item_skill_log (
   item_log_id INT not null comment 'ログID'
@@ -289,6 +352,9 @@ create table item_skill_log (
 ) comment 'アイテムスキルログ' ;
 
 -- スペシャルアタック
+--* BackupToTempTable
+drop table if exists special_attack cascade;
+
 --* RestoreFromTempTable
 create table special_attack (
   special_attack_id INT not null comment 'スペシャルアタックID'
@@ -299,6 +365,9 @@ create table special_attack (
 ) comment 'スペシャルアタック' ;
 
 -- Urulukユーザ
+--* BackupToTempTable
+drop table if exists uruluk_user cascade;
+
 --* RestoreFromTempTable
 create table uruluk_user (
   user_id INT not null AUTO_INCREMENT comment 'ユーザID'
