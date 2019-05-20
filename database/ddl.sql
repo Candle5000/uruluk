@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2019/05/19 19:56:48
+-- Date/Time    : 2019/05/19 23:49:06
 -- Author       : Candle
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -214,7 +214,7 @@ create table item (
   , comment_ja VARCHAR(64) comment 'コメント(日本語)'
   , note TEXT comment '説明'
   , price INT comment '売却価格'
-  , imgae_name VARCHAR(64) comment '画像名称'
+  , image_name VARCHAR(64) comment '画像名称'
   , sort_key INT not null comment 'ソート順'
   , constraint item_PKC primary key (item_id)
 ) comment 'アイテム' ;
@@ -235,23 +235,23 @@ create table item_attribute (
   , flactuable BIT(1) not null comment '変動'
   , based_source ENUM('xp', 'kills') comment '変動元'
   , color ENUM('white', 'yellow', 'red') not null comment '色'
-  , attribute_value INT default 0 not null comment '性能値'
-  , attribute_value_sword INT default 0 not null comment '性能値ソード'
-  , attribute_value_axe INT default 0 not null comment '性能値アックス'
-  , attribute_value_dagger INT default 0 not null comment '性能値ダガー'
-  , max_required INT default 0 not null comment '変動最大要求値'
-  , max_required_sword INT default 0 not null comment '変動最大要求値ソード'
-  , max_required_axe INT default 0 not null comment '変動最大要求値アックス'
-  , max_required_dagger INT default 0 not null comment '変動最大要求値ダガー'
+  , attribute_value INT comment '性能値'
+  , attribute_value_sword INT comment '性能値ソード'
+  , attribute_value_axe INT comment '性能値アックス'
+  , attribute_value_dagger INT comment '性能値ダガー'
+  , max_required INT comment '変動最大要求値'
+  , max_required_sword INT comment '変動最大要求値ソード'
+  , max_required_axe INT comment '変動最大要求値アックス'
+  , max_required_dagger INT comment '変動最大要求値ダガー'
   , constraint item_attribute_PKC primary key (item_id,attribute_id,flactuable)
 ) comment 'アイテム変動' ;
 
--- アイテム変動性能ログ
+-- アイテム性能ログ
 --* BackupToTempTable
-drop table if exists item_attribute_flactuable_log cascade;
+drop table if exists item_attribute_log cascade;
 
 --* RestoreFromTempTable
-create table item_attribute_flactuable_log (
+create table item_attribute_log (
   item_log_id INT not null comment 'ログID'
   , attribute_id INT not null comment '性能ID'
   , flactuable BIT(1) not null comment '変動'
@@ -266,8 +266,8 @@ create table item_attribute_flactuable_log (
   , max_required_axe INT default 0 comment '変動最大要求値アックス'
   , max_required_dagger INT default 0 comment '変動最大要求値ダガー'
   , is_deleted BIT(1) default FALSE not null comment '削除'
-  , constraint item_attribute_flactuable_log_PKC primary key (item_log_id,attribute_id,flactuable)
-) comment 'アイテム変動性能ログ' ;
+  , constraint item_attribute_log_PKC primary key (item_log_id,attribute_id,flactuable)
+) comment 'アイテム性能ログ' ;
 
 -- アイテムブランド
 --* BackupToTempTable
@@ -318,7 +318,7 @@ create table item_log (
   , comment_ja VARCHAR(64) comment 'コメント(日本語)'
   , note TEXT comment '説明'
   , price INT comment '売却価格'
-  , imgae_name VARCHAR(64) comment '画像名称'
+  , image_name VARCHAR(64) comment '画像名称'
   , attach_image_name VARCHAR(64) comment '添付画像'
   , is_deleted BIT(1) default FALSE not null comment '削除'
   , sending_datetime DATETIME default CURRENT_TIMESTAMP not null comment '送信日時'
