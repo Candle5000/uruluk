@@ -2,4 +2,4 @@
   <h1>Items</h1>
 
   <div></div>
-<?= $this->fetch('footer.phtml') ?>
+<?= $this->fetch('footer.phtml', ['pv_today' => $pv_today, 'pv_yesterday' => $pv_yesterday]) ?>

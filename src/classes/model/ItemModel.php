@@ -6,9 +6,6 @@ use \PDO;
 
 class ItemModel extends Model {
 
-	const SELECT_TARGET_TODAY = 0;
-	const SELECT_TARGET_YESTERDAY = 1;
-
 	public function getRareItemsByClass(int $itemClassId) {
 		$sql = 'SELECT'
 			. '  I.item_id'
@@ -77,7 +74,7 @@ class ItemModel extends Model {
 				$attr_val .= '?'
 					. ($result['unit'] === null ? '' : $result['unit']);
 			} else if ($result['attribute_value'] === null) {
-				$attr_val .= 'Axe:'
+				$attr_val .= 'A:'
 					. ($result['attribute_value_axe'] === 0 ? '?' : $result['attribute_value_axe'])
 					. ($result['unit'] === null ? '' : $result['unit']);
 				if ($result['flactuable']) {
@@ -85,7 +82,7 @@ class ItemModel extends Model {
 						. ($result['max_required_axe'] === 0 ? '?' : $result['max_required_axe']) . ' '
 						. ($result['based_source'] === 'xp' ? 'XP' : 'Kills') . ')';
 				}
-				$attr_val .= ' / Sword:'
+				$attr_val .= ' / S:'
 					. ($result['attribute_value_sword'] === 0 ? '?' : $result['attribute_value_sword'])
 					. ($result['unit'] === null ? '' : $result['unit']);
 				if ($result['flactuable']) {
@@ -93,7 +90,7 @@ class ItemModel extends Model {
 						. ($result['max_required_sword'] === 0 ? '?' : $result['max_required_sword']) . ' '
 						. ($result['based_source'] === 'xp' ? 'XP' : 'Kills') . ')';
 				}
-				$attr_val .= ' / Dagger:'
+				$attr_val .= ' / D:'
 					. ($result['attribute_value_dagger'] === 0 ? '?' : $result['attribute_value_dagger'])
 					. ($result['unit'] === null ? '' : $result['unit']);
 				if ($result['flactuable']) {

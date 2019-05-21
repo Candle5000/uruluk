@@ -19,5 +19,6 @@ abstract class Controller {
 		$this->renderer = $container['renderer'];
 		$this->logger = $container['logger'];
 	}
+
 }
 

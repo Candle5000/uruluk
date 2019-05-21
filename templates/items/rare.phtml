@@ -11,8 +11,11 @@
       <h2>No Data</h2>
     <?php endif; ?>
     <?php foreach ($items as $item) : ?>
-      <pre><?= var_dump($item) ?></pre>
+      <div class="card">
+	    <div class="card-header bg-dark"></div>
+	    <div class="card-body"></div>
+	  </div>
     <?php endforeach ?>
   </main>
 </div>
-<?= $this->fetch('footer.phtml') ?>
+<?= $this->fetch('footer.phtml', ['pv_today' => $pv_today, 'pv_yesterday' => $pv_yesterday]) ?>

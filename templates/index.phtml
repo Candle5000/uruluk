@@ -5,6 +5,4 @@
   <?php if (isset($name)) : ?>
   <?php else: ?>
   <?php endif; ?>
-  <p>Today:<?= htmlspecialchars($pv_today) ?></p>
-  <p>Yesterday:<?= htmlspecialchars($pv_yesterday) ?></p>
-<?= $this->fetch('footer.phtml') ?>
+<?= $this->fetch('footer.phtml', ['pv_today' => $pv_today, 'pv_yesterday' => $pv_yesterday]) ?>
