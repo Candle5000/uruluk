@@ -1,5 +1,5 @@
 <?= $this->fetch('header.phtml') ?>
-<div class="row flex-xl-nowrap">
+<div class="row flex-xl-nowrap mb-2">
   <div class="col-12 col-md-3 col-xl-2 order-xl-1 align-self-start">
   </div>
   <div class="d-none d-xl-block col-xl-2 order-xl-3 align-self-start">
@@ -11,19 +11,21 @@
       <h3>No Data</h3>
     <?php endif; ?>
     <?php foreach ($items as $item) : ?>
-      <div class="card mb-1 bg-dark">
+      <div class="card mb-1 bg-darkblue">
         <div class="row">
-          <div class="col-12 col-md-3 text-center my-1 my-md-3">
+          <div class="col-12 col-md-3 text-center my-3">
             <img src="/img/item/<?= $item['image_name'] ?>" alt="<?= $item['name_en'] ?>" />
           </div>
           <div class="col-12 col-md-9">
-            <div class="text-center text-md-left text-primary font-weight-bold">
+            <div class="text-center text-md-left font-weight-bold <?= $item['rarity'] ?>">
               <?= $item['name_ja'] ?><br />
               <?= $item['name_en'] ?>
             </div>
             <ul class="list-unstyled text-white ml-2">
               <?php foreach ($item['attributes'] as $attr) : ?>
-                <li><?= $attr['short_name'] ?> <?= $attr['attribute_value'] ?></li>
+                <li class="<?= $attr['color'] ?>">
+                  <?= $attr['short_name'] ?> <?= $attr['attribute_value'] ?>
+                </li>
               <?php endforeach ?>
             </ul>
           </div>
