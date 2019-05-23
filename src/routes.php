@@ -11,5 +11,5 @@ return function (App $app) {
 
 	$app->get('/items', ItemsController::class . ':index');
 
-	$app->get('/items/rare/{itemClassId}', ItemsController::class . ':rareItem');
+	$app->get('/items/rare/{itemClassName}', ItemsController::class . ':rareItem');
 };
