@@ -2,6 +2,7 @@
 
 namespace Controller;
 
+use \Exception;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -10,11 +11,23 @@ use Slim\Http\Response;
  */
 class TopMenuController extends Controller {
 
-	public function index(Request $request, Response $response, array $args) {
-        // Sample log message
-        $this->logger->info("Slim-Skeleton '/' route");
+	const PAGE_ID = 1;
 
-        // Render index view
+	public function index(Request $request, Response $response) {
+		try {
+			$this->db->beginTransaction();
+
+			$args = [
+				'header' => [],
+				'footer' => $this->getFooterInfo()
+			];
+
+			$this->db->commit();
+		} catch (Exception $e) {
+			$this->db->rollBack();
+			throw $e;
+		}
+
         return $this->renderer->render($response, 'index.phtml', $args);
 	}
 

@@ -1,0 +1,64 @@
+<?= $this->fetch('header.phtml', ['header' => $header]) ?>
+<div class="row flex-xl-nowrap mb-2">
+  <div class="col-12 col-md-3 col-xl-2 order-xl-1 align-self-start">
+  </div>
+  <div class="d-none d-xl-block col-xl-2 order-xl-3 align-self-start">
+  </div>
+  <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 order-xl-2" role="main">
+
+    <h2 class="rare"><?= $item_class ?> Rare</h2>
+    <?php if (empty($items['rare'])) : ?>
+      <h3>No Data</h3>
+    <?php endif; ?>
+    <?php foreach ($items['rare'] as $item) : ?>
+      <div class="card mb-2 bg-darkblue">
+        <div class="row">
+          <div class="col-12 col-md-3 text-center my-3">
+            <img src="/img/item/<?= $item['image_name'] ?>" alt="<?= $item['name_en'] ?>" />
+          </div>
+          <div class="col-12 col-md-9">
+            <div class="text-center text-md-left font-weight-bold rare">
+              <?= $item['name_ja'] ?><br />
+              <?= $item['name_en'] ?>
+            </div>
+            <ul class="list-unstyled text-white ml-2">
+              <?php foreach ($item['attributes'] as $attr) : ?>
+                <li class="<?= $attr['color'] ?>">
+                  <?= $attr['short_name'] ?> <?= $attr['attribute_value'] ?>
+                </li>
+              <?php endforeach ?>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <?php endforeach ?>
+
+    <h2 class="artifact mt-3"><?= $item_class ?> Artifact</h2>
+    <?php if (empty($items['artifact'])) : ?>
+      <h3>No Data</h3>
+    <?php endif; ?>
+    <?php foreach ($items['artifact'] as $item) : ?>
+      <div class="card mb-2 bg-darkblue">
+        <div class="row">
+          <div class="col-12 col-md-3 text-center my-3">
+            <img src="/img/item/<?= $item['image_name'] ?>" alt="<?= $item['name_en'] ?>" />
+          </div>
+          <div class="col-12 col-md-9">
+            <div class="text-center text-md-left font-weight-bold artifact">
+              <?= $item['name_ja'] ?><br />
+              <?= $item['name_en'] ?>
+            </div>
+            <ul class="list-unstyled text-white ml-2">
+              <?php foreach ($item['attributes'] as $attr) : ?>
+                <li class="<?= $attr['color'] ?>">
+                  <?= $attr['short_name'] ?> <?= $attr['attribute_value'] ?>
+                </li>
+              <?php endforeach ?>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <?php endforeach ?>
+  </main>
+</div>
+<?= $this->fetch('footer.phtml', ['footer' => $footer]) ?>

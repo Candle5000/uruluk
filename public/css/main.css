@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+body {
+	background-color: #284044;
+	color: #eed;
+}
+.bg-darkblue {
+	background-color: #263337!important;
+}
+.border-darkblue {
+	border-color: #263337!important;
+}
+
+/* Font Color */
+.red {
+	color: #cd4526;
+}
+.yellow {
+	color: #ffce33;
+}
+.artifact {
+	color: #aa66fc;
+}
+.rare {
+	color: #70c5db;
+}
