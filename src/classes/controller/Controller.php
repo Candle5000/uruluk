@@ -5,6 +5,7 @@ namespace Controller;
 use Psr\Container\ContainerInterface;
 use Slim\Views\PhpRenderer;
 use Monolog\Logger;
+use Model\AccessCountModel;
 
 abstract class Controller {
 	/** @var \PDO */
@@ -20,5 +21,12 @@ abstract class Controller {
 		$this->logger = $container['logger'];
 	}
 
+	protected function getFooterInfo() {
+		$accessCount = new AccessCountModel($this->db, $this->logger);
+		return [
+			'pv_today' => $accessCount->getTodayPvWithCountUp(TopMenuController::PAGE_ID),
+			'pv_yesterday' => $accessCount->getYesterdayPv(TopMenuController::PAGE_ID)
+		];
+	}
 }
 

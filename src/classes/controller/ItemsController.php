@@ -6,7 +6,6 @@ use \Exception;
 use Slim\Exception\NotFoundException;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Model\AccessCountModel;
 use Model\ItemModel;
 
 /**
@@ -18,10 +17,8 @@ class ItemsController extends Controller {
 		try {
 			$this->db->beginTransaction();
 
-			$accessCount = new AccessCountModel($this->db, $this->logger);
 			$args = [
-				'pv_today' => $accessCount->getTodayPvWithCountUp(TopMenuController::PAGE_ID),
-				'pv_yesterday' => $accessCount->getYesterdayPv(TopMenuController::PAGE_ID)
+				'footer' => $this->getFooterInfo()
 			];
 
 			$this->db->commit();
@@ -30,22 +27,20 @@ class ItemsController extends Controller {
 			throw $e;
 		}
 
-        return $this->renderer->render($response, 'items/index.phtml');
+        return $this->renderer->render($response, 'items/index.phtml', $args);
 	}
 
 	public function rareItem(Request $request, Response $response, array $args) {
 		try {
 			$this->db->beginTransaction();
 
-			$accessCount = new AccessCountModel($this->db, $this->logger);
 			$item = new ItemModel($this->db, $this->logger);
 			$itemClassId = $item->getItemClassId($args['itemClassName']);
 			if ($itemClassId === null) throw new NotFoundException($request, $response);
 			$args = [
 				'item_class' => ucfirst($args['itemClassName']),
-				'pv_today' => $accessCount->getTodayPvWithCountUp(TopMenuController::PAGE_ID),
-				'pv_yesterday' => $accessCount->getYesterdayPv(TopMenuController::PAGE_ID),
-				'items' => $item->getRareItemsByClass($itemClassId)
+				'items' => $item->getRareItemsByClass($itemClassId),
+				'footer' => $this->getFooterInfo()
 			];
 
 			$this->db->commit();

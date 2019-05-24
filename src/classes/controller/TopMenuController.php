@@ -5,7 +5,6 @@ namespace Controller;
 use \Exception;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Model\AccessCountModel;
 
 /**
  * トップページ	コントローラ.
@@ -18,10 +17,8 @@ class TopMenuController extends Controller {
 		try {
 			$this->db->beginTransaction();
 
-			$accessCount = new AccessCountModel($this->db, $this->logger);
 			$args = [
-				'pv_today' => $accessCount->getTodayPvWithCountUp(TopMenuController::PAGE_ID),
-				'pv_yesterday' => $accessCount->getYesterdayPv(TopMenuController::PAGE_ID)
+				'footer' => $this->getFooterInfo()
 			];
 
 			$this->db->commit();
