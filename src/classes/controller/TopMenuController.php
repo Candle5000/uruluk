@@ -27,6 +27,7 @@ class TopMenuController extends Controller {
 			$this->db->commit();
 		} catch (Exception $e) {
 			$this->db->rollBack();
+			throw $e;
 		}
 
         return $this->renderer->render($response, 'index.phtml', $args);

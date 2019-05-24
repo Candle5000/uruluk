@@ -25,52 +25,57 @@ class ItemModel extends Model {
 	}
 
 	public function getRareItemsByClass(int $itemClassId) {
-		$sql = 'SELECT'
-			. '  I.item_id'
-			. '  , I.item_class_id'
-			. '  , I.image_name'
-			. '  , I.name_en'
-			. '  , I.name_ja'
-			. '  , I.rarity'
-			. '  , A.short_name'
-			. '  , IA.color'
-			. '  , IA.flactuable'
-			. '  , IA.based_source'
-			. '  , IA.attribute_value'
-			. '  , IA.attribute_value_sword'
-			. '  , IA.attribute_value_axe'
-			. '  , IA.attribute_value_dagger'
-			. '  , A.unit'
-			. '  , IA.max_required'
-			. '  , IA.max_required_sword'
-			. '  , IA.max_required_axe'
-			. '  , IA.max_required_dagger '
-			. 'FROM'
-			. '  item I '
-			. '  INNER JOIN item_attribute IA '
-			. '    ON I.item_id = IA.item_id '
-			. '  INNER JOIN attribute A '
-			. '    ON IA.attribute_id = A.attribute_id '
-			. 'WHERE'
-			. '  I.item_class_id = :itemClassId '
-			. 'ORDER BY'
-			. '  I.sort_key'
-			. '  , A.sort_key'
-			. '  , IA.flactuable';
+		$sql = "SELECT"
+			. "  I.item_id"
+			. "  , I.item_class_id"
+			. "  , I.image_name"
+			. "  , I.name_en"
+			. "  , I.name_ja"
+			. "  , I.rarity"
+			. "  , A.short_name"
+			. "  , IA.color"
+			. "  , IA.flactuable"
+			. "  , IA.based_source"
+			. "  , IA.attribute_value"
+			. "  , IA.attribute_value_sword"
+			. "  , IA.attribute_value_axe"
+			. "  , IA.attribute_value_dagger"
+			. "  , A.unit"
+			. "  , IA.max_required"
+			. "  , IA.max_required_sword"
+			. "  , IA.max_required_axe"
+			. "  , IA.max_required_dagger "
+			. "FROM"
+			. "  item I "
+			. "  LEFT JOIN item_attribute IA "
+			. "    ON I.item_id = IA.item_id "
+			. "  LEFT JOIN attribute A "
+			. "    ON IA.attribute_id = A.attribute_id "
+			. "WHERE"
+			. "  I.item_class_id = :itemClassId "
+			. "  AND I.rarity IN ('rare', 'artifact') "
+			. "ORDER BY"
+			. "  I.rarity"
+			. "  , I.sort_key"
+			. "  , A.sort_key"
+			. "  , IA.flactuable";
 		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindParam(':itemClassId', $itemClassId);
 		$stmt->execute();
-		$items = array();
+		$rareItems = array();
+		$artifactItems = array();
 		$item = array();
 		$prevItemId = null;
 
 		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			if ($result['item_id'] !== $prevItemId) {
-				if (!empty($item)) $items[] = $item;
+				if (!empty($item) && $item['rarity'] == 'rare') $rareItems[] = $item;
+				if (!empty($item) && $item['rarity'] == 'artifact') $artifactItems[] = $item;
 				$item['item_id'] = $result['item_id'];
 				$item['item_class_id'] = $result['item_class_id'];
-				$item['image_name'] = $result['image_name'];
+				$item['image_name'] = ($result['image_name'] === null)
+					? "item_noimg.png" : $result['image_name'];
 				$item['name_en'] = $result['name_en'];
 				$item['name_ja'] = $result['name_ja'];
 				$item['rarity'] = $result['rarity'];
@@ -81,6 +86,9 @@ class ItemModel extends Model {
 			$attribute = array();
 			$attribute['color'] = $result['color'];
 			$attribute['short_name'] = $result['short_name'];
+
+			if ($result['short_name'] === null) continue;
+
 			$attr_val = '';
 
 			if ($result['flactuable']) {
@@ -134,7 +142,9 @@ class ItemModel extends Model {
 			$item['attributes'][] = $attribute;
 		}
 
-		if (!empty($item)) $items[] = $item;
+		if (!empty($item) && $item['rarity'] == 'rare') $rareItems[] = $item;
+		if (!empty($item) && $item['rarity'] == 'artifact') $artifactItems[] = $item;
+		$items = ['rare' => $rareItems, 'artifact' => $artifactItems];
 		return $items;
 	}
 
