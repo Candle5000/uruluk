@@ -18,6 +18,7 @@ class TopMenuController extends Controller {
 			$this->db->beginTransaction();
 
 			$args = [
+				'header' => [],
 				'footer' => $this->getFooterInfo()
 			];
 

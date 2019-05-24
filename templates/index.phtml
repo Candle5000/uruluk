@@ -1,8 +1,12 @@
-<?= $this->fetch('header.phtml') ?>
-  <h1>Uruluk</h1>
-  <div>TRIGLAV攻略データベース</div>
-
-  <?php if (isset($name)) : ?>
-  <?php else: ?>
-  <?php endif; ?>
+<?= $this->fetch('header.phtml', ['header' => $header]) ?>
+<div class="row flex-xl-nowrap mb-2">
+  <div class="col-12 col-md-3 col-xl-2 order-xl-1 align-self-start">
+  </div>
+  <div class="d-none d-xl-block col-xl-2 order-xl-3 align-self-start">
+  </div>
+  <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 order-xl-2" role="main">
+    <h1>Uruluk (仮)</h1>
+    <div>TRIGLAV攻略データベース</div>
+  </main>
+</div>
 <?= $this->fetch('footer.phtml', ['footer' => $footer]) ?>

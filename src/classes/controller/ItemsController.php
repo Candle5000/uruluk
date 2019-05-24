@@ -18,6 +18,7 @@ class ItemsController extends Controller {
 			$this->db->beginTransaction();
 
 			$args = [
+				'header' => ['title' => 'アイテムデータ'],
 				'footer' => $this->getFooterInfo()
 			];
 
@@ -38,6 +39,7 @@ class ItemsController extends Controller {
 			$itemClassId = $item->getItemClassId($args['itemClassName']);
 			if ($itemClassId === null) throw new NotFoundException($request, $response);
 			$args = [
+				'header' => ['title' => ucfirst($args['itemClassName']) . ' レアアイテム'],
 				'item_class' => ucfirst($args['itemClassName']),
 				'items' => $item->getRareItemsByClass($itemClassId),
 				'footer' => $this->getFooterInfo()
