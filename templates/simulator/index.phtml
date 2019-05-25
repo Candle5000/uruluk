@@ -1,0 +1,111 @@
+<?= $this->fetch('header.phtml', ['header' => $header]) ?>
+<div class="row flex-xl-nowrap mb-2">
+  <div class="col-12 col-md-3 col-xl-2 order-xl-1 align-self-start">
+  </div>
+  <div class="d-none d-xl-block col-xl-2 order-xl-3 align-self-start">
+  </div>
+  <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 order-xl-2" role="main">
+
+    <div class="container">
+      <h2>Simulator</h2>
+      <div class="row">
+        <div class="col-12 col-md-6 px-1">
+          <table class="table-dark table-striped w-100 small">
+            <colgroup>
+              <col class="w-50" />
+              <col class="w-25" />
+              <col />
+            </colgroup>
+            <tbody>
+              <tr>
+                <td>Character Class</td>
+                <td class="text-right" colspan="2">
+                  <div class="form-group m-0">
+                    <select class="form-control character-class p-0 h-auto">
+                      <option value="1">Sword Master</option>
+                      <option value="2">Axe Master</option>
+                      <option value="3">Dagger Master</option>
+                    </select>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">Attack Damage</td>
+                <td class="text-right"><span class="attr-min-ad">0</span>～<span class="attr-max-ad">0</span></td>
+              </tr>
+              <tr>
+                <td colspan="2">Attack Speed</td>
+                <td class="text-right attr-as">0</td>
+              </tr>
+              <tr>
+                <td colspan="2">Attack Range</td>
+                <td class="text-right attr-ar">0</td>
+              </tr>
+              <tr>
+                <td colspan="2">Strength</td>
+                <td class="text-right attr-str">0</td>
+              </tr>
+              <tr>
+                <td colspan="2">Defense</td>
+                <td class="text-right attr-def">0</td>
+              </tr>
+              <tr>
+                <td colspan="2">Dexteriry</td>
+                <td class="text-right attr-dex">0</td>
+              </tr>
+              <tr>
+                <td colspan="2">Vitality</td>
+                <td class="text-right attr-vit">0</td>
+              </tr>
+              <tr>
+                <td colspan="2">Walk Speed</td>
+                <td class="text-right attr-ws">0</td>
+              </tr>
+              <tr>
+                <td colspan="2">Special Attack</td>
+                <td class="text-right"><span class="attr-sad">30</span>&nbsp;sec</td>
+              </tr>
+              <tr>
+                <td colspan="2">Vitality on Hit</td>
+                <td class="text-right"><span class="attr-voh">0</span>%</td>
+              </tr>
+              <tr>
+                <td colspan="2">Damage Reflection</td>
+                <td class="text-right"><span class="attr-dr">0</span>%</td>
+              </tr>
+              <tr>
+                <td colspan="2">XP Gain</td>
+                <td class="text-right">+<span class="attr-xpg">0</span>%</td>
+              </tr>
+              <tr>
+                <td>XP</td>
+                <td colspan="2">
+                  <div class="form-group m-0">
+                    <input type="number" class="form-control character-xp character-class p-0 h-auto text-right pr-2" min="0" value="0" />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Kills</td>
+                <td colspan="2">
+                  <div class="form-group m-0">
+                    <input type="number" class="form-control character-kills character-class p-0 h-auto text-right pr-2" min="0" value="0" />
+                  </div>
+                </td>
+              </tr>
+			  <tr>
+			    <td colspan="3" class="item-skill">
+				  No Skills
+				</td>
+			  </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-12 col-md-6">
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+<?= $this->fetch('footer.phtml', ['footer' => $footer]) ?>
