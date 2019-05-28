@@ -24,3 +24,16 @@ body {
 .rare {
 	color: #70c5db;
 }
+.item-skill {
+	color: #9fd900;
+}
+
+/* Image */
+img.item-detail {
+	width: 64px;
+	height: 64px;
+}
+img.item-icon {
+	width: 32px;
+	height: 32px;
+}
