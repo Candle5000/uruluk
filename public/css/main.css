@@ -1,8 +1,10 @@
 @charset "UTF-8";
 
 body {
-	background-color: #284044;
 	color: #eed;
+}
+.bg-darkgreen {
+	background-color: #284044!important;
 }
 .bg-darkblue {
 	background-color: #263337!important;
@@ -26,6 +28,10 @@ body {
 }
 .item-skill {
 	color: #9fd900;
+}
+.button-close-white {
+	color: #fff;
+	text-shadow: 0 1px 0 #263337;
 }
 
 /* Image */
