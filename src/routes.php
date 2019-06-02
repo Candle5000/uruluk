@@ -15,4 +15,6 @@ return function (App $app) {
 	$app->get('/items/rare/{itemClassName}', ItemsController::class . ':rareItem');
 
 	$app->get('/simulator', SimulatorController::class . ':index');
+
+	$app->get('/simulator/rare/{itemClassName}', SimulatorController::class . ':rareItem');
 };
