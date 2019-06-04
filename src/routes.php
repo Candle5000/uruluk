@@ -6,9 +6,9 @@ use Controller\ItemsController;
 use Controller\SimulatorController;
 
 return function (App $app) {
-    $container = $app->getContainer();
+	$container = $app->getContainer();
 
-    $app->get('/', TopMenuController::class . ':index');
+	$app->get('/', TopMenuController::class . ':index');
 
 	$app->get('/items', ItemsController::class . ':index');
 

@@ -17,7 +17,7 @@ class SimulatorController extends Controller {
 			$this->db->beginTransaction();
 
 			$args = [
-				'header' => ['title' => 'シミュレータ'],
+				'header' => ['title' => 'シミュレータ', 'script' => ['/js/simulator.js']],
 				'footer' => $this->getFooterInfo()
 			];
 

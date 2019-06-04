@@ -21,10 +21,10 @@ body {
 	color: #ffce33;
 }
 .artifact {
-	color: #aa66fc;
+	color: #aa66fc!important;
 }
 .rare {
-	color: #70c5db;
+	color: #70c5db!important;
 }
 .item-skill {
 	color: #9fd900;
