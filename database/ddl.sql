@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2019/05/19 23:49:06
+-- Date/Time    : 2019/06/04 23:51:16
 -- Author       : Candle
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -224,7 +224,7 @@ alter table item add unique item_IX1 (sort_key) ;
 create unique index item_IX2
   on item(item_class_id,rarity,sort_key);
 
--- アイテム変動
+-- アイテム性能
 --* BackupToTempTable
 drop table if exists item_attribute cascade;
 
@@ -236,15 +236,15 @@ create table item_attribute (
   , based_source ENUM('xp', 'kills') comment '変動元'
   , color ENUM('white', 'yellow', 'red') not null comment '色'
   , attribute_value INT comment '性能値'
-  , attribute_value_sword INT comment '性能値ソード'
   , attribute_value_axe INT comment '性能値アックス'
+  , attribute_value_sword INT comment '性能値ソード'
   , attribute_value_dagger INT comment '性能値ダガー'
   , max_required INT comment '変動最大要求値'
-  , max_required_sword INT comment '変動最大要求値ソード'
   , max_required_axe INT comment '変動最大要求値アックス'
+  , max_required_sword INT comment '変動最大要求値ソード'
   , max_required_dagger INT comment '変動最大要求値ダガー'
   , constraint item_attribute_PKC primary key (item_id,attribute_id,flactuable)
-) comment 'アイテム変動' ;
+) comment 'アイテム性能' ;
 
 -- アイテム性能ログ
 --* BackupToTempTable
@@ -258,12 +258,12 @@ create table item_attribute_log (
   , based_source ENUM('xp', 'kills') comment '変動元'
   , color ENUM('white', 'yellow', 'red') comment '色'
   , attribute_value INT default 0 comment '性能値'
-  , attribute_value_sword INT default 0 comment '性能値ソード'
   , attribute_value_axe INT default 0 comment '性能値アックス'
+  , attribute_value_sword INT default 0 comment '性能値ソード'
   , attribute_value_dagger INT default 0 comment '性能値ダガー'
   , max_required INT default 0 comment '変動最大要求値'
-  , max_required_sword INT default 0 comment '変動最大要求値ソード'
   , max_required_axe INT default 0 comment '変動最大要求値アックス'
+  , max_required_sword INT default 0 comment '変動最大要求値ソード'
   , max_required_dagger INT default 0 comment '変動最大要求値ダガー'
   , is_deleted BIT(1) default FALSE not null comment '削除'
   , constraint item_attribute_log_PKC primary key (item_log_id,attribute_id,flactuable)
