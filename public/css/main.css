@@ -26,6 +26,9 @@ body {
 .rare {
 	color: #70c5db!important;
 }
+.common {
+	color: #fff!important;
+}
 .item-skill {
 	color: #9fd900;
 }
@@ -38,8 +41,18 @@ body {
 img.item-detail {
 	width: 64px;
 	height: 64px;
+	-ms-interpolation-mode:nearest-neighbor;
+	image-rendering:-webkit-optimize-contrast;
+	image-rendering:-moz-crisp-edges;
+	image-rendering:-o-crisp-edges;
+	image-rendering:pixelated;
 }
 img.item-icon {
 	width: 32px;
 	height: 32px;
+	-ms-interpolation-mode:nearest-neighbor;
+	image-rendering:-webkit-optimize-contrast;
+	image-rendering:-moz-crisp-edges;
+	image-rendering:-o-crisp-edges;
+	image-rendering:pixelated;
 }
