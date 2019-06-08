@@ -16,18 +16,31 @@ $(function() {
 		"puppet" : "puppet0.png"
 	}
 
-	// スロットのアイテムを削除
-	const setNone = function(slot) {
-		slot.removeClass("common rare artifact")
-			.addClass("item-icon")
-			.addClass("common")
-			.data("rarity", "common");
+	// スロットにアイテムを設定
+	const setItem = function(link, item) {
 		const img = $("<img />")
-			.attr("src", "/img/item/" + default_img[slot.data("item-class")])
-			.attr("alt", "None");
-		const span = $("<span />").text(" " + "None");
-		slot.children().remove();
-		slot.append(img).append(span);
+			.attr("src", "/img/item/" + item.image_name)
+			.attr("alt", item.name_en)
+			.addClass("item-icon");
+		const span = $("<span />")
+			.data("rarity", item.rarity)
+			.text(" " + item.name_en);
+		link.removeClass("common rare artifact")
+			.addClass("item-icon")
+			.addClass(item.rarity)
+			.children().remove();
+		link.append(img).append(span);
+	}
+
+	// スロットにNoneを設定
+	const setNone = function(link) {
+		const item = {
+			"name_en" : "None",
+			"rarity" : "common",
+			"image_name" : default_img[link.data("item-class")],
+			"attributes" : []
+		}
+		setItem(link, item);
 	}
 
 	// キャラクタークラス変更
@@ -55,49 +68,42 @@ $(function() {
 			url : "/simulator/rare/" + target.data("item-class"),
 			type : "GET"
 		}).done(data => {
+			// アイテムリストを削除
 			$("#table-items tbody").children().remove();
+
+			// Noneの選択肢を作成
 			const link = $("<a />")
 				.attr("href", "javascript:void(0)")
 				.data("item-class", target.data("item-class"));
 			setNone(link);
 			$("#table-items tbody").append($("<tr />").append($("<td />").append(link)));
+
+			// Rareアイテム
 			data.items.rare.forEach(item => {
-				const img = $("<img />")
-					.attr("src", "/img/item/" + item.image_name)
-					.attr("alt", item.name_en)
-					.addClass("item-icon");
 				const link = $("<a />")
-					.attr("href", "javascript:void(0)")
-					.addClass("rare")
-					.data("name", item.name_en)
-					.data("image", item.image_name)
-					.data("rarity", "rare")
-					.append(img)
-					.append($("<span />").text(" " + item.name_en));
+					.attr("href", "javascript:void(0)");
+				setItem(link, item);
 				$("#table-items tbody").append($("<tr />").append($("<td />").append(link)));
 			});
+
+			// Artifactアイテム
 			data.items.artifact.forEach(item => {
-				const img = $("<img />")
-					.attr("src", "/img/item/" + item.image_name)
-					.attr("alt", item.name_en)
-					.addClass("item-icon");
 				const link = $("<a />")
-					.attr("href", "javascript:void(0)")
-					.addClass("artifact")
-					.data("name", item.name_en)
-					.data("image", item.image_name)
-					.data("rarity", "artifact")
-					.append(img)
-					.append($("<span />").text(" " + item.name_en));
+					.attr("href", "javascript:void(0)");
+				setItem(link, item);
 				$("#table-items tbody").append($("<tr />").append($("<td />").append(link)));
 			});
+
+			// クリックイベント付与
 			$("#table-items a").on("click", function() {
 				target.children().remove();
 				target.removeClass("common rare artifact");
-				target.addClass($(this).data("rarity"));
+				target.addClass($(this).find("span").data("rarity"));
 				target.append($(this).clone().children());
 				$("#modal-items").modal("hide");
 			});
+
+			// モーダル表示
 			$("#modal-items").modal("show");
 		});
 	});

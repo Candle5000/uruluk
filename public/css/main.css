@@ -2,6 +2,7 @@
 
 body {
 	color: #eed;
+	font-family: arial, sans-serif;
 }
 .bg-darkgreen {
 	background-color: #284044!important;
@@ -55,4 +56,9 @@ img.item-icon {
 	image-rendering:-moz-crisp-edges;
 	image-rendering:-o-crisp-edges;
 	image-rendering:pixelated;
+}
+
+/* Simulator */
+.table-item-slot td {
+	height: 34px;
 }
