@@ -14,6 +14,16 @@ body {
 	border-color: #263337!important;
 }
 
+.w-14 {
+	width: 14%!important;
+}
+.w-15 {
+	width: 15%!important;
+}
+.border-black {
+	border-color: #000!important;
+}
+
 /* Font Color */
 .red {
 	color: #cd4526;
@@ -59,6 +69,10 @@ img.item-icon {
 }
 
 /* Simulator */
-.table-item-slot td {
+.table-item-slot>tbody>tr>td {
 	height: 34px;
+}
+.table-item-attrs>div>div {
+	padding: 0 2px;
+	height: 16px;
 }

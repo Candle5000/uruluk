@@ -1,5 +1,8 @@
 $(function() {
 
+	// 各スロットのアイテム情報
+	const slotItems = [];
+
 	// 空スロットの画像
 	const default_img = {
 		"sword" : "short_sword.png",
@@ -30,6 +33,18 @@ $(function() {
 			.addClass(item.rarity)
 			.children().remove();
 		link.append(img).append(span);
+		link.parent().find(".d-table-cell").children().remove();
+		item.attributes.forEach(attr => {
+			const value = attr.value === null ? attr["value_" + $("select.character-class").val()] : attr.value;
+			const attr_cell = link.parent().find(".attr-" + attr.short_name.toLowerCase());
+			if (attr_cell.children().length > 0 && value > 0) {
+				attr_cell.append($("<span>+</span>"));
+			}
+			const span = $("<span />")
+				.addClass(attr.color)
+				.text(value);
+			link.parent().find(".attr-" + attr.short_name.toLowerCase()).append(span);
+		});
 	}
 
 	// スロットにNoneを設定
@@ -46,19 +61,26 @@ $(function() {
 	// キャラクタークラス変更
 	$("select.character-class").on("change", function() {
 		switch ($(this).val()) {
-			case "1":
+			case "sword":
 				setNone($("a.item-slot1").data("item-class", "sword"));
 				setNone($("a.item-slot2").data("item-class", "shield"));
 				break;
-			case "2":
+			case "axe":
 				setNone($("a.item-slot1").data("item-class", "axe"));
 				setNone($("a.item-slot2").data("item-class", "mantle"));
 				break;
-			case "3":
+			case "dagger":
 				setNone($("a.item-slot1").data("item-class", "dagger"));
 				setNone($("a.item-slot2").data("item-class", "dagger"));
 				break;
 		}
+		slotItems[1] = undefined;
+		slotItems[2] = undefined;
+		$(".table-item-slot a").toArray().forEach(link => {
+			if (slotItems[$(link).data("slot-index")] !== undefined) {
+				setItem($(link), slotItems[$(link).data("slot-index")]);
+			}
+		});
 	});
 
 	// アイテム選択画面を表示
@@ -68,38 +90,44 @@ $(function() {
 			url : "/simulator/rare/" + target.data("item-class"),
 			type : "GET"
 		}).done(data => {
+			// アイテム情報保持
+			const modalItems = [];
+
 			// アイテムリストを削除
-			$("#table-items tbody").children().remove();
+			$("#table-items>tbody>tr").remove();
 
 			// Noneの選択肢を作成
-			const link = $("<a />")
-				.attr("href", "javascript:void(0)")
-				.data("item-class", target.data("item-class"));
-			setNone(link);
-			$("#table-items tbody").append($("<tr />").append($("<td />").append(link)));
+			const row_none = $($("#modal-item-row").html());
+			row_none.find("a").data("item-class", target.data("item-class"));
+			setNone(row_none.find("a"));
+			$("#table-items tbody").append(row_none);
 
 			// Rareアイテム
 			data.items.rare.forEach(item => {
-				const link = $("<a />")
-					.attr("href", "javascript:void(0)");
-				setItem(link, item);
-				$("#table-items tbody").append($("<tr />").append($("<td />").append(link)));
+				const row = $($("#modal-item-row").html());
+				setItem(row.find("a"), item);
+				$("#table-items tbody").append(row);
+				row.find("a").data("row-index", modalItems.push(item) - 1);
 			});
 
 			// Artifactアイテム
 			data.items.artifact.forEach(item => {
-				const link = $("<a />")
-					.attr("href", "javascript:void(0)");
-				setItem(link, item);
-				$("#table-items tbody").append($("<tr />").append($("<td />").append(link)));
+				const row = $($("#modal-item-row").html());
+				setItem(row.find("a"), item);
+				$("#table-items tbody").append(row);
+				row.find("a").data("row-index", modalItems.push(item) - 1);
 			});
 
 			// クリックイベント付与
 			$("#table-items a").on("click", function() {
-				target.children().remove();
-				target.removeClass("common rare artifact");
-				target.addClass($(this).find("span").data("rarity"));
-				target.append($(this).clone().children());
+				const itemClass = target.data("item-class");
+				if ($(this).data("row-index") === undefined) {
+					setNone(target);
+					slotItems[target.data("slot-index")] = undefined;
+				} else {
+					setItem(target, modalItems[$(this).data("row-index")]);
+					slotItems[target.data("slot-index")] = modalItems[$(this).data("row-index")];
+				}
 				$("#modal-items").modal("hide");
 			});
 
