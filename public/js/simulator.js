@@ -115,7 +115,17 @@ $(function() {
 		slotItems.forEach(item => {
 			if (item !== undefined) {
 				item.attributes.forEach(attr => {
-					const value = attr.value === null ? attr["value_" + charaClass] : attr.value;
+					const valueMax = attr.value === null ? attr["value_" + charaClass] : attr.value;
+					const maxRequired = attr.max_required ? attr.max_required : attr["max_required_" + charaClass];
+					let value;
+
+					// 性能変動値の計算
+					if (attr.based_source && maxRequired && maxRequired != 0 && maxRequired <= parseInt($(".character-" + attr.based_source).val())) {
+						value = valueMax * parseInt($(".character-" + attr.based_source).val()) / maxRequired;
+					} else {
+						value = valueMax;
+					}
+
 					attrs[attr.short_name.toLowerCase()] += parseInt(value);
 				});
 			}
@@ -155,10 +165,21 @@ $(function() {
 			.children().remove();
 		link.append(img).append(span);
 		link.parent().find(".d-table-cell").children().remove();
+		const charaClass = $("select.character-class").val();
 		item.attributes.forEach(attr => {
-			const value = attr.value === null ? attr["value_" + $("select.character-class").val()] : attr.value;
+			const valueMax = attr.value === null ? attr["value_" + charaClass] : attr.value;
 			const attr_cell = link.parent().find(".attr-" + attr.short_name.toLowerCase());
-			if (attr_cell.children().length > 0 && value > 0) {
+			const maxRequired = attr.max_required ? attr.max_required : attr["max_required_" + charaClass];
+			let value;
+
+			// 性能変動値の計算
+			if (attr.based_source && maxRequired && maxRequired != 0 && maxRequired > parseInt($(".character-" + attr.based_source).val())) {
+				value = valueMax * parseInt($(".character-" + attr.based_source).val()) / maxRequired;
+			} else {
+				value = valueMax;
+			}
+
+			if (attr_cell.children().length > 0 && value >= 0) {
 				attr_cell.append($("<span>+</span>"));
 			}
 			const span = $("<span />")

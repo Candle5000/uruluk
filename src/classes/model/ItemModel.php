@@ -89,6 +89,7 @@ class ItemModel extends Model {
 
 			if ($result['short_name'] === null) continue;
 
+			$attribute['based_source'] = $result['based_source'];
 			$attribute['value'] = $result['attribute_value'];
 			$attribute['value_axe'] = $result['attribute_value_axe'];
 			$attribute['value_sword'] = $result['attribute_value_sword'];
