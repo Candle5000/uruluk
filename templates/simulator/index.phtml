@@ -1,0 +1,562 @@
+<?= $this->fetch('header.phtml', ['header' => $header]) ?>
+<div class="row flex-xl-nowrap mb-2">
+  <div class="col-12 col-md-3 col-xl-2 order-xl-1 align-self-start">
+  </div>
+  <div class="d-none d-xl-block col-xl-2 order-xl-3 align-self-start">
+  </div>
+  <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 order-xl-2" role="main">
+
+    <div class="container">
+      <h2>Simulator</h2>
+      <div class="row">
+        <div class="col-12 col-md-6 px-1">
+          <table class="table-attributes table-dark table-striped w-100 small">
+            <colgroup>
+              <col class="w-50" />
+              <col class="w-25" />
+              <col />
+            </colgroup>
+            <tbody>
+              <tr>
+                <td>Character Class</td>
+                <td class="text-right" colspan="2">
+                  <div class="form-group m-0">
+                    <select class="form-control character-class p-0 h-auto">
+                      <option value="sword">Sword Master</option>
+                      <option value="axe">Axe Master</option>
+                      <option value="dagger">Dagger Master</option>
+                    </select>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">Attack Damage</td>
+                <td class="text-right"><span class="attr-minad">0</span>～<span class="attr-maxad">0</span></td>
+              </tr>
+              <tr>
+                <td colspan="2">Attack Speed</td>
+                <td class="text-right attr-as">0</td>
+              </tr>
+              <tr>
+                <td colspan="2">Attack Range</td>
+                <td class="text-right attr-ar">0</td>
+              </tr>
+              <tr>
+                <td colspan="2">Strength</td>
+                <td class="text-right attr-str">0</td>
+              </tr>
+              <tr>
+                <td colspan="2">Defense</td>
+                <td class="text-right attr-def">0</td>
+              </tr>
+              <tr>
+                <td colspan="2">Dexteriry</td>
+                <td class="text-right attr-dex">0</td>
+              </tr>
+              <tr>
+                <td colspan="2">Vitality</td>
+                <td class="text-right attr-vit">0</td>
+              </tr>
+              <tr>
+                <td colspan="2">Walk Speed</td>
+                <td class="text-right attr-ws">0</td>
+              </tr>
+              <tr>
+                <td colspan="2">Special Attack</td>
+                <td class="text-right">
+                  <span class="sa-normal"><span class="attr-sa">30</span>&nbsp;sec</span>
+                  <span class="sa-nodelay d-none">No Delay</span>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">Vitality on Hit</td>
+                <td class="text-right"><span class="attr-voh">0</span>%</td>
+              </tr>
+              <tr>
+                <td colspan="2">Damage Reflection</td>
+                <td class="text-right"><span class="attr-dr">0</span>%</td>
+              </tr>
+              <tr>
+                <td colspan="2">XP Gain</td>
+                <td class="text-right">+<span class="attr-xpg">0</span>%</td>
+              </tr>
+              <tr>
+                <td>XP</td>
+                <td colspan="2">
+                  <div class="form-group m-0">
+                    <input type="number" class="form-control character-xp p-0 h-auto text-right pr-2" min="0" value="0" />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Kills</td>
+                <td colspan="2">
+                  <div class="form-group m-0">
+                    <input type="number" class="form-control character-kills p-0 h-auto text-right pr-2" min="0" value="0" />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3">
+                  Item Passive Skills
+                  <ul class="list-unstyled item-skill ml-2 mb-0">
+                    <li>No Skills</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3">Boost Ups</td>
+              </tr>
+              <tr>
+                <td colspan="2" class="pl-2">Nostrum</td>
+                <td>
+                  <div class="form-group m-0">
+                    <input type="number" class="form-control nostrum boostup p-0 h-auto text-right pr-2" min="0" value="0" />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" class="pl-2">Elixir</td>
+                <td>
+                  <div class="form-group m-0">
+                    <input type="number" class="form-control elixir boostup p-0 h-auto text-right pr-2" min="0" value="0" />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" class="pl-2">Gio'Gan</td>
+                <td>
+                  <div class="form-group m-0">
+                    <input type="number" class="form-control giogan boostup p-0 h-auto text-right pr-2" min="0" value="0" />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" class="pl-2">Necter</td>
+                <td>
+                  <div class="form-group m-0">
+                    <input type="number" class="form-control necter boostup p-0 h-auto text-right pr-2" min="0" value="0" />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" class="pl-2">Hydrabrew</td>
+                <td>
+                  <div class="form-group m-0">
+                    <input type="number" class="form-control hydrabrew boostup p-0 h-auto text-right pr-2" min="0" value="0" />
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-12 col-md-6 px-1">
+          <table class="table-item-slot table-dark table-striped w-100 small">
+            <tbody>
+              <tr>
+                <td>
+                  <span>Equipment Items</span>
+                  <div class="d-table w-100 small table-item-attrs">
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-center w-15">MinAD</div>
+                      <div class="d-table-cell border border-black text-center w-15">MaxAD</div>
+                      <div class="d-table-cell border border-black text-center w-14">AS</div>
+                      <div class="d-table-cell border border-black text-center w-14">AR</div>
+                      <div class="d-table-cell border border-black text-center w-14">Str</div>
+                      <div class="d-table-cell border border-black text-center w-14">Def</div>
+                      <div class="d-table-cell border border-black text-center w-14">Dex</div>
+                    </div>
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-center w-15">Vit</div>
+                      <div class="d-table-cell border border-black text-center w-15">WS</div>
+                      <div class="d-table-cell border border-black text-center w-14">SA</div>
+                      <div class="d-table-cell border border-black text-center w-14">VoH</div>
+                      <div class="d-table-cell border border-black text-center w-14">DR</div>
+                      <div class="d-table-cell border border-black text-center w-14">XPG</div>
+                      <div class="d-table-cell border border-black text-center w-14"></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="javascript:void(0);" class="common item-slot1" data-slot-index="1" data-item-class="sword"></a>
+                  <div class="d-table w-100 small table-item-attrs">
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-minad"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-maxad"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-as"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-ar"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-str"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-def"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dex"></div>
+                    </div>
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-vit"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-ws"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-sa"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-voh"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dr"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-xpg"></div>
+                      <div class="d-table-cell border border-black text-right w-14"></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="javascript:void(0);" class="common item-slot2" data-slot-index="2" data-item-class="shield"></a>
+                  <div class="d-table w-100 small table-item-attrs">
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-minad"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-maxad"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-as"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-ar"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-str"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-def"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dex"></div>
+                    </div>
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-vit"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-ws"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-sa"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-voh"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dr"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-xpg"></div>
+                      <div class="d-table-cell border border-black text-right w-14"></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="javascript:void(0);" class="common item-slot3" data-slot-index="3" data-item-class="ring"></a>
+                  <div class="d-table w-100 small table-item-attrs">
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-minad"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-maxad"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-as"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-ar"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-str"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-def"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dex"></div>
+                    </div>
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-vit"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-ws"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-sa"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-voh"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dr"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-xpg"></div>
+                      <div class="d-table-cell border border-black text-right w-14"></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="javascript:void(0);" class="common item-slot4" data-slot-index="4" data-item-class="ring"></a>
+                  <div class="d-table w-100 small table-item-attrs">
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-minad"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-maxad"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-as"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-ar"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-str"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-def"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dex"></div>
+                    </div>
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-vit"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-ws"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-sa"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-voh"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dr"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-xpg"></div>
+                      <div class="d-table-cell border border-black text-right w-14"></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="javascript:void(0);" class="common item-slot5" data-slot-index="5" data-item-class="helm"></a>
+                  <div class="d-table w-100 small table-item-attrs">
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-minad"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-maxad"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-as"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-ar"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-str"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-def"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dex"></div>
+                    </div>
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-vit"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-ws"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-sa"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-voh"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dr"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-xpg"></div>
+                      <div class="d-table-cell border border-black text-right w-14"></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="javascript:void(0);" class="common item-slot6" data-slot-index="6" data-item-class="armor"></a>
+                  <div class="d-table w-100 small table-item-attrs">
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-minad"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-maxad"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-as"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-ar"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-str"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-def"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dex"></div>
+                    </div>
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-vit"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-ws"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-sa"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-voh"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dr"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-xpg"></div>
+                      <div class="d-table-cell border border-black text-right w-14"></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="javascript:void(0);" class="common item-slot7" data-slot-index="7" data-item-class="gloves"></a>
+                  <div class="d-table w-100 small table-item-attrs">
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-minad"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-maxad"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-as"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-ar"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-str"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-def"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dex"></div>
+                    </div>
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-vit"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-ws"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-sa"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-voh"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dr"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-xpg"></div>
+                      <div class="d-table-cell border border-black text-right w-14"></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="javascript:void(0);" class="common item-slot8" data-slot-index="8" data-item-class="boots"></a>
+                  <div class="d-table w-100 small table-item-attrs">
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-minad"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-maxad"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-as"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-ar"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-str"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-def"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dex"></div>
+                    </div>
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-vit"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-ws"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-sa"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-voh"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dr"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-xpg"></div>
+                      <div class="d-table-cell border border-black text-right w-14"></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="javascript:void(0);" class="common item-slot9" data-slot-index="9" data-item-class="common"></a>
+                  <div class="d-table w-100 small table-item-attrs">
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-minad"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-maxad"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-as"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-ar"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-str"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-def"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dex"></div>
+                    </div>
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-vit"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-ws"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-sa"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-voh"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dr"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-xpg"></div>
+                      <div class="d-table-cell border border-black text-right w-14"></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="javascript:void(0);" class="common item-slot10" data-slot-index="10" data-item-class="puppet"></a>
+                  <div class="d-table w-100 small table-item-attrs">
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-minad"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-maxad"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-as"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-ar"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-str"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-def"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dex"></div>
+                    </div>
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-vit"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-ws"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-sa"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-voh"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dr"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-xpg"></div>
+                      <div class="d-table-cell border border-black text-right w-14"></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="javascript:void(0);" class="common item-slot11" data-slot-index="11" data-item-class="puppet"></a>
+                  <div class="d-table w-100 small table-item-attrs">
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-minad"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-maxad"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-as"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-ar"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-str"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-def"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dex"></div>
+                    </div>
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-vit"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-ws"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-sa"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-voh"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dr"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-xpg"></div>
+                      <div class="d-table-cell border border-black text-right w-14"></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="javascript:void(0);" class="common item-slot12" data-slot-index="12" data-item-class="puppet"></a>
+                  <div class="d-table w-100 small table-item-attrs">
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-minad"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-maxad"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-as"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-ar"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-str"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-def"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dex"></div>
+                    </div>
+                    <div class="d-table-row">
+                      <div class="d-table-cell border border-black text-right w-15 attr-vit"></div>
+                      <div class="d-table-cell border border-black text-right w-15 attr-ws"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-sa"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-voh"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-dr"></div>
+                      <div class="d-table-cell border border-black text-right w-14 attr-xpg"></div>
+                      <div class="d-table-cell border border-black text-right w-14"></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="modal fade" id="modal-items" tabindex="-1" role="dialog" aria-labelledby="modal-itemsTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content bg-darkgreen">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="modal-itemsTitle">Select Item</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="button-close-white">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <table id="table-items" class="table-dark table-striped w-100 small">
+                    <thead>
+                      <tr>
+                        <td>
+                          <div class="d-table w-100 small table-item-attrs">
+                            <div class="d-table-row">
+                              <div class="d-table-cell border border-black text-center w-15">MinAD</div>
+                              <div class="d-table-cell border border-black text-center w-15">MaxAD</div>
+                              <div class="d-table-cell border border-black text-center w-14">AS</div>
+                              <div class="d-table-cell border border-black text-center w-14">AR</div>
+                              <div class="d-table-cell border border-black text-center w-14">Str</div>
+                              <div class="d-table-cell border border-black text-center w-14">Def</div>
+                              <div class="d-table-cell border border-black text-center w-14">Dex</div>
+                            </div>
+                            <div class="d-table-row">
+                              <div class="d-table-cell border border-black text-center w-15">Vit</div>
+                              <div class="d-table-cell border border-black text-center w-15">WS</div>
+                              <div class="d-table-cell border border-black text-center w-14">SA</div>
+                              <div class="d-table-cell border border-black text-center w-14">VoH</div>
+                              <div class="d-table-cell border border-black text-center w-14">DR</div>
+                              <div class="d-table-cell border border-black text-center w-14">XPG</div>
+                              <div class="d-table-cell border border-black text-center w-14"></div>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <template id="modal-item-row">
+                        <tr>
+                          <td>
+                            <a href="javascript:void(0);"></a>
+                            <div class="d-table w-100 small table-item-attrs">
+                              <div class="d-table-row">
+                                <div class="d-table-cell border border-black text-right w-15 attr-minad"></div>
+                                <div class="d-table-cell border border-black text-right w-15 attr-maxad"></div>
+                                <div class="d-table-cell border border-black text-right w-14 attr-as"></div>
+                                <div class="d-table-cell border border-black text-right w-14 attr-ar"></div>
+                                <div class="d-table-cell border border-black text-right w-14 attr-str"></div>
+                                <div class="d-table-cell border border-black text-right w-14 attr-def"></div>
+                                <div class="d-table-cell border border-black text-right w-14 attr-dex"></div>
+                              </div>
+                              <div class="d-table-row">
+                                <div class="d-table-cell border border-black text-right w-15 attr-vit"></div>
+                                <div class="d-table-cell border border-black text-right w-15 attr-ws"></div>
+                                <div class="d-table-cell border border-black text-right w-14 attr-sa"></div>
+                                <div class="d-table-cell border border-black text-right w-14 attr-voh"></div>
+                                <div class="d-table-cell border border-black text-right w-14 attr-dr"></div>
+                                <div class="d-table-cell border border-black text-right w-14 attr-xpg"></div>
+                                <div class="d-table-cell border border-black text-right w-14"></div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </template>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+<?= $this->fetch('footer.phtml', ['footer' => $footer]) ?>

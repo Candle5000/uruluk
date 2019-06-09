@@ -89,6 +89,16 @@ class ItemModel extends Model {
 
 			if ($result['short_name'] === null) continue;
 
+			$attribute['based_source'] = $result['based_source'];
+			$attribute['value'] = $result['attribute_value'];
+			$attribute['value_axe'] = $result['attribute_value_axe'];
+			$attribute['value_sword'] = $result['attribute_value_sword'];
+			$attribute['value_dagger'] = $result['attribute_value_dagger'];
+			$attribute['max_required'] = $result['max_required'];
+			$attribute['max_required_axe'] = $result['max_required_axe'];
+			$attribute['max_required_sword'] = $result['max_required_sword'];
+			$attribute['max_required_dagger'] = $result['max_required_dagger'];
+
 			$attr_val = '';
 
 			if ($result['flactuable']) {

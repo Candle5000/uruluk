@@ -1,14 +1,27 @@
 @charset "UTF-8";
 
 body {
-	background-color: #284044;
 	color: #eed;
+	font-family: arial, sans-serif;
+}
+.bg-darkgreen {
+	background-color: #284044!important;
 }
 .bg-darkblue {
 	background-color: #263337!important;
 }
 .border-darkblue {
 	border-color: #263337!important;
+}
+
+.w-14 {
+	width: 14%!important;
+}
+.w-15 {
+	width: 15%!important;
+}
+.border-black {
+	border-color: #000!important;
 }
 
 /* Font Color */
@@ -19,8 +32,47 @@ body {
 	color: #ffce33;
 }
 .artifact {
-	color: #aa66fc;
+	color: #aa66fc!important;
 }
 .rare {
-	color: #70c5db;
+	color: #70c5db!important;
+}
+.common {
+	color: #fff!important;
+}
+.item-skill {
+	color: #9fd900;
+}
+.button-close-white {
+	color: #fff;
+	text-shadow: 0 1px 0 #263337;
+}
+
+/* Image */
+img.item-detail {
+	width: 64px;
+	height: 64px;
+	-ms-interpolation-mode:nearest-neighbor;
+	image-rendering:-webkit-optimize-contrast;
+	image-rendering:-moz-crisp-edges;
+	image-rendering:-o-crisp-edges;
+	image-rendering:pixelated;
+}
+img.item-icon {
+	width: 32px;
+	height: 32px;
+	-ms-interpolation-mode:nearest-neighbor;
+	image-rendering:-webkit-optimize-contrast;
+	image-rendering:-moz-crisp-edges;
+	image-rendering:-o-crisp-edges;
+	image-rendering:pixelated;
+}
+
+/* Simulator */
+.table-item-slot>tbody>tr>td {
+	height: 34px;
+}
+.table-item-attrs>div>div {
+	padding: 0 2px;
+	height: 16px;
 }
