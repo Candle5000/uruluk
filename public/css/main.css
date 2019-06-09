@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+html {
+	-webkit-overflow-scrolling: touch;
+}
+
 body {
 	color: #eed;
 	font-family: arial, sans-serif;

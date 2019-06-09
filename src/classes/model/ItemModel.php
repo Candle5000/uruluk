@@ -106,40 +106,40 @@ class ItemModel extends Model {
 					. ($result['based_source'] === 'xp' ? 'XP' : 'Kills') . ' [';
 			}
 
-			if ($result['attribute_value'] === 0) {
+			if ($result['attribute_value'] === '0') {
 				$attr_val .= '?'
 					. ($result['unit'] === null ? '' : $result['unit']);
 			} else if ($result['attribute_value'] === null) {
 				$attr_val .= 'A:'
-					. ($result['attribute_value_axe'] === 0 ? '?' : $result['attribute_value_axe'])
+					. ($result['attribute_value_axe'] === '0' ? '?' : $result['attribute_value_axe'])
 					. ($result['unit'] === null ? '' : $result['unit']);
 				if ($result['flactuable']) {
 					$attr_val .= " ("
-						. ($result['max_required_axe'] === 0 ? '?' : $result['max_required_axe']) . ' '
+						. ($result['max_required_axe'] === '0' ? '?' : $result['max_required_axe']) . ' '
 						. ($result['based_source'] === 'xp' ? 'XP' : 'Kills') . ")";
 				}
 				$attr_val .= ' / S:'
-					. ($result['attribute_value_sword'] === 0 ? '?' : $result['attribute_value_sword'])
+					. ($result['attribute_value_sword'] === '0' ? '?' : $result['attribute_value_sword'])
 					. ($result['unit'] === null ? '' : $result['unit']);
 				if ($result['flactuable']) {
 					$attr_val .= " ("
-						. ($result['max_required_sword'] === 0 ? '?' : $result['max_required_sword']) . ' '
+						. ($result['max_required_sword'] === '0' ? '?' : $result['max_required_sword']) . ' '
 						. ($result['based_source'] === 'xp' ? 'XP' : 'Kills') . ")";
 				}
 				$attr_val .= ' / D:'
-					. ($result['attribute_value_dagger'] === 0 ? '?' : $result['attribute_value_dagger'])
+					. ($result['attribute_value_dagger'] === '0' ? '?' : $result['attribute_value_dagger'])
 					. ($result['unit'] === null ? '' : $result['unit']);
 				if ($result['flactuable']) {
 					$attr_val .= " ("
-						. ($result['max_required_dagger'] === 0 ? '?' : $result['max_required_dagger']) . ' '
+						. ($result['max_required_dagger'] === '0' ? '?' : $result['max_required_dagger']) . ' '
 						. ($result['based_source'] === 'xp' ? 'XP' : 'Kills') . ")";
 				}
 			} else {
-				$attr_val .= ($result['attribute_value'] === 0 ? '?' : $result['attribute_value'])
+				$attr_val .= ($result['attribute_value'] === '0' ? '?' : $result['attribute_value'])
 					. ($result['unit'] === null ? '' : $result['unit']);
 				if ($result['flactuable']) {
 					$attr_val .= " ("
-						. ($result['max_required'] === 0 ? '?' : $result['max_required']) . ' '
+						. ($result['max_required'] === '0' ? '?' : $result['max_required']) . ' '
 						. ($result['based_source'] === 'xp' ? 'XP' : 'Kills') . ")";
 				}
 			}
