@@ -69,6 +69,7 @@ $(function() {
 		}
 	};
 
+	// ブーストアップ性能
 	const boostUps = {
 		"sword" : {
 			"str" : 3,
@@ -120,13 +121,13 @@ $(function() {
 					let value;
 
 					// 性能変動値の計算
-					if (attr.based_source && maxRequired && maxRequired != 0 && maxRequired <= parseInt($(".character-" + attr.based_source).val())) {
-						value = valueMax * parseInt($(".character-" + attr.based_source).val()) / maxRequired;
+					if (attr.based_source && maxRequired && maxRequired != 0 && maxRequired > parseInt($(".character-" + attr.based_source).val())) {
+						value = Math.round(valueMax * parseInt($(".character-" + attr.based_source).val()) * 100 / maxRequired) / 100;
 					} else {
 						value = valueMax;
 					}
 
-					attrs[attr.short_name.toLowerCase()] += parseInt(value);
+					attrs[attr.short_name.toLowerCase()] += parseFloat(value);
 				});
 			}
 		});
@@ -147,6 +148,17 @@ $(function() {
 				attrs[attrName] = 0;
 			}
 			$(".table-attributes .attr-" + attrName).text(Math.round(attrs[attrName]));
+
+			// No Delay判定
+			if (attrName == "sa") {
+				if (attrs[attrName] == 0) {
+					$(".sa-normal").addClass("d-none");
+					$(".sa-nodelay").removeClass("d-none");
+				} else {
+					$(".sa-normal").removeClass("d-none");
+					$(".sa-nodelay").addClass("d-none");
+				}
+			}
 		});
 	}
 
@@ -174,7 +186,7 @@ $(function() {
 
 			// 性能変動値の計算
 			if (attr.based_source && maxRequired && maxRequired != 0 && maxRequired > parseInt($(".character-" + attr.based_source).val())) {
-				value = valueMax * parseInt($(".character-" + attr.based_source).val()) / maxRequired;
+				value = Math.round(valueMax * parseInt($(".character-" + attr.based_source).val()) * 100 / maxRequired) / 100;
 			} else {
 				value = valueMax;
 			}
@@ -226,12 +238,17 @@ $(function() {
 		calcAttrs();
 	});
 
-	// ブーストアップ変更
-	$("input.boostup").on("change", function() {
+	// ブーストアップ, XP, Kills変更
+	$("input.boostup,input.character-xp,input.character-kills").on("change", function() {
 		if (!Number.isInteger(parseInt($(this).val())) || $(this).val() < 0) {
 			$(this).val(0);
 			return;
 		}
+		$(".table-item-slot a").toArray().forEach(link => {
+			if (slotItems[$(link).data("slot-index")] !== undefined) {
+				setItem($(link), slotItems[$(link).data("slot-index")]);
+			}
+		});
 		calcAttrs();
 	});
 
