@@ -66,7 +66,28 @@ $(function() {
 			"voh" : 0,
 			"dr" : 0,
 			"xpg" : 0
+		}
+	};
+
+	const boostUps = {
+		"sword" : {
+			"str" : 3,
+			"def" : 1,
+			"dex" : 2,
+			"vit" : 12
 		},
+		"axe" : {
+			"str" : 5,
+			"def" : 1,
+			"dex" : 1,
+			"vit" : 15
+		},
+		"dagger" : {
+			"str" : 2,
+			"def" : 1,
+			"dex" : 3,
+			"vit" : 13
+		}
 	};
 
 	// 空スロットの画像
@@ -87,17 +108,30 @@ $(function() {
 
 	// 性能の計算
 	const calcAttrs = function() {
-		const attrs = Object.assign({}, characterAttrs[$("select.character-class").val()]);
+		const charaClass = $("select.character-class").val();
+		const attrs = Object.assign({}, characterAttrs[charaClass]);
+
+		// 装備アイテムの性能を加算
 		slotItems.forEach(item => {
 			if (item !== undefined) {
 				item.attributes.forEach(attr => {
-					const value = attr.value === null ? attr["value_" + $("select.character-class").val()] : attr.value;
+					const value = attr.value === null ? attr["value_" + charaClass] : attr.value;
 					attrs[attr.short_name.toLowerCase()] += parseInt(value);
 				});
 			}
 		});
+
+		// ブーストアップを加算
+		attrs.str += (parseInt($(".nostrum").val()) + parseInt($(".giogan").val())) * boostUps[charaClass].str;
+		attrs.def += (parseInt($(".nostrum").val()) + parseInt($(".hydrabrew").val())) * boostUps[charaClass].def;
+		attrs.dex += (parseInt($(".nostrum").val()) + parseInt($(".necter").val())) * boostUps[charaClass].dex;
+		attrs.vit += (parseInt($(".nostrum").val()) + parseInt($(".elixir").val())) * boostUps[charaClass].vit;
+
+		// StrをADに加算
 		attrs.minad += attrs.str / 2;
 		attrs.maxad += attrs.str;
+
+		// 画面に反映
 		attrNames.forEach(attrName => {
 			if (attrs[attrName] < 0) {
 				attrs[attrName] = 0;
@@ -171,6 +205,15 @@ $(function() {
 		calcAttrs();
 	});
 
+	// ブーストアップ変更
+	$("input.boostup").on("change", function() {
+		if (!Number.isInteger(parseInt($(this).val())) || $(this).val() < 0) {
+			$(this).val(0);
+			return;
+		}
+		calcAttrs();
+	});
+
 	// アイテム選択画面を表示
 	$(".table-item-slot a").on("click", function() {
 		const target = $(this);
@@ -226,9 +269,9 @@ $(function() {
 	});
 
 	// スロット初期化
-	$("select.character-class").change();
 	$(".table-item-slot a").toArray().forEach(link => {
 		setNone($(link));
 	});
+	$("select.character-class").change();
 
 });
