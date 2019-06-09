@@ -1,7 +1,73 @@
 $(function() {
 
+	// 性能名
+	const attrNames = [
+		"minad",
+		"maxad",
+		"as",
+		"ar",
+		"str",
+		"def",
+		"dex",
+		"vit",
+		"ws",
+		"sa",
+		"voh",
+		"dr",
+		"xpg"
+	];
+
 	// 各スロットのアイテム情報
 	const slotItems = [];
+
+	// キャラクタークラスの性能
+	const characterAttrs = {
+		"sword" : {
+			"minad" : 0,
+			"maxad" : 0,
+			"as" : 18,
+			"ar" : 42,
+			"str" : 6,
+			"def" : 0,
+			"dex" : 6,
+			"vit" : 100,
+			"ws" : 56.55,
+			"sa" : 30,
+			"voh" : 0,
+			"dr" : 0,
+			"xpg" : 0
+		},
+		"axe" : {
+			"minad" : 0,
+			"maxad" : 0,
+			"as" : 25,
+			"ar" : 48,
+			"str" : 8,
+			"def" : 0,
+			"dex" : 4,
+			"vit" : 120,
+			"ws" : 53.55,
+			"sa" : 30,
+			"voh" : 0,
+			"dr" : 0,
+			"xpg" : 0
+		},
+		"dagger" : {
+			"minad" : 0,
+			"maxad" : 0,
+			"as" : 10,
+			"ar" : 40,
+			"str" : 4,
+			"def" : 0,
+			"dex" : 8,
+			"vit" : 80,
+			"ws" : 59.55,
+			"sa" : 30,
+			"voh" : 0,
+			"dr" : 0,
+			"xpg" : 0
+		},
+	};
 
 	// 空スロットの画像
 	const default_img = {
@@ -17,6 +83,27 @@ $(function() {
 		"boots" : "boots.png",
 		"common" : "item_noimg.png",
 		"puppet" : "puppet0.png"
+	}
+
+	// 性能の計算
+	const calcAttrs = function() {
+		const attrs = Object.assign({}, characterAttrs[$("select.character-class").val()]);
+		slotItems.forEach(item => {
+			if (item !== undefined) {
+				item.attributes.forEach(attr => {
+					const value = attr.value === null ? attr["value_" + $("select.character-class").val()] : attr.value;
+					attrs[attr.short_name.toLowerCase()] += parseInt(value);
+				});
+			}
+		});
+		attrs.minad += attrs.str / 2;
+		attrs.maxad += attrs.str;
+		attrNames.forEach(attrName => {
+			if (attrs[attrName] < 0) {
+				attrs[attrName] = 0;
+			}
+			$(".table-attributes .attr-" + attrName).text(Math.round(attrs[attrName]));
+		});
 	}
 
 	// スロットにアイテムを設定
@@ -81,6 +168,7 @@ $(function() {
 				setItem($(link), slotItems[$(link).data("slot-index")]);
 			}
 		});
+		calcAttrs();
 	});
 
 	// アイテム選択画面を表示
@@ -128,6 +216,7 @@ $(function() {
 					setItem(target, modalItems[$(this).data("row-index")]);
 					slotItems[target.data("slot-index")] = modalItems[$(this).data("row-index")];
 				}
+				calcAttrs();
 				$("#modal-items").modal("hide");
 			});
 
