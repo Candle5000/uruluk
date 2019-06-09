@@ -63,9 +63,11 @@
             </div>
             <ul class="list-unstyled text-white ml-2 small">
               <?php foreach ($item['attributes'] as $attr) : ?>
-                <li class="<?= $attr['color'] ?>">
-                  <?= $attr['short_name'] ?> <?= $attr['attribute_value'] ?>
-                </li>
+                <?php if (isset($attr['attribute_value'])) : ?>
+                  <li class="<?= $attr['color'] ?>">
+                    <?= $attr['short_name'] ?> <?= $attr['attribute_value'] ?>
+                  </li>
+                <?php endif; ?>
               <?php endforeach ?>
             </ul>
           </div>
@@ -90,9 +92,11 @@
             </div>
             <ul class="list-unstyled text-white ml-2 small">
               <?php foreach ($item['attributes'] as $attr) : ?>
-                <li class="<?= $attr['color'] ?>">
-                  <?= $attr['short_name'] ?> <?= $attr['attribute_value'] ?>
-                </li>
+                <?php if (isset($attr['attribute_value'])) : ?>
+                  <li class="<?= $attr['color'] ?>">
+                    <?= $attr['short_name'] ?> <?= $attr['attribute_value'] ?>
+                  </li>
+                <?php endif; ?>
               <?php endforeach ?>
             </ul>
           </div>

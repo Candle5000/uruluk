@@ -67,6 +67,7 @@ class ItemModel extends Model {
 		$artifactItems = array();
 		$item = array();
 		$prevItemId = null;
+		$charaClass = ['A' => 'axe', 'S' => 'sword', 'D' => 'dagger'];
 
 		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			if ($result['item_id'] !== $prevItemId) {
@@ -99,6 +100,33 @@ class ItemModel extends Model {
 			$attribute['max_required_sword'] = $result['max_required_sword'];
 			$attribute['max_required_dagger'] = $result['max_required_dagger'];
 
+			if ($attribute['short_name'] == 'MinAD' || $attribute['short_name'] == 'MaxAD') {
+				if ($attribute['short_name'] == 'MaxAD') {
+					$minAD = $item['attributes'][count($item['attributes']) - 1];
+					$ad = array();
+					$ad['color'] = $minAD['color'];
+					$ad['short_name'] = 'AD';
+					$attr_val = '';
+					if ($result['attribute_value'] === null) {
+						foreach ($charaClass as $key => $name) {
+							if ($key != 'A') $attr_val .= ' / ';
+							$attr_val .= $key . ':'
+								. ($minAD['value_' . $name] === '0' ? '?' : $minAD['value_' . $name])
+								. '～'
+								. ($result['attribute_value_' . $name] === '0' ? '?' : $result['attribute_value_' . $name]);
+						}
+					} else {
+						$attr_val .= ($minAD['value'] === '0' ? '?' : $minAD['value'])
+							. '～'
+							. ($result['attribute_value'] === '0' ? '?' : $result['attribute_value']);
+					}
+					$ad['attribute_value'] = $attr_val;
+					$item['attributes'][] = $ad;
+				}
+				$item['attributes'][] = $attribute;
+				continue;
+			}
+
 			$attr_val = '';
 
 			if ($result['flactuable']) {
@@ -106,33 +134,17 @@ class ItemModel extends Model {
 					. ($result['based_source'] === 'xp' ? 'XP' : 'Kills') . ' [';
 			}
 
-			if ($result['attribute_value'] === '0') {
-				$attr_val .= '?'
-					. ($result['unit'] === null ? '' : $result['unit']);
-			} else if ($result['attribute_value'] === null) {
-				$attr_val .= 'A:'
-					. ($result['attribute_value_axe'] === '0' ? '?' : $result['attribute_value_axe'])
-					. ($result['unit'] === null ? '' : $result['unit']);
-				if ($result['flactuable']) {
-					$attr_val .= " ("
-						. ($result['max_required_axe'] === '0' ? '?' : $result['max_required_axe']) . ' '
-						. ($result['based_source'] === 'xp' ? 'XP' : 'Kills') . ")";
-				}
-				$attr_val .= ' / S:'
-					. ($result['attribute_value_sword'] === '0' ? '?' : $result['attribute_value_sword'])
-					. ($result['unit'] === null ? '' : $result['unit']);
-				if ($result['flactuable']) {
-					$attr_val .= " ("
-						. ($result['max_required_sword'] === '0' ? '?' : $result['max_required_sword']) . ' '
-						. ($result['based_source'] === 'xp' ? 'XP' : 'Kills') . ")";
-				}
-				$attr_val .= ' / D:'
-					. ($result['attribute_value_dagger'] === '0' ? '?' : $result['attribute_value_dagger'])
-					. ($result['unit'] === null ? '' : $result['unit']);
-				if ($result['flactuable']) {
-					$attr_val .= " ("
-						. ($result['max_required_dagger'] === '0' ? '?' : $result['max_required_dagger']) . ' '
-						. ($result['based_source'] === 'xp' ? 'XP' : 'Kills') . ")";
+			if ($result['attribute_value'] === null) {
+				foreach ($charaClass as $key => $name) {
+					if ($key != 'A') $attr_val .= ' / ';
+					$attr_val .= $key . ':'
+						. ($result['attribute_value_' . $name] === '0' ? '?' : $result['attribute_value_' . $name])
+						. ($result['unit'] === null ? '' : $result['unit']);
+					if ($result['flactuable']) {
+						$attr_val .= " ("
+							. ($result['max_required_' . $name] === '0' ? '?' : $result['max_required_' . $name]) . ' '
+							. ($result['based_source'] === 'xp' ? 'XP' : 'Kills') . ")";
+					}
 				}
 			} else {
 				$attr_val .= ($result['attribute_value'] === '0' ? '?' : $result['attribute_value'])
