@@ -116,6 +116,7 @@ $(function() {
 		slotItems.forEach(item => {
 			if (item !== undefined) {
 				item.attributes.forEach(attr => {
+					if (attr.short_name == "AD") return;
 					const valueMax = attr.value === null ? attr["value_" + charaClass] : attr.value;
 					const maxRequired = attr.max_required ? attr.max_required : attr["max_required_" + charaClass];
 					let value;
@@ -179,6 +180,7 @@ $(function() {
 		link.parent().find(".d-table-cell").children().remove();
 		const charaClass = $("select.character-class").val();
 		item.attributes.forEach(attr => {
+			if (attr.short_name == "AD") return;
 			const valueMax = attr.value === null ? attr["value_" + charaClass] : attr.value;
 			const attr_cell = link.parent().find(".attr-" + attr.short_name.toLowerCase());
 			const maxRequired = attr.max_required ? attr.max_required : attr["max_required_" + charaClass];
