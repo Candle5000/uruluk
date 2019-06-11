@@ -50,6 +50,12 @@ a.link-home {
 .w-15 {
 	width: 15%!important;
 }
+.w-30 {
+	width: 30%!important;
+}
+.w-45 {
+	width: 45%!important;
+}
 .border-black {
 	border-color: #000!important;
 }
