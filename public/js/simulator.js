@@ -78,7 +78,7 @@ $(function() {
 			"vit" : 12
 		},
 		"axe" : {
-			"str" : 5,
+			"str" : 4,
 			"def" : 1,
 			"dex" : 1,
 			"vit" : 15
@@ -87,7 +87,7 @@ $(function() {
 			"str" : 2,
 			"def" : 1,
 			"dex" : 3,
-			"vit" : 13
+			"vit" : 10
 		}
 	};
 
