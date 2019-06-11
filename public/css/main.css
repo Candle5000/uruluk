@@ -19,6 +19,15 @@ h3 {
 	font-size: 1.0rem;
 }
 
+.card-title a {
+	color: rgba(255,255,255,.5);
+	text-decoration: none;
+}
+
+.card-title a:focus,.card-title a:hover {
+	color: rgba(255,255,255,.75);
+}
+
 a.link-home {
 	color: antiquewhite;
 	font-family: serif;
