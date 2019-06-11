@@ -8,6 +8,23 @@ body {
 	color: #eed;
 	font-family: arial, sans-serif;
 }
+
+h1 {
+	color: antiquewhite;
+	font-size: 2.0rem;
+	font-family: serif;
+}
+
+h3 {
+	font-size: 1.0rem;
+}
+
+a.link-home {
+	color: antiquewhite;
+	font-family: serif;
+	text-decoration: none;
+}
+
 .bg-darkgreen {
 	background-color: #284044!important;
 }
