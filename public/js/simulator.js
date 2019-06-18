@@ -169,37 +169,45 @@ $(function() {
 			.attr("src", "/img/item/" + item.image_name)
 			.attr("alt", item.name_en)
 			.addClass("item-icon");
-		const span = $("<span />")
-			.data("rarity", item.rarity)
-			.text(" " + item.name_en);
-		link.removeClass("common rare artifact")
-			.addClass("item-icon")
+		link.closest("div.d-table-row").find(".item-name").removeClass("common rare artifact")
 			.addClass(item.rarity)
-			.children().remove();
-		link.append(img).append(span);
-		link.parent().find(".d-table-cell").children().remove();
+			.text(" " + item.name_en);
+		link.children().remove();
+		link.append(img);
+		link.closest("div.d-table-row").find(".attr").children().remove();
+		link.closest("div.d-table-row").find(".wave").addClass("d-none");
 		const charaClass = $("select.character-class").val();
-		item.attributes.forEach(attr => {
+		item.attributes.forEach((attr, index, attrs) => {
 			if (attr.short_name == "AD") return;
+			if (attr.short_name == "MinAD") link.closest("div.d-table-row").find(".wave").removeClass("d-none");
 			const valueMax = attr.value === null ? attr["value_" + charaClass] : attr.value;
-			const attr_cell = link.parent().find(".attr-" + attr.short_name.toLowerCase());
+			const attr_cell = link.closest("div.d-table-row").find(".attr-" + attr.short_name.toLowerCase());
 			const maxRequired = attr.max_required ? attr.max_required : attr["max_required_" + charaClass];
 			let value;
+			let color = attr.color;
 
 			// 性能変動値の計算
 			if (attr.based_source && maxRequired && maxRequired != 0 && maxRequired > parseInt($(".character-" + attr.based_source).val())) {
-				value = Math.round(valueMax * parseInt($(".character-" + attr.based_source).val()) * 100 / maxRequired) / 100;
+				value = Math.round(valueMax * parseInt($(".character-" + attr.based_source).val()) * 10 / maxRequired) / 10;
 			} else {
-				value = valueMax;
+				value = parseFloat(valueMax == null ? 0 : valueMax);
 			}
 
+			// 性能値の合計を計算
 			if (attr_cell.children().length > 0 && value >= 0) {
-				attr_cell.append($("<span>+</span>"));
+				const baseVal = parseFloat($(attr_cell.children()[0]).text());
+				if (attrs[index - 1].color != attr.color && Math.abs(baseVal) > Math.abs(value)) {
+					color = attrs[index - 1].color;
+				}
+				value = Math.round((value + baseVal) * 10) / 10;
 			}
+
+			// 計算結果を反映
 			const span = $("<span />")
-				.addClass(attr.color)
+				.addClass(color)
 				.text(value);
-			link.parent().find(".attr-" + attr.short_name.toLowerCase()).append(span);
+			attr_cell.children().remove();
+			attr_cell.append(span);
 		});
 	}
 
@@ -255,7 +263,10 @@ $(function() {
 	});
 
 	// アイテム選択画面を表示
-	$(".table-item-slot a").on("click", function() {
+	$(".table-item-slot a.item-name").on("click", function() {
+		$(this).closest("div.d-table-row").find("a.item-img").click();
+	});
+	$(".table-item-slot a.item-img").on("click", function() {
 		const target = $(this);
 		$.ajax({
 			url : "/simulator/rare/" + target.data("item-class"),
@@ -264,33 +275,49 @@ $(function() {
 			// アイテム情報保持
 			const modalItems = [];
 
+			// 項目名行
+			let count = 1;
+
 			// アイテムリストを削除
 			$("#table-items>tbody>tr").remove();
 
 			// Noneの選択肢を作成
 			const row_none = $($("#modal-item-row").html());
-			row_none.find("a").data("item-class", target.data("item-class"));
-			setNone(row_none.find("a"));
+			row_none.find("a.item-img").data("item-class", target.data("item-class"));
+			setNone(row_none.find("a.item-img"));
 			$("#table-items tbody").append(row_none);
 
 			// Rareアイテム
 			data.items.rare.forEach(item => {
 				const row = $($("#modal-item-row").html());
-				setItem(row.find("a"), item);
+				setItem(row.find("a.item-img"), item);
 				$("#table-items tbody").append(row);
-				row.find("a").data("row-index", modalItems.push(item) - 1);
+				row.find("a.item-img").data("row-index", modalItems.push(item) - 1);
+				count++;
+				if (count % 10 == 0) {
+					const labelRow = $($("#table-items thead").html());
+					$("#table-items tbody").append(labelRow);
+				}
 			});
 
 			// Artifactアイテム
 			data.items.artifact.forEach(item => {
 				const row = $($("#modal-item-row").html());
-				setItem(row.find("a"), item);
+				setItem(row.find("a.item-img"), item);
 				$("#table-items tbody").append(row);
-				row.find("a").data("row-index", modalItems.push(item) - 1);
+				row.find("a.item-img").data("row-index", modalItems.push(item) - 1);
+				count++;
+				if (count % 10 == 0) {
+					const labelRow = $($("#table-items thead").html());
+					$("#table-items tbody").append(labelRow);
+				}
 			});
 
 			// クリックイベント付与
-			$("#table-items a").on("click", function() {
+			$("#table-items a.item-name").on("click", function() {
+				$(this).closest("div.d-table-row").find("a.item-img").click();
+			});
+			$("#table-items a.item-img").on("click", function() {
 				const itemClass = target.data("item-class");
 				if ($(this).data("row-index") === undefined) {
 					setNone(target);
@@ -309,7 +336,7 @@ $(function() {
 	});
 
 	// スロット初期化
-	$(".table-item-slot a").toArray().forEach(link => {
+	$(".table-item-slot a.item-img").toArray().forEach(link => {
 		setNone($(link));
 	});
 	$("select.character-class").change();

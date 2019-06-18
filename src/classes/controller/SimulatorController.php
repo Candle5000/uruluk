@@ -18,6 +18,7 @@ class SimulatorController extends Controller {
 
 			$args = [
 				'header' => ['title' => 'シミュレータ', 'script' => ['/js/simulator.js']],
+				'slots' => ['sword', 'shield', 'ring', 'ring', 'helm', 'armor', 'gloves', 'boots', 'common', 'puppet', 'puppet', 'puppet'],
 				'footer' => $this->getFooterInfo()
 			];
 
