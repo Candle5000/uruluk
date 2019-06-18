@@ -44,6 +44,12 @@ a.link-home {
 	border-color: #263337!important;
 }
 
+.w-7-5 {
+	width: 7.5%!important;
+}
+.w-8 {
+	width: 8%!important;
+}
 .w-14 {
 	width: 14%!important;
 }
@@ -105,10 +111,7 @@ img.item-icon {
 }
 
 /* Simulator */
-.table-item-slot>tbody>tr>td {
-	height: 34px;
-}
-.table-item-attrs>div>div {
+.table-item-attrs div.d-table-cell {
 	padding: 0 2px;
 	height: 16px;
 }
