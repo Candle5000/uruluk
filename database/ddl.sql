@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2019/06/04 23:51:16
+-- Date/Time    : 2019/06/20 1:36:49
 -- Author       : Candle
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -210,6 +210,8 @@ create table item (
   , name_en VARCHAR(64) comment '名称(英語)'
   , name_ja VARCHAR(64) comment '名称(日本語)'
   , rarity ENUM('common', 'rare', 'artifact') not null comment 'レアリティ'
+  , skill_en VARCHAR(64) comment 'スキル(英語)'
+  , skill_ja VARCHAR(64) comment 'スキル(日本語)'
   , comment_en VARCHAR(64) comment 'コメント(英語)'
   , comment_ja VARCHAR(64) comment 'コメント(日本語)'
   , note TEXT comment '説明'
@@ -314,6 +316,8 @@ create table item_log (
   , name_en VARCHAR(64) comment '名称(英語)'
   , name_ja VARCHAR(64) comment '名称(日本語)'
   , rarity ENUM('common', 'rare', 'artifact') comment 'レアリティ'
+  , skill_en VARCHAR(64) comment 'スキル(英語)'
+  , skill_ja VARCHAR(64) comment 'スキル(日本語)'
   , comment_en VARCHAR(64) comment 'コメント(英語)'
   , comment_ja VARCHAR(64) comment 'コメント(日本語)'
   , note TEXT comment '説明'
@@ -326,30 +330,6 @@ create table item_log (
   , user_id INT not null comment '送信ユーザID'
   , constraint item_log_PKC primary key (item_log_id)
 ) comment 'アイテムログ' ;
-
--- アイテムスキル
---* BackupToTempTable
-drop table if exists item_skill cascade;
-
---* RestoreFromTempTable
-create table item_skill (
-  item_id INT not null AUTO_INCREMENT comment 'アイテムID'
-  , name_en VARCHAR(64) comment '名称(英語)'
-  , name_ja VARCHAR(64) comment '名称(日本語)'
-  , constraint item_skill_PKC primary key (item_id)
-) comment 'アイテムスキル' ;
-
--- アイテムスキルログ
---* BackupToTempTable
-drop table if exists item_skill_log cascade;
-
---* RestoreFromTempTable
-create table item_skill_log (
-  item_log_id INT not null comment 'ログID'
-  , name_en VARCHAR(64) comment '名称(英語)'
-  , name_ja VARCHAR(64) comment '名称(日本語)'
-  , constraint item_skill_log_PKC primary key (item_log_id)
-) comment 'アイテムスキルログ' ;
 
 -- スペシャルアタック
 --* BackupToTempTable

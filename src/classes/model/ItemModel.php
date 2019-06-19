@@ -32,6 +32,10 @@ class ItemModel extends Model {
 			. "  , I.name_en"
 			. "  , I.name_ja"
 			. "  , I.rarity"
+			. "  , I.skill_en"
+			. "  , I.skill_ja"
+			. "  , I.comment_en"
+			. "  , I.comment_ja"
 			. "  , A.short_name"
 			. "  , IA.color"
 			. "  , IA.flactuable"
@@ -80,6 +84,10 @@ class ItemModel extends Model {
 				$item['name_en'] = $result['name_en'];
 				$item['name_ja'] = $result['name_ja'];
 				$item['rarity'] = $result['rarity'];
+				$item['skill_en'] = $result['skill_en'];
+				$item['skill_ja'] = $result['skill_ja'];
+				$item['comment_en'] = $result['comment_en'];
+				$item['comment_ja'] = $result['comment_ja'];
 				$item['attributes'] = array();
 			}
 
