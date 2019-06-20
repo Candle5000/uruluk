@@ -111,10 +111,21 @@ $(function() {
 	const calcAttrs = function() {
 		const charaClass = $("select.character-class").val();
 		const attrs = Object.assign({}, characterAttrs[charaClass]);
+		$("ul.item-skill").children().remove();
+		let noSkills = true;
 
 		// 装備アイテムの性能を加算
 		slotItems.forEach(item => {
 			if (item !== undefined) {
+
+				// スキルの設定
+				if (item.skill_en) {
+					const skill = $("<li />").text(item.skill_en);
+					$("ul.item-skill").append(skill);
+					noSkills = false;
+				}
+
+				// アイテム性能の設定
 				item.attributes.forEach(attr => {
 					if (attr.short_name == "AD") return;
 					const valueMax = attr.value === null ? attr["value_" + charaClass] : attr.value;
@@ -132,6 +143,11 @@ $(function() {
 				});
 			}
 		});
+
+		// スキル無し
+		if (noSkills) {
+			$("ul.item-skill").append("<li>No Skills</li>");
+		}
 
 		// ブーストアップを加算
 		attrs.str += (parseInt($(".nostrum").val()) + parseInt($(".giogan").val())) * boostUps[charaClass].str;
@@ -172,6 +188,15 @@ $(function() {
 		link.closest("div.d-table-row").find(".item-name").removeClass("common rare artifact")
 			.addClass(item.rarity)
 			.text(" " + item.name_en);
+		if (item.skill_en) {
+			link.closest("div.d-table-row").find(".item-skill")
+				.removeClass("d-none")
+				.attr("title", item.skill_en);
+		} else {
+			link.closest("div.d-table-row").find(".item-skill")
+				.addClass("d-none")
+				.attr("title", "");
+		}
 		link.children().remove();
 		link.append(img);
 		link.closest("div.d-table-row").find(".attr").children().remove();
@@ -313,6 +338,9 @@ $(function() {
 				}
 			});
 
+			// スキルの表示
+			$("#table-items a.item-skill[data-toggle=tooltip]").tooltip();
+
 			// クリックイベント付与
 			$("#table-items a.item-name").on("click", function() {
 				$(this).closest("div.d-table-row").find("a.item-img").click();
@@ -323,7 +351,15 @@ $(function() {
 					setNone(target);
 					slotItems[target.data("slot-index")] = undefined;
 				} else {
-					setItem(target, modalItems[$(this).data("row-index")]);
+					const modalItem = modalItems[$(this).data("row-index")];
+					setItem(target, modalItem);
+					if (modalItem.skill_en) {
+						const skill = target.closest("div.d-table-row").find(".item-skill");
+						const newSkill = $(skill.prop("outerHTML"));
+						skill.remove();
+						target.closest("div.d-table-row").find(".item-name").after(newSkill);
+						newSkill.tooltip();
+					}
 					slotItems[target.data("slot-index")] = modalItems[$(this).data("row-index")];
 				}
 				calcAttrs();
@@ -339,6 +375,7 @@ $(function() {
 	$(".table-item-slot a.item-img").toArray().forEach(link => {
 		setNone($(link));
 	});
+
 	$("select.character-class").change();
 
 });
