@@ -83,7 +83,10 @@ a.link-home {
 	color: #fff!important;
 }
 .item-skill {
-	color: #9fd900;
+	color: #9fd900!important;
+}
+.item-comment {
+	color: #bf8f00;
 }
 .button-close-white {
 	color: #fff;
@@ -114,4 +117,10 @@ img.item-icon {
 .table-item-attrs div.d-table-cell {
 	padding: 0 2px;
 	height: 16px;
+}
+a.item-name {
+	padding-right: 5px;
+}
+div.tooltip-inner {
+	color: #9fd900!important;
 }
