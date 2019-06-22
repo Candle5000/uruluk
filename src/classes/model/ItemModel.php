@@ -119,14 +119,14 @@ class ItemModel extends Model {
 						foreach ($charaClass as $key => $name) {
 							if ($key != 'A') $attr_val .= ' / ';
 							$attr_val .= $key . ':'
-								. ($minAD['value_' . $name] === '0' ? '?' : $minAD['value_' . $name])
+								. $minAD['value_' . $name]
 								. '～'
-								. ($result['attribute_value_' . $name] === '0' ? '?' : $result['attribute_value_' . $name]);
+								. $result['attribute_value_' . $name];
 						}
 					} else {
-						$attr_val .= ($minAD['value'] === '0' ? '?' : $minAD['value'])
+						$attr_val .= $minAD['value']
 							. '～'
-							. ($result['attribute_value'] === '0' ? '?' : $result['attribute_value']);
+							. $result['attribute_value'];
 					}
 					$ad['attribute_value'] = $attr_val;
 					$item['attributes'][] = $ad;
