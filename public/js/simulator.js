@@ -156,8 +156,10 @@ $(function() {
 		attrs.vit += (parseInt($(".nostrum").val()) + parseInt($(".elixir").val())) * boostUps[charaClass].vit;
 
 		// StrをADに加算
-		attrs.minad += attrs.str / 2;
-		attrs.maxad += attrs.str;
+		if (attrs.str > 0) {
+			attrs.minad += attrs.str / 2;
+			attrs.maxad += attrs.str;
+		}
 
 		// 画面に反映
 		attrNames.forEach(attrName => {
