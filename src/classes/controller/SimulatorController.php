@@ -14,6 +14,7 @@ class SimulatorController extends Controller {
 
 	private const XP_DEFAULT = 10000000;
 	private const KILLS_DEFAULT = 1000000;
+	private const BOOSTUPS_NAME = ['nostrum', 'elixir', 'giogan', 'necter', 'hydrabrew'];
 	private const SLOT_ITEM_CLASSES = ['sword' => ['sword', 'shield'], 'axe' => ['axe', 'mantle'], 'dagger' => ['dagger', 'dagger']];
 	private const SLOT_ITEM_CLASSES_COMMON = ['ring', 'ring', 'helm', 'armor', 'gloves', 'boots', 'common', 'puppet', 'puppet', 'puppet'];
 
@@ -25,6 +26,10 @@ class SimulatorController extends Controller {
 		$xp = filter_var($xp, FILTER_VALIDATE_INT, ['options' => ['default' => self::XP_DEFAULT, 'min_range' => 0]]);
 		$kills = array_key_exists('kills', $getParam) ? $getParam['kills'] : self::KILLS_DEFAULT;
 		$kills = filter_var($kills, FILTER_VALIDATE_INT, ['options' => ['default' => self::KILLS_DEFAULT, 'min_range' => 0]]);
+		$boostups = array_key_exists('b', $getParam) && is_array($getParam['b']) && count($getParam['b'] == 5) ? $getParam['b'] : [0, 0, 0, 0, 0];
+		foreach ($boostups as $index => $boostup) {
+			$boostups[self::BOOSTUPS_NAME[$index]] = filter_var($boostup, FILTER_VALIDATE_INT, ['options' => ['default' => 0, 'min_range' => 0]]);
+		}
 		$itemIds = array_key_exists('s', $getParam) && is_array($getParam['s']) ? $getParam['s'] : [];
 		$items = [];
 		$slotItemClasses = array_merge(self::SLOT_ITEM_CLASSES[$charClass], self::SLOT_ITEM_CLASSES_COMMON);
@@ -44,6 +49,7 @@ class SimulatorController extends Controller {
 				'character' => $charClass,
 				'xp' => $xp,
 				'kills' => $kills,
+				'boostups' => $boostups,
 				'items' => $items,
 				'slots' => array_merge(self::SLOT_ITEM_CLASSES[$charClass], self::SLOT_ITEM_CLASSES_COMMON),
 				'footer' => $this->getFooterInfo()

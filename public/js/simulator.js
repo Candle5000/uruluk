@@ -118,6 +118,11 @@ $(function() {
 		let path = "/simulator?c=" + charaClass;
 		path += "&xp=" + parseInt($(".character-xp").val());
 		path += "&kills=" + parseInt($(".character-kills").val());
+		path += "&b[0]=" + parseInt($(".nostrum").val());
+		path += "&b[1]=" + parseInt($(".elixir").val());
+		path += "&b[2]=" + parseInt($(".giogan").val());
+		path += "&b[3]=" + parseInt($(".necter").val());
+		path += "&b[4]=" + parseInt($(".hydrabrew").val());
 
 		// ブーストアップを加算
 		attrs.str += (parseInt($(".nostrum").val()) + parseInt($(".giogan").val())) * boostUps[charaClass].str;
