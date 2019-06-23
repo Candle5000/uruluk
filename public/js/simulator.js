@@ -371,11 +371,17 @@ $(function() {
 		});
 	});
 
-	// スロット初期化
-	$(".table-item-slot a.item-img").toArray().forEach(link => {
-		setNone($(link));
-	});
-
+	// キャラクタークラスの選択を初期化
 	$("select.character-class").change();
+
+	// スロット初期化
+	let itemIndex = 0;
+	const initItems = $.parseJSON($("#init-items").html());
+	$(".table-item-slot a.item-img").toArray().forEach(link => {
+		setItem($(link), initItems[itemIndex]);
+		slotItems[itemIndex + 1] = initItems[itemIndex];
+		itemIndex++;
+	});
+	calcAttrs();
 
 });

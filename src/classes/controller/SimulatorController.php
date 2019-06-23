@@ -14,10 +14,11 @@ class SimulatorController extends Controller {
 
 	private const XP_DEFAULT = 10000000;
 	private const KILLS_DEFAULT = 1000000;
-	private const SLOT_ITEM_CLASSES = ['sword' => ['sword', 'shield'], 'axe' => ['dagger', 'dagger'], 'dagger' => ['dagger', 'dagger']];
+	private const SLOT_ITEM_CLASSES = ['sword' => ['sword', 'shield'], 'axe' => ['axe', 'mantle'], 'dagger' => ['dagger', 'dagger']];
 	private const SLOT_ITEM_CLASSES_COMMON = ['ring', 'ring', 'helm', 'armor', 'gloves', 'boots', 'common', 'puppet', 'puppet', 'puppet'];
 
 	public function index(Request $request, Response $response) {
+		$item = new ItemModel($this->db, $this->logger);
 		$getParam = $request->getQueryParams();
 		$charClass = array_key_exists('c', $getParam) && array_key_exists($getParam['c'], self::SLOT_ITEM_CLASSES) ? $getParam['c'] : 'sword';
 		$xp = array_key_exists('xp', $getParam) ? $getParam['xp'] : self::XP_DEFAULT;
@@ -25,7 +26,15 @@ class SimulatorController extends Controller {
 		$kills = array_key_exists('kills', $getParam) ? $getParam['kills'] : self::KILLS_DEFAULT;
 		$kills = filter_var($kills, FILTER_VALIDATE_INT, ['options' => ['default' => self::KILLS_DEFAULT, 'min_range' => 0]]);
 		$itemIds = array_key_exists('s', $getParam) && is_array($getParam['s']) ? $getParam['s'] : [];
-		foreach (self::SLOT_ITEM_CLASSES as $index => $itemClass) {
+		$items = [];
+		$slotItemClasses = array_merge(self::SLOT_ITEM_CLASSES[$charClass], self::SLOT_ITEM_CLASSES_COMMON);
+		foreach ($slotItemClasses as $index => $itemClass) {
+			$itemId = array_key_exists($index, $getParam['s']) ? $getParam['s'][$index] : null;
+			if ($itemId == null) {
+				$items[] = $item->getNone($itemClass);
+				continue;
+			}
+			$items[] = $item->getItemByIdAndClass($itemId, $itemClass);
 		}
 		try {
 			$this->db->beginTransaction();
@@ -35,6 +44,7 @@ class SimulatorController extends Controller {
 				'character' => $charClass,
 				'xp' => $xp,
 				'kills' => $kills,
+				'items' => $items,
 				'slots' => array_merge(self::SLOT_ITEM_CLASSES[$charClass], self::SLOT_ITEM_CLASSES_COMMON),
 				'footer' => $this->getFooterInfo()
 			];
