@@ -1,4 +1,7 @@
 <?= $this->fetch('header.phtml', ['header' => $header]) ?>
+<script id="init-items" type="application/json">
+<?= json_encode($items) ?>
+</script>
 <div class="row flex-xl-nowrap mb-2">
   <div class="col-12 col-md-3 col-xl-2 order-xl-1 align-self-start">
   </div>
@@ -96,16 +99,23 @@
             </colgroup>
             <tbody>
               <tr>
+                <td class="d-none" colspan="3"></td>
+              </tr>
+              <tr>
                 <td>Character Class</td>
                 <td class="text-right" colspan="2">
                   <div class="form-group m-0">
                     <select class="form-control character-class p-0 h-auto">
-                      <option value="sword">Sword Master</option>
-                      <option value="axe">Axe Master</option>
-                      <option value="dagger">Dagger Master</option>
+                      <option value="sword" <?= $character == 'sword' ? 'selected' : '' ?>>Sword Master</option>
+                      <option value="axe" <?= $character == 'axe' ? 'selected' : '' ?>>Axe Master</option>
+                      <option value="dagger" <?= $character == 'dagger' ? 'selected' : '' ?>>Dagger Master</option>
                     </select>
                   </div>
                 </td>
+              </tr>
+              <tr>
+                <td colspan="2">Damage Per Speed</td>
+                <td class="text-right character-dps">0.000</td>
               </tr>
               <tr>
                 <td colspan="2">Attack Damage</td>
@@ -181,7 +191,7 @@
                 <td>XP</td>
                 <td colspan="2">
                   <div class="form-group m-0">
-                    <input type="number" class="form-control character-xp p-0 h-auto text-right pr-2" min="0" value="10000000" />
+                    <input type="number" class="form-control character-xp p-0 h-auto text-right pr-2" min="0" value="<?= $xp ?>" />
                   </div>
                 </td>
               </tr>
@@ -189,7 +199,7 @@
                 <td>Kills</td>
                 <td colspan="2">
                   <div class="form-group m-0">
-                    <input type="number" class="form-control character-kills p-0 h-auto text-right pr-2" min="0" value="1000000" />
+                    <input type="number" class="form-control character-kills p-0 h-auto text-right pr-2" min="0" value="<?= $kills ?>" />
                   </div>
                 </td>
               </tr>
@@ -200,7 +210,7 @@
                 <td colspan="2" class="pl-2">Nostrum</td>
                 <td>
                   <div class="form-group m-0">
-                    <input type="number" class="form-control nostrum boostup p-0 h-auto text-right pr-2" min="0" value="0" />
+                    <input type="number" class="form-control nostrum boostup p-0 h-auto text-right pr-2" min="0" value="<?= $boostups['nostrum'] ?>" />
                   </div>
                 </td>
               </tr>
@@ -208,7 +218,7 @@
                 <td colspan="2" class="pl-2">Elixir</td>
                 <td>
                   <div class="form-group m-0">
-                    <input type="number" class="form-control elixir boostup p-0 h-auto text-right pr-2" min="0" value="0" />
+                    <input type="number" class="form-control elixir boostup p-0 h-auto text-right pr-2" min="0" value="<?= $boostups['elixir'] ?>" />
                   </div>
                 </td>
               </tr>
@@ -216,7 +226,7 @@
                 <td colspan="2" class="pl-2">Gio'Gan</td>
                 <td>
                   <div class="form-group m-0">
-                    <input type="number" class="form-control giogan boostup p-0 h-auto text-right pr-2" min="0" value="0" />
+                    <input type="number" class="form-control giogan boostup p-0 h-auto text-right pr-2" min="0" value="<?= $boostups['giogan'] ?>" />
                   </div>
                 </td>
               </tr>
@@ -224,7 +234,7 @@
                 <td colspan="2" class="pl-2">Necter</td>
                 <td>
                   <div class="form-group m-0">
-                    <input type="number" class="form-control necter boostup p-0 h-auto text-right pr-2" min="0" value="0" />
+                    <input type="number" class="form-control necter boostup p-0 h-auto text-right pr-2" min="0" value="<?= $boostups['necter'] ?>" />
                   </div>
                 </td>
               </tr>
@@ -232,7 +242,7 @@
                 <td colspan="2" class="pl-2">Hydrabrew</td>
                 <td>
                   <div class="form-group m-0">
-                    <input type="number" class="form-control hydrabrew boostup p-0 h-auto text-right pr-2" min="0" value="0" />
+                    <input type="number" class="form-control hydrabrew boostup p-0 h-auto text-right pr-2" min="0" value="<?= $boostups['hydrabrew'] ?>" />
                   </div>
                 </td>
               </tr>

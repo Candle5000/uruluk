@@ -114,8 +114,24 @@ $(function() {
 		$("ul.item-skill").children().remove();
 		let noSkills = true;
 
+		// GETパラメータの初期化
+		let path = "/simulator?c=" + charaClass;
+		path += "&xp=" + parseInt($(".character-xp").val());
+		path += "&kills=" + parseInt($(".character-kills").val());
+		path += "&b[0]=" + parseInt($(".nostrum").val());
+		path += "&b[1]=" + parseInt($(".elixir").val());
+		path += "&b[2]=" + parseInt($(".giogan").val());
+		path += "&b[3]=" + parseInt($(".necter").val());
+		path += "&b[4]=" + parseInt($(".hydrabrew").val());
+
+		// ブーストアップを加算
+		attrs.str += (parseInt($(".nostrum").val()) + parseInt($(".giogan").val())) * boostUps[charaClass].str;
+		attrs.def += (parseInt($(".nostrum").val()) + parseInt($(".hydrabrew").val())) * boostUps[charaClass].def;
+		attrs.dex += (parseInt($(".nostrum").val()) + parseInt($(".necter").val())) * boostUps[charaClass].dex;
+		attrs.vit += (parseInt($(".nostrum").val()) + parseInt($(".elixir").val())) * boostUps[charaClass].vit;
+
 		// 装備アイテムの性能を加算
-		slotItems.forEach(item => {
+		slotItems.forEach((item, index) => {
 			if (item !== undefined) {
 
 				// スキルの設定
@@ -141,6 +157,11 @@ $(function() {
 
 					attrs[attr.short_name.toLowerCase()] += parseFloat(value);
 				});
+
+				// GETパラメータに追加
+				if (item.item_id) {
+					path += "&s[" + (index - 1) + "]=" + item.item_id;
+				}
 			}
 		});
 
@@ -149,15 +170,11 @@ $(function() {
 			$("ul.item-skill").append("<li>No Skills</li>");
 		}
 
-		// ブーストアップを加算
-		attrs.str += (parseInt($(".nostrum").val()) + parseInt($(".giogan").val())) * boostUps[charaClass].str;
-		attrs.def += (parseInt($(".nostrum").val()) + parseInt($(".hydrabrew").val())) * boostUps[charaClass].def;
-		attrs.dex += (parseInt($(".nostrum").val()) + parseInt($(".necter").val())) * boostUps[charaClass].dex;
-		attrs.vit += (parseInt($(".nostrum").val()) + parseInt($(".elixir").val())) * boostUps[charaClass].vit;
-
 		// StrをADに加算
-		attrs.minad += attrs.str / 2;
-		attrs.maxad += attrs.str;
+		if (attrs.str > 0) {
+			attrs.minad += attrs.str / 2;
+			attrs.maxad += attrs.str;
+		}
 
 		// 画面に反映
 		attrNames.forEach(attrName => {
@@ -177,6 +194,12 @@ $(function() {
 				}
 			}
 		});
+
+		// DPSを計算
+		$(".character-dps").text((Math.round((attrs.minad + attrs.maxad) * 1000 / (2 * (attrs.as + 1))) / 1000).toFixed(3));
+
+		// URLに反映
+		history.replaceState('', '', path);
 	}
 
 	// スロットにアイテムを設定
@@ -371,11 +394,17 @@ $(function() {
 		});
 	});
 
-	// スロット初期化
-	$(".table-item-slot a.item-img").toArray().forEach(link => {
-		setNone($(link));
-	});
-
+	// キャラクタークラスの選択を初期化
 	$("select.character-class").change();
+
+	// スロット初期化
+	let itemIndex = 0;
+	const initItems = $.parseJSON($("#init-items").html());
+	$(".table-item-slot a.item-img").toArray().forEach(link => {
+		setItem($(link), initItems[itemIndex]);
+		slotItems[itemIndex + 1] = initItems[itemIndex];
+		itemIndex++;
+	});
+	calcAttrs();
 
 });
