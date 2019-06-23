@@ -195,6 +195,9 @@ $(function() {
 			}
 		});
 
+		// DPSを計算
+		$(".character-dps").text((Math.round((attrs.minad + attrs.maxad) * 1000 / (2 * (attrs.as + 1))) / 1000).toFixed(3));
+
 		// URLに反映
 		history.replaceState('', '', path);
 	}
