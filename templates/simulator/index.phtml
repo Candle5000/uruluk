@@ -100,9 +100,9 @@
                 <td class="text-right" colspan="2">
                   <div class="form-group m-0">
                     <select class="form-control character-class p-0 h-auto">
-                      <option value="sword">Sword Master</option>
-                      <option value="axe">Axe Master</option>
-                      <option value="dagger">Dagger Master</option>
+                      <option value="sword" <?= $character == 'sword' ? 'selected' : '' ?>>Sword Master</option>
+                      <option value="axe" <?= $character == 'axe' ? 'selected' : '' ?>>Axe Master</option>
+                      <option value="dagger" <?= $character == 'dagger' ? 'selected' : '' ?>>Dagger Master</option>
                     </select>
                   </div>
                 </td>
@@ -181,7 +181,7 @@
                 <td>XP</td>
                 <td colspan="2">
                   <div class="form-group m-0">
-                    <input type="number" class="form-control character-xp p-0 h-auto text-right pr-2" min="0" value="10000000" />
+                    <input type="number" class="form-control character-xp p-0 h-auto text-right pr-2" min="0" value="<?= $xp ?>" />
                   </div>
                 </td>
               </tr>
@@ -189,7 +189,7 @@
                 <td>Kills</td>
                 <td colspan="2">
                   <div class="form-group m-0">
-                    <input type="number" class="form-control character-kills p-0 h-auto text-right pr-2" min="0" value="1000000" />
+                    <input type="number" class="form-control character-kills p-0 h-auto text-right pr-2" min="0" value="<?= $kills ?>" />
                   </div>
                 </td>
               </tr>

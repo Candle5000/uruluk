@@ -6,6 +6,30 @@ use \PDO;
 
 class ItemModel extends Model {
 
+	private const SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS = "  I.item_id"
+		. "  , I.item_class_id"
+		. "  , I.image_name"
+		. "  , I.name_en"
+		. "  , I.name_ja"
+		. "  , I.rarity"
+		. "  , I.skill_en"
+		. "  , I.skill_ja"
+		. "  , I.comment_en"
+		. "  , I.comment_ja"
+		. "  , A.short_name"
+		. "  , IA.color"
+		. "  , IA.flactuable"
+		. "  , IA.based_source"
+		. "  , IA.attribute_value"
+		. "  , IA.attribute_value_sword"
+		. "  , IA.attribute_value_axe"
+		. "  , IA.attribute_value_dagger"
+		. "  , A.unit"
+		. "  , IA.max_required"
+		. "  , IA.max_required_sword"
+		. "  , IA.max_required_axe"
+		. "  , IA.max_required_dagger ";
+
 	public function getItemClassId(string $itemClassName) {
 		$sql = 'SELECT'
 			. '  item_class_id '
@@ -26,29 +50,7 @@ class ItemModel extends Model {
 
 	public function getRareItemsByClass(int $itemClassId) {
 		$sql = "SELECT"
-			. "  I.item_id"
-			. "  , I.item_class_id"
-			. "  , I.image_name"
-			. "  , I.name_en"
-			. "  , I.name_ja"
-			. "  , I.rarity"
-			. "  , I.skill_en"
-			. "  , I.skill_ja"
-			. "  , I.comment_en"
-			. "  , I.comment_ja"
-			. "  , A.short_name"
-			. "  , IA.color"
-			. "  , IA.flactuable"
-			. "  , IA.based_source"
-			. "  , IA.attribute_value"
-			. "  , IA.attribute_value_sword"
-			. "  , IA.attribute_value_axe"
-			. "  , IA.attribute_value_dagger"
-			. "  , A.unit"
-			. "  , IA.max_required"
-			. "  , IA.max_required_sword"
-			. "  , IA.max_required_axe"
-			. "  , IA.max_required_dagger "
+			. self::SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS
 			. "FROM"
 			. "  item I "
 			. "  LEFT JOIN item_attribute IA "
@@ -63,9 +65,31 @@ class ItemModel extends Model {
 			. "  , I.sort_key"
 			. "  , A.sort_key"
 			. "  , IA.flactuable";
+		$params = ["itemClassId" => $itemClassId];
+		return getItemsObject($sql, $params);
+	}
+
+	public function getItemById(int $itemId) {
+		$sql = "SELECT"
+			. self::SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS
+			. "FROM"
+			. "  item I "
+			. "  LEFT JOIN item_attribute IA "
+			. "    ON I.item_id = IA.item_id "
+			. "  LEFT JOIN attribute A "
+			. "    ON IA.attribute_id = A.attribute_id "
+			. "WHERE"
+			. "  I.item_id = :itemId ";
+		$params = ["itemId" => $itemId];
+		return getItemsObject($sql, $params);
+	}
+
+	private function getItemsObject(string $sql, array $params) {
 		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
-		$stmt->bindParam(':itemClassId', $itemClassId);
+		foreach ($params as $key => $param) {
+			$stmt->bindParam($key, $param);
+		}
 		$stmt->execute();
 		$rareItems = array();
 		$artifactItems = array();

@@ -12,13 +12,30 @@ use Model\ItemModel;
  */
 class SimulatorController extends Controller {
 
+	private const XP_DEFAULT = 10000000;
+	private const KILLS_DEFAULT = 1000000;
+	private const SLOT_ITEM_CLASSES = ['sword' => ['sword', 'shield'], 'axe' => ['dagger', 'dagger'], 'dagger' => ['dagger', 'dagger']];
+	private const SLOT_ITEM_CLASSES_COMMON = ['ring', 'ring', 'helm', 'armor', 'gloves', 'boots', 'common', 'puppet', 'puppet', 'puppet'];
+
 	public function index(Request $request, Response $response) {
+		$getParam = $request->getQueryParams();
+		$charClass = array_key_exists('c', $getParam) && array_key_exists($getParam['c'], self::SLOT_ITEM_CLASSES) ? $getParam['c'] : 'sword';
+		$xp = array_key_exists('xp', $getParam) ? $getParam['xp'] : self::XP_DEFAULT;
+		$xp = filter_var($xp, FILTER_VALIDATE_INT, ['options' => ['default' => self::XP_DEFAULT, 'min_range' => 0]]);
+		$kills = array_key_exists('kills', $getParam) ? $getParam['kills'] : self::KILLS_DEFAULT;
+		$kills = filter_var($kills, FILTER_VALIDATE_INT, ['options' => ['default' => self::KILLS_DEFAULT, 'min_range' => 0]]);
+		$itemIds = array_key_exists('s', $getParam) && is_array($getParam['s']) ? $getParam['s'] : [];
+		foreach (self::SLOT_ITEM_CLASSES as $index => $itemClass) {
+		}
 		try {
 			$this->db->beginTransaction();
 
 			$args = [
 				'header' => ['title' => 'シミュレータ', 'script' => ['/js/simulator.js']],
-				'slots' => ['sword', 'shield', 'ring', 'ring', 'helm', 'armor', 'gloves', 'boots', 'common', 'puppet', 'puppet', 'puppet'],
+				'character' => $charClass,
+				'xp' => $xp,
+				'kills' => $kills,
+				'slots' => array_merge(self::SLOT_ITEM_CLASSES[$charClass], self::SLOT_ITEM_CLASSES_COMMON),
 				'footer' => $this->getFooterInfo()
 			];
 
