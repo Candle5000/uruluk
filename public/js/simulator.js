@@ -114,8 +114,19 @@ $(function() {
 		$("ul.item-skill").children().remove();
 		let noSkills = true;
 
+		// GETパラメータの初期化
+		let path = "/simulator?c=" + charaClass;
+		path += "&xp=" + parseInt($(".character-xp").val());
+		path += "&kills=" + parseInt($(".character-kills").val());
+
+		// ブーストアップを加算
+		attrs.str += (parseInt($(".nostrum").val()) + parseInt($(".giogan").val())) * boostUps[charaClass].str;
+		attrs.def += (parseInt($(".nostrum").val()) + parseInt($(".hydrabrew").val())) * boostUps[charaClass].def;
+		attrs.dex += (parseInt($(".nostrum").val()) + parseInt($(".necter").val())) * boostUps[charaClass].dex;
+		attrs.vit += (parseInt($(".nostrum").val()) + parseInt($(".elixir").val())) * boostUps[charaClass].vit;
+
 		// 装備アイテムの性能を加算
-		slotItems.forEach(item => {
+		slotItems.forEach((item, index) => {
 			if (item !== undefined) {
 
 				// スキルの設定
@@ -141,6 +152,11 @@ $(function() {
 
 					attrs[attr.short_name.toLowerCase()] += parseFloat(value);
 				});
+
+				// GETパラメータに追加
+				if (item.item_id) {
+					path += "&s[" + (index - 1) + "]=" + item.item_id;
+				}
 			}
 		});
 
@@ -148,12 +164,6 @@ $(function() {
 		if (noSkills) {
 			$("ul.item-skill").append("<li>No Skills</li>");
 		}
-
-		// ブーストアップを加算
-		attrs.str += (parseInt($(".nostrum").val()) + parseInt($(".giogan").val())) * boostUps[charaClass].str;
-		attrs.def += (parseInt($(".nostrum").val()) + parseInt($(".hydrabrew").val())) * boostUps[charaClass].def;
-		attrs.dex += (parseInt($(".nostrum").val()) + parseInt($(".necter").val())) * boostUps[charaClass].dex;
-		attrs.vit += (parseInt($(".nostrum").val()) + parseInt($(".elixir").val())) * boostUps[charaClass].vit;
 
 		// StrをADに加算
 		if (attrs.str > 0) {
@@ -179,6 +189,9 @@ $(function() {
 				}
 			}
 		});
+
+		// URLに反映
+		history.replaceState('', '', path);
 	}
 
 	// スロットにアイテムを設定
