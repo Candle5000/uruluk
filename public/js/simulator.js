@@ -103,7 +103,7 @@ $(function() {
 		"armor" : "leather_vest.png",
 		"gloves" : "gloves.png",
 		"boots" : "boots.png",
-		"common" : "item_noimg.png",
+		"freshy" : "item_noimg.png",
 		"puppet" : "puppet0.png"
 	}
 
@@ -317,7 +317,7 @@ $(function() {
 	$(".table-item-slot a.item-img").on("click", function() {
 		const target = $(this);
 		$.ajax({
-			url : "/simulator/rare/" + target.data("item-class"),
+			url : "/simulator/item/" + target.data("item-class"),
 			type : "GET"
 		}).done(data => {
 			// アイテム情報保持
@@ -335,21 +335,8 @@ $(function() {
 			setNone(row_none.find("a.item-img"));
 			$("#table-items tbody").append(row_none);
 
-			// Rareアイテム
-			data.items.rare.forEach(item => {
-				const row = $($("#modal-item-row").html());
-				setItem(row.find("a.item-img"), item);
-				$("#table-items tbody").append(row);
-				row.find("a.item-img").data("row-index", modalItems.push(item) - 1);
-				count++;
-				if (count % 10 == 0) {
-					const labelRow = $($("#table-items thead").html());
-					$("#table-items tbody").append(labelRow);
-				}
-			});
-
-			// Artifactアイテム
-			data.items.artifact.forEach(item => {
+			// アイテム
+			data.items.forEach(item => {
 				const row = $($("#modal-item-row").html());
 				setItem(row.find("a.item-img"), item);
 				$("#table-items tbody").append(row);
@@ -405,6 +392,7 @@ $(function() {
 		slotItems[itemIndex + 1] = initItems[itemIndex];
 		itemIndex++;
 	});
+	$(".table-item-slot a.item-skill[data-toggle=tooltip]").tooltip();
 	calcAttrs();
 
 });
