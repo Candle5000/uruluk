@@ -3,6 +3,7 @@
 namespace Controller;
 
 use \Exception;
+use Slim\Exception\NotFoundException;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Model\ItemModel;
@@ -16,7 +17,7 @@ class SimulatorController extends Controller {
 	private const KILLS_DEFAULT = 1000000;
 	private const BOOSTUPS_NAME = ['nostrum', 'elixir', 'giogan', 'necter', 'hydrabrew'];
 	private const SLOT_ITEM_CLASSES = ['sword' => ['sword', 'shield'], 'axe' => ['axe', 'mantle'], 'dagger' => ['dagger', 'dagger']];
-	private const SLOT_ITEM_CLASSES_COMMON = ['ring', 'ring', 'helm', 'armor', 'gloves', 'boots', 'common', 'puppet', 'puppet', 'puppet'];
+	private const SLOT_ITEM_CLASSES_COMMON = ['ring', 'ring', 'helm', 'armor', 'gloves', 'boots', 'freshy', 'puppet', 'puppet', 'puppet'];
 
 	public function index(Request $request, Response $response) {
 		$item = new ItemModel($this->db, $this->logger);
@@ -64,12 +65,12 @@ class SimulatorController extends Controller {
 		return $this->renderer->render($response, 'simulator/index.phtml', $args);
 	}
 
-	public function rareItem(Request $request, Response $response, array $args) {
+	public function item(Request $request, Response $response, array $args) {
 		$item = new ItemModel($this->db, $this->logger);
 		$itemClassId = $item->getItemClassId($args['itemClassName']);
 		if ($itemClassId === null) throw new NotFoundException($request, $response);
 		$data = [
-			'items' => $item->getRareItemsByClass($itemClassId),
+			'items' => $item->getItemsByClass($itemClassId),
 		];
 
 		return $response->withJson($data);

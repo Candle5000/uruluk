@@ -17,7 +17,7 @@ class ItemModel extends Model {
 		'armor' => 'leather_vest.png',
 		'gloves' => 'gloves.png',
 		'boots' => 'boots.png',
-		'common' => 'item_noimg.png',
+		'freshy' => 'item_noimg.png',
 		'puppet' => 'puppet0.png'
 	];
 
@@ -84,6 +84,50 @@ class ItemModel extends Model {
 		return $this->getItemsObject($sql, $params);
 	}
 
+	public function getItemsByClass(int $itemClassId) {
+		$sql = "SELECT"
+			. self::SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS
+			. "FROM"
+			. "  item I "
+			. "  LEFT JOIN item_attribute IA "
+			. "    ON I.item_id = IA.item_id "
+			. "  LEFT JOIN attribute A "
+			. "    ON IA.attribute_id = A.attribute_id "
+			. "WHERE"
+			. "  I.item_class_id = :itemClassId "
+			. "ORDER BY"
+			. "  I.rarity"
+			. "  , I.sort_key"
+			. "  , A.sort_key"
+			. "  , IA.flactuable";
+		$params = [['param' => 'itemClassId', 'var' => $itemClassId, 'type' => PDO::PARAM_INT]];
+		return $this->getItemsObject($sql, $params);
+	}
+
+	public function getItemsByClassAndRarity(int $itemClassId, string $rarity) {
+		$sql = "SELECT"
+			. self::SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS
+			. "FROM"
+			. "  item I "
+			. "  LEFT JOIN item_attribute IA "
+			. "    ON I.item_id = IA.item_id "
+			. "  LEFT JOIN attribute A "
+			. "    ON IA.attribute_id = A.attribute_id "
+			. "WHERE"
+			. "  I.item_class_id = :itemClassId "
+			. "  AND I.rarity = :rarity "
+			. "ORDER BY"
+			. "  I.rarity"
+			. "  , I.sort_key"
+			. "  , A.sort_key"
+			. "  , IA.flactuable";
+		$params = [
+			['param' => 'itemClassId', 'var' => $itemClassId, 'type' => PDO::PARAM_INT],
+			['param' => 'rarity', 'var' => $rarity, 'type' => PDO::PARAM_STR]
+		];
+		return $this->getItemsObject($sql, $params);
+	}
+
 	public function getItemByIdAndClass(int $itemId, string $itemClass) {
 		$sql = "SELECT"
 			. self::SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS
@@ -103,12 +147,10 @@ class ItemModel extends Model {
 			['param' => 'itemClassName', 'var' => $itemClass, 'type' => PDO::PARAM_STR]
 		];
 		$itemObj = $this->getItemsObject($sql, $params);
-		if (count($itemObj['rare']) > 0) {
-			return $itemObj['rare'][0];
-		} else if (count($itemObj['artifact']) > 0) {
-			return $itemObj['artifact'][0];
-		} else {
+		if (count($itemObj) == 0) {
 			return $this->getNone($itemClass);
+		} else {
+			return $itemObj[0];
 		}
 	}
 
@@ -128,16 +170,14 @@ class ItemModel extends Model {
 			$stmt->bindParam($param['param'], $param['var'], $param['type']);
 		}
 		$stmt->execute();
-		$rareItems = array();
-		$artifactItems = array();
+		$items = array();
 		$item = array();
 		$prevItemId = null;
 		$charaClass = ['A' => 'axe', 'S' => 'sword', 'D' => 'dagger'];
 
 		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			if ($result['item_id'] !== $prevItemId) {
-				if (!empty($item) && $item['rarity'] == 'rare') $rareItems[] = $item;
-				if (!empty($item) && $item['rarity'] == 'artifact') $artifactItems[] = $item;
+				if (!empty($item)) $items[] = $item;
 				$item['item_id'] = $result['item_id'];
 				$item['item_class_id'] = $result['item_class_id'];
 				$item['image_name'] = ($result['image_name'] === null)
@@ -233,9 +273,7 @@ class ItemModel extends Model {
 			$item['attributes'][] = $attribute;
 		}
 
-		if (!empty($item) && $item['rarity'] == 'rare') $rareItems[] = $item;
-		if (!empty($item) && $item['rarity'] == 'artifact') $artifactItems[] = $item;
-		$items = ['rare' => $rareItems, 'artifact' => $artifactItems];
+		if (!empty($item)) $items[] = $item;
 		return $items;
 	}
 
