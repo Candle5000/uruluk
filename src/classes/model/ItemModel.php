@@ -63,27 +63,6 @@ class ItemModel extends Model {
 		}
 	}
 
-	public function getRareItemsByClass(int $itemClassId) {
-		$sql = "SELECT"
-			. self::SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS
-			. "FROM"
-			. "  item I "
-			. "  LEFT JOIN item_attribute IA "
-			. "    ON I.item_id = IA.item_id "
-			. "  LEFT JOIN attribute A "
-			. "    ON IA.attribute_id = A.attribute_id "
-			. "WHERE"
-			. "  I.item_class_id = :itemClassId "
-			. "  AND I.rarity IN ('rare', 'artifact') "
-			. "ORDER BY"
-			. "  I.rarity"
-			. "  , I.sort_key"
-			. "  , A.sort_key"
-			. "  , IA.flactuable";
-		$params = [['param' => 'itemClassId', 'var' => $itemClassId, 'type' => PDO::PARAM_INT]];
-		return $this->getItemsObject($sql, $params);
-	}
-
 	public function getItemsByClass(int $itemClassId) {
 		$sql = "SELECT"
 			. self::SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS

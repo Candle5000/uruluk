@@ -41,7 +41,10 @@ class ItemsController extends Controller {
 			$args = [
 				'header' => ['title' => ucfirst($args['itemClassName']) . ' レアアイテム'],
 				'item_class' => ucfirst($args['itemClassName']),
-				'items' => $item->getRareItemsByClass($itemClassId),
+				'items' => [
+					'rare' => $item->getItemsByClassAndRarity($itemClassId, 'rare'),
+					'artifact' => $item->getItemsByClassAndRarity($itemClassId, 'artifact')
+				],
 				'footer' => $this->getFooterInfo()
 			];
 
