@@ -405,6 +405,7 @@ $(function() {
 		slotItems[itemIndex + 1] = initItems[itemIndex];
 		itemIndex++;
 	});
+	$(".table-item-slot a.item-skill[data-toggle=tooltip]").tooltip();
 	calcAttrs();
 
 });
