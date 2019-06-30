@@ -135,8 +135,8 @@ $(function() {
 			if (item !== undefined) {
 
 				// スキルの設定
-				if (item.skill_en) {
-					const skill = $("<li />").text(item.skill_en);
+				if (item.skill_en || item["skill_" + $("select.character-class").val() + "_en"]) {
+					const skill = $("<li />").text(item.skill_en ? item.skill_en : item["skill_" + $("select.character-class").val() + "_en"]);
 					$("ul.item-skill").append(skill);
 					noSkills = false;
 				}
@@ -211,10 +211,10 @@ $(function() {
 		link.closest("div.d-table-row").find(".item-name").removeClass("common rare artifact")
 			.addClass(item.rarity)
 			.text(" " + item.name_en);
-		if (item.skill_en) {
+		if (item.skill_en || item["skill_" + $("select.character-class").val() + "_en"]) {
 			link.closest("div.d-table-row").find(".item-skill")
 				.removeClass("d-none")
-				.attr("title", item.skill_en);
+				.attr("title", (item.skill_en ? item.skill_en : item["skill_" + $("select.character-class").val() + "_en"]));
 		} else {
 			link.closest("div.d-table-row").find(".item-skill")
 				.addClass("d-none")
@@ -363,7 +363,7 @@ $(function() {
 				} else {
 					const modalItem = modalItems[$(this).data("row-index")];
 					setItem(target, modalItem);
-					if (modalItem.skill_en) {
+					if (modalItem.skill_en || modalItem["skill_" + $("select.character-class").val() + "_en"]) {
 						const skill = target.closest("div.d-table-row").find(".item-skill");
 						const newSkill = $(skill.prop("outerHTML"));
 						skill.remove();
