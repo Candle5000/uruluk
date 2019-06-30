@@ -28,7 +28,9 @@ class ItemModel extends Model {
 		. "  , I.name_ja"
 		. "  , I.rarity"
 		. "  , I.skill_en"
-		. "  , I.skill_ja"
+		. "  , I.skill_axe_en"
+		. "  , I.skill_sword_en"
+		. "  , I.skill_dagger_en"
 		. "  , I.comment_en"
 		. "  , I.comment_ja"
 		. "  , A.short_name"
@@ -165,7 +167,9 @@ class ItemModel extends Model {
 				$item['name_ja'] = $result['name_ja'];
 				$item['rarity'] = $result['rarity'];
 				$item['skill_en'] = $result['skill_en'];
-				$item['skill_ja'] = $result['skill_ja'];
+				$item['skill_axe_en'] = $result['skill_axe_en'];
+				$item['skill_sword_en'] = $result['skill_sword_en'];
+				$item['skill_dagger_en'] = $result['skill_dagger_en'];
 				$item['comment_en'] = $result['comment_en'];
 				$item['comment_ja'] = $result['comment_ja'];
 				$item['attributes'] = array();

@@ -71,6 +71,16 @@
               <?php endforeach ?>
               <?php if (!empty($item['skill_en'])) : ?>
                 <li class="item-skill"><?= $item['skill_en'] ?></li>
+              <?php else : ?>
+                <?php if (!empty($item['skill_axe_en'])) : ?>
+                  <li class="item-skill">A:<?= $item['skill_axe_en'] ?></li>
+                <?php endif; ?>
+                <?php if (!empty($item['skill_sword_en'])) : ?>
+                  <li class="item-skill">A:<?= $item['skill_sword_en'] ?></li>
+                <?php endif; ?>
+                <?php if (!empty($item['skill_dagger_en'])) : ?>
+                  <li class="item-skill">A:<?= $item['skill_dagger_en'] ?></li>
+                <?php endif; ?>
               <?php endif; ?>
               <?php if (!empty($item['comment_en'])) : ?>
                 <li class="item-comment"><?= $item['comment_en'] ?></li>
@@ -106,6 +116,16 @@
               <?php endforeach ?>
               <?php if (!empty($item['skill_en'])) : ?>
                 <li class="item-skill"><?= $item['skill_en'] ?></li>
+              <?php else : ?>
+                <?php if (!empty($item['skill_axe_en'])) : ?>
+                  <li class="item-skill">A:<?= $item['skill_axe_en'] ?></li>
+                <?php endif; ?>
+                <?php if (!empty($item['skill_sword_en'])) : ?>
+                  <li class="item-skill">S:<?= $item['skill_sword_en'] ?></li>
+                <?php endif; ?>
+                <?php if (!empty($item['skill_dagger_en'])) : ?>
+                  <li class="item-skill">D:<?= $item['skill_dagger_en'] ?></li>
+                <?php endif; ?>
               <?php endif; ?>
               <?php if (!empty($item['comment_en'])) : ?>
                 <li class="item-comment"><?= $item['comment_en'] ?></li>
