@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2019/06/20 1:36:49
+-- Date/Time    : 2019/06/28 20:40:03
 -- Author       : Candle
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -210,8 +210,11 @@ create table item (
   , name_en VARCHAR(64) comment '名称(英語)'
   , name_ja VARCHAR(64) comment '名称(日本語)'
   , rarity ENUM('common', 'rare', 'artifact') not null comment 'レアリティ'
-  , skill_en VARCHAR(64) comment 'スキル(英語)'
+  , skill_en VARCHAR(128) comment 'スキル(英語)'
   , skill_ja VARCHAR(64) comment 'スキル(日本語)'
+  , skill_axe_en VARCHAR(128) comment 'スキルアックス(英語)'
+  , skill_sword_en VARCHAR(128) comment 'スキルソード(英語)'
+  , skill_dagger_en VARCHAR(128) comment 'スキルダガー(英語)'
   , comment_en VARCHAR(64) comment 'コメント(英語)'
   , comment_ja VARCHAR(64) comment 'コメント(日本語)'
   , note TEXT comment '説明'
@@ -316,7 +319,7 @@ create table item_log (
   , name_en VARCHAR(64) comment '名称(英語)'
   , name_ja VARCHAR(64) comment '名称(日本語)'
   , rarity ENUM('common', 'rare', 'artifact') comment 'レアリティ'
-  , skill_en VARCHAR(64) comment 'スキル(英語)'
+  , skill_en VARCHAR(128) comment 'スキル(英語)'
   , skill_ja VARCHAR(64) comment 'スキル(日本語)'
   , comment_en VARCHAR(64) comment 'コメント(英語)'
   , comment_ja VARCHAR(64) comment 'コメント(日本語)'
