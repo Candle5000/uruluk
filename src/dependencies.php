@@ -28,4 +28,11 @@ return function (App $app) {
 		$logger->pushHandler(new \Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
 		return $logger;
 	};
+
+	// csrf guard
+	$container['csrf'] = function ($c) {
+		$csrf = new \Slim\Csrf\Guard();
+		$csrf->setPersistentTokenMode(true);
+		return $csrf;
+	};
 };

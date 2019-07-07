@@ -15,7 +15,7 @@ class ShortURLModel extends Model {
 		do {
 			$key = '';
 			for ($i = 0; $i < 6; $i++) {
-				$key .= substr(CHARS, rand(0, strlen(CHARS) - 1), 1);
+				$key .= substr(ShortURLModel::CHARS, rand(0, strlen(ShortURLModel::CHARS) - 1), 1);
 			}
 		} while ($this->selectUrlByKey($key) !== null);
 		$this->insert($key, $url);
@@ -42,7 +42,7 @@ class ShortURLModel extends Model {
 
 	private function selectKeyByUrl(string $url) {
 		$sql = 'SELECT'
-			. '  short_url_key'
+			. '  short_url_key '
 			. 'FROM'
 			. '  short_url '
 			. 'WHERE'

@@ -42,7 +42,7 @@ class ShortURLController extends Controller {
 		$postParam = $request->getParsedBody();
 		$url = array_key_exists('url', $postParam) ? $postParam['url'] : '';
 		if (!is_string($url) || strlen($url) === 0
-				|| filter_var('http://' . $_SERVER['HTTP_HOST'] . $url, FILTER_VALIDATE_URL)) {
+				|| !filter_var('http://' . $_SERVER['HTTP_HOST'] . $url, FILTER_VALIDATE_URL)) {
 			$data['error'] = ['message' => 'ERROR! invalid parameter [url]'];
 			return $response->withJson($data);
 		}

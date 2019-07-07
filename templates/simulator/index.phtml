@@ -60,9 +60,10 @@
                               <div class="d-table w-100 small table-item-attrs">
                                 <div class="d-table-row">
                                   <div class="d-table-cell border border-black text-right w-15">
+                                    &nbsp;
                                     <span class="attr attr-minad"></span>
-                                  <span class="wave">~</span>
-                                  <span   class="attr attr-maxad"></span>
+                                    <span class="wave">~</span>
+                                    <span   class="attr attr-maxad"></span>
                                   </div>
                                   <div class="d-table-cell border border-black text-right w-7-5 attr attr-as"></div>
                                   <div class="d-table-cell border border-black text-right w-8 attr attr-ar"></div>
@@ -99,7 +100,12 @@
             </colgroup>
             <tbody>
               <tr>
-                <td class="d-none" colspan="3"></td>
+                <td colspan="3">
+                  <label class="w-100 mb-0">
+                    <a href="javascript:void(0);" class="common link-share"><i class="fas fa-share-square"></i>Share by URL</a><br />
+                    <input type="text" class="form-control p-0 h-auto pr-2 text-share" />
+                  </label>
+                </td>
               </tr>
               <tr>
                 <td>Character Class</td>
@@ -290,9 +296,10 @@
                           <div class="d-table w-100 small table-item-attrs">
                             <div class="d-table-row">
                               <div class="d-table-cell border border-black text-right w-15">
+                                &nbsp;
                                 <span class="attr attr-minad"></span>
-                              <span class="wave">~</span>
-                              <span   class="attr attr-maxad"></span>
+                                <span class="wave">~</span>
+                                <span   class="attr attr-maxad"></span>
                               </div>
                               <div class="d-table-cell border border-black text-right w-7-5 attr attr-as"></div>
                               <div class="d-table-cell border border-black text-right w-8 attr attr-ar"></div>
@@ -335,6 +342,8 @@
               </tr>
             </tbody>
           </table>
+          <input type="hidden" id="csrf_name" value="<?= $csrf_name ?>" />
+          <input type="hidden" id="csrf_value" value="<?= $csrf_value ?>" />
         </div>
         <div class="col-12 col-md-6">
         </div>

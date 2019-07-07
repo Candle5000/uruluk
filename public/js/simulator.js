@@ -200,6 +200,9 @@ $(function() {
 
 		// URLに反映
 		history.replaceState('', '', path);
+
+		// 短縮URLをリセット
+		$(".text-share").val("");
 	}
 
 	// スロットにアイテムを設定
@@ -378,6 +381,28 @@ $(function() {
 
 			// モーダル表示
 			$("#modal-items").modal("show");
+		});
+	});
+
+	// シェアURLの選択
+	$(".text-share").on('click', function (e) {
+		if ($(this).val().length == 0) return;
+		e.target.setSelectionRange(0, e.target.value.length);
+		document.execCommand("copy");
+	});
+
+	// シェアボタン
+	$("a.link-share").on('click', function () {
+		$.ajax({
+			url : "/s",
+			type : "POST",
+			data : {
+				url : location.pathname + location.search,
+				csrf_name : $("input#csrf_name").val(),
+				csrf_value : $("input#csrf_value").val()
+			}
+		}).done(data => {
+			$(".text-share").val(location.origin + "/s/" + data.result.urlKey);
 		});
 	});
 
