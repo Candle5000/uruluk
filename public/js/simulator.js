@@ -114,6 +114,14 @@ $(function() {
 		$("ul.item-skill").children().remove();
 		let noSkills = true;
 
+		// XP, Killsの上限チェック
+		if (parseInt($(".character-xp").val()) > parseInt($(".character-xp").attr("max"))) {
+			$(".character-xp").val($(".character-xp").attr("max"));
+		}
+		if (parseInt($(".character-kills").val()) > parseInt($(".character-kills").attr("max"))) {
+			$(".character-kills").val($(".character-kills").attr("max"));
+		}
+
 		// GETパラメータの初期化
 		let path = "/simulator?c=" + charaClass;
 		path += "&xp=" + parseInt($(".character-xp").val());
@@ -305,6 +313,9 @@ $(function() {
 			$(this).val(0);
 			return;
 		}
+		if (parseInt($(this).val()) > parseInt($(this).attr("max"))) {
+			$(this).val($(this).attr("max"));
+		}
 		$(".table-item-slot a").toArray().forEach(link => {
 			if (slotItems[$(link).data("slot-index")] !== undefined) {
 				setItem($(link), slotItems[$(link).data("slot-index")]);
@@ -397,11 +408,15 @@ $(function() {
 			url : "/s",
 			type : "POST",
 			data : {
-				url : location.pathname + location.search,
+				url : location.pathname + location.search.replace(/\[/g, "%5B").replace(/\]/g, "%5D"),
 				csrf_name : $("input#csrf_name").val(),
 				csrf_value : $("input#csrf_value").val()
 			}
 		}).done(data => {
+			if (data.error) {
+				alert(data.error.message);
+				return;
+			}
 			$(".text-share").val(location.origin + "/s/" + data.result.urlKey);
 		});
 	});
