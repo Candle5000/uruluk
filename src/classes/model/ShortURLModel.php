@@ -2,6 +2,8 @@
 
 namespace Model;
 
+use \PDO;
+
 class ShortURLModel extends Model {
 
 	const CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
@@ -21,6 +23,7 @@ class ShortURLModel extends Model {
 	}
 
 	public function getUrlByKey(string $key) {
+		$this->update($key);
 		return $this->selectUrlByKey($key);
 	}
 
@@ -29,9 +32,10 @@ class ShortURLModel extends Model {
 			. 'INTO short_url(short_url_key, url, created_at, last_access) '
 			. 'VALUES (:urlKey , :url , NOW() , NULL )';
 
+		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
-		$stmt->bindParam(':urlKey', $urlKey);
-		$stmt->bindParam(':url', $url);
+		$stmt->bindParam(':urlKey', $urlKey, PDO::PARAM_STR);
+		$stmt->bindParam(':url', $url, PDO::PARAM_STR);
 		$stmt->execute();
 		return $stmt->rowCount();
 	}
@@ -44,8 +48,9 @@ class ShortURLModel extends Model {
 			. 'WHERE'
 			. '  url = :url';
 
+		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
-		$stmt->bindParam(':url', $url);
+		$stmt->bindParam(':url', $url, PDO::PARAM_STR);
 		$stmt->execute();
 		$result = $stmt->fetch();
 		return $stmt->rowCount() === 0 ? null : $result['short_url_key'];
@@ -53,14 +58,15 @@ class ShortURLModel extends Model {
 
 	private function selectUrlByKey(string $urlKey) {
 		$sql = 'SELECT'
-			. '  url'
+			. '  url '
 			. 'FROM'
 			. '  short_url '
 			. 'WHERE'
 			. '  short_url_key = :urlKey';
 
+		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
-		$stmt->bindParam(':urlKey', $urlKey);
+		$stmt->bindParam(':urlKey', $urlKey, PDO::PARAM_STR);
 		$stmt->execute();
 		$result = $stmt->fetch();
 		return $stmt->rowCount() === 0 ? null : $result['url'];
@@ -71,9 +77,11 @@ class ShortURLModel extends Model {
 			. 'SET'
 			. '  last_access = NOW() '
 			. 'WHERE'
-			. '  short_url_key = ?';
+			. '  short_url_key = :urlKey';
+
+		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
-		$stmt->bindParam(':urlKey', $urlKey);
+		$stmt->bindParam(':urlKey', $urlKey, PDO::PARAM_STR);
 		$stmt->execute();
 		return $stmt->rowCount();
 	}
