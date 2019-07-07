@@ -4,6 +4,7 @@ use Slim\App;
 use Controller\TopMenuController;
 use Controller\ItemsController;
 use Controller\SimulatorController;
+use Controller\ShortURLController;
 
 return function (App $app) {
 	$container = $app->getContainer();
@@ -17,4 +18,10 @@ return function (App $app) {
 	$app->get('/simulator', SimulatorController::class . ':index');
 
 	$app->get('/simulator/item/{itemClassName}', SimulatorController::class . ':item');
+
+	$app->get('/s', ShortURLController::class . ':index');
+
+	$app->get('/s/{key}', ShortURLController::class . ':index');
+
+	$app->post('/s', ShortURLController::class . ':post');
 };

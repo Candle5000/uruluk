@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2019/06/28 20:40:03
+-- Date/Time    : 2019/07/06 21:01:59
 -- Author       : Candle
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -333,6 +333,21 @@ create table item_log (
   , user_id INT not null comment '送信ユーザID'
   , constraint item_log_PKC primary key (item_log_id)
 ) comment 'アイテムログ' ;
+
+-- 短縮URL
+--* BackupToTempTable
+drop table if exists short_url cascade;
+
+--* RestoreFromTempTable
+create table short_url (
+  short_url_key VARCHAR(6) not null comment '短縮URLキー'
+  , url VARCHAR(255) not null comment 'URL'
+  , created_at DATETIME comment '作成日時'
+  , last_access DATETIME comment '最終アクセス'
+  , constraint short_url_PKC primary key (short_url_key)
+) comment '短縮URL' DEFAULT CHARSET=utf8;
+
+alter table short_url add unique short_url_IX1 (url) ;
 
 -- スペシャルアタック
 --* BackupToTempTable
