@@ -77,8 +77,7 @@ class ItemModel extends Model {
 			. "WHERE"
 			. "  I.item_class_id = :itemClassId "
 			. "ORDER BY"
-			. "  I.rarity"
-			. "  , I.sort_key"
+			. "  I.sort_key"
 			. "  , A.sort_key"
 			. "  , IA.flactuable";
 		$params = [['param' => 'itemClassId', 'var' => $itemClassId, 'type' => PDO::PARAM_INT]];
