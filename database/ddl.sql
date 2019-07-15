@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2019/07/06 21:01:59
+-- Date/Time    : 2019/07/10 1:30:49
 -- Author       : Candle
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -220,11 +220,11 @@ create table item (
   , note TEXT comment '説明'
   , price INT comment '売却価格'
   , image_name VARCHAR(64) comment '画像名称'
-  , sort_key INT not null comment 'ソート順'
+  , sort_key VARCHAR(16) not null comment 'ソート順'
   , constraint item_PKC primary key (item_id)
 ) comment 'アイテム' ;
 
-alter table item add unique item_IX1 (sort_key) ;
+alter table item add unique item_IX1 (item_class_id,sort_key) ;
 
 create unique index item_IX2
   on item(item_class_id,rarity,sort_key);
@@ -345,7 +345,7 @@ create table short_url (
   , created_at DATETIME comment '作成日時'
   , last_access DATETIME comment '最終アクセス'
   , constraint short_url_PKC primary key (short_url_key)
-) comment '短縮URL' DEFAULT CHARSET=utf8;
+) comment '短縮URL' DEFAULT CHARSET=latin1;
 
 alter table short_url add unique short_url_IX1 (url) ;
 
