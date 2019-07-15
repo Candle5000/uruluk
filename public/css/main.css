@@ -113,6 +113,26 @@ img.item-icon {
 	image-rendering:pixelated;
 }
 
+/* Pagination */
+.page-item > .page-link {
+	color: #e0e0e0;
+	background-color: #263337;
+	border-color: #000;
+	line-height: 1.0;
+}
+
+.page-item.active > .page-link {
+	color: #fff;
+	background-color: #445260;
+	border-color: #202020;
+}
+
+.page-item.disabled > .page-link {
+	color: #808080;
+	background-color: #102238;
+	border-color: #000;
+}
+
 /* Simulator */
 .table-item-attrs div.d-table-cell {
 	padding: 0 2px;

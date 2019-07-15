@@ -330,6 +330,7 @@ $(function() {
 	});
 	$(".table-item-slot a.item-img").on("click", function() {
 		const target = $(this);
+		$("#collapse-search").collapse('hide');
 		$.ajax({
 			url : "/simulator/item/" + target.data("item-class"),
 			type : "GET"
