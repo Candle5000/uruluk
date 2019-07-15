@@ -103,7 +103,7 @@ $(function() {
 		"armor" : "leather_vest.png",
 		"gloves" : "gloves.png",
 		"boots" : "boots.png",
-		"freshy" : "item_noimg.png",
+		"freshy" : "toad.png",
 		"puppet" : "puppet0.png"
 	}
 
