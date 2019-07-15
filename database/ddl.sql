@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2019/07/10 1:30:49
+-- Date/Time    : 2019/07/15 18:27:55
 -- Author       : Candle
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -341,7 +341,7 @@ drop table if exists short_url cascade;
 --* RestoreFromTempTable
 create table short_url (
   short_url_key VARCHAR(6) not null comment '短縮URLキー'
-  , url VARCHAR(255) not null comment 'URL'
+  , url VARCHAR(511) not null comment 'URL'
   , created_at DATETIME comment '作成日時'
   , last_access DATETIME comment '最終アクセス'
   , constraint short_url_PKC primary key (short_url_key)
