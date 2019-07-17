@@ -69,10 +69,17 @@ class SimulatorController extends Controller {
 
 	public function item(Request $request, Response $response, array $args) {
 		$item = new ItemModel($this->db, $this->logger);
+		$getParam = $request->getQueryParams();
 		$itemClassId = $item->getItemClassId($args['itemClassName']);
 		if ($itemClassId === null) throw new NotFoundException($request, $response);
+		$rarities = [];
+		if (array_key_exists('rarity', $getParam) && is_array($getParam['rarity'])) {
+			foreach ($getParam['rarity'] as $val) {
+				if (is_string($val)) $rarities[] = $val;
+			}
+		}
 		$data = [
-			'items' => $item->getItemsByClass($itemClassId),
+			'items' => $item->getItemsByClassAndRarities($itemClassId, $rarities),
 		];
 
 		return $response->withJson($data);

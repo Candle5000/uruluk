@@ -330,10 +330,28 @@ $(function() {
 	});
 	$(".table-item-slot a.item-img").on("click", function() {
 		const target = $(this);
+		const rarity = [];
+		if ($("#modal-items").hasClass("show")) {
+			if ($("#search-rarity-common").prop("checked")) rarity.push("common");
+			if ($("#search-rarity-rare").prop("checked")) rarity.push("rare");
+			if ($("#search-rarity-artifact").prop("checked")) rarity.push("artifact");
+		} else {
+			rarity.push("rare", "artifact");
+			$("#search-rarity-rare").prop("checked", true);
+			$("#search-rarity-artifact").prop("checked", true);
+			if (target.data("item-class") == "freshy") {
+				rarity.push("common");
+				$("#search-rarity-common").prop("checked", true);
+			} else {
+				$("#search-rarity-common").prop("checked", false);
+			}
+		}
+		$("#link-search-submit").data("item-slot", target.data("slot-index"));
 		$("#collapse-search").collapse('hide');
 		$.ajax({
 			url : "/simulator/item/" + target.data("item-class"),
-			type : "GET"
+			type : "GET",
+			data : {"rarity" : rarity}
 		}).done(data => {
 			// アイテム情報保持
 			const modalItems = [];
@@ -394,6 +412,11 @@ $(function() {
 			// モーダル表示
 			$("#modal-items").modal("show");
 		});
+	});
+
+	// アイテム検索実行
+	$("#link-search-submit").on('click', function () {
+		$("a.item-slot" + $(this).data("item-slot")).click();
 	});
 
 	// シェアURLの選択
