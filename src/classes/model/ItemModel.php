@@ -17,7 +17,7 @@ class ItemModel extends Model {
 		'armor' => 'leather_vest.png',
 		'gloves' => 'gloves.png',
 		'boots' => 'boots.png',
-		'freshy' => 'item_noimg.png',
+		'freshy' => 'toad.png',
 		'puppet' => 'puppet0.png'
 	];
 
@@ -77,8 +77,7 @@ class ItemModel extends Model {
 			. "WHERE"
 			. "  I.item_class_id = :itemClassId "
 			. "ORDER BY"
-			. "  I.rarity"
-			. "  , I.sort_key"
+			. "  I.sort_key"
 			. "  , A.sort_key"
 			. "  , IA.flactuable";
 		$params = [['param' => 'itemClassId', 'var' => $itemClassId, 'type' => PDO::PARAM_INT]];
@@ -86,6 +85,14 @@ class ItemModel extends Model {
 	}
 
 	public function getItemsByClassAndRarity(int $itemClassId, string $rarity) {
+		return $this->getItemsByClassAndRarities($itemClassId, [$rarity]);
+	}
+
+	public function getItemsByClassAndRarities(int $itemClassId, array $rarities) {
+		$sql_rarity = [];
+		foreach ($rarities as $key => $rarity) {
+			$sql_rarity[] = ":rarity$key";
+		}
 		$sql = "SELECT"
 			. self::SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS
 			. "FROM"
@@ -95,17 +102,19 @@ class ItemModel extends Model {
 			. "  LEFT JOIN attribute A "
 			. "    ON IA.attribute_id = A.attribute_id "
 			. "WHERE"
-			. "  I.item_class_id = :itemClassId "
-			. "  AND I.rarity = :rarity "
-			. "ORDER BY"
-			. "  I.rarity"
-			. "  , I.sort_key"
+			. "  I.item_class_id = :itemClassId ";
+		if (count($sql_rarity) > 0) {
+			$sql .= "  AND I.rarity IN(" . implode($sql_rarity, ", ") . ")";
+		}
+		$sql .= "ORDER BY"
+			. "  I.sort_key"
 			. "  , A.sort_key"
 			. "  , IA.flactuable";
-		$params = [
-			['param' => 'itemClassId', 'var' => $itemClassId, 'type' => PDO::PARAM_INT],
-			['param' => 'rarity', 'var' => $rarity, 'type' => PDO::PARAM_STR]
-		];
+		$params[] = ['param' => 'itemClassId', 'var' => $itemClassId, 'type' => PDO::PARAM_INT];
+		foreach ($rarities as $key => $rarity) {
+			$params[] = ['param' => ":rarity$key",
+				'var' => $rarities[$key], 'type' => PDO::PARAM_STR];
+		}
 		return $this->getItemsObject($sql, $params);
 	}
 

@@ -27,7 +27,7 @@ class SimulatorController extends Controller {
 		$xp = filter_var($xp, FILTER_VALIDATE_INT, ['options' => ['default' => self::XP_DEFAULT, 'min_range' => 0]]);
 		$kills = array_key_exists('kills', $getParam) ? $getParam['kills'] : self::KILLS_DEFAULT;
 		$kills = filter_var($kills, FILTER_VALIDATE_INT, ['options' => ['default' => self::KILLS_DEFAULT, 'min_range' => 0]]);
-		$boostups = array_key_exists('b', $getParam) && is_array($getParam['b']) && count($getParam['b']) == 5 ? $getParam['b'] : [0, 0, 0, 0, 0];
+		$boostups = array_key_exists('b', $getParam) && is_array($getParam['b']) && count($getParam['b']) == 5 ? $getParam['b'] : [2, 4, 1, 1, 1];
 		foreach ($boostups as $index => $boostup) {
 			$boostups[self::BOOSTUPS_NAME[$index]] = filter_var($boostup, FILTER_VALIDATE_INT, ['options' => ['default' => 0, 'min_range' => 0]]);
 		}
@@ -69,10 +69,17 @@ class SimulatorController extends Controller {
 
 	public function item(Request $request, Response $response, array $args) {
 		$item = new ItemModel($this->db, $this->logger);
+		$getParam = $request->getQueryParams();
 		$itemClassId = $item->getItemClassId($args['itemClassName']);
 		if ($itemClassId === null) throw new NotFoundException($request, $response);
+		$rarities = [];
+		if (array_key_exists('rarity', $getParam) && is_array($getParam['rarity'])) {
+			foreach ($getParam['rarity'] as $val) {
+				if (is_string($val)) $rarities[] = $val;
+			}
+		}
 		$data = [
-			'items' => $item->getItemsByClass($itemClassId),
+			'items' => $item->getItemsByClassAndRarities($itemClassId, $rarities),
 		];
 
 		return $response->withJson($data);
