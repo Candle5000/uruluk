@@ -324,12 +324,91 @@ $(function() {
 		calcAttrs();
 	});
 
+	// アイテム情報保持
+	let modalItems = [];
+	let modalItemIndex = 0;
+	const loadItemCount = 50; // 一度に読み込むアイテム数
+	let loading = true;
+	let target = null;
+
+	// スクロール読み込み
+	$("#modal-items").on("scroll", function() {
+		if ($("#modal-items").hasClass("show") && !loading && modalItemIndex < modalItems.length
+				&& ($("#modal-items").height() + $("#modal-items").scrollTop() > $("#scroll-loading").position().top)) {
+			loading = true;
+			console.log("run " + modalItems.length);
+			showItems();
+		}
+	});
+
+	// アイテムリストの表示
+	const showItems = function() {
+		// アイテム
+		const startIndex = modalItemIndex;
+		for (let i = startIndex; i < modalItems.length && (i == startIndex || i % loadItemCount != 0); i++) {
+			const item = modalItems[i];
+
+			// アイテムの行を作成
+			if (item == null) {
+				// None行
+				const row_none = $($("#modal-item-row").html());
+				row_none.find("a.item-img").data("item-class", target.data("item-class"));
+				setNone(row_none.find("a.item-img"));
+				$("#table-items tbody").append(row_none);
+			} else {
+				const row = $($("#modal-item-row").html());
+				setItem(row.find("a.item-img"), item);
+				$("#table-items tbody").append(row);
+				row.find("a.item-skill[data-toggle=tooltip]").tooltip();
+				row.find("a.item-img").data("row-index", i);
+			}
+
+			modalItemIndex++;
+			if (modalItemIndex % 10 == 0) {
+				const labelRow = $($("#table-items thead").html());
+				$("#table-items tbody").append(labelRow);
+			}
+		}
+
+		// 読み込み完了
+		loading = false;
+		if (modalItemIndex >= modalItems.length) {
+			$("#scroll-loading").removeClass("d-flex").addClass("d-none");
+		}
+
+		// クリックイベント付与
+		$("#table-items a.item-name").off("click");
+		$("#table-items a.item-name").on("click", function() {
+			$(this).closest("div.d-table-row").find("a.item-img").click();
+		});
+		$("#table-items a.item-img").on("click", function() {
+			const itemClass = target.data("item-class");
+			if ($(this).data("row-index") === undefined) {
+				setNone(target);
+				slotItems[target.data("slot-index")] = undefined;
+			} else {
+				const modalItem = modalItems[$(this).data("row-index")];
+				setItem(target, modalItem);
+				if (modalItem.skill_en || modalItem["skill_" + $("select.character-class").val() + "_en"]) {
+					const skill = target.closest("div.d-table-row").find(".item-skill");
+					const newSkill = $(skill.prop("outerHTML"));
+					skill.remove();
+					target.closest("div.d-table-row").find(".item-name").after(newSkill);
+					newSkill.tooltip();
+				}
+				slotItems[target.data("slot-index")] = modalItems[$(this).data("row-index")];
+			}
+			calcAttrs();
+			$("#modal-items").modal("hide");
+		});
+	}
+
 	// アイテム選択画面を表示
 	$(".table-item-slot a.item-name").on("click", function() {
 		$(this).closest("div.d-table-row").find("a.item-img").click();
 	});
 	$(".table-item-slot a.item-img").on("click", function() {
-		const target = $(this);
+		target = $(this);
 		const rarity = [];
 		if ($("#modal-items").hasClass("show")) {
 			if ($("#search-rarity-common").prop("checked")) rarity.push("common");
@@ -353,61 +432,16 @@ $(function() {
 			type : "GET",
 			data : {"rarity" : rarity}
 		}).done(data => {
-			// アイテム情報保持
-			const modalItems = [];
-
-			// 項目名行
-			let count = 1;
+			modalItemIndex = 0;
+			modalItems = [null];
+			Array.prototype.push.apply(modalItems, data.items);
+			$("#scroll-loading").removeClass("d-none").addClass("d-flex");
 
 			// アイテムリストを削除
 			$("#table-items>tbody>tr").remove();
 
-			// Noneの選択肢を作成
-			const row_none = $($("#modal-item-row").html());
-			row_none.find("a.item-img").data("item-class", target.data("item-class"));
-			setNone(row_none.find("a.item-img"));
-			$("#table-items tbody").append(row_none);
-
-			// アイテム
-			data.items.forEach(item => {
-				const row = $($("#modal-item-row").html());
-				setItem(row.find("a.item-img"), item);
-				$("#table-items tbody").append(row);
-				row.find("a.item-img").data("row-index", modalItems.push(item) - 1);
-				count++;
-				if (count % 10 == 0) {
-					const labelRow = $($("#table-items thead").html());
-					$("#table-items tbody").append(labelRow);
-				}
-			});
-
-			// スキルの表示
-			$("#table-items a.item-skill[data-toggle=tooltip]").tooltip();
-
-			// クリックイベント付与
-			$("#table-items a.item-name").on("click", function() {
-				$(this).closest("div.d-table-row").find("a.item-img").click();
-			});
-			$("#table-items a.item-img").on("click", function() {
-				const itemClass = target.data("item-class");
-				if ($(this).data("row-index") === undefined) {
-					setNone(target);
-					slotItems[target.data("slot-index")] = undefined;
-				} else {
-					const modalItem = modalItems[$(this).data("row-index")];
-					setItem(target, modalItem);
-					if (modalItem.skill_en || modalItem["skill_" + $("select.character-class").val() + "_en"]) {
-						const skill = target.closest("div.d-table-row").find(".item-skill");
-						const newSkill = $(skill.prop("outerHTML"));
-						skill.remove();
-						target.closest("div.d-table-row").find(".item-name").after(newSkill);
-						newSkill.tooltip();
-					}
-					slotItems[target.data("slot-index")] = modalItems[$(this).data("row-index")];
-				}
-				calcAttrs();
-				$("#modal-items").modal("hide");
-			});
+			// アイテムリストの表示
+			showItems();
 
 			// モーダル表示
 			$("#modal-items").modal("show");
