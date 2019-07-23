@@ -365,7 +365,7 @@ $(function() {
 
 			modalItemIndex++;
 			if (modalItemIndex % 10 == 0) {
-				const labelRow = $($("#table-items thead").html());
+				const labelRow = $($("#modal-label-row").html());
 				$("#table-items tbody").append(labelRow);
 			}
 		}
