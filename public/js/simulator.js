@@ -330,15 +330,116 @@ $(function() {
 	const loadItemCount = 50; // 一度に読み込むアイテム数
 	let loading = true;
 	let target = null;
+	let currentSortOrder = 1;
+	let currentSortAttr = '';
 
 	// スクロール読み込み
 	$("#modal-items").on("scroll", function() {
 		if ($("#modal-items").hasClass("show") && !loading && modalItemIndex < modalItems.length
 				&& ($("#modal-items").height() + $("#modal-items").scrollTop() > $("#scroll-loading").position().top)) {
 			loading = true;
-			console.log("run " + modalItems.length);
 			showItems();
 		}
+	});
+
+	// ソート順変更
+	$(".thead-sort").on("click", function() {
+		// ロード開始
+		$.LoadingOverlay("show", {
+			background: "rgba(0, 0, 0, 0.5)",
+			imageColor: "#787878",
+		});
+
+		const attrName = $(this).text();
+		const charaClass = $("select.character-class").val();
+		modalItemIndex = 0;
+		modalItems.shift();
+
+		// ソート順の変更
+		if (currentSortAttr == attrName) {
+			currentSortOrder *= -1;
+		} else {
+			currentSortOrder = (attrName == 'AS' || attrName == 'SA') ? -1 : 1;
+		}
+		currentSortAttr = attrName;
+
+		// アイテムリストを削除
+		$("#table-items>tbody>tr").remove();
+		$("#scroll-loading").removeClass("d-none").addClass("d-flex");
+
+		// アイテムをソート
+		modalItems.sort((a, b) => {
+			let a_val = 0.0;
+			a.attributes.forEach(attr => {
+				if (attrName == 'AD') {
+					if (attr.short_name != 'MinAD' && attr.short_name != 'MaxAD' && attr.short_name != 'Str') return;
+				} else {
+					if (attr.short_name != attrName) return;
+				}
+				const valueMax = attr.value === null ? attr["value_" + charaClass] : attr.value;
+				const maxRequired = attr.max_required ? attr.max_required : attr["max_required_" + charaClass];
+				let value;
+				let color = attr.color;
+
+				// 性能変動値の計算
+				if (attr.based_source && maxRequired && maxRequired != 0 && maxRequired > parseInt($(".character-" + attr.based_source).val())) {
+					value = Math.round(valueMax * parseInt($(".character-" + attr.based_source).val()) * 10 / maxRequired) / 10;
+				} else {
+					value = parseFloat(valueMax == null ? 0 : valueMax);
+				}
+
+				// ADの場合、Strを換算
+				if (attrName == 'AD' && attr.short_name == 'Str') {
+					value *= 1.5;
+				}
+
+				// 合計を計算
+				a_val += value;
+			});
+
+			let b_val = 0.0;
+			b.attributes.forEach(attr => {
+				if (attrName == 'AD') {
+					if (attr.short_name != 'MinAD' && attr.short_name != 'MaxAD' && attr.short_name != 'Str') return;
+				} else {
+					if (attr.short_name != attrName) return;
+				}
+				const valueMax = attr.value === null ? attr["value_" + charaClass] : attr.value;
+				const maxRequired = attr.max_required ? attr.max_required : attr["max_required_" + charaClass];
+				let value;
+				let color = attr.color;
+
+				// 性能変動値の計算
+				if (attr.based_source && maxRequired && maxRequired != 0 && maxRequired > parseInt($(".character-" + attr.based_source).val())) {
+					value = Math.round(valueMax * parseInt($(".character-" + attr.based_source).val()) * 10 / maxRequired) / 10;
+				} else {
+					value = parseFloat(valueMax == null ? 0 : valueMax);
+				}
+
+				// ADの場合、Strを換算
+				if (attrName == 'AD' && attr.short_name == 'Str') {
+					value *= 1.5;
+				}
+
+				// 合計を計算
+				b_val += value;
+			});
+
+			if (a_val < b_val) return 1 * currentSortOrder;
+			if (a_val > b_val) return -1 * currentSortOrder;
+			if (a.sort_key < b.sort_key) return -1;
+			if (a.sort_key > b.sort_key) return 1;
+			return 0;
+		});
+
+		// Noneを追加
+		modalItems.unshift(null);
+
+		// アイテムリストの表示
+		showItems();
+
+		// ロード完了
+		$.LoadingOverlay("hide", true);
 	});
 
 	// アイテムリストの表示
@@ -434,6 +535,7 @@ $(function() {
 		}).done(data => {
 			modalItemIndex = 0;
 			modalItems = [null];
+			currentSortAttr = '';
 			Array.prototype.push.apply(modalItems, data.items);
 			$("#scroll-loading").removeClass("d-none").addClass("d-flex");
 

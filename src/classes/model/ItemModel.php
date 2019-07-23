@@ -33,6 +33,7 @@ class ItemModel extends Model {
 		. "  , I.skill_dagger_en"
 		. "  , I.comment_en"
 		. "  , I.comment_ja"
+		. "  , I.sort_key"
 		. "  , A.short_name"
 		. "  , IA.color"
 		. "  , IA.flactuable"
@@ -181,6 +182,7 @@ class ItemModel extends Model {
 				$item['skill_dagger_en'] = $result['skill_dagger_en'];
 				$item['comment_en'] = $result['comment_en'];
 				$item['comment_ja'] = $result['comment_ja'];
+				$item['sort_key'] = $result['sort_key'];
 				$item['attributes'] = array();
 			}
 
