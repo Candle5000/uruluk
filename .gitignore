@@ -51,6 +51,6 @@ tags
 # Uruluk
 /public/img/item
 /public/favicon.ico
-/template/privacy/index.phtml
+/templates/privacy/index.phtml
 
 # End of https://www.gitignore.io/api/vim,linux,laravel,composer
