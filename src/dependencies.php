@@ -35,4 +35,13 @@ return function (App $app) {
 		$csrf->setPersistentTokenMode(true);
 		return $csrf;
 	};
+
+	// Google Service
+	$container['google'] = function ($c) {
+		$settings = $c->get('settings')['google'];
+		$google = [
+			'analytics_id' => $settings['analytics_id'],
+		];
+		return $google;
+	};
 };

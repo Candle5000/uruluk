@@ -14,11 +14,13 @@ use Model\ItemModel;
 class ItemsController extends Controller {
 
 	public function index(Request $request, Response $response) {
+		$this->title = 'アイテムデータ';
+
 		try {
 			$this->db->beginTransaction();
 
 			$args = [
-				'header' => ['title' => 'アイテムデータ'],
+				'header' => $this->getHeaderInfo(),
 				'footer' => $this->getFooterInfo()
 			];
 
@@ -32,6 +34,8 @@ class ItemsController extends Controller {
 	}
 
 	public function rareItem(Request $request, Response $response, array $args) {
+		$this->title = ucfirst($args['itemClassName']) . ' レアアイテム';
+
 		try {
 			$this->db->beginTransaction();
 
@@ -39,7 +43,7 @@ class ItemsController extends Controller {
 			$itemClassId = $item->getItemClassId($args['itemClassName']);
 			if ($itemClassId === null) throw new NotFoundException($request, $response);
 			$args = [
-				'header' => ['title' => ucfirst($args['itemClassName']) . ' レアアイテム'],
+				'header' => $this->getHeaderInfo(),
 				'item_class' => ucfirst($args['itemClassName']),
 				'items' => [
 					'rare' => $item->getItemsByClassAndRarity($itemClassId, 'rare'),

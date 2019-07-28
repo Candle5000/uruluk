@@ -14,11 +14,27 @@ abstract class Controller {
 	protected $renderer;
 	/** @var Logger */
 	protected $logger;
+	/** Google Service Settings */
+	protected $google;
+	/** Page Title */
+	protected $title = '';
+	/** Page Scripts */
+	protected $scripts = [];
 
 	public function __construct(ContainerInterface $container) {
 		$this->db = $container['db'];
 		$this->renderer = $container['renderer'];
 		$this->logger = $container['logger'];
+		$this->google = $container['google'];
+	}
+
+	protected function getHeaderInfo() {
+		$this->scripts[] = '/js/main.js';
+		return [
+			'title' => $this->title,
+			'scripts' => $this->scripts,
+			'google' => $this->google
+		];
 	}
 
 	protected function getFooterInfo() {

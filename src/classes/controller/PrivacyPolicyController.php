@@ -14,11 +14,13 @@ class PrivacyPolicyController extends Controller {
 	const PAGE_ID = 1;
 
 	public function index(Request $request, Response $response) {
+		$this->title = 'プライバシーポリシー';
+
 		try {
 			$this->db->beginTransaction();
 
 			$args = [
-				'header' => ['title' => 'プライバシーポリシー'],
+				'header' => $this->getHeaderInfo(),
 				'footer' => $this->getFooterInfo()
 			];
 
