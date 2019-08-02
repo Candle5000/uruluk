@@ -19,6 +19,16 @@ h3 {
 	font-size: 1.0rem;
 }
 
+p {
+	font-size: 0.8rem;
+}
+
+p.head {
+	font-size: 1.2rem;
+	font-weight: bold;
+	margin-bottom: 0.5rem;
+}
+
 .card-title a {
 	color: rgba(255,255,255,.5);
 	text-decoration: none;

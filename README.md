@@ -6,3 +6,8 @@
 - Composer 1.8
 - MariaDB 10.1
 
+## 初期設定
+- 下記のファイルをsampleをもとに作成してください。
+ * src/settings.php
+ * template/privacy/index.phtml
+

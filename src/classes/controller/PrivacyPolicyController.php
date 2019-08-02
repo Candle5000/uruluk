@@ -7,13 +7,15 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 /**
- * トップページ	コントローラ.
+ * プライバシーポリシー コントローラ.
  */
-class TopMenuController extends Controller {
+class PrivacyPolicyController extends Controller {
 
 	const PAGE_ID = 1;
 
 	public function index(Request $request, Response $response) {
+		$this->title = 'プライバシーポリシー';
+
 		try {
 			$this->db->beginTransaction();
 
@@ -28,7 +30,7 @@ class TopMenuController extends Controller {
 			throw $e;
 		}
 
-        return $this->renderer->render($response, 'index.phtml', $args);
+        return $this->renderer->render($response, 'privacy/index.phtml', $args);
 	}
 
 }

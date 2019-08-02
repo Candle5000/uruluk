@@ -20,6 +20,8 @@ class SimulatorController extends Controller {
 	private const SLOT_ITEM_CLASSES_COMMON = ['ring', 'ring', 'helm', 'armor', 'gloves', 'boots', 'freshy', 'puppet', 'puppet', 'puppet'];
 
 	public function index(Request $request, Response $response) {
+		$this->title = 'シミュレータ';
+		$this->scripts[] = '/js/simulator.js';
 		$item = new ItemModel($this->db, $this->logger);
 		$getParam = $request->getQueryParams();
 		$charClass = array_key_exists('c', $getParam) && array_key_exists($getParam['c'], self::SLOT_ITEM_CLASSES) ? $getParam['c'] : 'sword';
@@ -46,7 +48,7 @@ class SimulatorController extends Controller {
 			$this->db->beginTransaction();
 
 			$args = [
-				'header' => ['title' => 'シミュレータ', 'script' => ['/js/simulator.js']],
+				'header' => $this->getHeaderInfo(),
 				'csrf_name' => $request->getAttribute('csrf_name'),
 				'csrf_value' => $request->getAttribute('csrf_value'),
 				'character' => $charClass,
