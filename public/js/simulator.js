@@ -204,7 +204,8 @@ $(function() {
 		});
 
 		// DPSを計算
-		$(".character-dps").text((Math.round((attrs.minad + attrs.maxad) * 1000 / (2 * (attrs.as + 1))) / 1000).toFixed(3));
+		const attackSpeed = attrs.as > 2 ? attrs.as : 2;
+		$(".character-dps").text((Math.round((attrs.minad + attrs.maxad) * 1000 / (2 * (attackSpeed + 1))) / 1000).toFixed(3));
 
 		// URLに反映
 		history.replaceState('', '', path);
@@ -255,7 +256,7 @@ $(function() {
 			// 性能値の合計を計算
 			if (attr_cell.children().length > 0 && value >= 0) {
 				const baseVal = parseFloat($(attr_cell.children()[0]).text());
-				if (attrs[index - 1].color != attr.color && Math.abs(baseVal) > Math.abs(value)) {
+				if (attrs[index - 1].color != "white" && attrs[index - 1].color != attr.color && Math.abs(baseVal) > Math.abs(value) || Math.abs(value) == 0) {
 					color = attrs[index - 1].color;
 				}
 				value = Math.round((value + baseVal) * 10) / 10;

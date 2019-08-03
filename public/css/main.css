@@ -31,11 +31,12 @@ p.head {
 
 .card-title a {
 	color: rgba(255,255,255,.5);
-	text-decoration: none;
+	text-decoration: underline!important;
 }
 
 .card-title a:focus,.card-title a:hover {
 	color: rgba(255,255,255,.75);
+	text-decoration: underline!important;
 }
 
 a.link-home {
@@ -107,6 +108,9 @@ a.link-home {
 }
 a:hover.lemonchiffon {
 	color: rgba(255,250,205,.75)!important;
+}
+a.lemonchiffon {
+	text-decoration: underline;
 }
 
 /* Image */
