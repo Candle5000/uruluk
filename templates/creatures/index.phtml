@@ -1,0 +1,209 @@
+<?= $this->fetch('header.phtml', ['header' => $header]) ?>
+<script>
+$(() => {
+
+    $("td.selectable").click(() => {
+        $("#modal-creature").modal("show");
+    });
+
+});
+</script>
+<div class="modal fade" id="modal-creature" tabindex="-1" role="dialog" aria-labelledby="modal-creaturesTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content bg-darkgreen">
+      <div class="modal-header">
+        <div class="modal-title text-middle" id="modal-creaturesTitle">
+          <div class="d-table-cell align-middle">
+            <img class="item-detail" src="/img/creature/goblin.png" alt="" />
+          </div>
+          <div class="d-table-cell align-middle pl-2">
+            <div class="m-0">ゴブリン</div>
+            <div class="m-0">Goblin</div>
+          </div>
+        </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="button-close-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body small">
+        <div class="row">
+          <div class="col-12 col-sm-6">
+            <table class="table-dark table-striped table-bordered w-100 mb-2">
+              <colgroup>
+                <col class="w-20"/>
+                <col class="w-20"/>
+                <col class="w-20"/>
+                <col class="w-20"/>
+                <col class="w-20"/>
+              </colgroup>
+              <tr>
+                <td class="text-center" colspan="2">AD</td>
+                <td class="text-center">AS</td>
+                <td class="text-center">Def</td>
+                <td class="text-center">Dex</td>
+              </tr>
+              <tr>
+                <td class="text-center" colspan="2">1～4</td>
+                <td class="text-center">29</td>
+                <td class="text-center">0</td>
+                <td class="text-center">4</td>
+              </tr>
+              <tr>
+                <td class="text-center">Vit</td>
+                <td class="text-center">VoH</td>
+                <td class="text-center">DR</td>
+                <td class="text-center">XP</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="text-center">15</td>
+                <td class="text-center">0%</td>
+                <td class="text-center">0%</td>
+                <td class="text-center">2</td>
+                <td></td>
+              </tr>
+            </table>
+            <table class="table-dark table-striped table-bordered w-100 mb-2">
+              <thead>
+                <tr>
+                  <th class="pl-1">Special Attacks</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="pl-2">
+                    None
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-12 col-sm-6">
+            <table class="table-dark table-striped table-bordered w-100 mb-2">
+              <thead>
+                <tr>
+                  <th class="pl-1">Items</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="">
+                    <a href="" class="rare"><img src="/img/item/goblins_teeth.png" alt="" />&nbsp;Goblin's Teeth</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="">
+                    <a href="" class="common"><img src="/img/item/x01_188.gif" alt="" />&nbsp;Goblin Ale</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="">
+                    <a href="" class="common"><img src="/img/item/x01_101.gif" alt="" />&nbsp;Head of Goblin</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="table-dark table-striped table-bordered w-100 mb-2">
+              <thead>
+                <tr>
+                  <th class="pl-1">Floors</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="pl-2">
+                    <a href="" class="lemonchiffon">1F</a>, <a href="" class="lemonchiffon">2F</a>, <a href="" class="lemonchiffon">3F</a>, <a href="" class="lemonchiffon">4F</a>, <a href="" class="lemonchiffon">UW1</a>, <a href="" class="lemonchiffon">UW2</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <table class="table-dark table-striped table-bordered w-100 mb-2">
+              <thead>
+                <th class="pl-1">Note</th>
+              </thead>
+              <tbody>
+                <td class="px-1">特になし。</td>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<h2>Creatures</h2>
+<table class="table-dark table-striped table-hover w-100">
+  <tbody>
+    <tr>
+      <td class="selectable">
+        <div class="d-table-cell align-middle">
+          <img class="item-detail" src="/img/creature/goblin.png" alt="" />
+        </div>
+        <div class="d-table-cell align-middle pl-2">
+          <div class="m-0">ゴブリン</div>
+          <div class="m-0">Goblin</div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="selectable">
+        <div class="d-table-cell align-middle">
+          <img class="item-detail" src="/img/creature/gnoll.png" alt="" />
+        </div>
+        <div class="d-table-cell align-middle pl-2">
+          <div class="m-0">ノール</div>
+          <div class="m-0">Gnoll</div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="selectable">
+        <div class="d-table-cell align-middle">
+          <img class="item-detail" src="/img/creature/green_slime.png" alt="" />
+        </div>
+        <div class="d-table-cell align-middle pl-2">
+          <div class="m-0">グリーンスライム</div>
+          <div class="m-0">Green Slime</div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="selectable">
+        <div class="d-table-cell align-middle">
+          <img class="item-detail" src="/img/creature/roper.png" alt="" />
+        </div>
+        <div class="d-table-cell align-middle pl-2">
+          <div class="m-0">ローパー</div>
+          <div class="m-0">Roper</div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="selectable">
+        <div class="d-table-cell align-middle">
+          <img class="item-detail" src="/img/creature/goblin_mage.png" alt="" />
+        </div>
+        <div class="d-table-cell align-middle pl-2">
+          <div class="m-0">ゴブリンメイジ</div>
+          <div class="m-0">Goblin Mage</div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="selectable">
+        <div class="d-table-cell align-middle">
+          <img class="item-detail" src="/img/creature/giant_scarab.png" alt="" />
+        </div>
+        <div class="d-table-cell align-middle pl-2">
+          <div class="m-0">スカラベ</div>
+          <div class="m-0">Giant Scarab</div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<?= $this->fetch('footer.phtml', ['footer' => $footer]) ?>
