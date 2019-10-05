@@ -15,6 +15,7 @@ class CreaturesController extends Controller {
 
 	public function index(Request $request, Response $response) {
 		$this->title = 'クリーチャーデータ';
+		$this->scripts[] = '/js/creature.js';
 
 		try {
 			$this->db->beginTransaction();

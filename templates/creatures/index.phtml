@@ -1,24 +1,15 @@
 <?= $this->fetch('header.phtml', ['header' => $header]) ?>
-<script>
-$(() => {
-
-    $("td.selectable").on('click', () => {
-        $("#modal-creature").modal("show");
-    });
-
-});
-</script>
 <div class="modal fade" id="modal-creature" tabindex="-1" role="dialog" aria-labelledby="modal-creaturesTitle" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content bg-darkgreen">
       <div class="modal-header">
         <div class="modal-title text-middle" id="modal-creaturesTitle">
           <div class="d-table-cell align-middle">
-            <img class="item-detail" src="/img/creature/goblin.png" alt="" />
+            <img class="item-detail" id="detail-image" src="/img/creature/goblin.png" alt="" />
           </div>
           <div class="d-table-cell align-middle pl-2">
-            <div class="m-0">ゴブリン</div>
-            <div class="m-0">Goblin</div>
+            <div class="m-0" id="detail-name-ja">ゴブリン</div>
+            <div class="m-0" id="detail-name-en">Goblin</div>
           </div>
         </div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -43,10 +34,12 @@ $(() => {
                 <td class="text-center">Dex</td>
               </tr>
               <tr>
-                <td class="text-center" colspan="2">1～4</td>
-                <td class="text-center">29</td>
-                <td class="text-center">0</td>
-                <td class="text-center">4</td>
+                <td class="text-center" colspan="2">
+                  <span id="detail-min-ad">1</span>～<span id="detail-max-ad">4</span>
+                </td>
+                <td class="text-center" id="detail-as">29</td>
+                <td class="text-center" id="detail-def">0</td>
+                <td class="text-center" id="detail-dex">4</td>
               </tr>
               <tr>
                 <td class="text-center">Vit</td>
@@ -56,20 +49,20 @@ $(() => {
                 <td></td>
               </tr>
               <tr>
-                <td class="text-center">15</td>
-                <td class="text-center">0%</td>
-                <td class="text-center">0%</td>
-                <td class="text-center">2</td>
+                <td class="text-center" id="detail-vit">15</td>
+                <td class="text-center" id="detail-voh">0%</td>
+                <td class="text-center" id="detail-dr">0%</td>
+                <td class="text-center" id="detail-xp">2</td>
                 <td></td>
               </tr>
             </table>
             <table class="table-dark table-striped table-bordered w-100 mb-2">
               <thead>
                 <tr>
-                  <th class="pl-1">Special Attacks</th>
+                  <th class="pl-1">Special Abilities</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="detail-sa">
                 <tr>
                   <td class="pl-2">
                     None
@@ -85,20 +78,10 @@ $(() => {
                   <th class="pl-1">Items</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="detail-items">
                 <tr>
-                  <td class="">
-                    <a href="" class="rare"><img src="/img/item/goblins_teeth.png" alt="" />&nbsp;Goblin's Teeth</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="">
-                    <a href="" class="common"><img src="/img/item/x01_188.gif" alt="" />&nbsp;Goblin Ale</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="">
-                    <a href="" class="common"><img src="/img/item/x01_101.gif" alt="" />&nbsp;Head of Goblin</a>
+                  <td class="rare">
+                    <a href=""><img class="item-icon" src="/img/item/goblins_teeth.png" alt="" />&nbsp;Goblin's Teeth</a>
                   </td>
                 </tr>
               </tbody>
@@ -112,7 +95,9 @@ $(() => {
               <tbody>
                 <tr>
                   <td class="pl-2">
-                    <a href="" class="lemonchiffon">1F</a>, <a href="" class="lemonchiffon">2F</a>, <a href="" class="lemonchiffon">3F</a>, <a href="" class="lemonchiffon">4F</a>, <a href="" class="lemonchiffon">UW1</a>, <a href="" class="lemonchiffon">UW2</a>
+                    <ul class="list-inline m-0" id="detail-floors">
+                      <li class="list-inline-item">None</li>
+                    </ul>
                   </td>
                 </tr>
               </tbody>
@@ -126,7 +111,7 @@ $(() => {
                 <th class="pl-1">Note</th>
               </thead>
               <tbody>
-                <td class="px-1">特になし。</td>
+                <td class="px-1" id="detail-note">特になし。</td>
               </tbody>
             </table>
           </div>
@@ -136,16 +121,16 @@ $(() => {
   </div>
 </div>
 <h2>Creatures</h2>
-<table class="table-dark table-striped table-hover w-100">
+<table class="table-dark table-striped table-hover w-100" id="creature-list">
   <tbody>
-	<?php if (empty($creatures)) : ?>
+    <?php if (empty($creatures)) : ?>
       <tr>
         <td>No Data</td>
       </tr>
-	<?php endif; ?>
+    <?php endif; ?>
     <?php foreach ($creatures as $creature) : ?>
       <tr>
-        <td class="selectable" data-creatureid="">
+        <td class="selectable" data-creatureid="<?= $creature['creature_id'] ?>" tabindex="<?= $creature['creature_id'] ?>">
           <div class="d-table-cell align-middle">
             <img class="item-detail" src="/img/creature/<?= $creature['image_name'] ?>" alt="<?= $creature['name_en'] ?>" />
           </div>
@@ -155,7 +140,7 @@ $(() => {
           </div>
         </td>
       </tr>
-	<?php endforeach; ?>
+    <?php endforeach; ?>
   </tbody>
 </table>
 <?= $this->fetch('footer.phtml', ['footer' => $footer]) ?>

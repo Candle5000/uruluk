@@ -100,7 +100,7 @@ class CreatureModel extends Model {
 			  INNER JOIN special_attack SA 
 			    ON CSA.special_attack_id = SA.special_attack_id 
 			WHERE
-			  CSA.creature_id = 1 
+			  CSA.creature_id = :id 
 			ORDER BY
 			  SA.special_attack_id
 			SQL;
