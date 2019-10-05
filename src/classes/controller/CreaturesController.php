@@ -6,6 +6,7 @@ use \Exception;
 use Slim\Exception\NotFoundException;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Model\CreatureModel;
 
 /**
  * アイテムデータ コントローラ.
@@ -18,8 +19,10 @@ class CreaturesController extends Controller {
 		try {
 			$this->db->beginTransaction();
 
+			$creature = new CreatureModel($this->db, $this->logger);
 			$args = [
 				'header' => $this->getHeaderInfo(),
+				'creatures' => $creature->getCreatureNameList(),
 				'footer' => $this->getFooterInfo()
 			];
 
@@ -30,6 +33,18 @@ class CreaturesController extends Controller {
 		}
 
         return $this->renderer->render($response, 'creatures/index.phtml', $args);
+	}
+
+	public function detail(Request $request, Response $response, array $args) {
+		$this->logger->debug('creatureId : ' . $args['creatureId']);
+		$creature = new CreatureModel($this->db, $this->logger);
+		$detail = $creature->getCreatureDetailById($args['creatureId']);
+		if ($detail == null) throw new NotFoundException($request, $response);
+		$data = [
+			'creature' => $detail
+		];
+
+		return $response->withJson($data);
 	}
 
 }

@@ -21,6 +21,10 @@ return function (App $app) {
 
 	$app->get('/creatures', CreaturesController::class . ':index');
 
+	$app->get('/creatures/{creatureId}', CreaturesController::class . ':index');
+
+	$app->get('/creatures/detail/{creatureId}', CreaturesController::class . ':detail');
+
 	$app->get('/simulator', SimulatorController::class . ':index');
 
 	$app->get('/simulator/item/{itemClassName}', SimulatorController::class . ':item');

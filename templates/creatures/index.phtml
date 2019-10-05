@@ -2,7 +2,7 @@
 <script>
 $(() => {
 
-    $("td.selectable").click(() => {
+    $("td.selectable").on('click', () => {
         $("#modal-creature").modal("show");
     });
 
@@ -138,72 +138,24 @@ $(() => {
 <h2>Creatures</h2>
 <table class="table-dark table-striped table-hover w-100">
   <tbody>
-    <tr>
-      <td class="selectable">
-        <div class="d-table-cell align-middle">
-          <img class="item-detail" src="/img/creature/goblin.png" alt="" />
-        </div>
-        <div class="d-table-cell align-middle pl-2">
-          <div class="m-0">ゴブリン</div>
-          <div class="m-0">Goblin</div>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td class="selectable">
-        <div class="d-table-cell align-middle">
-          <img class="item-detail" src="/img/creature/gnoll.png" alt="" />
-        </div>
-        <div class="d-table-cell align-middle pl-2">
-          <div class="m-0">ノール</div>
-          <div class="m-0">Gnoll</div>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td class="selectable">
-        <div class="d-table-cell align-middle">
-          <img class="item-detail" src="/img/creature/green_slime.png" alt="" />
-        </div>
-        <div class="d-table-cell align-middle pl-2">
-          <div class="m-0">グリーンスライム</div>
-          <div class="m-0">Green Slime</div>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td class="selectable">
-        <div class="d-table-cell align-middle">
-          <img class="item-detail" src="/img/creature/roper.png" alt="" />
-        </div>
-        <div class="d-table-cell align-middle pl-2">
-          <div class="m-0">ローパー</div>
-          <div class="m-0">Roper</div>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td class="selectable">
-        <div class="d-table-cell align-middle">
-          <img class="item-detail" src="/img/creature/goblin_mage.png" alt="" />
-        </div>
-        <div class="d-table-cell align-middle pl-2">
-          <div class="m-0">ゴブリンメイジ</div>
-          <div class="m-0">Goblin Mage</div>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td class="selectable">
-        <div class="d-table-cell align-middle">
-          <img class="item-detail" src="/img/creature/giant_scarab.png" alt="" />
-        </div>
-        <div class="d-table-cell align-middle pl-2">
-          <div class="m-0">スカラベ</div>
-          <div class="m-0">Giant Scarab</div>
-        </div>
-      </td>
-    </tr>
+	<?php if (empty($creatures)) : ?>
+      <tr>
+        <td>No Data</td>
+      </tr>
+	<?php endif; ?>
+    <?php foreach ($creatures as $creature) : ?>
+      <tr>
+        <td class="selectable" data-creatureid="">
+          <div class="d-table-cell align-middle">
+            <img class="item-detail" src="/img/creature/<?= $creature['image_name'] ?>" alt="<?= $creature['name_en'] ?>" />
+          </div>
+          <div class="d-table-cell align-middle pl-2 <?= $creature['boss'] ? 'boss' : '' ?>">
+            <div class="m-0"><?= $creature['name_ja'] ?></div>
+            <div class="m-0"><?= $creature['name_en'] ?></div>
+          </div>
+        </td>
+      </tr>
+	<?php endforeach; ?>
   </tbody>
 </table>
 <?= $this->fetch('footer.phtml', ['footer' => $footer]) ?>
