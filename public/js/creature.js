@@ -22,15 +22,24 @@ $(function() {
 			$("#detail-voh").text((creature.voh ? creature.voh : '?') + '%');
 			$("#detail-dr").text((creature.dr ? creature.dr : '?') + '%');
 			$("#detail-xp").text(creature.xp ? creature.xp : '?');
+			if (creature.boss == 1) {
+				$("#detail-name").addClass("boss");
+			} else {
+				$("#detail-name").removeClass("boss");
+			}
 
 			const saTbody = $("#detail-sa");
-			saTbody.children().remove();
+			saTbody.children('tr').remove();
 			if (creature.special_attacks.length == 0) {
 				saTbody.append($("<tr>").append($("<td>").addClass("pl-2").text("None")));
 			}
 			creature.special_attacks.forEach(sa => {
-				saTbody.append($("<tr>").append($("<td>").addClass("pl-2").text(sa.name)));
+				const row = $($("#modal-sa-row").html());
+				row.find(".sa-name").text(sa.name);
+				row.find(".sa-note").attr('title', sa.note);
+				saTbody.append(row);
 			});
+			saTbody.find("a.sa-note").tooltip();
 
 			const itemTbody = $("#detail-items");
 			itemTbody.children().remove();
