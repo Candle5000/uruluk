@@ -7,12 +7,15 @@ $(function() {
 			type: 'GET',
 		}).done(data => {
 			const creature = data.creature;
-			$("#detail-image").attr('src', '/img/creature/' + creature.image_name);
+			const imgName = creature.image_name ?
+					creature.image_name : 'creature_noimg.png';
+			const as = creature.as ? creature.as == -1 ? '-' : creature.as : '?';
+			$("#detail-image").attr('src', '/img/creature/' + imgName);
 			$("#detail-name-ja").text(creature.name_ja);
 			$("#detail-name-en").text(creature.name_en);
 			$("#detail-min-ad").text(creature.min_ad ? creature.min_ad : '?');
 			$("#detail-max-ad").text(creature.max_ad ? creature.max_ad : '?');
-			$("#detail-as").text(creature.as ? creature.as : '?');
+			$("#detail-as").text(as);
 			$("#detail-def").text(creature.def ? creature.def : '?');
 			$("#detail-dex").text(creature.dex ? creature.dex : '?');
 			$("#detail-vit").text(creature.vit ? creature.vit : '?');

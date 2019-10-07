@@ -132,7 +132,7 @@
       <tr>
         <td class="selectable" data-creatureid="<?= $creature['creature_id'] ?>" tabindex="<?= $creature['creature_id'] ?>">
           <div class="d-table-cell align-middle">
-            <img class="item-detail" src="/img/creature/<?= $creature['image_name'] ?>" alt="<?= $creature['name_en'] ?>" />
+            <img class="item-detail" src="/img/creature/<?= $creature['image_name'] == null ? 'creature_noimg.png' : $creature['image_name'] ?>" alt="<?= $creature['name_en'] ?>" />
           </div>
           <div class="d-table-cell align-middle pl-2 <?= $creature['boss'] ? 'boss' : '' ?>">
             <div class="m-0"><?= $creature['name_ja'] ?></div>
