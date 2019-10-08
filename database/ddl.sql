@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2019/10/05 13:42:46
+-- Date/Time    : 2019/10/07 19:59:22
 -- Author       : Candle
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -105,10 +105,12 @@ create table `creature` (
   , `xp` INT comment '経験値'
   , `note` TEXT comment '説明'
   , `image_name` VARCHAR(32) comment '画像名称'
+  , `sort_key` INT not null comment 'ソート順'
   , constraint `creature_PKC` primary key (`creature_id`)
 ) comment 'クリーチャー' ;
 
-alter table `creature` add unique `creature_IX1` (`boss`,`creature_id`) ;
+create unique index `creature_IX1`
+  on `creature`(`boss`,`sort_key`);
 
 -- クリーチャードロップアイテム
 --* BackupToTempTable

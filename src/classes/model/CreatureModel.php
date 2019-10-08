@@ -17,7 +17,8 @@ class CreatureModel extends Model {
 			FROM
 			  creature
 			ORDER BY
-			  creature_id
+			  boss
+			  , sort_key
 			SQL;
 		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
