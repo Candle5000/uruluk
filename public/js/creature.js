@@ -1,6 +1,31 @@
 $(function() {
 
-    $("td.selectable").on('click', function() {
+	let autoTransition = false;
+
+	window.addEventListener('popstate', e => {
+		if (location.pathname.split('/').length == 3) {
+			if ($("#modal-creature").hasClass('show')) {
+				autoTransition = true;
+				$("#modal-creature").modal('hide');
+			}
+			autoTransition = true;
+			$("#creature-" + location.pathname.split('/')[2]).click();
+		} else if ($("#modal-creature").hasClass('show')) {
+			autoTransition = true;
+			$("#modal-creature").modal('hide');
+		}
+	});
+
+	$("#modal-creature").on('hide.bs.modal', function() {
+		if (!autoTransition && location.pathname.split('/').length != 2) {
+			history.pushState(null, null, '/creatures');
+		}
+		autoTransition = false;
+	});
+
+	$("td.selectable").on('click', function() {
+		const at = autoTransition;
+		autoTransition = false;
 		const creatureId = $(this).data('creatureid');
 		$.ajax({
 			url: '/creatures/detail/' + creatureId,
@@ -66,8 +91,17 @@ $(function() {
 				floors.append($("<li>").addClass("list-inline-item").text(floor.short_name));
 			});
 
+			if (!at && location.pathname.split('/').length != 3) {
+				history.pushState(null, null, '/creatures/' + creatureId);
+			}
+
 			$("#modal-creature").modal("show");
 		});
-    });
+	});
+
+	if (location.pathname.split('/').length == 3) {
+		autoTransition = true;
+		$("#creature-" + location.pathname.split('/')[2]).click();
+	}
 
 });

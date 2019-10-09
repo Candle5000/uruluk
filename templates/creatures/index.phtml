@@ -147,7 +147,7 @@
     <?php endif; ?>
     <?php foreach ($creatures as $creature) : ?>
       <tr>
-        <td class="selectable" data-creatureid="<?= $creature['creature_id'] ?>" tabindex="<?= $creature['creature_id'] ?>">
+        <td class="selectable" id="creature-<?= $creature['creature_id'] ?>" data-creatureid="<?= $creature['creature_id'] ?>" tabindex="<?= $creature['creature_id'] ?>">
           <div class="d-table-cell align-middle">
             <img class="item-detail" src="/img/creature/<?= $creature['image_name'] == null ? 'creature_noimg.png' : $creature['image_name'] ?>" alt="<?= $creature['name_en'] ?>" />
           </div>

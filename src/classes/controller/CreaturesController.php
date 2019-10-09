@@ -13,7 +13,7 @@ use Model\CreatureModel;
  */
 class CreaturesController extends Controller {
 
-	public function index(Request $request, Response $response) {
+	public function index(Request $request, Response $response, array $args) {
 		$this->title = 'クリーチャーデータ';
 		$this->scripts[] = '/js/creature.js';
 
@@ -21,6 +21,12 @@ class CreaturesController extends Controller {
 			$this->db->beginTransaction();
 
 			$creature = new CreatureModel($this->db, $this->logger);
+
+			if (array_key_exists('creatureId', $args)) {
+				$detail = $creature->getCreatureDetailById($args['creatureId']);
+				if ($detail == null) throw new NotFoundException($request, $response);
+			}
+
 			$args = [
 				'header' => $this->getHeaderInfo(),
 				'creatures' => $creature->getCreatureNameList(),
@@ -37,7 +43,6 @@ class CreaturesController extends Controller {
 	}
 
 	public function detail(Request $request, Response $response, array $args) {
-		$this->logger->debug('creatureId : ' . $args['creatureId']);
 		$creature = new CreatureModel($this->db, $this->logger);
 		$detail = $creature->getCreatureDetailById($args['creatureId']);
 		if ($detail == null) throw new NotFoundException($request, $response);
