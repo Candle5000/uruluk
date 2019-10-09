@@ -50,6 +50,7 @@ tags
 
 # Uruluk
 /public/img/item
+/public/img/creature
 /public/favicon.ico
 /templates/privacy/index.phtml
 

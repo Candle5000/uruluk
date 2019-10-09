@@ -4,6 +4,7 @@ use Slim\App;
 use Controller\TopMenuController;
 use Controller\PrivacyPolicyController;
 use Controller\ItemsController;
+use Controller\CreaturesController;
 use Controller\SimulatorController;
 use Controller\ShortURLController;
 
@@ -17,6 +18,12 @@ return function (App $app) {
 	$app->get('/items', ItemsController::class . ':index');
 
 	$app->get('/items/rare/{itemClassName}', ItemsController::class . ':rareItem');
+
+	$app->get('/creatures', CreaturesController::class . ':index');
+
+	$app->get('/creatures/{creatureId}', CreaturesController::class . ':index');
+
+	$app->get('/creatures/detail/{creatureId}', CreaturesController::class . ':detail');
 
 	$app->get('/simulator', SimulatorController::class . ':index');
 

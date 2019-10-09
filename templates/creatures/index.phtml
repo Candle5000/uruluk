@@ -1,0 +1,163 @@
+<?= $this->fetch('header.phtml', ['header' => $header]) ?>
+<div class="modal fade" id="modal-creature" tabindex="-1" role="dialog" aria-labelledby="modal-creaturesTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content bg-darkgreen">
+      <div class="modal-header">
+        <div class="modal-title text-middle" id="modal-creaturesTitle">
+          <div class="d-table-cell align-middle">
+            <img class="item-detail" id="detail-image" src="/img/creature/goblin.png" alt="" />
+          </div>
+          <div class="d-table-cell align-middle pl-2" id="detail-name">
+            <div class="m-0" id="detail-name-ja">ゴブリン</div>
+            <div class="m-0" id="detail-name-en">Goblin</div>
+          </div>
+        </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="button-close-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body small">
+        <div class="row">
+          <div class="col-12 col-sm-6">
+            <table class="table-dark table-striped table-bordered w-100 mb-2">
+              <colgroup>
+                <col class="w-20"/>
+                <col class="w-20"/>
+                <col class="w-20"/>
+                <col class="w-20"/>
+                <col class="w-20"/>
+              </colgroup>
+              <tr>
+                <td class="text-center" colspan="2">AD</td>
+                <td class="text-center">AS</td>
+                <td class="text-center">Def</td>
+                <td class="text-center">Dex</td>
+              </tr>
+              <tr>
+                <td class="text-center" colspan="2">
+                  <span id="detail-min-ad">1</span>～<span id="detail-max-ad">4</span>
+                </td>
+                <td class="text-center" id="detail-as">29</td>
+                <td class="text-center" id="detail-def">0</td>
+                <td class="text-center" id="detail-dex">4</td>
+              </tr>
+              <tr>
+                <td class="text-center">Vit</td>
+                <td class="text-center">VoH</td>
+                <td class="text-center">DR</td>
+                <td class="text-center">XP</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="text-center" id="detail-vit">15</td>
+                <td class="text-center" id="detail-voh">0%</td>
+                <td class="text-center" id="detail-dr">0%</td>
+                <td class="text-center" id="detail-xp">2</td>
+                <td></td>
+              </tr>
+            </table>
+            <table class="table-dark table-striped table-bordered w-100 mb-2">
+              <thead>
+                <tr>
+                  <th class="pl-1">Special Abilities</th>
+                </tr>
+              </thead>
+              <tbody id="detail-sa">
+                <template id="modal-sa-row">
+                  <tr>
+                    <td class="pl-2">
+                      <span class="sa-name"></span>
+                      <a href="javascript:void(0);" class="sa-note item-skill" data-toggle="tooltip" data-placement="top" title=""><i class="fas fa-exclamation-circle"></i></a>
+                    </td>
+                  </tr>
+                </template>
+                <tr>
+                  <td class="pl-2">
+                    None
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-12 col-sm-6">
+            <table class="table-dark table-striped table-bordered w-100 mb-2">
+              <thead>
+                <tr>
+                  <th class="pl-1">Items</th>
+                </tr>
+              </thead>
+              <tbody id="detail-items">
+                <template id="modal-item-row">
+                  <tr>
+                    <td>
+                      <a>
+                        <img class="item-icon" /><span class="pl-1"></span>
+                      </a>
+                    </td>
+                  </tr>
+                </template>
+                <tr>
+                  <td class="pl-2">
+                    None
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="table-dark table-striped table-bordered w-100 mb-2">
+              <thead>
+                <tr>
+                  <th class="pl-1">Floors</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="pl-2">
+                    <ul class="list-inline m-0" id="detail-floors">
+                      <li class="list-inline-item">None</li>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <table class="table-dark table-striped table-bordered w-100 mb-2">
+              <thead>
+                <th class="pl-1">Note</th>
+              </thead>
+              <tbody>
+                <td class="px-1" id="detail-note">特になし。</td>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<h2>Creatures</h2>
+<table class="table-dark table-striped table-hover w-100" id="creature-list">
+  <tbody>
+    <?php if (empty($creatures)) : ?>
+      <tr>
+        <td>No Data</td>
+      </tr>
+    <?php endif; ?>
+    <?php foreach ($creatures as $creature) : ?>
+      <tr>
+        <td class="selectable" id="creature-<?= $creature['creature_id'] ?>" data-creatureid="<?= $creature['creature_id'] ?>" tabindex="<?= $creature['creature_id'] ?>">
+          <div class="d-table-cell align-middle">
+            <img class="item-detail" src="/img/creature/<?= $creature['image_name'] == null ? 'creature_noimg.png' : $creature['image_name'] ?>" alt="<?= $creature['name_en'] ?>" />
+          </div>
+          <div class="d-table-cell align-middle pl-2 <?= $creature['boss'] ? 'boss' : '' ?>">
+            <div class="m-0"><?= $creature['name_ja'] ?></div>
+            <div class="m-0"><?= $creature['name_en'] ?></div>
+          </div>
+        </td>
+      </tr>
+    <?php endforeach; ?>
+  </tbody>
+</table>
+<?= $this->fetch('footer.phtml', ['footer' => $footer]) ?>
