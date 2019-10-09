@@ -39,7 +39,7 @@ class CreaturesController extends Controller {
 			throw $e;
 		}
 
-        return $this->renderer->render($response, 'creatures/index.phtml', $args);
+		return $this->renderer->render($response, 'creatures/index.phtml', $args);
 	}
 
 	public function detail(Request $request, Response $response, array $args) {
