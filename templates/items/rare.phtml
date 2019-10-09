@@ -44,7 +44,7 @@
   <h3>No Data</h3>
 <?php endif; ?>
 <?php foreach ($items['rare'] as $item) : ?>
-  <div class="card mb-2 bg-darkblue">
+  <div class="card mb-2 bg-darkblue" id="<?= $item['item_id'] ?>">
     <div class="row">
       <div class="col-12 col-md-3 text-center my-3">
         <img src="/img/item/<?= $item['image_name'] ?>" alt="<?= $item['name_en'] ?>" class="item-detail" />
@@ -89,7 +89,7 @@
   <h3>No Data</h3>
 <?php endif; ?>
 <?php foreach ($items['artifact'] as $item) : ?>
-  <div class="card mb-2 bg-darkblue">
+  <div class="card mb-2 bg-darkblue" id="<?= $item['item_id'] ?>">
     <div class="row">
       <div class="col-12 col-md-3 text-center my-3">
         <img src="/img/item/<?= $item['image_name'] ?>" alt="<?= $item['name_en'] ?>" class="item-detail" />

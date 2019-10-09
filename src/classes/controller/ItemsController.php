@@ -35,6 +35,7 @@ class ItemsController extends Controller {
 
 	public function rareItem(Request $request, Response $response, array $args) {
 		$this->title = ucfirst($args['itemClassName']) . ' レアアイテム';
+		$this->scripts[] = '/js/item.js';
 
 		try {
 			$this->db->beginTransaction();

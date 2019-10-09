@@ -42,17 +42,19 @@ $(function() {
 			saTbody.find("a.sa-note").tooltip();
 
 			const itemTbody = $("#detail-items");
-			itemTbody.children().remove();
+			itemTbody.children('tr').remove();
 			if (creature.items.length == 0) {
 				itemTbody.append($("<tr>").append($("<td>").addClass("pl-2").text("None")));
 			}
 			creature.items.forEach(item => {
-				const img = $("<img>").attr('src', '/img/item/' + item.image_name);
-				img.attr('alt', item.name_en).addClass('item-icon');
-				const span = $("<span>").text(' ' + item.name_en);
-				const td = $("<td>").append(img).append(span);
-				if (item.rarity != 'common') td.addClass(item.rarity);
-				itemTbody.append($("<tr>").append(td));
+				const row = $($("#modal-item-row").html());
+				const link = '/items/rare/' + item.item_class + '#' + item.item_id;
+				const img = item.image_name ? item.image_name : 'item_noimg.png';
+				row.find('a').attr('href', link).addClass(item.rarity);
+				row.find('img')
+						.attr('src', '/img/item/' + img).attr('alt', item.name_en);
+				row.find('span').text(item.name_en);
+				itemTbody.append(row);
 			});
 
 			const floors = $("#detail-floors");
