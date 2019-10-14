@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2019/10/07 19:59:22
+-- Date/Time    : 2019/10/14 3:15:32
 -- Author       : Candle
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -171,13 +171,13 @@ drop table if exists `floor_creature` cascade;
 --* RestoreFromTempTable
 create table `floor_creature` (
   `floor_id` INT not null comment 'フロアID'
+  , `event_id` INT default 0 not null comment 'イベントID'
   , `creature_id` INT not null comment 'クリーチャーID'
-  , `event_id` INT comment 'イベントID'
-  , constraint `floor_creature_PKC` primary key (`floor_id`,`creature_id`)
+  , constraint `floor_creature_PKC` primary key (`floor_id`,`event_id`,`creature_id`)
 ) comment 'フロアクリーチャー' ;
 
 create unique index `floor_creature_IX1`
-  on `floor_creature`(`creature_id`,`floor_id`);
+  on `floor_creature`(`creature_id`,`floor_id`,`event_id`);
 
 -- フロア移動先
 --* BackupToTempTable

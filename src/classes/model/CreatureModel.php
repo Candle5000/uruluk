@@ -174,6 +174,7 @@ class CreatureModel extends Model {
 			  FC.creature_id = :id 
 			ORDER BY
 			  F.sort_key
+			  , E.event_id
 			SQL;
 		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);

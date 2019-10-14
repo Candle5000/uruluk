@@ -83,13 +83,21 @@ $(function() {
 			});
 
 			const floors = $("#detail-floors");
-			floors.children().remove();
+			floors.children('li').remove();
 			if (creature.floors.length == 0) {
 				floors.append($("<li>").addClass("list-inline-item").text("None"));
 			}
 			creature.floors.forEach(floor => {
-				floors.append($("<li>").addClass("list-inline-item").text(floor.short_name));
+				const li = $($("#modal-floor-li").html());
+				li.find(".floor-name").text(floor.short_name);
+				if (floor.note) {
+					li.find(".floor-note").attr('title', floor.note);
+				} else {
+					li.find(".floor-note").remove();
+				}
+				floors.append(li);
 			});
+			floors.find("a.floor-note").tooltip();
 
 			if (!at && location.pathname.split('/').length != 3) {
 				history.pushState(null, null, '/creatures/' + creatureId);
