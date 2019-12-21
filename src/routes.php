@@ -28,6 +28,8 @@ return function (App $app) {
 
 	$app->get('/floors', FloorsController::class . ':index');
 
+	$app->get('/floors/{floorId}', FloorsController::class . ':detail');
+
 	$app->get('/simulator', SimulatorController::class . ':index');
 
 	$app->get('/simulator/item/{itemClassName}', SimulatorController::class . ':item');

@@ -1,0 +1,91 @@
+<?= $this->fetch('header.phtml', ['header' => $header]) ?>
+<div>
+  <a href="#collapse-menu" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-menu">Menu<i class="fas fa-chevron-circle-down"></i></a>
+</div>
+<div class="collapse" id="collapse-menu">
+  <?= $this->fetch('floors/menu.phtml', ['floorIndex' => $floorIndex]) ?>
+</div>
+<h2>12Fb Harvest</h2>
+<h2>刈り取る者</h2>
+<div class="card mb-2 bg-darkblue img-floor">
+  <div class="text-center m-auto">
+    No Image
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-sm-6">
+      <div class="lemonchiffon">Rare Items</div>
+      <table class="table-dark table-striped table-bordered w-100 mb-2">
+        <tbody>
+          <tr>
+            <td>
+              <a href="javascript:void(0);" class="rare">
+                <img class="item-icon" src="/img/item/the_blaze.png" /><span class="pl-1">The Blaze</span>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href="javascript:void(0);" class="rare">
+                <img class="item-icon" src="/img/item/echoes.png" /><span class="pl-1">Echoes</span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-12 col-sm-6">
+      <div class="lemonchiffon">Creatures</div>
+      <table class="table-dark table-striped table-bordered w-100 mb-2">
+        <tbody>
+          <tr>
+            <td>
+              <a href="javascript:void(0);" class="text-light">
+                <img class="item-icon" src="/img/creature/scourge.png" /><span class="pl-1">Scourge</span>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href="javascript:void(0);" class="text-light">
+                <img class="item-icon" src="/img/creature/sprite.png" /><span class="pl-1">Sprite</span>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href="javascript:void(0);" class="boss">
+                <img class="item-icon" src="/img/creature/lunatic_cresik.png" /><span class="pl-1">Lunatic Cresik</span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div>
+        <a href="#collapse-creatures" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-creatures">Additional Creatures<i class="fas fa-chevron-circle-down"></i></a>
+      </div>
+      <div class="collapse" id="collapse-creatures">
+        <table class="table-dark table-striped table-bordered w-100 mb-2">
+          <tbody>
+            <tr>
+              <td>
+                <a href="javascript:void(0);" class="text-light">
+                  <img class="item-icon" src="/img/creature/wisp_p.png" /><span class="pl-1">Will o' the Wisp (P)</span>
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="javascript:void(0);" class="boss">
+                  <img class="item-icon" src="/img/creature/skull_wheels.png" /><span class="pl-1">Skull Wheels</span>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<?= $this->fetch('footer.phtml', ['footer' => $footer]) ?>

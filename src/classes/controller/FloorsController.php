@@ -32,7 +32,32 @@ class FloorsController extends Controller {
 			$this->db->rollBack();
 			throw $e;
 		}
+
 		return $this->renderer->render($response, 'floors/index.phtml', $args);
+	}
+
+	public function detail(Request $request, Response $response, array $args) {
+		$this->title = 'フロアデータ';
+		$this->scripts[] = '/js/floor.js?id=00022';
+
+		try {
+			$this->db->beginTransaction();
+
+			$floor = new FloorModel($this->db, $this->logger);
+
+			$args = [
+				'header' => $this->getHeaderInfo(),
+				'floorIndex' => $floor->getFloorIndex(),
+				'footer' => $this->getFooterInfo()
+			];
+
+			$this->db->commit();
+		} catch (Exception $e) {
+			$this->db->rollBack();
+			throw $e;
+		}
+
+		return $this->renderer->render($response, 'floors/floor.phtml', $args);
 	}
 
 }
