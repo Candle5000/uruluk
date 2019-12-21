@@ -1,0 +1,15 @@
+<div class="card mb-2 bg-darkblue">
+  <div class="card-body">
+    <?php foreach ($floorIndex as $floorGroup) : ?>
+      <h4 class="card-title"><?= $floorGroup['name_en'] ?></h4>
+      <ul class="list-inline mb-4">
+        <?php foreach ($floorGroup['floors'] as $floor) : ?>
+          <li class="list-inline-item">
+            <a href="/floors/<?= $floor['floor_id'] ?>" title="<?= $floor['name_en'] ?>" class="text-light"><?= $floor['short_name'] ?></a>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+    <?php endforeach; ?>
+  </div>
+</div>
+
