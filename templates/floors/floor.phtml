@@ -5,8 +5,8 @@
 <div class="collapse" id="collapse-menu">
   <?= $this->fetch('floors/menu.phtml', ['floorIndex' => $floorIndex]) ?>
 </div>
-<h2>12Fb Harvest</h2>
-<h2>刈り取る者</h2>
+<h2><?= $detail['short_name'] ?> / <?= $detail['name_en'] ?></h2>
+<h2><?= $detail['name_ja'] ?></h2>
 <div class="card mb-2 bg-darkblue img-floor">
   <div class="text-center m-auto">
     No Image
@@ -18,20 +18,18 @@
       <div class="lemonchiffon">Rare Items</div>
       <table class="table-dark table-striped table-bordered w-100 mb-2">
         <tbody>
-          <tr>
-            <td>
-              <a href="javascript:void(0);" class="rare">
-                <img class="item-icon" src="/img/item/the_blaze.png" /><span class="pl-1">The Blaze</span>
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <a href="javascript:void(0);" class="rare">
-                <img class="item-icon" src="/img/item/echoes.png" /><span class="pl-1">Echoes</span>
-              </a>
-            </td>
-          </tr>
+          <?php if (empty($detail['items'])) : ?>
+            <tr><td>No Items</td></tr>
+          <?php endif; ?>
+          <?php foreach ($detail['items'] as $item) : ?>
+            <tr>
+              <td>
+                <span class="<?= $item['rarity'] ?>">
+                  <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
+                </span>
+              </td>
+            </tr>
+          <?php endforeach; ?>
         </tbody>
       </table>
     </div>
@@ -39,52 +37,43 @@
       <div class="lemonchiffon">Creatures</div>
       <table class="table-dark table-striped table-bordered w-100 mb-2">
         <tbody>
-          <tr>
-            <td>
-              <a href="javascript:void(0);" class="text-light">
-                <img class="item-icon" src="/img/creature/scourge.png" /><span class="pl-1">Scourge</span>
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <a href="javascript:void(0);" class="text-light">
-                <img class="item-icon" src="/img/creature/sprite.png" /><span class="pl-1">Sprite</span>
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <a href="javascript:void(0);" class="boss">
-                <img class="item-icon" src="/img/creature/lunatic_cresik.png" /><span class="pl-1">Lunatic Cresik</span>
-              </a>
-            </td>
-          </tr>
+          <?php if (empty($detail['creatures']['default'])) : ?>
+            <tr><td>No Creatures</td></tr>
+          <?php endif; ?>
+          <?php foreach ($detail['creatures']['default'] as $creature) : ?>
+            <tr>
+              <td>
+                <a href="/creatures/<?= $creature['creature_id'] ?>" class="<?= $creature['boss'] ? 'boss' : 'text-light' ?>">
+                  <img class="item-icon" src="/img/creature/<?= $creature['image_name'] ?>" /><span class="pl-1"><?= $creature['name_en'] ?></span>
+                </a>
+              </td>
+            </tr>
+          <?php endforeach; ?>
         </tbody>
       </table>
-      <div>
-        <a href="#collapse-creatures" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-creatures">Additional Creatures<i class="fas fa-chevron-circle-down"></i></a>
-      </div>
-      <div class="collapse" id="collapse-creatures">
-        <table class="table-dark table-striped table-bordered w-100 mb-2">
-          <tbody>
-            <tr>
-              <td>
-                <a href="javascript:void(0);" class="text-light">
-                  <img class="item-icon" src="/img/creature/wisp_p.png" /><span class="pl-1">Will o' the Wisp (P)</span>
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <a href="javascript:void(0);" class="boss">
-                  <img class="item-icon" src="/img/creature/skull_wheels.png" /><span class="pl-1">Skull Wheels</span>
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <?php if (!empty($detail['creatures']['events'])) : ?>
+        <div>
+          <a href="#collapse-creatures" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-creatures">Additional Creatures<i class="fas fa-chevron-circle-down"></i></a>
+        </div>
+        <div class="collapse" id="collapse-creatures">
+          <?php foreach ($detail['creatures']['events'] as $event) : ?>
+            <div class="lemonchiffon"><?= $event['note'] ?></div>
+            <table class="table-dark table-striped table-bordered w-100 mb-2">
+              <tbody>
+                <?php foreach ($event['creatures'] as $creature) : ?>
+                  <tr>
+                    <td>
+                      <a href="/creatures/<?= $creature['creature_id'] ?>" class="<?= $creature['boss'] ? 'boss' : 'text-light' ?>">
+                        <img class="item-icon" src="/img/creature/<?= $creature['image_name'] ?>" /><span class="pl-1"><?= $creature['name_en'] ?></span>
+                      </a>
+                    </td>
+                  </tr>
+                <?php endforeach; ?>
+              </tbody>
+            </table>
+          <?php endforeach; ?>
+        </div>
+      <?php endif; ?>
     </div>
   </div>
 </div>

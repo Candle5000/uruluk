@@ -44,10 +44,14 @@ class FloorsController extends Controller {
 			$this->db->beginTransaction();
 
 			$floor = new FloorModel($this->db, $this->logger);
+			$detail = $floor->getFloorDetail($args['floorId']);
+
+			if ($detail == null) throw new NotFoundException($request, $response);
 
 			$args = [
 				'header' => $this->getHeaderInfo(),
 				'floorIndex' => $floor->getFloorIndex(),
+				'detail' => $detail,
 				'footer' => $this->getFooterInfo()
 			];
 
