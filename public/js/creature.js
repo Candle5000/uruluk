@@ -89,7 +89,7 @@ $(function() {
 			}
 			creature.floors.forEach(floor => {
 				const li = $($("#modal-floor-li").html());
-				li.find(".floor-name").text(floor.short_name);
+				li.find(".floor-name").text(floor.short_name).attr('href', "/floors/" + floor.floor_id);
 				if (floor.note) {
 					li.find(".floor-note").attr('title', floor.note);
 				} else {

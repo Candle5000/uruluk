@@ -142,6 +142,9 @@ img.item-icon {
 	image-rendering:-o-crisp-edges;
 	image-rendering:pixelated;
 }
+div.img-floor {
+	min-height: 128px;
+}
 
 /* Simulator */
 .table-item-attrs div.d-table-cell {

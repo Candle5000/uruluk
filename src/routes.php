@@ -5,6 +5,7 @@ use Controller\TopMenuController;
 use Controller\PrivacyPolicyController;
 use Controller\ItemsController;
 use Controller\CreaturesController;
+use Controller\FloorsController;
 use Controller\SimulatorController;
 use Controller\ShortURLController;
 
@@ -24,6 +25,10 @@ return function (App $app) {
 	$app->get('/creatures/{creatureId}', CreaturesController::class . ':index');
 
 	$app->get('/creatures/detail/{creatureId}', CreaturesController::class . ':detail');
+
+	$app->get('/floors', FloorsController::class . ':index');
+
+	$app->get('/floors/{floorId}', FloorsController::class . ':detail');
 
 	$app->get('/simulator', SimulatorController::class . ':index');
 
