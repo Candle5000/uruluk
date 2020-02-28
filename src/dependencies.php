@@ -41,7 +41,6 @@ return function (App $app) {
 		$settings = $c->get('settings')['google'];
 		$google = [
 			'analytics_id' => $settings['analytics_id'],
-			'adsense_id' => $settings['adsense_id'],
 		];
 		return $google;
 	};
