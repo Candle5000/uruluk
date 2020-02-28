@@ -27,6 +27,7 @@ return [
 		// Google Service Settings
 		'google' => [
 			'analytics_id' => '',
+			'adsense_id' => '',
 		],
 	],
 ];
