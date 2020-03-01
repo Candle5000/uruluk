@@ -351,7 +351,7 @@ $(function() {
 			imageColor: "#787878",
 		});
 
-		const attrName = $(this).text() ? $(this).text() : "Skill";
+		const attrName = $(this).data("attr");
 		const charaClass = $("select.character-class").val();
 		modalItemIndex = 0;
 		modalItems.shift();
@@ -374,8 +374,8 @@ $(function() {
 			let b_val = 0.0;
 
 			if (attrName == 'Skill') {
-				a_val = a.skill_en ? a.skill_en : a["skill_" + $("select.character-class").val() + "_en"];
-				b_val = b.skill_en ? b.skill_en : b["skill_" + $("select.character-class").val() + "_en"];
+				a_val = a.skill_en ? a.skill_en : a["skill_" + charaClass + "_en"];
+				b_val = b.skill_en ? b.skill_en : b["skill_" + charaClass + "_en"];
 				if (a_val === null) a_val = "";
 				if (b_val === null) b_val = "";
 			} else {
