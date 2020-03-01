@@ -351,7 +351,7 @@ $(function() {
 			imageColor: "#787878",
 		});
 
-		const attrName = $(this).text();
+		const attrName = $(this).text() ? $(this).text() : "Skill";
 		const charaClass = $("select.character-class").val();
 		modalItemIndex = 0;
 		modalItems.shift();
@@ -371,60 +371,68 @@ $(function() {
 		// アイテムをソート
 		modalItems.sort((a, b) => {
 			let a_val = 0.0;
-			a.attributes.forEach(attr => {
-				if (attrName == 'AD') {
-					if (attr.short_name != 'MinAD' && attr.short_name != 'MaxAD' && attr.short_name != 'Str') return;
-				} else {
-					if (attr.short_name != attrName) return;
-				}
-				const valueMax = attr.value === null ? attr["value_" + charaClass] : attr.value;
-				const maxRequired = attr.max_required ? attr.max_required : attr["max_required_" + charaClass];
-				let value;
-				let color = attr.color;
-
-				// 性能変動値の計算
-				if (attr.based_source && maxRequired && maxRequired != 0 && maxRequired > parseInt($(".character-" + attr.based_source).val())) {
-					value = Math.round(valueMax * parseInt($(".character-" + attr.based_source).val()) * 10 / maxRequired) / 10;
-				} else {
-					value = parseFloat(valueMax == null ? 0 : valueMax);
-				}
-
-				// ADの場合、Strを換算
-				if (attrName == 'AD' && attr.short_name == 'Str') {
-					value *= 1.5;
-				}
-
-				// 合計を計算
-				a_val += value;
-			});
-
 			let b_val = 0.0;
-			b.attributes.forEach(attr => {
-				if (attrName == 'AD') {
-					if (attr.short_name != 'MinAD' && attr.short_name != 'MaxAD' && attr.short_name != 'Str') return;
-				} else {
-					if (attr.short_name != attrName) return;
-				}
-				const valueMax = attr.value === null ? attr["value_" + charaClass] : attr.value;
-				const maxRequired = attr.max_required ? attr.max_required : attr["max_required_" + charaClass];
-				let value;
-				let color = attr.color;
 
-				// 性能変動値の計算
-				if (attr.based_source && maxRequired && maxRequired != 0 && maxRequired > parseInt($(".character-" + attr.based_source).val())) {
-					value = Math.round(valueMax * parseInt($(".character-" + attr.based_source).val()) * 10 / maxRequired) / 10;
-				} else {
-					value = parseFloat(valueMax == null ? 0 : valueMax);
-				}
+			if (attrName == 'Skill') {
+				a_val = a.skill_en ? a.skill_en : a["skill_" + $("select.character-class").val() + "_en"];
+				b_val = b.skill_en ? b.skill_en : b["skill_" + $("select.character-class").val() + "_en"];
+				if (a_val === null) a_val = "";
+				if (b_val === null) b_val = "";
+			} else {
+				a.attributes.forEach(attr => {
+					if (attrName == 'AD') {
+						if (attr.short_name != 'MinAD' && attr.short_name != 'MaxAD' && attr.short_name != 'Str') return;
+					} else {
+						if (attr.short_name != attrName) return;
+					}
+					const valueMax = attr.value === null ? attr["value_" + charaClass] : attr.value;
+					const maxRequired = attr.max_required ? attr.max_required : attr["max_required_" + charaClass];
+					let value;
+					let color = attr.color;
 
-				// ADの場合、Strを換算
-				if (attrName == 'AD' && attr.short_name == 'Str') {
-					value *= 1.5;
-				}
+					// 性能変動値の計算
+					if (attr.based_source && maxRequired && maxRequired != 0 && maxRequired > parseInt($(".character-" + attr.based_source).val())) {
+						value = Math.round(valueMax * parseInt($(".character-" + attr.based_source).val()) * 10 / maxRequired) / 10;
+					} else {
+						value = parseFloat(valueMax == null ? 0 : valueMax);
+					}
 
-				// 合計を計算
-				b_val += value;
-			});
+					// ADの場合、Strを換算
+					if (attrName == 'AD' && attr.short_name == 'Str') {
+						value *= 1.5;
+					}
+
+					// 合計を計算
+					a_val += value;
+				});
+
+				b.attributes.forEach(attr => {
+					if (attrName == 'AD') {
+						if (attr.short_name != 'MinAD' && attr.short_name != 'MaxAD' && attr.short_name != 'Str') return;
+					} else {
+						if (attr.short_name != attrName) return;
+					}
+					const valueMax = attr.value === null ? attr["value_" + charaClass] : attr.value;
+					const maxRequired = attr.max_required ? attr.max_required : attr["max_required_" + charaClass];
+					let value;
+					let color = attr.color;
+
+					// 性能変動値の計算
+					if (attr.based_source && maxRequired && maxRequired != 0 && maxRequired > parseInt($(".character-" + attr.based_source).val())) {
+						value = Math.round(valueMax * parseInt($(".character-" + attr.based_source).val()) * 10 / maxRequired) / 10;
+					} else {
+						value = parseFloat(valueMax == null ? 0 : valueMax);
+					}
+
+					// ADの場合、Strを換算
+					if (attrName == 'AD' && attr.short_name == 'Str') {
+						value *= 1.5;
+					}
+
+					// 合計を計算
+					b_val += value;
+				});
+			}
 
 			if (a_val < b_val) return 1 * currentSortOrder;
 			if (a_val > b_val) return -1 * currentSortOrder;
