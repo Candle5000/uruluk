@@ -254,7 +254,7 @@ $(function() {
 			}
 
 			// 性能値の合計を計算
-			if (attr_cell.children().length > 0 && value >= 0) {
+			if (attr_cell.children().length > 0 && value != 0) {
 				const baseVal = parseFloat($(attr_cell.children()[0]).text());
 				if (attrs[index - 1].color != "white" && attrs[index - 1].color != attr.color && Math.abs(baseVal) > Math.abs(value) || Math.abs(value) == 0) {
 					color = attrs[index - 1].color;
