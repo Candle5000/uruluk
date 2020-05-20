@@ -536,7 +536,7 @@ $(function() {
 			}
 		}
 		$("#link-search-submit").data("item-slot", target.data("slot-index"));
-		$("#collapse-search").collapse('hide');
+		$("#collapse-search").collapse('show');
 		$.ajax({
 			url : "/simulator/item/" + target.data("item-class"),
 			type : "GET",
