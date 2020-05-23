@@ -34,6 +34,7 @@ class ItemModel extends Model {
 		. "  , I.comment_en"
 		. "  , I.comment_ja"
 		. "  , I.sort_key"
+		. "  , I.price"
 		. "  , A.short_name"
 		. "  , IA.color"
 		. "  , IA.flactuable"
@@ -183,6 +184,7 @@ class ItemModel extends Model {
 				$item['comment_en'] = $result['comment_en'];
 				$item['comment_ja'] = $result['comment_ja'];
 				$item['sort_key'] = $result['sort_key'];
+				$item['price'] = $result['price'];
 				$item['attributes'] = array();
 			}
 
