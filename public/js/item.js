@@ -1,6 +1,7 @@
 $(function() {
 
 	$("div.selectable").on('click', function() {
+		const itemId = $(this).data('itemid');
 		$("#detail-image").children().remove();
 		$("#detail-image").append($(this).find("img.item-detail").clone());
 		$("#detail-name").removeClass("common rare artifact");
@@ -16,7 +17,45 @@ $(function() {
 		$("#detail-main").children().remove();
 		$("#detail-main").append($(this).find("ul.detail-main").clone());
 		$("#sell-price").text($(this).data('price') !== '' ? $(this).data('price') : '?');
-		$("#modal-item").modal("show");
+		$.ajax({
+			url: '/items/detail/' + itemId,
+			type: 'GET',
+		}).done(data => {
+			const item = data.item;
+
+			$('#detail-floors').children('li.detail-row').remove();
+			if (item.floors.length) {
+				$('#detail-floor-none').addClass('d-none');
+			} else {
+				$('#detail-floor-none').removeClass('d-none');
+			}
+			item.floors.forEach(floor => {
+				const row = $($("#modal-floor-row").html());
+				row.find(".floor-name").text(floor.short_name)
+					.attr('href', '/floors/' + floor.floor_id);
+				$('#detail-floors').append(row);
+			});
+
+			$('#detail-creatures').children('li.detail-row').remove();
+			if (item.creatures.length) {
+				$('#detail-creature-none').addClass('d-none');
+			} else {
+				$('#detail-creature-none').removeClass('d-none');
+			}
+			item.creatures.forEach(creature => {
+				const row = $($("#modal-creature-row").html());
+				const imgName = creature.image_name ?
+					creature.image_name : 'creature_noimg.png';
+				row.find('img').attr('src', '/img/creature/' + imgName);
+				row.find('span').text(creature.name_en);
+				row.find('.creature-name')
+					.attr('href', '/creatures/' + creature.creature_id)
+					.addClass(creature.boss == 1 ? 'boss' : 'text-light');
+				$('#detail-creatures').append(row);
+			});
+
+			$("#modal-item").modal("show");
+		});
 	});
 
 });

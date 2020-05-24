@@ -20,6 +20,8 @@ return function (App $app) {
 
 	$app->get('/items/rare/{itemClassName}', ItemsController::class . ':rareItem');
 
+	$app->get('/items/detail/{itemId}', ItemsController::class . ':detail');
+
 	$app->get('/creatures', CreaturesController::class . ':index');
 
 	$app->get('/creatures/{creatureId}', CreaturesController::class . ':index');

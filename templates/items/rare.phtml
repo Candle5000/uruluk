@@ -30,25 +30,27 @@
           <div class="col-12 mb-3">
             <div>Floors</div>
             <ul class="list-inline m-0 pl-1 small" id="detail-floors">
-              <template>
-                <li class="list-inline-item">
+              <template id="modal-floor-row">
+                <li class="detail-row list-inline-item">
                   <a class="floor-name text-light"></a>
                 </li>
               </template>
-              <li class="list-inline-item">None</li>
+              <li id="detail-floor-none" class="list-inline-item">None</li>
             </ul>
           </div>
         </div>
         <div class="row">
           <div class="col-12">
             <div>Creatures</div>
-            <ul class="list-unstyled m-0 small" id="detail-floors">
-              <template>
-                <li>
-                  <img class="item-icon" /><span class="pl-1"></span>
+            <ul class="list-unstyled m-0 small" id="detail-creatures">
+              <template id="modal-creature-row">
+                <li class="detail-row">
+                  <a class="creature-name">
+                    <img class="item-icon" /><span class="pl-1"></span>
+                  </a>
                 </li>
               </template>
-              <li class="pl-1">None</li>
+              <li id="detail-creature-none" class="pl-1">None</li>
             </ul>
           </div>
         </div>

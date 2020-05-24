@@ -155,6 +155,13 @@ class ItemModel extends Model {
 		];
 	}
 
+	public function getItemDetailById(int $id) {
+		return [
+			'floors' => $this->getFloorsByItemId($id),
+			'creatures' => $this->getCreaturesByItemId($id)
+		];
+	}
+
 	private function getItemsObject(string $sql, array $params) {
 		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
@@ -271,6 +278,66 @@ class ItemModel extends Model {
 
 		if (!empty($item)) $items[] = $item;
 		return $items;
+	}
+
+	private function getFloorsByItemId(int $id) {
+		$sql = <<<SQL
+			SELECT
+			  F.floor_id
+			  , F.short_name
+			FROM
+			  floor_drop_item FI
+			  INNER JOIN floor F
+			    ON FI.floor_id = F.floor_id
+			WHERE
+			  FI.item_id = :id
+			ORDER BY
+			  F.sort_key
+		SQL;
+		$this->logger->debug($sql);
+		$stmt = $this->db->prepare($sql);
+		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+		$stmt->execute();
+		$floors = [];
+		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			$floors[] = [
+				'floor_id' => $result['floor_id'],
+				'short_name' => $result['short_name'],
+			];
+		}
+		return $floors;
+	}
+
+	private function getCreaturesByItemId(int $id) {
+		$sql = <<<SQL
+			SELECT
+			  C.creature_id
+			  , C.boss
+			  , C.name_en
+			  , C.image_name
+			FROM
+			  creature_drop_item CI
+			  INNER JOIN creature C
+			    ON CI.creature_id = C.creature_id
+			WHERE
+			  CI.item_id = :id
+			ORDER BY
+			  C.sort_key
+		SQL;
+		$this->logger->debug($sql);
+		$stmt = $this->db->prepare($sql);
+		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+		$stmt->execute();
+		$creatures = [];
+		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			$creatures[] = [
+				'creature_id' => $result['creature_id'],
+				'boss' => $result['boss'],
+				'name_en' => $result['name_en'],
+				'image_name' => $result['image_name'],
+			];
+		}
+		return $creatures;
 	}
 
 }

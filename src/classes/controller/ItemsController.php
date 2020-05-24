@@ -62,4 +62,11 @@ class ItemsController extends Controller {
         return $this->renderer->render($response, 'items/rare.phtml', $args);
 	}
 
+	public function detail(Request $request, Response $response, array $args) {
+		$item = new ItemModel($this->db, $this->logger);
+		$detail = $item->getItemDetailById($args['itemId']);
+		$data = ['item' => $detail];
+		return $response->withJson($data);
+	}
+
 }
