@@ -18,9 +18,15 @@ return function (App $app) {
 
 	$app->get('/items', ItemsController::class . ':index');
 
-	$app->get('/items/rare/{itemClassName}', ItemsController::class . ':rareItem');
-
 	$app->get('/items/detail/{itemId}', ItemsController::class . ':detail');
+
+	$app->get('/items/{itemClassName}/rare', ItemsController::class . ':rareItem');
+
+	$app->get('/items/{itemClassName}/rare/{itemId}', ItemsController::class . ':rareItem');
+
+	$app->get('/items/{itemClassName}/{baseItemId}', ItemsController::class . ':rareItem');
+
+	$app->get('/items/{itemClassName}/{baseItemId}/{itemId}', ItemsController::class . ':rareItem');
 
 	$app->get('/creatures', CreaturesController::class . ':index');
 
