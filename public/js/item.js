@@ -1,6 +1,33 @@
 $(function() {
 
+	let autoTransition = false;
+
+	window.addEventListener('popstate', e => {
+		if (location.pathname.split('/').length == 5) {
+			if ($("#modal-item").hasClass('show')) {
+				autoTransition = true;
+				$("#modal-item").modal('hide');
+			}
+			autoTransition = true;
+			$("#" + location.pathname.split('/')[4]).click();
+		} else if ($("#modal-item").hasClass('show')) {
+			autoTransition = true;
+			$("#modal-item").modal('hide');
+		}
+	});
+
+	$("#modal-item").on('hide.bs.modal', function() {
+		if (!autoTransition && location.pathname.split('/').length != 4) {
+			history.pushState(null, null,
+				'/items/' + location.pathname.split('/')[2]
+					+ '/' + location.pathname.split('/')[3]);
+		}
+		autoTransition = false;
+	});
+
 	$("div.selectable").on('click', function() {
+		const at = autoTransition;
+		autoTransition = false;
 		const itemId = $(this).data('itemid');
 		$("#detail-image").children().remove();
 		$("#detail-image").append($(this).find("img.item-detail").clone());
@@ -54,8 +81,19 @@ $(function() {
 				$('#detail-creatures').append(row);
 			});
 
+			if (!at && location.pathname.split('/').length != 5) {
+				history.pushState(null, null,
+					'/items/' + location.pathname.split('/')[2]
+						+ '/' + location.pathname.split('/')[3] + '/' + itemId);
+			}
+
 			$("#modal-item").modal("show");
 		});
 	});
+
+	if (location.pathname.split('/').length == 5) {
+		autoTransition = true;
+		$("#" + location.pathname.split('/')[4]).click();
+	}
 
 });
