@@ -1,63 +1,5 @@
 <?= $this->fetch('header.phtml', ['header' => $header]) ?>
-<div class="modal fade" id="modal-item" tabindex="-1" role="dialog" aria-labelledby="modal-itemsTitle" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content bg-darkgreen">
-      <div class="modal-header">
-        <div class="modal-title text-middle" id="modal-itemsTitle">
-          <div class="d-table-cell align-middle" id="detail-image">
-            <img class="item-detail" src="/img/item/splendid_ring.png" alt="" />
-          </div>
-          <div class="d-table-cell align-middle pl-2" id="detail-name">
-            <div class="m-0" id="detail-name-ja">豪華な指輪</div>
-            <div class="m-0" id="detail-name-en">Splendid Ring</div>
-          </div>
-        </div>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true" class="button-close-white">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-12" id="detail-main">
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12 mb-3 small">
-            <div>Sell Price : <span id="sell-price">?</span> G</div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12 mb-3">
-            <div>Floors</div>
-            <ul class="list-inline m-0 pl-1 small" id="detail-floors">
-              <template id="modal-floor-row">
-                <li class="detail-row list-inline-item">
-                  <a class="floor-name text-light"></a>
-                </li>
-              </template>
-              <li id="detail-floor-none" class="list-inline-item">None</li>
-            </ul>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <div>Creatures</div>
-            <ul class="list-unstyled m-0 small" id="detail-creatures">
-              <template id="modal-creature-row">
-                <li class="detail-row">
-                  <a class="creature-name">
-                    <img class="item-icon" /><span class="pl-1"></span>
-                  </a>
-                </li>
-              </template>
-              <li id="detail-creature-none" class="pl-1">None</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<?= $this->fetch('items/detail.phtml') ?>
 <div class="card mt-3 mt-md-0 mb-2 bg-darkblue">
   <div class="card-body">
     <h4 class="card-title">
@@ -72,44 +14,7 @@
   <h3>No Data</h3>
 <?php endif; ?>
 <?php foreach ($items['rare'] as $item) : ?>
-  <div class="card mb-2 bg-darkblue selectable" id="<?= $item['item_id'] ?>" data-itemid="<?= $item['item_id'] ?>" data-price="<?= $item['price'] ?>">
-    <div class="row">
-      <div class="col-12 col-md-3 text-center my-3">
-        <img src="/img/item/<?= $item['image_name'] ?>" alt="<?= $item['name_en'] ?>" class="item-detail" />
-      </div>
-      <div class="col-12 col-md-9">
-        <div class="item-name text-center text-md-left font-weight-bold rare">
-          <span class="name-ja"><?= $item['name_ja'] ?></span><br />
-          <span class="name-en"><?= $item['name_en'] ?></span>
-        </div>
-        <ul class="detail-main list-unstyled text-white ml-2 small">
-          <?php foreach ($item['attributes'] as $attr) : ?>
-            <?php if (isset($attr['attribute_value'])) : ?>
-              <li class="<?= $attr['color'] ?>">
-                <?= $attr['short_name'] ?> <?= $attr['attribute_value'] ?>
-              </li>
-            <?php endif; ?>
-          <?php endforeach ?>
-          <?php if (!empty($item['skill_en'])) : ?>
-            <li class="item-skill"><?= $item['skill_en'] ?></li>
-          <?php else : ?>
-            <?php if (!empty($item['skill_axe_en'])) : ?>
-              <li class="item-skill">A:<?= $item['skill_axe_en'] ?></li>
-            <?php endif; ?>
-            <?php if (!empty($item['skill_sword_en'])) : ?>
-              <li class="item-skill">S:<?= $item['skill_sword_en'] ?></li>
-            <?php endif; ?>
-            <?php if (!empty($item['skill_dagger_en'])) : ?>
-              <li class="item-skill">D:<?= $item['skill_dagger_en'] ?></li>
-            <?php endif; ?>
-          <?php endif; ?>
-          <?php if (!empty($item['comment_en'])) : ?>
-            <li class="item-comment"><?= $item['comment_en'] ?></li>
-          <?php endif; ?>
-        </ul>
-      </div>
-    </div>
-  </div>
+  <?= $this->fetch('items/row.phtml', ['item' => $item]) ?>
 <?php endforeach ?>
 
 <h2 class="artifact mt-3"><?= $item_class ?> Artifact</h2>
@@ -117,43 +22,6 @@
   <h3>No Data</h3>
 <?php endif; ?>
 <?php foreach ($items['artifact'] as $item) : ?>
-  <div class="card mb-2 bg-darkblue selectable" id="<?= $item['item_id'] ?>" data-itemid="<?= $item['item_id'] ?>" data-price="<?= $item['price'] ?>">
-    <div class="row">
-      <div class="col-12 col-md-3 text-center my-3">
-        <img src="/img/item/<?= $item['image_name'] ?>" alt="<?= $item['name_en'] ?>" class="item-detail" />
-      </div>
-      <div class="col-12 col-md-9">
-        <div class="item-name text-center text-md-left font-weight-bold artifact">
-          <span class="name-ja"><?= $item['name_ja'] ?></span><br />
-          <span class="name-en"><?= $item['name_en'] ?></span>
-        </div>
-        <ul class="detail-main list-unstyled text-white ml-2 small">
-          <?php foreach ($item['attributes'] as $attr) : ?>
-            <?php if (isset($attr['attribute_value'])) : ?>
-              <li class="<?= $attr['color'] ?>">
-                <?= $attr['short_name'] ?> <?= $attr['attribute_value'] ?>
-              </li>
-            <?php endif; ?>
-          <?php endforeach ?>
-          <?php if (!empty($item['skill_en'])) : ?>
-            <li class="item-skill"><?= $item['skill_en'] ?></li>
-          <?php else : ?>
-            <?php if (!empty($item['skill_axe_en'])) : ?>
-              <li class="item-skill">A:<?= $item['skill_axe_en'] ?></li>
-            <?php endif; ?>
-            <?php if (!empty($item['skill_sword_en'])) : ?>
-              <li class="item-skill">S:<?= $item['skill_sword_en'] ?></li>
-            <?php endif; ?>
-            <?php if (!empty($item['skill_dagger_en'])) : ?>
-              <li class="item-skill">D:<?= $item['skill_dagger_en'] ?></li>
-            <?php endif; ?>
-          <?php endif; ?>
-          <?php if (!empty($item['comment_en'])) : ?>
-            <li class="item-comment"><?= $item['comment_en'] ?></li>
-          <?php endif; ?>
-        </ul>
-      </div>
-    </div>
-  </div>
+  <?= $this->fetch('items/row.phtml', ['item' => $item]) ?>
 <?php endforeach ?>
 <?= $this->fetch('footer.phtml', ['footer' => $footer]) ?>
