@@ -111,6 +111,7 @@ class FloorModel extends Model {
 			SELECT
 			  I.item_id
 			  , IC.name_en item_class
+			  , I.base_item_id
 			  , I.name_en
 			  , I.name_ja
 			  , I.rarity
@@ -135,6 +136,7 @@ class FloorModel extends Model {
 			$items[] = [
 				'item_id' => $result['item_id'],
 				'item_class' => $result['item_class'],
+				'base_item_id' => $result['base_item_id'],
 				'name_en' => $result['name_en'],
 				'name_ja' => $result['name_ja'],
 				'rarity' => $result['rarity'],
