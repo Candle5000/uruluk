@@ -19,8 +19,10 @@ class ItemsController extends Controller {
 		try {
 			$this->db->beginTransaction();
 
+			$item = new ItemModel($this->db, $this->logger);
 			$args = [
 				'header' => $this->getHeaderInfo(),
+				'menu' => $item->getBaseItems(),
 				'footer' => $this->getFooterInfo()
 			];
 
@@ -45,6 +47,7 @@ class ItemsController extends Controller {
 			if ($itemClassId === null) throw new NotFoundException($request, $response);
 			$args = [
 				'header' => $this->getHeaderInfo(),
+				'menu' => $item->getBaseItems(),
 				'item_class' => ucfirst($args['itemClassName']),
 				'items' => [
 					'rare' => $item->getItemsByClassAndRarity($itemClassId, 'rare'),
@@ -77,6 +80,7 @@ class ItemsController extends Controller {
 			if ($baseItem === null) throw new NotFoundException($request, $response);
 			$args = [
 				'header' => $this->getHeaderInfo(),
+				'menu' => $item->getBaseItems(),
 				'item_class' => ucfirst($args['itemClassName']),
 				'base_item' => $baseItem,
 				'items' => $item->getCommonItemsByClassAndBaseItem($itemClassId, $args['baseItemId']),

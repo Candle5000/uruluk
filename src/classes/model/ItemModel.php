@@ -67,6 +67,51 @@ class ItemModel extends Model {
 		}
 	}
 
+	public function getBaseItems() {
+		$sql = <<<SQL
+			SELECT
+			  IC.item_class_id
+			  , IC.name_en class_name_en
+			  , IC.name_ja class_name_ja
+			  , IC.image_name class_image_name
+			  , BI.base_item_id
+			  , BI.name_en base_name_en
+			  , BI.name_ja base_name_ja
+			  , BI.image_name base_image_name
+			FROM
+			  base_item BI
+			INNER JOIN item_class IC
+			  ON BI.item_class_id = IC.item_class_id
+			ORDER BY
+			  IC.sort_key
+			  , BI.sort_key
+			SQL;
+		$this->logger->debug($sql);
+		$stmt = $this->db->prepare($sql);
+		$stmt->execute();
+		$itemClassList = [];
+		$prevClassId = null;
+		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			if ($result['item_class_id'] !== $prevClassId) {
+				$itemClassList[] = [
+					'id' => $result['item_class_id'],
+					'name_en' => $result['class_name_en'],
+					'name_ja' => $result['class_name_ja'],
+					'image_name' => $result['class_image_name'],
+					'base_items' => []
+				];
+				$prevClassId = $result['item_class_id'];
+			}
+			$itemClassList[count($itemClassList) - 1]['base_items'][] = [
+				'id' => $result['base_item_id'],
+				'name_en' => $result['base_name_en'],
+				'name_ja' => $result['base_name_ja'],
+				'image_name' => $result['base_image_name']
+			];
+		}
+		return $itemClassList;
+	}
+
 	public function getBaseItem(int $itemClassId, int $baseItemId) {
 		$sql = <<<SQL
 			SELECT

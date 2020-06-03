@@ -1,12 +1,10 @@
 <?= $this->fetch('header.phtml', ['header' => $header]) ?>
 <?= $this->fetch('items/detail.phtml') ?>
-<div class="card mt-3 mt-md-0 mb-2 bg-darkblue">
-  <div class="card-body">
-    <h4 class="card-title">
-      Rare Items
-    </h4>
-    <?= $this->fetch('items/menu.phtml') ?>
-  </div>
+<div>
+  <a href="#collapse-menu" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-menu">Menu<i class="fas fa-chevron-circle-down"></i></a>
+</div>
+<div class="collapse" id="collapse-menu">
+  <?= $this->fetch('items/menu.phtml', ['menu' => $menu]) ?>
 </div>
 
 <h2 class="common mt-3"><?= $base_item['name_en'] ?></h2>
