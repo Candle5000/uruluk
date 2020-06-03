@@ -9,7 +9,7 @@ use Slim\Http\Response;
 use Model\CreatureModel;
 
 /**
- * アイテムデータ コントローラ.
+ * クリーチャーデータ コントローラ.
  */
 class CreaturesController extends Controller {
 

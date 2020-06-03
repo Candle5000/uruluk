@@ -126,6 +126,7 @@ class CreatureModel extends Model {
 			SELECT
 			  I.item_id
 			  , IC.name_en item_class
+			  , I.base_item_id
 			  , I.name_en
 			  , I.rarity
 			  , I.image_name 
@@ -149,6 +150,7 @@ class CreatureModel extends Model {
 			$items[] = [
 				'item_id' => $result['item_id'],
 				'item_class' => $result['item_class'],
+				'base_item_id' => $result['base_item_id'],
 				'name_en' => $result['name_en'],
 				'rarity' => $result['rarity'],
 				'image_name' => $result['image_name'],

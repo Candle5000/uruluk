@@ -73,7 +73,8 @@ $(function() {
 			}
 			creature.items.forEach(item => {
 				const row = $($("#modal-item-row").html());
-				const link = '/items/rare/' + item.item_class + '#' + item.item_id;
+				const link = '/items/' + item.item_class.toLowerCase() + '/'
+						+ (item.rarity == 'common' ? item.base_item_id : 'rare') + '/' + item.item_id;
 				const img = item.image_name ? item.image_name : 'item_noimg.png';
 				row.find('a').attr('href', link).addClass(item.rarity);
 				row.find('img')

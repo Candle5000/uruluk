@@ -110,6 +110,8 @@ class FloorModel extends Model {
 		$sql = <<<SQL
 			SELECT
 			  I.item_id
+			  , IC.name_en item_class
+			  , I.base_item_id
 			  , I.name_en
 			  , I.name_ja
 			  , I.rarity
@@ -118,6 +120,8 @@ class FloorModel extends Model {
 			  floor_drop_item FI
 			  INNER JOIN item I
 			    ON FI.item_id = I.item_id
+			  INNER JOIN item_class IC
+			    ON I.item_class_id = IC.item_class_id
 			WHERE
 			  FI.floor_id = :floor_id
 			ORDER BY
@@ -131,6 +135,8 @@ class FloorModel extends Model {
 		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			$items[] = [
 				'item_id' => $result['item_id'],
+				'item_class' => $result['item_class'],
+				'base_item_id' => $result['base_item_id'],
 				'name_en' => $result['name_en'],
 				'name_ja' => $result['name_ja'],
 				'rarity' => $result['rarity'],

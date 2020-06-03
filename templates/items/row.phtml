@@ -1,0 +1,39 @@
+<div class="card mb-2 bg-darkblue selectable" id="<?= $item['item_id'] ?>" data-itemid="<?= $item['item_id'] ?>" data-price="<?= $item['price'] ?>">
+  <div class="row">
+    <div class="col-12 col-md-3 text-center my-3">
+      <img src="/img/item/<?= $item['image_name'] ?>" alt="<?= $item['name_en'] ?>" class="item-detail" />
+    </div>
+    <div class="col-12 col-md-9">
+      <div class="item-name text-center text-md-left font-weight-bold <?= $item['rarity'] ?>">
+        <span class="name-ja"><?= $item['name_ja'] ?></span><br />
+        <span class="name-en"><?= $item['name_en'] ?></span>
+      </div>
+      <ul class="detail-main list-unstyled text-white ml-2 small">
+        <?php foreach ($item['attributes'] as $attr) : ?>
+          <?php if (isset($attr['attribute_value'])) : ?>
+            <li class="<?= $attr['color'] ?>">
+              <?= $attr['short_name'] ?> <?= $attr['attribute_value'] ?>
+            </li>
+          <?php endif; ?>
+        <?php endforeach ?>
+        <?php if (!empty($item['skill_en'])) : ?>
+          <li class="item-skill"><?= $item['skill_en'] ?></li>
+        <?php else : ?>
+          <?php if (!empty($item['skill_axe_en'])) : ?>
+            <li class="item-skill">A:<?= $item['skill_axe_en'] ?></li>
+          <?php endif; ?>
+          <?php if (!empty($item['skill_sword_en'])) : ?>
+            <li class="item-skill">S:<?= $item['skill_sword_en'] ?></li>
+          <?php endif; ?>
+          <?php if (!empty($item['skill_dagger_en'])) : ?>
+            <li class="item-skill">D:<?= $item['skill_dagger_en'] ?></li>
+          <?php endif; ?>
+        <?php endif; ?>
+        <?php if (!empty($item['comment_en'])) : ?>
+          <li class="item-comment"><?= $item['comment_en'] ?></li>
+        <?php endif; ?>
+      </ul>
+    </div>
+  </div>
+</div>
+

@@ -34,6 +34,7 @@ class ItemModel extends Model {
 		. "  , I.comment_en"
 		. "  , I.comment_ja"
 		. "  , I.sort_key"
+		. "  , I.price"
 		. "  , A.short_name"
 		. "  , IA.color"
 		. "  , IA.flactuable"
@@ -60,7 +61,82 @@ class ItemModel extends Model {
 		$stmt->bindParam(':itemClassName', $itemClassName, PDO::PARAM_STR);
 		$stmt->execute();
 		if ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-			return  $result['item_class_id'];
+			return $result['item_class_id'];
+		} else {
+			return null;
+		}
+	}
+
+	public function getBaseItems() {
+		$sql = <<<SQL
+			SELECT
+			  IC.item_class_id
+			  , IC.name_en class_name_en
+			  , IC.name_ja class_name_ja
+			  , IC.image_name class_image_name
+			  , BI.base_item_id
+			  , BI.name_en base_name_en
+			  , BI.name_ja base_name_ja
+			  , BI.image_name base_image_name
+			FROM
+			  base_item BI
+			INNER JOIN item_class IC
+			  ON BI.item_class_id = IC.item_class_id
+			ORDER BY
+			  IC.sort_key
+			  , BI.sort_key
+			SQL;
+		$this->logger->debug($sql);
+		$stmt = $this->db->prepare($sql);
+		$stmt->execute();
+		$itemClassList = [];
+		$prevClassId = null;
+		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			if ($result['item_class_id'] !== $prevClassId) {
+				$itemClassList[] = [
+					'id' => $result['item_class_id'],
+					'name_en' => $result['class_name_en'],
+					'name_ja' => $result['class_name_ja'],
+					'image_name' => $result['class_image_name'],
+					'base_items' => []
+				];
+				$prevClassId = $result['item_class_id'];
+			}
+			$itemClassList[count($itemClassList) - 1]['base_items'][] = [
+				'id' => $result['base_item_id'],
+				'name_en' => $result['base_name_en'],
+				'name_ja' => $result['base_name_ja'],
+				'image_name' => $result['base_image_name']
+			];
+		}
+		return $itemClassList;
+	}
+
+	public function getBaseItem(int $itemClassId, int $baseItemId) {
+		$sql = <<<SQL
+			SELECT
+			  name_en
+			  , name_ja
+			  , image_name
+			  , sort_key
+			FROM
+			  base_item
+			WHERE
+			  base_item_id = :baseItemId
+			  AND item_class_id = :itemClassId
+			SQL;
+		$this->logger->debug($sql);
+		$stmt = $this->db->prepare($sql);
+		$stmt->bindParam(':baseItemId', $baseItemId, PDO::PARAM_INT);
+		$stmt->bindParam(':itemClassId', $itemClassId, PDO::PARAM_INT);
+		$stmt->execute();
+		if ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			return [
+				'name_en' => $result['name_en'],
+				'name_ja' => $result['name_ja'],
+				'image_name' => $result['image_name'],
+				'sort_key' => $result['sort_key']
+			];
 		} else {
 			return null;
 		}
@@ -119,6 +195,28 @@ class ItemModel extends Model {
 		return $this->getItemsObject($sql, $params);
 	}
 
+	public function getCommonItemsByClassAndBaseItem(int $itemClassId, int $baseItemId) {
+		$select = self::SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS;
+		$sql = <<<SQL
+			SELECT
+			  $select
+			FROM
+			  item I
+			  LEFT JOIN item_attribute IA
+				ON I.item_id = IA.item_id
+			  LEFT JOIN attribute A
+				ON IA.attribute_id = A.attribute_id
+			WHERE
+			  I.rarity = :rarity
+			  AND I.base_item_id = :baseItemId
+			ORDER BY
+			  I.sort_key
+			SQL;
+		$params[] = ['param' => 'rarity', 'var' => 'common', 'type' => PDO::PARAM_STR];
+		$params[] = ['param' => 'baseItemId', 'var' => $baseItemId, 'type' => PDO::PARAM_INT];
+		return $this->getItemsObject($sql, $params);
+	}
+
 	public function getItemByIdAndClass(int $itemId, string $itemClass) {
 		$sql = "SELECT"
 			. self::SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS
@@ -154,6 +252,13 @@ class ItemModel extends Model {
 		];
 	}
 
+	public function getItemDetailById(int $id) {
+		return [
+			'floors' => $this->getFloorsByItemId($id),
+			'creatures' => $this->getCreaturesByItemId($id)
+		];
+	}
+
 	private function getItemsObject(string $sql, array $params) {
 		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
@@ -183,6 +288,7 @@ class ItemModel extends Model {
 				$item['comment_en'] = $result['comment_en'];
 				$item['comment_ja'] = $result['comment_ja'];
 				$item['sort_key'] = $result['sort_key'];
+				$item['price'] = $result['price'];
 				$item['attributes'] = array();
 			}
 
@@ -269,6 +375,66 @@ class ItemModel extends Model {
 
 		if (!empty($item)) $items[] = $item;
 		return $items;
+	}
+
+	private function getFloorsByItemId(int $id) {
+		$sql = <<<SQL
+			SELECT
+			  F.floor_id
+			  , F.short_name
+			FROM
+			  floor_drop_item FI
+			  INNER JOIN floor F
+			    ON FI.floor_id = F.floor_id
+			WHERE
+			  FI.item_id = :id
+			ORDER BY
+			  F.sort_key
+		SQL;
+		$this->logger->debug($sql);
+		$stmt = $this->db->prepare($sql);
+		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+		$stmt->execute();
+		$floors = [];
+		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			$floors[] = [
+				'floor_id' => $result['floor_id'],
+				'short_name' => $result['short_name'],
+			];
+		}
+		return $floors;
+	}
+
+	private function getCreaturesByItemId(int $id) {
+		$sql = <<<SQL
+			SELECT
+			  C.creature_id
+			  , C.boss
+			  , C.name_en
+			  , C.image_name
+			FROM
+			  creature_drop_item CI
+			  INNER JOIN creature C
+			    ON CI.creature_id = C.creature_id
+			WHERE
+			  CI.item_id = :id
+			ORDER BY
+			  C.sort_key
+		SQL;
+		$this->logger->debug($sql);
+		$stmt = $this->db->prepare($sql);
+		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+		$stmt->execute();
+		$creatures = [];
+		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			$creatures[] = [
+				'creature_id' => $result['creature_id'],
+				'boss' => $result['boss'],
+				'name_en' => $result['name_en'],
+				'image_name' => $result['image_name'],
+			];
+		}
+		return $creatures;
 	}
 
 }
