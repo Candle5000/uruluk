@@ -1,0 +1,19 @@
+<?= $this->fetch('header.phtml', ['header' => $header]) ?>
+<?= $this->fetch('items/detail.phtml') ?>
+<div class="card mt-3 mt-md-0 mb-2 bg-darkblue">
+  <div class="card-body">
+    <h4 class="card-title">
+      Rare Items
+    </h4>
+    <?= $this->fetch('items/menu.phtml') ?>
+  </div>
+</div>
+
+<h2 class="common mt-3"><?= $base_item['name_en'] ?></h2>
+<?php if (empty($items)) : ?>
+  <h3>No Data</h3>
+<?php endif; ?>
+<?php foreach ($items as $item) : ?>
+  <?= $this->fetch('items/row.phtml', ['item' => $item]) ?>
+<?php endforeach ?>
+<?= $this->fetch('footer.phtml', ['footer' => $footer]) ?>

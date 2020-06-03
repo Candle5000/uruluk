@@ -24,9 +24,9 @@ return function (App $app) {
 
 	$app->get('/items/{itemClassName}/rare/{itemId}', ItemsController::class . ':rareItem');
 
-	$app->get('/items/{itemClassName}/{baseItemId}', ItemsController::class . ':rareItem');
+	$app->get('/items/{itemClassName}/{baseItemId}', ItemsController::class . ':commonItem');
 
-	$app->get('/items/{itemClassName}/{baseItemId}/{itemId}', ItemsController::class . ':rareItem');
+	$app->get('/items/{itemClassName}/{baseItemId}/{itemId}', ItemsController::class . ':commonItem');
 
 	$app->get('/creatures', CreaturesController::class . ':index');
 

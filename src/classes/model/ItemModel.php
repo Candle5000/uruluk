@@ -61,7 +61,37 @@ class ItemModel extends Model {
 		$stmt->bindParam(':itemClassName', $itemClassName, PDO::PARAM_STR);
 		$stmt->execute();
 		if ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-			return  $result['item_class_id'];
+			return $result['item_class_id'];
+		} else {
+			return null;
+		}
+	}
+
+	public function getBaseItem(int $itemClassId, int $baseItemId) {
+		$sql = <<<SQL
+			SELECT
+			  name_en
+			  , name_ja
+			  , image_name
+			  , sort_key
+			FROM
+			  base_item
+			WHERE
+			  base_item_id = :baseItemId
+			  AND item_class_id = :itemClassId
+			SQL;
+		$this->logger->debug($sql);
+		$stmt = $this->db->prepare($sql);
+		$stmt->bindParam(':baseItemId', $baseItemId, PDO::PARAM_INT);
+		$stmt->bindParam(':itemClassId', $itemClassId, PDO::PARAM_INT);
+		$stmt->execute();
+		if ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			return [
+				'name_en' => $result['name_en'],
+				'name_ja' => $result['name_ja'],
+				'image_name' => $result['image_name'],
+				'sort_key' => $result['sort_key']
+			];
 		} else {
 			return null;
 		}
@@ -117,6 +147,28 @@ class ItemModel extends Model {
 			$params[] = ['param' => ":rarity$key",
 				'var' => $rarities[$key], 'type' => PDO::PARAM_STR];
 		}
+		return $this->getItemsObject($sql, $params);
+	}
+
+	public function getCommonItemsByClassAndBaseItem(int $itemClassId, int $baseItemId) {
+		$select = self::SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS;
+		$sql = <<<SQL
+			SELECT
+			  $select
+			FROM
+			  item I
+			  LEFT JOIN item_attribute IA
+				ON I.item_id = IA.item_id
+			  LEFT JOIN attribute A
+				ON IA.attribute_id = A.attribute_id
+			WHERE
+			  I.rarity = :rarity
+			  AND I.base_item_id = :baseItemId
+			ORDER BY
+			  I.sort_key
+			SQL;
+		$params[] = ['param' => 'rarity', 'var' => 'common', 'type' => PDO::PARAM_STR];
+		$params[] = ['param' => 'baseItemId', 'var' => $baseItemId, 'type' => PDO::PARAM_INT];
 		return $this->getItemsObject($sql, $params);
 	}
 

@@ -62,6 +62,36 @@ class ItemsController extends Controller {
         return $this->renderer->render($response, 'items/rare.phtml', $args);
 	}
 
+	public function commonItem(Request $request, Response $response, array $args) {
+		$this->title = ucfirst($args['itemClassName']) . ' ノーマルアイテム';
+		$this->scripts[] = '/js/item.js?id=00030';
+
+		try {
+			$this->db->beginTransaction();
+
+			$item = new ItemModel($this->db, $this->logger);
+			if (!is_numeric($args['baseItemId'])) throw new NotFoundException($request, $response);
+			$itemClassId = $item->getItemClassId($args['itemClassName']);
+			if ($itemClassId === null) throw new NotFoundException($request, $response);
+			$baseItem = $item->getBaseItem($itemClassId, $args['baseItemId']);
+			if ($baseItem === null) throw new NotFoundException($request, $response);
+			$args = [
+				'header' => $this->getHeaderInfo(),
+				'item_class' => ucfirst($args['itemClassName']),
+				'base_item' => $baseItem,
+				'items' => $item->getCommonItemsByClassAndBaseItem($itemClassId, $args['baseItemId']),
+				'footer' => $this->getFooterInfo()
+			];
+
+			$this->db->commit();
+		} catch (Exception $e) {
+			$this->db->rollBack();
+			throw $e;
+		}
+
+        return $this->renderer->render($response, 'items/common.phtml', $args);
+	}
+
 	public function detail(Request $request, Response $response, array $args) {
 		$item = new ItemModel($this->db, $this->logger);
 		$detail = $item->getItemDetailById($args['itemId']);
