@@ -44,7 +44,7 @@
             <tr>
               <td>
                 <a href="/creatures/<?= $creature['creature_id'] ?>" class="<?= $creature['boss'] ? 'boss' : 'text-light' ?>">
-                  <img class="item-icon" src="/img/creature/<?= $creature['image_name'] ?>" /><span class="pl-1"><?= $creature['name_en'] ?></span>
+                  <img class="item-icon" src="/img/creature/<?= $creature['image_name'] ? $creature['image_name'] : 'creature_noimg.png' ?>" /><span class="pl-1"><?= $creature['name_en'] ?></span>
                 </a>
               </td>
             </tr>
@@ -64,7 +64,7 @@
                   <tr>
                     <td>
                       <a href="/creatures/<?= $creature['creature_id'] ?>" class="<?= $creature['boss'] ? 'boss' : 'text-light' ?>">
-                        <img class="item-icon" src="/img/creature/<?= $creature['image_name'] ?>" /><span class="pl-1"><?= $creature['name_en'] ?></span>
+                        <img class="item-icon" src="/img/creature/<?= $creature['image_name'] ? $creature['image_name'] : 'creature_noimg.png' ?>" /><span class="pl-1"><?= $creature['name_en'] ?></span>
                       </a>
                     </td>
                   </tr>
