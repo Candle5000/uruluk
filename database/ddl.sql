@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2019/10/14 3:15:32
+-- Date/Time    : 2020/06/19 11:29:40
 -- Author       : Candle
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -352,6 +352,18 @@ create table `item_log` (
   , `user_id` INT not null comment '送信ユーザID'
   , constraint `item_log_PKC` primary key (`item_log_id`)
 ) comment 'アイテムログ' ;
+
+-- お知らせ
+--* BackupToTempTable
+drop table if exists `news` cascade;
+
+--* RestoreFromTempTable
+create table `news` (
+  `post_date` DATETIME not null comment '投稿日時'
+  , `subject` VARCHAR(256) comment '件名'
+  , `content` TEXT comment '本文'
+  , constraint `news_PKC` primary key (`post_date`)
+) comment 'お知らせ' ;
 
 -- 短縮URL
 --* BackupToTempTable
