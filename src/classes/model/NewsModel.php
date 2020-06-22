@@ -20,6 +20,7 @@ class NewsModel extends Model {
 	private function select(int $offset, int $rowCount) {
 		$sql = <<<SQL
 			SELECT
+			    SQL_CALC_FOUND_ROWS
 				post_date
 				, subject
 				, content
@@ -43,7 +44,14 @@ class NewsModel extends Model {
 				'content' => $result['content']
 			];
 		}
-		return $newsList;
+		$sql = <<<SQL
+			SELECT FOUND_ROWS() all_count
+			SQL;
+		$this->logger->debug($sql);
+		$stmt = $this->db->prepare($sql);
+		$stmt->execute();
+		$count = $stmt->fetch()['all_count'];
+		return ['list' => $newsList, 'count' => $count];
 	}
 
 }
