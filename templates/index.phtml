@@ -2,35 +2,54 @@
 <h1>TRIGLAV Indexes</h1>
 <h3>スマートフォンアプリ『TRIGLAV』<br />データベース&amp;シミュレータ</h3>
 <div class="row">
-  <div class="col-12 col-md-6 col-xl-4 mb-3 ">
-    <div class="card bg-darkblue">
-      <div class="card-body">
-        <h5 class="card-title"><a href="/items">Items</a></h5>
-        <p class="mb-0">アイテムデータ</p>
-      </div>
-    </div>
-  </div>
-  <div class="col-12 col-md-6 col-xl-4 mb-3 ">
-    <div class="card bg-darkblue">
-      <div class="card-body">
-        <h5 class="card-title"><a href="/creatures">Creatures</a></h5>
-        <p class="mb-0">クリーチャーデータ</p>
-      </div>
-    </div>
-  </div>
   <div class="col-12 col-md-6 col-xl-4 mb-3">
     <div class="card bg-darkblue">
-      <div class="card-body">
-        <h5 class="card-title"><a href="/floors">Floors</a></h5>
-        <p class="mb-0">フロアデータ</p>
+      <h5 class="card-header border-secondary">News</h5>
+      <?php foreach ($newsList as $news) : ?>
+        <div class="card-body border-bottom border-secondary">
+          <h5 class="card-title"><?= $news['post_date'] ?></h5>
+          <div class="card-title"><?= $news['subject'] ?></div>
+          <p class="mb-0"><?= nl2br($news['content']) ?></p>
+        </div>
+      <?php endforeach ?>
+      <div class="card-footer border-0">
+        <a href="" class="lemonchiffon">&gt;&gt; Archive</a>
       </div>
     </div>
   </div>
-  <div class="col-12 col-md-6 col-xl-4 mb-3">
-    <div class="card bg-darkblue">
-      <div class="card-body">
-        <h5 class="card-title"><a href="/simulator">Simulator</a></h5>
-        <p class="mb-0">装備シミュレータ</p>
+  <div class="col-12 col-md-6 col-xl-8">
+    <div class="row">
+      <div class="col-12 col-xl-6 mb-3 ">
+        <div class="card bg-darkblue">
+          <div class="card-body">
+            <h5 class="card-title"><a href="/items">Items</a></h5>
+            <p class="mb-0">アイテムデータ</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-xl-6 mb-3 ">
+        <div class="card bg-darkblue">
+          <div class="card-body">
+            <h5 class="card-title"><a href="/creatures">Creatures</a></h5>
+            <p class="mb-0">クリーチャーデータ</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-xl-6 mb-3 ">
+        <div class="card bg-darkblue">
+          <div class="card-body">
+            <h5 class="card-title"><a href="/floors">Floors</a></h5>
+            <p class="mb-0">フロアデータ</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-xl-6 mb-3 ">
+        <div class="card bg-darkblue">
+          <div class="card-body">
+            <h5 class="card-title"><a href="/simulator">Simulator</a></h5>
+            <p class="mb-0">装備シミュレータ</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>

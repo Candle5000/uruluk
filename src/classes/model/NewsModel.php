@@ -2,9 +2,11 @@
 
 namespace Model;
 
+use \PDO;
+
 class NewsModel extends Model {
 
-	const LATEST_NEWS_COUNT = 8;
+	const LATEST_NEWS_COUNT = 4;
 	const PAGE_NEWS_COUNT = 10;
 
 	public function getLatestNews() {
@@ -12,10 +14,10 @@ class NewsModel extends Model {
 	}
 
 	public function getNews(int $page) {
-		return $this->select($page, NewsModel::PAGE_NEWS_COUNT);
+		return $this->select($page * NewsModel::PAGE_NEWS_COUNT, NewsModel::PAGE_NEWS_COUNT);
 	}
 
-	private function select(int $offset, int $rouCount) {
+	private function select(int $offset, int $rowCount) {
 		$sql = <<<SQL
 			SELECT
 				post_date
@@ -28,9 +30,10 @@ class NewsModel extends Model {
 			LIMIT
 				:offset, :rowCount
 			SQL;
+		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
-		$stmt->bindParam(':offset', $offset);
-		$stmt->bindParam(':rowCount', $rowCount);
+		$stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+		$stmt->bindParam(':rowCount', $rowCount, PDO::PARAM_INT);
 		$stmt->execute();
 		$newsList = [];
 		while($result = $stmt->fetch()) {

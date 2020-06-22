@@ -5,6 +5,7 @@ namespace Controller;
 use \Exception;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Model\NewsModel;
 
 /**
  * トップページ	コントローラ.
@@ -17,8 +18,11 @@ class TopMenuController extends Controller {
 		try {
 			$this->db->beginTransaction();
 
+			$news = new NewsModel($this->db, $this->logger);
+
 			$args = [
 				'header' => $this->getHeaderInfo(),
+				'newsList' => $news->getLatestNews(),
 				'footer' => $this->getFooterInfo()
 			];
 
