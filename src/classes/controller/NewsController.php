@@ -8,13 +8,17 @@ use Slim\Http\Response;
 use Model\NewsModel;
 
 /**
- * トップページ	コントローラ.
+ * 更新情報	コントローラ.
  */
-class TopMenuController extends Controller {
-
-	const PAGE_ID = 1;
+class NewsController extends Controller {
 
 	public function index(Request $request, Response $response) {
+		$this->title = '更新情報';
+		$getParam = $request->getQueryParams();
+		$page = 0;
+		if (isset($getParam['page']) && is_numeric($getParam['page'])) {
+			$page = $getParam['page'];
+		}
 		try {
 			$this->db->beginTransaction();
 
@@ -22,7 +26,8 @@ class TopMenuController extends Controller {
 
 			$args = [
 				'header' => $this->getHeaderInfo(),
-				'newsList' => $news->getLatestNews()['list'],
+				'news' => $news->getNews($page),
+				'page' => $page,
 				'footer' => $this->getFooterInfo()
 			];
 
@@ -32,7 +37,7 @@ class TopMenuController extends Controller {
 			throw $e;
 		}
 
-        return $this->renderer->render($response, 'index.phtml', $args);
+        return $this->renderer->render($response, 'news/index.phtml', $args);
 	}
 
 }

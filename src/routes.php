@@ -2,6 +2,7 @@
 
 use Slim\App;
 use Controller\TopMenuController;
+use Controller\NewsController;
 use Controller\PrivacyPolicyController;
 use Controller\ItemsController;
 use Controller\CreaturesController;
@@ -15,6 +16,8 @@ return function (App $app) {
 	$app->get('/', TopMenuController::class . ':index');
 
 	$app->get('/privacy', PrivacyPolicyController::class . ':index');
+
+	$app->get('/news', NewsController::class . ':index');
 
 	$app->get('/items', ItemsController::class . ':index');
 
