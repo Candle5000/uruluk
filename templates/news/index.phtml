@@ -1,0 +1,31 @@
+<?= $this->fetch('header.phtml', ['header' => $header]) ?>
+<h1>TRIGLAV Indexes</h1>
+<h3>スマートフォンアプリ『TRIGLAV』<br />データベース&amp;シミュレータ</h3>
+<div class="row">
+  <div class="col-12 mb-3">
+    <div class="card bg-darkblue">
+      <h5 class="card-header border-secondary">News</h5>
+      <?php foreach ($news['list'] as $n) : ?>
+        <div class="card-body border-bottom border-secondary">
+          <h5 class="card-title"><?= $n['post_date'] ?></h5>
+          <div class="card-title"><?= $n['subject'] ?></div>
+          <p class="mb-0"><?= nl2br($n['content']) ?></p>
+        </div>
+      <?php endforeach ?>
+      <div class="card-footer border-0 text-center">
+        <?php if ($page > 0) : ?>
+          <a href="/news?page=<?= $page - 1 ?>" class="lemonchiffon">&lt;&lt; Prev</a>
+        <?php else: ?>
+          <span class="text-muted">&lt;&lt; Prev</span>
+        <?php endif; ?>
+        <span> | </span>
+        <?php if ($page < $news['max_page']) : ?>
+          <a href="/news?page=<?= $page + 1 ?>" class="lemonchiffon">Next &gt;&gt;</a>
+        <?php else: ?>
+          <span class="text-muted">Next &gt;&gt;</span>
+        <?php endif; ?>
+      </div>
+    </div>
+  </div>
+</div>
+<?= $this->fetch('footer.phtml', ['footer' => $footer]) ?>

@@ -16,7 +16,7 @@ class NewsController extends Controller {
 		$this->title = '更新情報';
 		$getParam = $request->getQueryParams();
 		$page = 0;
-		if (isset($getParam['page'] && is_numeric($getParam['page'])) {
+		if (isset($getParam['page']) && is_numeric($getParam['page'])) {
 			$page = $getParam['page'];
 		}
 		try {
@@ -27,6 +27,7 @@ class NewsController extends Controller {
 			$args = [
 				'header' => $this->getHeaderInfo(),
 				'news' => $news->getNews($page),
+				'page' => $page,
 				'footer' => $this->getFooterInfo()
 			];
 

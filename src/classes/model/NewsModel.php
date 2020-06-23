@@ -50,8 +50,8 @@ class NewsModel extends Model {
 		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute();
-		$count = $stmt->fetch()['all_count'];
-		return ['list' => $newsList, 'count' => $count];
+		$maxPage = floor($stmt->fetch()['all_count'] / NewsModel::PAGE_NEWS_COUNT);
+		return ['list' => $newsList, 'max_page' => $maxPage];
 	}
 
 }

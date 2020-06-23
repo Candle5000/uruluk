@@ -17,7 +17,7 @@ return function (App $app) {
 
 	$app->get('/privacy', PrivacyPolicyController::class . ':index');
 
-	$app->get('/news', NewsConstroller::class . ':index');
+	$app->get('/news', NewsController::class . ':index');
 
 	$app->get('/items', ItemsController::class . ':index');
 
