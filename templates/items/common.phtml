@@ -7,6 +7,8 @@
   <?= $this->fetch('items/menu.phtml', ['menu' => $menu]) ?>
 </div>
 
+<?= $this->fetch('adsense.phtml', ['google' => $header['google']]) ?>
+
 <h2 class="common mt-3"><?= $base_item['name_en'] ?></h2>
 <?php if (empty($items)) : ?>
   <h3>No Data</h3>

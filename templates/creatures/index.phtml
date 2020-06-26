@@ -143,6 +143,7 @@
   </div>
 </div>
 <h2>Creatures</h2>
+<?= $this->fetch('adsense.phtml', ['google' => $header['google']]) ?>
 <table class="table-dark table-striped table-hover w-100" id="creature-list">
   <tbody>
     <?php if (empty($creatures)) : ?>

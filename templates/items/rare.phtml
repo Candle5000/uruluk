@@ -7,6 +7,8 @@
   <?= $this->fetch('items/menu.phtml', ['menu' => $menu]) ?>
 </div>
 
+<?= $this->fetch('adsense.phtml', ['google' => $header['google']]) ?>
+
 <h2 class="rare mt-3"><?= $item_class ?> Rare</h2>
 <?php if (empty($items['rare'])) : ?>
   <h3>No Data</h3>
@@ -14,6 +16,8 @@
 <?php foreach ($items['rare'] as $item) : ?>
   <?= $this->fetch('items/row.phtml', ['item' => $item]) ?>
 <?php endforeach ?>
+
+<?= $this->fetch('adsense.phtml', ['google' => $header['google']]) ?>
 
 <h2 class="artifact mt-3"><?= $item_class ?> Artifact</h2>
 <?php if (empty($items['artifact'])) : ?>

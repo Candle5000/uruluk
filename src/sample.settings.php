@@ -28,6 +28,7 @@ return [
 		'google' => [
 			'analytics_id' => '',
 			'adsense_id' => '',
+			'adsense_unit' => '',
 		],
 	],
 ];
