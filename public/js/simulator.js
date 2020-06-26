@@ -204,7 +204,7 @@ $(function() {
 		});
 
 		// DPSを計算
-		const attackSpeed = attrs.as > 2 ? attrs.as : 2;
+		const attackSpeed = attrs.as > 1 ? attrs.as : 1;
 		$(".character-dps").text((Math.round((attrs.minad + attrs.maxad) * 1000 / (2 * (attackSpeed + 1))) / 1000).toFixed(3));
 
 		// URLに反映
