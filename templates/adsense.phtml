@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="d-none d-md-block col-md-1 col-xl-2"></div>
+  <div class="col-12 col-md-10 col-xl-8 my-2">
+    <?php if (!empty($google['adsense_id'])) : ?>
+      <ins
+        class="adsbygoogle"
+        style="display:block"
+        data-ad-client="<?= $google['adsense_id'] ?>"
+        data-ad-slot="<?= $google['adsense_unit'] ?>"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    <?php else : ?>
+      <div class="bg-info p-5">Ads Test</div>
+    <?php endif; ?>
+  </div>
+  <div class="d-none d-md-block col-md-1 col-xl-2"></div>
+</div>

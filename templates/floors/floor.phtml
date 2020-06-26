@@ -7,6 +7,7 @@
 </div>
 <h2><?= $detail['short_name'] ?> / <?= $detail['name_en'] ?></h2>
 <h2><?= $detail['name_ja'] ?></h2>
+<?= $this->fetch('adsense.phtml', ['google' => $header['google']]) ?>
 <div class="card mb-2 bg-darkblue img-floor">
   <div class="text-center m-auto">
     No Image
