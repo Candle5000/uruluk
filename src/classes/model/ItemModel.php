@@ -211,6 +211,7 @@ class ItemModel extends Model {
 			  AND I.base_item_id = :baseItemId
 			ORDER BY
 			  I.sort_key
+			  , A.sort_key
 			SQL;
 		$params[] = ['param' => 'rarity', 'var' => 'common', 'type' => PDO::PARAM_STR];
 		$params[] = ['param' => 'baseItemId', 'var' => $baseItemId, 'type' => PDO::PARAM_INT];
