@@ -204,8 +204,11 @@ $(function() {
 		});
 
 		// DPSを計算
-		const attackSpeed = attrs.as > 1 ? attrs.as : 1;
-		$(".character-dps").text((Math.round((attrs.minad + attrs.maxad) * 1000 / (2 * (attackSpeed + 1))) / 1000).toFixed(3));
+		const asTmp = attrs.as > 1 ? attrs.as : 1;
+		const attackSpeed = asTmp < 10 ? asTmp + asTmp / 2 ** (asTmp - 2) : asTmp;
+		const avgAD = (attrs.minad + attrs.maxad) / 2;
+		const dps = (Math.round(avgAD / attackSpeed * 30 * 1000) / 1000).toFixed(3);
+		$(".character-dps").text(dps);
 
 		// URLに反映
 		history.replaceState('', '', path);
