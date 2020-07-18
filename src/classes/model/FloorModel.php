@@ -27,6 +27,8 @@ class FloorModel extends Model {
 			  short_name
 			  , name_en
 			  , name_ja
+			  , image_name
+			  , image_size
 			FROM
 			  `floor`
 			WHERE
@@ -43,6 +45,8 @@ class FloorModel extends Model {
 				'short_name' => $result['short_name'],
 				'name_en' => $result['name_en'],
 				'name_ja' => $result['name_ja'],
+				'image_name' => $result['image_name'],
+				'image_size' => $result['image_size'],
 				'items' => $this->getFloorRareItemList($floorId),
 				'creatures' => $this->getFloorCreatureList($floorId)
 			];
