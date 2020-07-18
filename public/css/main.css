@@ -156,3 +156,6 @@ a.item-name {
 div.tooltip-inner {
 	color: #9fd900!important;
 }
+figure {
+	margin: 0;
+}

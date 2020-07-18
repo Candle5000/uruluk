@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2020/06/19 11:29:40
+-- Date/Time    : 2020/07/18 15:33:53
 -- Author       : Candle
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -158,6 +158,8 @@ create table `floor` (
   , `short_name` VARCHAR(16) comment '略称'
   , `name_en` VARCHAR(64) comment '名称(英語)'
   , `name_ja` VARCHAR(64) comment '名称(日本語)'
+  , `image_name` VARCHAR(64) comment '画像名称'
+  , `image_size` VARCHAR(16) comment '画像サイズ'
   , `sort_key` INT not null comment 'ソート順'
   , constraint `floor_PKC` primary key (`floor_id`)
 ) comment 'フロア' ;
