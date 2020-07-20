@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2020/07/18 15:33:53
+-- Date/Time    : 2020/07/20 11:43:59
 -- Author       : Candle
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -55,34 +55,6 @@ create table `base_item` (
 ) comment 'ベースアイテム' ;
 
 alter table `base_item` add unique `base_item_IX1` (`sort_key`) ;
-
--- キャラクタークラス性能
---* BackupToTempTable
-drop table if exists `character_attribute` cascade;
-
---* RestoreFromTempTable
-create table `character_attribute` (
-  `character_class_id` INT not null comment 'キャラクタークラスID'
-  , `attribute_id` INT not null comment '性能ID'
-  , `attribute_value` FLOAT not null comment '性能値'
-  , constraint `character_attribute_PKC` primary key (`character_class_id`,`attribute_id`)
-) comment 'キャラクタークラス性能' ;
-
--- キャラクタークラス
---* BackupToTempTable
-drop table if exists `character_class` cascade;
-
---* RestoreFromTempTable
-create table `character_class` (
-  `character_class_id` INT not null AUTO_INCREMENT comment 'キャラクタークラスID'
-  , `short_name` VARCHAR(8) comment '略称'
-  , `name_en` VARCHAR(32) comment '名称(英語)'
-  , `name_ja` VARCHAR(32) comment '名称(日本語)'
-  , `sort_key` INT not null comment 'ソート順'
-  , constraint `character_class_PKC` primary key (`character_class_id`)
-) comment 'キャラクタークラス' ;
-
-alter table `character_class` add unique `character_class_IX1` (`sort_key`) ;
 
 -- クリーチャー
 --* BackupToTempTable
@@ -165,6 +137,17 @@ create table `floor` (
 ) comment 'フロア' ;
 
 alter table `floor` add unique `floor_IX1` (`sort_key`) ;
+
+-- フロアバナナアイテム
+--* BackupToTempTable
+drop table if exists `floor_banana_item` cascade;
+
+--* RestoreFromTempTable
+create table `floor_banana_item` (
+  `floor_id` INT not null comment 'フロアID'
+  , `item_id` INT not null comment 'アイテムID'
+  , constraint `floor_banana_item_PKC` primary key (`floor_id`,`item_id`)
+) comment 'フロアバナナアイテム' ;
 
 -- フロアクリーチャー
 --* BackupToTempTable
@@ -272,29 +255,6 @@ create table `item_attribute` (
   , constraint `item_attribute_PKC` primary key (`item_id`,`attribute_id`,`flactuable`)
 ) comment 'アイテム性能' ;
 
--- アイテム性能ログ
---* BackupToTempTable
-drop table if exists `item_attribute_log` cascade;
-
---* RestoreFromTempTable
-create table `item_attribute_log` (
-  `item_log_id` INT not null comment 'ログID'
-  , `attribute_id` INT not null comment '性能ID'
-  , `flactuable` BIT(1) not null comment '変動'
-  , `based_source` ENUM('xp', 'kills') comment '変動元'
-  , `color` ENUM('white', 'yellow', 'red') comment '色'
-  , `attribute_value` INT default 0 comment '性能値'
-  , `attribute_value_axe` INT default 0 comment '性能値アックス'
-  , `attribute_value_sword` INT default 0 comment '性能値ソード'
-  , `attribute_value_dagger` INT default 0 comment '性能値ダガー'
-  , `max_required` INT default 0 comment '変動最大要求値'
-  , `max_required_axe` INT default 0 comment '変動最大要求値アックス'
-  , `max_required_sword` INT default 0 comment '変動最大要求値ソード'
-  , `max_required_dagger` INT default 0 comment '変動最大要求値ダガー'
-  , `is_deleted` BIT(1) default FALSE not null comment '削除'
-  , constraint `item_attribute_log_PKC` primary key (`item_log_id`,`attribute_id`,`flactuable`)
-) comment 'アイテム性能ログ' ;
-
 -- アイテムブランド
 --* BackupToTempTable
 drop table if exists `item_brand` cascade;
@@ -325,35 +285,6 @@ create table `item_class` (
 ) comment 'アイテムクラス' ;
 
 alter table `item_class` add unique `item_class_IX1` (`sort_key`) ;
-
--- アイテムログ
---* BackupToTempTable
-drop table if exists `item_log` cascade;
-
---* RestoreFromTempTable
-create table `item_log` (
-  `item_log_id` INT not null comment 'ログID'
-  , `item_id` INT not null comment 'アイテムID'
-  , `item_class_id` INT comment 'アイテムクラスID'
-  , `base_item_id` INT comment 'ベースアイテムID'
-  , `brand_id` INT comment 'ブランドID'
-  , `name_en` VARCHAR(64) comment '名称(英語)'
-  , `name_ja` VARCHAR(64) comment '名称(日本語)'
-  , `rarity` ENUM('common', 'rare', 'artifact') comment 'レアリティ'
-  , `skill_en` VARCHAR(128) comment 'スキル(英語)'
-  , `skill_ja` VARCHAR(64) comment 'スキル(日本語)'
-  , `comment_en` VARCHAR(64) comment 'コメント(英語)'
-  , `comment_ja` VARCHAR(64) comment 'コメント(日本語)'
-  , `note` TEXT comment '説明'
-  , `price` INT comment '売却価格'
-  , `image_name` VARCHAR(64) comment '画像名称'
-  , `attach_image_name` VARCHAR(64) comment '添付画像'
-  , `is_deleted` BIT(1) default FALSE not null comment '削除'
-  , `sending_datetime` DATETIME default CURRENT_TIMESTAMP not null comment '送信日時'
-  , `accepting_datetime` DATETIME comment '承認日時'
-  , `user_id` INT not null comment '送信ユーザID'
-  , constraint `item_log_PKC` primary key (`item_log_id`)
-) comment 'アイテムログ' ;
 
 -- お知らせ
 --* BackupToTempTable
