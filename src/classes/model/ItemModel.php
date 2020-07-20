@@ -256,6 +256,7 @@ class ItemModel extends Model {
 	public function getItemDetailById(int $id) {
 		return [
 			'floors' => $this->getFloorsByItemId($id),
+			'banana' => $this->getBananaFloorsByItemId($id),
 			'creatures' => $this->getCreaturesByItemId($id)
 		];
 	}
@@ -385,6 +386,34 @@ class ItemModel extends Model {
 			  , F.short_name
 			FROM
 			  floor_drop_item FI
+			  INNER JOIN floor F
+			    ON FI.floor_id = F.floor_id
+			WHERE
+			  FI.item_id = :id
+			ORDER BY
+			  F.sort_key
+		SQL;
+		$this->logger->debug($sql);
+		$stmt = $this->db->prepare($sql);
+		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+		$stmt->execute();
+		$floors = [];
+		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			$floors[] = [
+				'floor_id' => $result['floor_id'],
+				'short_name' => $result['short_name'],
+			];
+		}
+		return $floors;
+	}
+
+	private function getBananaFloorsByItemId(int $id) {
+		$sql = <<<SQL
+			SELECT
+			  F.floor_id
+			  , F.short_name
+			FROM
+			  floor_banana_item FI
 			  INNER JOIN floor F
 			    ON FI.floor_id = F.floor_id
 			WHERE

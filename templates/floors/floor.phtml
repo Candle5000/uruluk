@@ -43,6 +43,22 @@
           <?php endforeach; ?>
         </tbody>
       </table>
+      <?php if (!empty($detail['banana'])) : ?>
+        <div class="lemonchiffon">Banana Items</div>
+        <table class="table-dark table-striped table-bordered w-100 mb-2">
+          <tbody>
+            <?php foreach ($detail['banana'] as $item) : ?>
+              <tr>
+                <td>
+                  <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
+                    <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
+                  </span>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      <?php endif; ?>
     </div>
     <div class="col-12 col-sm-6">
       <div class="lemonchiffon">Creatures</div>
