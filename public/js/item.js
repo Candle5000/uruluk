@@ -75,6 +75,19 @@ $(function() {
 				$('#detail-floors').append(row);
 			});
 
+			$('#detail-banana').children('li.detail-row').remove();
+			if (item.banana.length) {
+				$('#detail-banana-none').addClass('d-none');
+			} else {
+				$('#detail-banana-none').removeClass('d-none');
+			}
+			item.banana.forEach(floor => {
+				const row = $($("#modal-banana-row").html());
+				row.find(".floor-name").text(floor.short_name)
+					.attr('href', '/floors/' + floor.floor_id);
+				$('#detail-banana').append(row);
+			});
+
 			$('#detail-creatures').children('li.detail-row').remove();
 			if (item.creatures.length) {
 				$('#detail-creature-none').addClass('d-none');
