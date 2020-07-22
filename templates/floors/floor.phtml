@@ -37,7 +37,7 @@
               <td>
                 <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
                   <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
-                </span>
+                </a>
               </td>
             </tr>
           <?php endforeach; ?>
@@ -52,7 +52,7 @@
                 <td>
                   <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
                     <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
-                  </span>
+                  </a>
                 </td>
               </tr>
             <?php endforeach; ?>
@@ -61,6 +61,46 @@
       <?php endif; ?>
     </div>
     <div class="col-12 col-sm-6">
+      <div class="lemonchiffon">Quests</div>
+      <table class="table-dark table-striped table-bordered w-100 mb-2">
+        <tbody>
+          <tr>
+            <td>
+              <div><img src="/img/common/trinity_any.png" />&nbsp;<i class="fa fa-plus"></i>&nbsp;<img src="/img/item/x00_101.png" />&nbsp;<i class="fa fa-arrow-right"></i>&nbsp;<img src="/img/common/treasure.png" /></div>
+              <div class="mb-1 item-skill small">Repeatable <i class="fas fa-sync-alt"></i></div>
+              <div>
+                <div>
+                  <a href="#collapse-quest1-1n" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-quest1-1n">要求アイテム<i class="fas fa-chevron-circle-down"></i></a>
+                </div>
+                <div class="collapse mb-1" id="collapse-quest1-1n">
+                  ・<a class="artifact" href="/items/ring/rare/28"><img src="/img/item/trinity_blue.png" /><span class="pl-1">トリニティ(青)</span></a>, <a class="artifact" href="/items/ring/rare/29"><img src="/img/item/trinity_red.png" /><span class="pl-1">トリニティ(赤)</span></a>, <a class="artifact" href="/items/ring/rare/30"><img src="/img/item/trinity_yellow.png" /><span class="pl-1">トリニティ(黄)</span></a>のいずれか<br />
+                  ・<a class="artifact" href="/items/other/rare/2729"><img src="/img/item/x00_101.png" /><span class="pl-1">フェイズシフト</span></a><br />
+                </div>
+                <div>
+                  <a href="#collapse-quest1-1r" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-quest1-1r">報酬アイテム(ランダムで1個)<i class="fas fa-chevron-circle-down"></i></a>
+                </div>
+                <div class="collapse mb-1" id="collapse-quest1-1r">
+                  ・<a class="artifact" href="/items/ring/rare/28"><img src="/img/item/trinity_blue.png" /><span class="pl-1">トリニティ(青)</span></a><br />
+                  ・<a class="artifact" href="/items/ring/rare/2658"><img src="/img/item/trinity_blue.png" /><span class="pl-1">トリニティ* (青/VoT)</span></a><br />
+                  ・<a class="artifact" href="/items/ring/rare/2659"><img src="/img/item/trinity_blue.png" /><span class="pl-1">トリニティ* (青/RSA)</span></a><br />
+                  ・<a class="artifact" href="/items/ring/rare/2660"><img src="/img/item/trinity_blue.png" /><span class="pl-1">トリニティ* (青/VpK)</span></a><br />
+                  ・<a class="artifact" href="/items/ring/rare/2661"><img src="/img/item/trinity_blue.png" /><span class="pl-1">トリニティ* (青/AS)</span></a><br />
+                  ・<a class="artifact" href="/items/ring/rare/29"><img src="/img/item/trinity_red.png" /><span class="pl-1">トリニティ(赤)</span></a><br />
+                  ・<a class="artifact" href="/items/ring/rare/2662"><img src="/img/item/trinity_red.png" /><span class="pl-1">トリニティ* (赤/VoT)</span></a><br />
+                  ・<a class="artifact" href="/items/ring/rare/2663"><img src="/img/item/trinity_red.png" /><span class="pl-1">トリニティ* (赤/RSA)</span></a><br />
+                  ・<a class="artifact" href="/items/ring/rare/2664"><img src="/img/item/trinity_red.png" /><span class="pl-1">トリニティ* (赤/VpK)</span></a><br />
+                  ・<a class="artifact" href="/items/ring/rare/2665"><img src="/img/item/trinity_red.png" /><span class="pl-1">トリニティ* (赤/Def)</span></a><br />
+                  ・<a class="artifact" href="/items/ring/rare/30"><img src="/img/item/trinity_yellow.png" /><span class="pl-1">トリニティ(黄)</span></a><br />
+                  ・<a class="artifact" href="/items/ring/rare/2666"><img src="/img/item/trinity_yellow.png" /><span class="pl-1">トリニティ* (黄/VoT)</span></a><br />
+                  ・<a class="artifact" href="/items/ring/rare/2667"><img src="/img/item/trinity_yellow.png" /><span class="pl-1">トリニティ* (黄/RSA)</span></a><br />
+                  ・<a class="artifact" href="/items/ring/rare/2668"><img src="/img/item/trinity_yellow.png" /><span class="pl-1">トリニティ* (黄/VpK)</span></a><br />
+                  ・<a class="artifact" href="/items/ring/rare/2669"><img src="/img/item/trinity_yellow.png" /><span class="pl-1">トリニティ* (黄/Str)</span></a><br />
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
       <div class="lemonchiffon">Creatures</div>
       <table class="table-dark table-striped table-bordered w-100 mb-2">
         <tbody>
