@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2020/07/20 11:43:59
+-- Date/Time    : 2020/07/25 13:24:53
 -- Author       : Candle
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -297,6 +297,58 @@ create table `news` (
   , `content` TEXT comment '本文'
   , constraint `news_PKC` primary key (`post_date`)
 ) comment 'お知らせ' ;
+
+-- クエスト
+--* BackupToTempTable
+drop table if exists `quest` cascade;
+
+--* RestoreFromTempTable
+create table `quest` (
+  `quest_id` INT not null AUTO_INCREMENT comment 'クエストID'
+  , `floor_id` INT not null comment 'フロアID'
+  , `repeatable` BIT(1) not null comment '繰り返し可能'
+  , `autosave` BIT(1) not null comment '自動セーブ'
+  , `required_items_note` VARCHAR(64) comment '要求アイテム備考'
+  , `reward_items_note` VARCHAR(64) comment '報酬アイテム備考'
+  , `reward_common_items` BIT(1) not null comment '報酬コモンアイテム'
+  , `note` VARCHAR(256) comment '備考'
+  , constraint `quest_PKC` primary key (`quest_id`)
+) comment 'クエスト' ;
+
+-- クエストアイコン
+--* BackupToTempTable
+drop table if exists `quest_icon` cascade;
+
+--* RestoreFromTempTable
+create table `quest_icon` (
+  `quest_id` INT not null comment 'クエストID'
+  , `quest_reward` BIT(1) not null comment 'クエスト報酬'
+  , `quest_icon_id` INT not null comment 'クエストアイコンID'
+  , `image_path` VARCHAR(64) not null comment '画像パス'
+  , constraint `quest_icon_PKC` primary key (`quest_id`,`quest_reward`,`quest_icon_id`)
+) comment 'クエストアイコン' ;
+
+-- クエスト要求アイテム
+--* BackupToTempTable
+drop table if exists `quest_required_item` cascade;
+
+--* RestoreFromTempTable
+create table `quest_required_item` (
+  `quest_id` INT not null comment 'クエストID'
+  , `item_id` INT not null comment 'アイテムID'
+  , constraint `quest_required_item_PKC` primary key (`quest_id`,`item_id`)
+) comment 'クエスト要求アイテム' ;
+
+-- クエスト報酬アイテム
+--* BackupToTempTable
+drop table if exists `quest_reward_item` cascade;
+
+--* RestoreFromTempTable
+create table `quest_reward_item` (
+  `quest_id` INT not null comment 'クエストID'
+  , `item_id` INT not null comment 'アイテムID'
+  , constraint `quest_reward_item_PKC` primary key (`quest_id`,`item_id`)
+) comment 'クエスト報酬アイテム' ;
 
 -- 短縮URL
 --* BackupToTempTable

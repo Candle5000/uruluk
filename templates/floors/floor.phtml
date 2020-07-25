@@ -37,7 +37,7 @@
               <td>
                 <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
                   <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
-                </span>
+                </a>
               </td>
             </tr>
           <?php endforeach; ?>
@@ -52,7 +52,7 @@
                 <td>
                   <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
                     <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
-                  </span>
+                  </a>
                 </td>
               </tr>
             <?php endforeach; ?>
@@ -61,6 +61,76 @@
       <?php endif; ?>
     </div>
     <div class="col-12 col-sm-6">
+      <div class="lemonchiffon">Quests</div>
+      <table class="table-dark table-striped table-bordered w-100 mb-2">
+        <tbody>
+          <?php if (empty($quests)) : ?>
+            <tr><td>No Quests</td></tr>
+          <?php endif; ?>
+          <?php foreach ($quests as $quest) : ?>
+            <tr>
+              <td>
+                <div>
+                  <?php foreach ($quest['icons'] as $icon) : ?>
+                    <?php if ($icon['quest_reward'] && $icon['quest_icon_id'] == 1) : ?>
+                      <i class="fa fa-arrow-right"></i>
+                    <?php elseif ($icon['quest_reward'] || $icon['quest_icon_id'] > 1) : ?>
+                      <i class="fa fa-plus"></i>
+                    <?php endif; ?>
+                    <img class="item-icon" src="/img/<?= $icon['image_path'] ?>" alt="" />
+                  <?php endforeach; ?>
+                </div>
+                <div class="small">
+                  <?php if ($quest['repeatable']) : ?>
+                    <span class="badge badge-pill badge-success ml-1">Repeatable <i class="fas fa-sync-alt"></i></span>
+                  <?php endif; ?>
+                  <?php if ($quest['autosave']) : ?>
+                    <span class="badge badge-pill badge-warning ml-1">Auto Save <i class="fas fa-save"></i></span>
+                  <?php endif; ?>
+                </div>
+                <?php if (!empty($quest['required_items'])) : ?>
+                  <div>
+                    <a href="#collapse-quest<?= $quest['quest_id'] ?>n" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-quest<?= $quest['quest_id'] ?>n">Required Items<i class="fas fa-chevron-circle-down"></i></a>
+                  </div>
+                  <div class="collapse mb-1" id="collapse-quest<?= $quest['quest_id'] ?>n">
+                    <?= $quest['required_items_note'] ?>
+                    <ul class="m-0 list-unstyled">
+                      <?php foreach ($quest['required_items'] as $item) : ?>
+                        <li>
+                          <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
+                            <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
+                          </a>
+                        </li>
+                      <?php endforeach; ?>
+                    </ul>
+                  </div>
+                <?php endif; ?>
+                <?php if (!empty($quest['reward_common_items']) || !empty($quest['reward_items']) || $quest['reward_common_items']) : ?>
+                  <div>
+                    <a href="#collapse-quest<?= $quest['quest_id'] ?>r" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-quest<?= $quest['quest_id'] ?>r">Reward Items<i class="fas fa-chevron-circle-down"></i></a>
+                  </div>
+                  <div class="collapse mb-1" id="collapse-quest<?= $quest['quest_id'] ?>r">
+                    <?= $quest['reward_items_note'] ?>
+                    <ul class="m-0 list-unstyled">
+                      <?php if (!empty($quest['reward_common_items'])) : ?>
+                        <li><img class="item-icon" src="/img/common/other.png" /><span class="pl-1">Common Items</span></li>
+                      <?php endif; ?>
+                      <?php foreach ($quest['reward_items'] as $item) : ?>
+                        <li>
+                          <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
+                            <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
+                          </a>
+                        </li>
+                      <?php endforeach; ?>
+                    </ul>
+                  </div>
+                <?php endif; ?>
+                <div><?= $quest['note'] ?></div>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
       <div class="lemonchiffon">Creatures</div>
       <table class="table-dark table-striped table-bordered w-100 mb-2">
         <tbody>

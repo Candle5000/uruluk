@@ -7,6 +7,7 @@ use Slim\Exception\NotFoundException;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Model\ItemModel;
+use Model\QuestModel;
 
 /**
  * アイテムデータ コントローラ.
@@ -37,7 +38,7 @@ class ItemsController extends Controller {
 
 	public function rareItem(Request $request, Response $response, array $args) {
 		$this->title = ucfirst($args['itemClassName']) . ' レアアイテム';
-		$this->scripts[] = '/js/item.js?id=00043';
+		$this->scripts[] = '/js/item.js?id=00044';
 
 		try {
 			$this->db->beginTransaction();
@@ -67,7 +68,7 @@ class ItemsController extends Controller {
 
 	public function commonItem(Request $request, Response $response, array $args) {
 		$this->title = ucfirst($args['itemClassName']) . ' ノーマルアイテム';
-		$this->scripts[] = '/js/item.js?id=00030';
+		$this->scripts[] = '/js/item.js?id=00044';
 
 		try {
 			$this->db->beginTransaction();
@@ -98,8 +99,12 @@ class ItemsController extends Controller {
 
 	public function detail(Request $request, Response $response, array $args) {
 		$item = new ItemModel($this->db, $this->logger);
+		$quest = new QuestModel($this->db, $this->logger);
 		$detail = $item->getItemDetailById($args['itemId']);
-		$data = ['item' => $detail];
+		$data = [
+			'item' => $detail,
+			'quests' => $quest->getQuestDetailListByItemId($args['itemId'])
+		];
 		return $response->withJson($data);
 	}
 

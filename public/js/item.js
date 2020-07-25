@@ -61,6 +61,7 @@ $(function() {
 			type: 'GET',
 		}).done(data => {
 			const item = data.item;
+			const quests = data.quests;
 
 			$('#detail-floors').children('li.detail-row').remove();
 			if (item.floors.length) {
@@ -104,6 +105,66 @@ $(function() {
 					.attr('href', '/creatures/' + creature.creature_id)
 					.addClass(creature.boss == 1 ? 'boss' : 'text-light');
 				$('#detail-creatures').append(row);
+			});
+
+			$('#detail-quest-reward').children('li.detail-row').remove();
+			if (quests.reward.length) {
+				$('#detail-quest-reward-none').addClass('d-none');
+			} else {
+				$('#detail-quest-reward-none').removeClass('d-none');
+			}
+			quests.reward.forEach(quest => {
+				const row = $($("#modal-quest-reward-row").html());
+				row.find('.quest-reward-name')
+					.attr('href', '/floors/' + quest.floor_id)
+					.text(quest.short_name);
+				if (quest.repeatable == 1) {
+					row.find('.quest-repeatable').removeClass('d-none');
+				}
+				if (quest.autosave == 1) {
+					row.find('.quest-autosave').removeClass('d-none');
+				}
+				quest.icons.forEach(icon => {
+					if (icon.quest_reward == 1 && icon.quest_icon_id == 1) {
+						row.find('.icons').append($('<i class="fa fa-arrow-right mx-1" />'));
+					} else if (icon.quest_reward == 1 || icon.quest_icon_id > 1) {
+						row.find('.icons').append($('<i class="fa fa-plus mx-1" />'));
+					}
+					row.find('.icons').append($('<img />')
+						.addClass('item-icon')
+						.attr('src', '/img/' + icon.image_path));
+				});
+				$('#detail-quest-reward').append(row);
+			});
+
+			$('#detail-quest-required').children('li.detail-row').remove();
+			if (quests.required.length) {
+				$('#detail-quest-required-none').addClass('d-none');
+			} else {
+				$('#detail-quest-required-none').removeClass('d-none');
+			}
+			quests.required.forEach(quest => {
+				const row = $($("#modal-quest-required-row").html());
+				row.find('.quest-required-name')
+					.attr('href', '/floors/' + quest.floor_id)
+					.text(quest.short_name);
+				if (quest.repeatable == 1) {
+					row.find('.quest-repeatable').removeClass('d-none');
+				}
+				if (quest.autosave == 1) {
+					row.find('.quest-autosave').removeClass('d-none');
+				}
+				quest.icons.forEach(icon => {
+					if (icon.quest_reward == 1 && icon.quest_icon_id == 1) {
+						row.find('.icons').append($('<i class="fa fa-arrow-right mx-1" />'));
+					} else if (icon.quest_reward == 1 || icon.quest_icon_id > 1) {
+						row.find('.icons').append($('<i class="fa fa-plus mx-1" />'));
+					}
+					row.find('.icons').append($('<img />')
+						.addClass('item-icon')
+						.attr('src', '/img/' + icon.image_path));
+				});
+				$('#detail-quest-required').append(row);
 			});
 
 			if (!at && location.pathname.split('/').length != 5) {
