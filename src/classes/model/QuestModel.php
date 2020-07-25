@@ -25,6 +25,7 @@ class QuestModel extends Model {
 				, autosave
 				, required_items_note
 				, reward_items_note
+				, reward_common_items
 				, note
 			FROM
 				quest
@@ -82,7 +83,7 @@ class QuestModel extends Model {
 			SQL;
 		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
-		$stmt->bindParam(':item_id', $floorId, PDO::PARAM_INT);
+		$stmt->bindParam(':item_id', $itemId, PDO::PARAM_INT);
 		$stmt->execute();
 		$quests = [];
 		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {

@@ -52,7 +52,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-12">
+          <div class="col-12 mb-3">
             <div>Creatures</div>
             <ul class="list-unstyled m-0 small" id="detail-creatures">
               <template id="modal-creature-row">
@@ -63,6 +63,42 @@
                 </li>
               </template>
               <li id="detail-creature-none" class="pl-1">None</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 mb-3">
+            <div>Quest Rewards</div>
+            <ul class="list-unstyled m-0 small" id="detail-quest-reward">
+              <template id="modal-quest-reward-row">
+                <li class="detail-row">
+                  <a class="quest-reward-name text-light"></a>
+                  <div class="icons"></div>
+                  <div>
+                    <span class="quest-repeatable badge badge-pill badge-success ml-1 d-none">Repeatable <i class="fas fa-sync-alt"></i></span>
+                    <span class="quest-autosave badge badge-pill badge-warning ml-1 d-none">Auto Save <i class="fas fa-save"></i></span>
+                  </div>
+                </li>
+              </template>
+              <li id="detail-quest-reward-none" class="pl-1">None</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div>Used for Quests</div>
+            <ul class="list-unstyled m-0 small" id="detail-quest-required">
+              <template id="modal-quest-required-row">
+                <li class="detail-row">
+                  <a class="quest-required-name text-light"></a>
+                  <div class="icons"></div>
+                  <div>
+                    <span class="quest-repeatable badge badge-pill badge-success ml-1 d-none">Repeatable <i class="fas fa-sync-alt"></i></span>
+                    <span class="quest-autosave badge badge-pill badge-warning ml-1 d-none">Auto Save <i class="fas fa-save"></i></span>
+                  </div>
+                </li>
+              </template>
+              <li id="detail-quest-required-none" class="pl-1">None</li>
             </ul>
           </div>
         </div>
