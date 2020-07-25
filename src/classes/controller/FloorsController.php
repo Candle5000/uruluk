@@ -7,6 +7,7 @@ use Slim\Exception\NotFoundException;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Model\FloorModel;
+use Model\QuestModel;
 
 /**
  * フロアデータ コントローラ.
@@ -46,6 +47,7 @@ class FloorsController extends Controller {
 			$this->db->beginTransaction();
 
 			$floor = new FloorModel($this->db, $this->logger);
+			$quest = new QuestModel($this->db, $this->logger);
 			$detail = $floor->getFloorDetail($args['floorId']);
 
 			if ($detail == null) throw new NotFoundException($request, $response);
@@ -54,6 +56,7 @@ class FloorsController extends Controller {
 				'header' => $this->getHeaderInfo(),
 				'floorIndex' => $floor->getFloorIndex(),
 				'detail' => $detail,
+				'quests' => $quest->getQuestDetailListByFloorId($args['floorId']),
 				'footer' => $this->getFooterInfo()
 			];
 
