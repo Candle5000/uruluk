@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2020/07/25 13:24:53
+-- Date/Time    : 2020/07/28 21:54:28
 -- Author       : Candle
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -200,6 +200,18 @@ create table `floor_group` (
 ) comment 'フロアグループ' ;
 
 alter table `floor_group` add unique `floor_group_IX1` (`sort_key`) ;
+
+-- フロア宝箱
+--* BackupToTempTable
+drop table if exists `floor_treasure` cascade;
+
+--* RestoreFromTempTable
+create table `floor_treasure` (
+  `floor_id` INT not null comment 'フロアID'
+  , `item_id` INT not null comment 'アイテムID'
+  , `note` VARCHAR(256) comment '備考'
+  , constraint `floor_treasure_PKC` primary key (`floor_id`,`item_id`)
+) comment 'フロア宝箱' ;
 
 -- アイテム
 --* BackupToTempTable
