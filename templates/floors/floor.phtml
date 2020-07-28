@@ -59,6 +59,25 @@
           </tbody>
         </table>
       <?php endif; ?>
+      <?php if (!empty($detail['treasure'])) : ?>
+        <div class="lemonchiffon">Treasure Items</div>
+        <table class="table-dark table-striped table-bordered w-100 mb-2">
+          <tbody>
+            <?php foreach ($detail['treasure'] as $item) : ?>
+              <tr>
+                <td>
+                  <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
+                    <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
+                  </a>
+                  <?php if (!empty($item['note'])) : ?>
+                    <a href="javascript:void(0);" class="item-skill treasure-note pl-1" data-toggle="tooltip" data-placement="top" title="<?= $item['note'] ?>"><i class="fas fa-exclamation-circle"></i></a>
+                  <?php endif; ?>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      <?php endif; ?>
     </div>
     <div class="col-12 col-sm-6">
       <div class="lemonchiffon">Quests</div>

@@ -39,7 +39,7 @@ class FloorsController extends Controller {
 
 	public function detail(Request $request, Response $response, array $args) {
 		$this->title = 'フロアデータ';
-		$this->scripts[] = '/js/floor.js?id=00041';
+		$this->scripts[] = '/js/floor.js?id=00046';
 		$this->scripts[] = '/lib/photoswipe/photoswipe.min.js?id=00041';
 		$this->scripts[] = '/lib/photoswipe/photoswipe-ui-default.min.js?id=00041';
 
