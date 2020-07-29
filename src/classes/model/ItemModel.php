@@ -257,6 +257,7 @@ class ItemModel extends Model {
 		return [
 			'floors' => $this->getFloorsByItemId($id),
 			'banana' => $this->getBananaFloorsByItemId($id),
+			'treasure' => $this->getTreasureFloorsByItemId($id),
 			'creatures' => $this->getCreaturesByItemId($id)
 		];
 	}
@@ -430,6 +431,36 @@ class ItemModel extends Model {
 			$floors[] = [
 				'floor_id' => $result['floor_id'],
 				'short_name' => $result['short_name'],
+			];
+		}
+		return $floors;
+	}
+
+	private function getTreasureFloorsByItemId(int $id) {
+		$sql = <<<SQL
+			SELECT
+			  F.floor_id
+			  , F.short_name
+			  , FT.note
+			FROM
+			  floor_treasure FT
+			  INNER JOIN floor F
+			    ON FT.floor_id = F.floor_id
+			WHERE
+			  FT.item_id = :id
+			ORDER BY
+			  F.sort_key
+		SQL;
+		$this->logger->debug($sql);
+		$stmt = $this->db->prepare($sql);
+		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+		$stmt->execute();
+		$floors = [];
+		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			$floors[] = [
+				'floor_id' => $result['floor_id'],
+				'short_name' => $result['short_name'],
+				'note' => $result['note'],
 			];
 		}
 		return $floors;
