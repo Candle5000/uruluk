@@ -393,7 +393,7 @@ class ItemModel extends Model {
 			  FI.item_id = :id
 			ORDER BY
 			  F.sort_key
-		SQL;
+			SQL;
 		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -421,7 +421,7 @@ class ItemModel extends Model {
 			  FI.item_id = :id
 			ORDER BY
 			  F.sort_key
-		SQL;
+			SQL;
 		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -450,7 +450,7 @@ class ItemModel extends Model {
 			  FT.item_id = :id
 			ORDER BY
 			  F.sort_key
-		SQL;
+			SQL;
 		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -481,7 +481,7 @@ class ItemModel extends Model {
 			  CI.item_id = :id
 			ORDER BY
 			  C.sort_key
-		SQL;
+			SQL;
 		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindParam(':id', $id, PDO::PARAM_INT);
