@@ -12,6 +12,8 @@ $(function() {
 				.addClass('fa-chevron-circle-down');
 	});
 
+	$("a.treasure-note").tooltip();
+
 	var initPhotoSwipeFromDOM = function( gallerySelector ) {
 
 		// parse slide data (url, title, size ...) from DOM elements

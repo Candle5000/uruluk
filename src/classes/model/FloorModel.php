@@ -49,6 +49,7 @@ class FloorModel extends Model {
 				'image_size' => $result['image_size'],
 				'items' => $this->getFloorRareItemList($floorId),
 				'banana' => $this->getFloorBananaItemList($floorId),
+				'treasure' => $this->getFloorTreasureItemList($floorId),
 				'creatures' => $this->getFloorCreatureList($floorId)
 			];
 		} else {
@@ -186,6 +187,48 @@ class FloorModel extends Model {
 				'name_ja' => $result['name_ja'],
 				'rarity' => $result['rarity'],
 				'image_name' => $result['image_name'],
+			];
+		}
+		return $items;
+	}
+
+	private function getFloorTreasureItemList($floorId) {
+		$sql = <<<SQL
+			SELECT
+			  I.item_id
+			  , IC.name_en item_class
+			  , I.base_item_id
+			  , I.name_en
+			  , I.name_ja
+			  , I.rarity
+			  , I.image_name
+			  , FT.note
+			FROM
+			  floor_treasure FT
+			  INNER JOIN item I
+			    ON FT.item_id = I.item_id
+			  INNER JOIN item_class IC
+			    ON I.item_class_id = IC.item_class_id
+			WHERE
+			  FT.floor_id = :floor_id
+			ORDER BY
+			  I.sort_key
+			SQL;
+		$this->logger->debug($sql);
+		$stmt = $this->db->prepare($sql);
+		$stmt->bindParam(':floor_id', $floorId, PDO::PARAM_INT);
+		$stmt->execute();
+		$items = [];
+		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			$items[] = [
+				'item_id' => $result['item_id'],
+				'item_class' => $result['item_class'],
+				'base_item_id' => $result['base_item_id'],
+				'name_en' => $result['name_en'],
+				'name_ja' => $result['name_ja'],
+				'rarity' => $result['rarity'],
+				'image_name' => $result['image_name'],
+				'note' => $result['note'],
 			];
 		}
 		return $items;
