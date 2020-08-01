@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2020/07/28 21:54:28
+-- Date/Time    : 2020/08/01 22:46:42
 -- Author       : Candle
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -361,6 +361,33 @@ create table `quest_reward_item` (
   , `item_id` INT not null comment 'アイテムID'
   , constraint `quest_reward_item_PKC` primary key (`quest_id`,`item_id`)
 ) comment 'クエスト報酬アイテム' ;
+
+-- ショップ
+--* BackupToTempTable
+drop table if exists `shop` cascade;
+
+--* RestoreFromTempTable
+create table `shop` (
+  `shop_id` INT not null AUTO_INCREMENT comment 'ショップID'
+  , `floor_id` INT not null comment 'フロアID'
+  , `name` VARCHAR(64) not null comment '名称'
+  , `image_name` VARCHAR(64) comment '画像名称'
+  , `random` BIT(1) not null comment 'ランダム'
+  , `item_count` INT comment 'アイテム数'
+  , constraint `shop_PKC` primary key (`shop_id`)
+) comment 'ショップ' ;
+
+-- ショップアイテム
+--* BackupToTempTable
+drop table if exists `shop_item` cascade;
+
+--* RestoreFromTempTable
+create table `shop_item` (
+  `shop_id` INT not null comment 'ショップID'
+  , `item_id` INT not null comment 'アイテムID'
+  , `price` INT not null comment '販売価格'
+  , constraint `shop_item_PKC` primary key (`shop_id`,`item_id`)
+) comment 'ショップアイテム' ;
 
 -- 短縮URL
 --* BackupToTempTable
