@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2020/08/01 22:46:42
+-- Date/Time    : 2020/08/02 17:36:18
 -- Author       : Candle
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -293,10 +293,13 @@ create table `item_class` (
   , `name_ja` VARCHAR(32) comment '名称(日本語)'
   , `image_name` VARCHAR(64) comment '画像名称'
   , `sort_key` INT not null comment 'ソート順'
+  , `shop_sort_key` INT not null comment 'ショップソート順'
   , constraint `item_class_PKC` primary key (`item_class_id`)
 ) comment 'アイテムクラス' ;
 
 alter table `item_class` add unique `item_class_IX1` (`sort_key`) ;
+
+alter table `item_class` add unique `item_class_IX2` (`shop_sort_key`) ;
 
 -- お知らせ
 --* BackupToTempTable
@@ -373,7 +376,7 @@ create table `shop` (
   , `name` VARCHAR(64) not null comment '名称'
   , `image_name` VARCHAR(64) comment '画像名称'
   , `random` BIT(1) not null comment 'ランダム'
-  , `item_count` INT comment 'アイテム数'
+  , `note` VARCHAR(256) comment '備考'
   , constraint `shop_PKC` primary key (`shop_id`)
 ) comment 'ショップ' ;
 
