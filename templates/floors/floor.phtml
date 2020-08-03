@@ -131,6 +131,37 @@
           <?php endforeach; ?>
         </tbody>
       </table>
+      <?php if (!empty($shops)) : ?>
+        <div class="lemonchiffon">Shops</div>
+        <table class="table-dark table-striped table-bordered w-100 mb-2">
+          <tbody>
+            <?php foreach ($shops as $shop) : ?>
+              <tr>
+                <td>
+                  <div>
+                    <a href="#collapse-shop<?= $shop['shop_id'] ?>r" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-shop<?= $shop['shop_id'] ?>r">
+                      <img class="item-icon" src="/img/shop/<?= $shop['image_name'] ?>" /><span class="pl-1"><?= $shop['name'] ?></span><i class="fas fa-chevron-circle-down"></i>
+                    </a>
+                  </div>
+                  <div class="collapse mb-1" id="collapse-shop<?= $shop['shop_id'] ?>r">
+                    <div><?= $shop['random'] ? 'Random Items' : '' ?></div>
+                    <ul class="m-0 list-unstyled">
+                      <?php foreach ($shop['items'] as $item) : ?>
+                        <li>
+                          <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
+                            <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
+                          </a>
+                        </li>
+                      <?php endforeach; ?>
+                    </ul>
+                  </div>
+                  <div><?= $shop['note'] ?></div>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      <?php endif; ?>
       <?php if (!empty($detail['treasure'])) : ?>
         <div class="lemonchiffon">Treasure Items</div>
         <table class="table-dark table-striped table-bordered w-100 mb-2">
