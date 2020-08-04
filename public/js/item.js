@@ -62,6 +62,7 @@ $(function() {
 		}).done(data => {
 			const item = data.item;
 			const quests = data.quests;
+			const shops = data.shops;
 
 			$('#detail-floors').children('li.detail-row').remove();
 			if (item.floors.length) {
@@ -124,6 +125,24 @@ $(function() {
 					.attr('href', '/creatures/' + creature.creature_id)
 					.addClass(creature.boss == 1 ? 'boss' : 'text-light');
 				$('#detail-creatures').append(row);
+			});
+
+			$('#detail-shops').children('li.detail-row').remove();
+			if (shops.length) {
+				$('#detail-shop-none').addClass('d-none');
+			} else {
+				$('#detail-shop-none').removeClass('d-none');
+			}
+			shops.forEach(shop => {
+				const row = $($("#modal-shop-row").html());
+				const imgName = shop.image_name ?
+					shop.image_name : 'shop_noimg.png';
+				row.find('img').attr('src', '/img/shop/' + imgName);
+				row.find('span').text(shop.short_name + '/' + shop.name);
+				row.find('.shop-name')
+					.attr('href', '/floors/' + shop.floor_id);
+				row.find('.shop-price').text('(' + shop.price + ' G)');
+				$('#detail-shops').append(row);
 			});
 
 			$('#detail-quest-reward').children('li.detail-row').remove();

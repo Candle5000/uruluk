@@ -8,6 +8,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Model\ItemModel;
 use Model\QuestModel;
+use Model\ShopModel;
 
 /**
  * アイテムデータ コントローラ.
@@ -38,7 +39,7 @@ class ItemsController extends Controller {
 
 	public function rareItem(Request $request, Response $response, array $args) {
 		$this->title = ucfirst($args['itemClassName']) . ' レアアイテム';
-		$this->scripts[] = '/js/item.js?id=00046';
+		$this->scripts[] = '/js/item.js?id=00047';
 
 		try {
 			$this->db->beginTransaction();
@@ -68,7 +69,7 @@ class ItemsController extends Controller {
 
 	public function commonItem(Request $request, Response $response, array $args) {
 		$this->title = ucfirst($args['itemClassName']) . ' ノーマルアイテム';
-		$this->scripts[] = '/js/item.js?id=00044';
+		$this->scripts[] = '/js/item.js?id=00047';
 
 		try {
 			$this->db->beginTransaction();
@@ -100,10 +101,12 @@ class ItemsController extends Controller {
 	public function detail(Request $request, Response $response, array $args) {
 		$item = new ItemModel($this->db, $this->logger);
 		$quest = new QuestModel($this->db, $this->logger);
+		$shop = new ShopModel($this->db, $this->logger);
 		$detail = $item->getItemDetailById($args['itemId']);
 		$data = [
 			'item' => $detail,
-			'quests' => $quest->getQuestDetailListByItemId($args['itemId'])
+			'quests' => $quest->getQuestDetailListByItemId($args['itemId']),
+			'shops' => $shop->getShopListByItemId($args['itemId'])
 		];
 		return $response->withJson($data);
 	}
