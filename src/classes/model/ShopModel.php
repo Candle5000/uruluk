@@ -93,6 +93,7 @@ class ShopModel extends Model {
 				, I.rarity
 				, I.image_name
 				, I.sort_key
+				, SI.price
 			FROM
 				shop_item SI
 				INNER JOIN item I
@@ -120,7 +121,8 @@ class ShopModel extends Model {
 				'name_ja' => $result['name_ja'],
 				'rarity' => $result['rarity'],
 				'image_name' => $result['image_name'],
-				'sort_key' => $result['sort_key']
+				'sort_key' => $result['sort_key'],
+				'price' => $result['price']
 			];
 		}
 		return $items;

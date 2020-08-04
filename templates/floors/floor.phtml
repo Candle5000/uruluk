@@ -150,7 +150,7 @@
                         <li>
                           <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
                             <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
-                          </a>
+                          </a><span class="small">(<?= $item['price'] ?>)</span>
                         </li>
                       <?php endforeach; ?>
                     </ul>
