@@ -159,10 +159,3 @@ div.tooltip-inner {
 figure {
 	margin: 0;
 }
-
-@media (max-width: 575px) {
-	.sm-small {
-		font-size: 80%;
-		font-weight: 400;
-	}
-}
