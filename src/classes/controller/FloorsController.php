@@ -8,6 +8,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Model\FloorModel;
 use Model\QuestModel;
+use Model\ShopModel;
 
 /**
  * フロアデータ コントローラ.
@@ -48,6 +49,7 @@ class FloorsController extends Controller {
 
 			$floor = new FloorModel($this->db, $this->logger);
 			$quest = new QuestModel($this->db, $this->logger);
+			$shop = new ShopModel($this->db, $this->logger);
 			$detail = $floor->getFloorDetail($args['floorId']);
 
 			if ($detail == null) throw new NotFoundException($request, $response);
@@ -57,6 +59,7 @@ class FloorsController extends Controller {
 				'floorIndex' => $floor->getFloorIndex(),
 				'detail' => $detail,
 				'quests' => $quest->getQuestDetailListByFloorId($args['floorId']),
+				'shops' => $shop->getShopListByFloorId($args['floorId']),
 				'footer' => $this->getFooterInfo()
 			];
 

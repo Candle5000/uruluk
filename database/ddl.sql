@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2020/07/28 21:54:28
+-- Date/Time    : 2020/08/02 17:36:18
 -- Author       : Candle
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -293,10 +293,13 @@ create table `item_class` (
   , `name_ja` VARCHAR(32) comment '名称(日本語)'
   , `image_name` VARCHAR(64) comment '画像名称'
   , `sort_key` INT not null comment 'ソート順'
+  , `shop_sort_key` INT not null comment 'ショップソート順'
   , constraint `item_class_PKC` primary key (`item_class_id`)
 ) comment 'アイテムクラス' ;
 
 alter table `item_class` add unique `item_class_IX1` (`sort_key`) ;
+
+alter table `item_class` add unique `item_class_IX2` (`shop_sort_key`) ;
 
 -- お知らせ
 --* BackupToTempTable
@@ -361,6 +364,33 @@ create table `quest_reward_item` (
   , `item_id` INT not null comment 'アイテムID'
   , constraint `quest_reward_item_PKC` primary key (`quest_id`,`item_id`)
 ) comment 'クエスト報酬アイテム' ;
+
+-- ショップ
+--* BackupToTempTable
+drop table if exists `shop` cascade;
+
+--* RestoreFromTempTable
+create table `shop` (
+  `shop_id` INT not null AUTO_INCREMENT comment 'ショップID'
+  , `floor_id` INT not null comment 'フロアID'
+  , `name` VARCHAR(64) not null comment '名称'
+  , `image_name` VARCHAR(64) comment '画像名称'
+  , `random` BIT(1) not null comment 'ランダム'
+  , `note` VARCHAR(256) comment '備考'
+  , constraint `shop_PKC` primary key (`shop_id`)
+) comment 'ショップ' ;
+
+-- ショップアイテム
+--* BackupToTempTable
+drop table if exists `shop_item` cascade;
+
+--* RestoreFromTempTable
+create table `shop_item` (
+  `shop_id` INT not null comment 'ショップID'
+  , `item_id` INT not null comment 'アイテムID'
+  , `price` INT not null comment '販売価格'
+  , constraint `shop_item_PKC` primary key (`shop_id`,`item_id`)
+) comment 'ショップアイテム' ;
 
 -- 短縮URL
 --* BackupToTempTable
