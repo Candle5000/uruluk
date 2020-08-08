@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2020/08/02 17:36:18
+-- Date/Time    : 2020/08/08 9:46:22
 -- Author       : Candle
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -223,6 +223,7 @@ create table `item` (
   , `item_class_id` INT not null comment 'アイテムクラスID'
   , `base_item_id` INT comment 'ベースアイテムID'
   , `brand_id` INT comment 'ブランドID'
+  , `class_flactuable` BIT(1) default 0 not null comment 'クラス変動'
   , `name_en` VARCHAR(64) comment '名称(英語)'
   , `name_ja` VARCHAR(64) comment '名称(日本語)'
   , `rarity` ENUM('common', 'rare', 'artifact') not null comment 'レアリティ'

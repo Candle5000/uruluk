@@ -142,6 +142,10 @@ img.item-icon {
 	image-rendering:-o-crisp-edges;
 	image-rendering:pixelated;
 }
+img.class-icon {
+	width: 16px;
+	height: 16px;
+}
 div.img-floor {
 	min-height: 128px;
 }
