@@ -139,6 +139,7 @@ class QuestModel extends Model {
 				, I.item_class_id
 				, IC.name_en item_class
 				, I.base_item_id
+				, I.class_flactuable
 				, I.name_en
 				, I.name_ja
 				, I.rarity
@@ -153,6 +154,7 @@ class QuestModel extends Model {
 				QRI.quest_id = :quest_id
 			ORDER BY
 				I.sort_key
+				, I.item_id
 			SQL;
 		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
@@ -165,6 +167,7 @@ class QuestModel extends Model {
 				'item_class_id' => $result['item_class_id'],
 				'item_class' => $result['item_class'],
 				'base_item_id' => $result['base_item_id'],
+				'class_flactuable' => $result['class_flactuable'],
 				'name_en' => $result['name_en'],
 				'name_ja' => $result['name_ja'],
 				'rarity' => $result['rarity'],
@@ -181,6 +184,7 @@ class QuestModel extends Model {
 				, I.item_class_id
 				, IC.name_en item_class
 				, I.base_item_id
+				, I.class_flactuable
 				, I.name_en
 				, I.name_ja
 				, I.rarity
@@ -195,6 +199,7 @@ class QuestModel extends Model {
 				QRI.quest_id = :quest_id
 			ORDER BY
 				I.sort_key
+				, I.item_id
 			SQL;
 		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
@@ -207,6 +212,7 @@ class QuestModel extends Model {
 				'item_class_id' => $result['item_class_id'],
 				'item_class' => $result['item_class'],
 				'base_item_id' => $result['base_item_id'],
+				'class_flactuable' => $result['class_flactuable'],
 				'name_en' => $result['name_en'],
 				'name_ja' => $result['name_ja'],
 				'rarity' => $result['rarity'],

@@ -77,9 +77,14 @@ $(function() {
 						+ (item.rarity == 'common' ? item.base_item_id : 'rare') + '/' + item.item_id;
 				const img = item.image_name ? item.image_name : 'item_noimg.png';
 				row.find('a').attr('href', link).addClass(item.rarity);
-				row.find('img')
+				row.find('img.item-icon')
 						.attr('src', '/img/item/' + img).attr('alt', item.name_en);
 				row.find('span').text(item.name_en);
+				if (item.class_flactuable == 0) {
+					row.find('img.class-icon').remove();
+				} else {
+					row.find('img.class-icon').attr('src', '/img/common/' + item.item_class.toLowerCase() + '.png');
+				}
 				itemTbody.append(row);
 			});
 

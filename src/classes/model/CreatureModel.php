@@ -127,6 +127,7 @@ class CreatureModel extends Model {
 			  I.item_id
 			  , IC.name_en item_class
 			  , I.base_item_id
+			  , I.class_flactuable
 			  , I.name_en
 			  , I.rarity
 			  , I.image_name 
@@ -140,6 +141,7 @@ class CreatureModel extends Model {
 			  CDI.creature_id = :id 
 			ORDER BY
 			  I.sort_key
+			  , I.item_id
 			SQL;
 		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
@@ -151,6 +153,7 @@ class CreatureModel extends Model {
 				'item_id' => $result['item_id'],
 				'item_class' => $result['item_class'],
 				'base_item_id' => $result['base_item_id'],
+				'class_flactuable' => $result['class_flactuable'],
 				'name_en' => $result['name_en'],
 				'rarity' => $result['rarity'],
 				'image_name' => $result['image_name'],
