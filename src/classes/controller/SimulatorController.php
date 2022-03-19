@@ -72,8 +72,21 @@ class SimulatorController extends Controller {
 	public function item(Request $request, Response $response, array $args) {
 		$item = new ItemModel($this->db, $this->logger);
 		$getParam = $request->getQueryParams();
-		$itemClassId = $item->getItemClassId($args['itemClassName']);
-		if ($itemClassId === null) throw new NotFoundException($request, $response);
+		$itemClassNames = [];
+		if (array_key_exists('characterClass', $getParam) && array_key_exists($getParam['characterClass'], self::SLOT_ITEM_CLASSES)) {
+			if ($args['itemClassName'] == 'all') {
+				$itemClassNames[] = self::SLOT_ITEM_CLASSES[$getParam['characterClass']];
+				$itemClassNames = array_merge($itemClassNames, array_unique(self::SLOT_ITEM_CLASSES_COMMON));
+			} else {
+				$itemClassNames[] = $args['itemClassName'];
+			}
+		} else {
+			throw new NotFoundException($request, $response);
+		}
+		$itemClassIds = $item->getItemClassIds($itemClassNames);
+		if (empty($itemClassIds)) {
+			throw new NotFoundException($request, $response);
+		}
 		$rarities = [];
 		if (array_key_exists('rarity', $getParam) && is_array($getParam['rarity'])) {
 			foreach ($getParam['rarity'] as $val) {
@@ -81,7 +94,7 @@ class SimulatorController extends Controller {
 			}
 		}
 		$data = [
-			'items' => $item->getItemsByClassAndRarities($itemClassId, $rarities),
+			'items' => $item->getItemsByClassAndRarities($itemClassIds, $rarities),
 		];
 
 		return $response->withJson($data);

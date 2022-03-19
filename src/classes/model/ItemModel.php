@@ -67,6 +67,34 @@ class ItemModel extends Model {
 		}
 	}
 
+	public function getItemClassIds(array $itemClassNames) {
+		$sql_itemClassNames = [];
+		foreach ($itemClassNames as $key => $itemClassName) {
+			$sql_itemClassNames[] = ":itemClassName$key";
+		}
+		$sql = 'SELECT'
+			. '  item_class_id '
+			. 'FROM'
+			. '  item_class '
+			. 'WHERE'
+			. '  name_en IN(' . implode($sql_itemClassNames, ', ') . ')';
+		$this->logger->debug($sql);
+		$stmt = $this->db->prepare($sql);
+		foreach ($itemClassNames as $key => $itemClassName) {
+			$params[] = ['param' => ":itemClassName$key",
+				'var' => $itemClassNames[$key], 'type' => PDO::PARAM_STR];
+		}
+		foreach ($params as $param) {
+			$stmt->bindParam($param['param'], $param['var'], $param['type']);
+		}
+		$stmt->execute();
+		$itemClassIds = [];
+		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			$itemClassIds[] = $result['item_class_id'];
+		}
+		return $itemClassIds;
+	}
+
 	public function getBaseItems() {
 		$sql = <<<SQL
 			SELECT
@@ -162,10 +190,14 @@ class ItemModel extends Model {
 	}
 
 	public function getItemsByClassAndRarity(int $itemClassId, string $rarity) {
-		return $this->getItemsByClassAndRarities($itemClassId, [$rarity]);
+		return $this->getItemsByClassAndRarities([$itemClassId], [$rarity]);
 	}
 
-	public function getItemsByClassAndRarities(int $itemClassId, array $rarities) {
+	public function getItemsByClassAndRarities(array $itemClassIds, array $rarities) {
+		$sql_itemClassId = [];
+		foreach ($itemClassIds as $key => $itemClassId) {
+			$sql_itemClassId[] = ":itemClassId$key";
+		}
 		$sql_rarity = [];
 		foreach ($rarities as $key => $rarity) {
 			$sql_rarity[] = ":rarity$key";
@@ -179,7 +211,7 @@ class ItemModel extends Model {
 			. "  LEFT JOIN attribute A "
 			. "    ON IA.attribute_id = A.attribute_id "
 			. "WHERE"
-			. "  I.item_class_id = :itemClassId ";
+			. "  I.item_class_id IN(" . implode($sql_itemClassId, ", ") . ")";
 		if (count($sql_rarity) > 0) {
 			$sql .= "  AND I.rarity IN(" . implode($sql_rarity, ", ") . ")";
 		}
@@ -187,7 +219,10 @@ class ItemModel extends Model {
 			. "  I.sort_key"
 			. "  , A.sort_key"
 			. "  , IA.flactuable";
-		$params[] = ['param' => 'itemClassId', 'var' => $itemClassId, 'type' => PDO::PARAM_INT];
+		foreach ($itemClassIds as $key => $itemClassId) {
+			$params[] = ['param' => ":itemClassId$key",
+				'var' => $itemClassIds[$key], 'type' => PDO::PARAM_INT];
+		}
 		foreach ($rarities as $key => $rarity) {
 			$params[] = ['param' => ":rarity$key",
 				'var' => $rarities[$key], 'type' => PDO::PARAM_STR];

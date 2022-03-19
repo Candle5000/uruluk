@@ -523,6 +523,8 @@ $(function() {
 	$(".table-item-slot a.item-img").on("click", function() {
 		target = $(this);
 		const rarity = [];
+		const charaClass = $("select.character-class").val();
+
 		if ($("#modal-items").hasClass("show")) {
 			if ($("#search-rarity-common").prop("checked")) rarity.push("common");
 			if ($("#search-rarity-rare").prop("checked")) rarity.push("rare");
@@ -543,7 +545,10 @@ $(function() {
 		$.ajax({
 			url : "/simulator/item/" + target.data("item-class"),
 			type : "GET",
-			data : {"rarity" : rarity}
+			data : {
+				"rarity" : rarity,
+				"characterClass" : charaClass
+			}
 		}).done(data => {
 			modalItemIndex = 0;
 			modalItems = [null];
@@ -599,7 +604,7 @@ $(function() {
 	// スロット初期化
 	let itemIndex = 0;
 	const initItems = $.parseJSON($("#init-items").html());
-	$(".table-item-slot a.item-img").toArray().forEach(link => {
+	$(".table-item-slot a.item-img:not(.search-all)").toArray().forEach(link => {
 		setItem($(link), initItems[itemIndex]);
 		slotItems[itemIndex + 1] = initItems[itemIndex];
 		itemIndex++;
