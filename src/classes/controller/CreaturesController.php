@@ -29,7 +29,7 @@ class CreaturesController extends Controller {
 
 			$args = [
 				'header' => $this->getHeaderInfo(),
-				'creatures' => $creature->getCreatureNameList(),
+				'creatures' => $creature->getCreatureStutsList(),
 				'footer' => $this->getFooterInfo()
 			];
 

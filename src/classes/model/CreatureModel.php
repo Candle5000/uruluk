@@ -6,7 +6,7 @@ use \PDO;
 
 class CreatureModel extends Model {
 
-	public function getCreatureNameList() {
+	public function getCreatureStutsList() {
 		$sql = <<<SQL
 			SELECT
 			  creature_id
@@ -14,6 +14,14 @@ class CreatureModel extends Model {
 			  , name_en
 			  , name_ja
 			  , image_name
+			  , min_ad
+			  , max_ad
+			  , `as`
+			  , def
+			  , dex
+			  , vit
+			  , voh
+			  , dr
 			FROM
 			  creature
 			ORDER BY
@@ -30,7 +38,15 @@ class CreatureModel extends Model {
 				'boss' => $result['boss'] == 1,
 				'name_en' => $result['name_en'],
 				'name_ja' => $result['name_ja'],
-				'image_name' => $result['image_name']
+				'image_name' => $result['image_name'],
+				'min_ad' => $result['min_ad'],
+				'max_ad' => $result['max_ad'],
+				'as' => $result['as'],
+				'def' => $result['def'],
+				'dex' => $result['dex'],
+				'vit' => $result['vit'],
+				'voh' => $result['voh'],
+				'dr' => $result['dr']
 			];
 		}
 		return $creatures;

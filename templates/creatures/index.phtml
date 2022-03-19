@@ -145,22 +145,66 @@
 </div>
 <h2>Creatures</h2>
 <?= $this->fetch('adsense.phtml', ['google' => $header['google']]) ?>
-<table class="table-dark table-striped table-hover w-100" id="creature-list">
+<table class="table-dark table-striped table-hover w-100 small" id="creature-list">
   <tbody>
     <?php if (empty($creatures)) : ?>
       <tr>
         <td>No Data</td>
       </tr>
     <?php endif; ?>
-    <?php foreach ($creatures as $creature) : ?>
+    <?php foreach ($creatures as $index => $creature) : ?>
+      <?php if ($index % 10 === 0) : ?>
+        <tr>
+          <td style="padding-left: 33px;">
+            <div class="d-table w-100 table-item-attrs">
+	      <div class="d-table-row">
+	        <div class="d-table-cell border border-black text-center w-16">AD</div>
+	        <div class="d-table-cell border border-black text-center w-14">AS</div>
+	        <div class="d-table-cell border border-black text-center w-14">Def</div>
+	        <div class="d-table-cell border border-black text-center w-14">Dex</div>
+	        <div class="d-table-cell border border-black text-center w-14">Vit</div>
+	        <div class="d-table-cell border border-black text-center w-14">VoH</div>
+	        <div class="d-table-cell border border-black text-center w-14">DR</div>
+	      </div>
+            </div>
+          </td>
+        </tr>
+      <?php endif; ?>
       <tr>
         <td class="selectable" id="creature-<?= $creature['creature_id'] ?>" data-creatureid="<?= $creature['creature_id'] ?>" tabindex="<?= $creature['creature_id'] ?>">
-          <div class="d-table-cell align-middle">
-            <img class="item-detail" src="/img/creature/<?= $creature['image_name'] == null ? 'creature_noimg.png' : $creature['image_name'] ?>" alt="<?= $creature['name_en'] ?>" />
+          <div class="d-table-cell align-middle" style="width: 32px;">
+            <img class="item-icon" src="/img/creature/<?= $creature['image_name'] == null ? 'creature_noimg.png' : $creature['image_name'] ?>" alt="<?= $creature['name_en'] ?>" />
           </div>
-          <div class="d-table-cell align-middle pl-2 <?= $creature['boss'] ? 'boss' : '' ?>">
-            <div class="m-0"><?= $creature['name_ja'] ?></div>
-            <div class="m-0"><?= $creature['name_en'] ?></div>
+          <div class="d-table-cell w-100 align-top">
+	    <div class="pl-1 <?= $creature['boss'] ? 'boss' : '' ?>">
+	      <div><?= $creature['name_ja'] ?></div>
+              <div><?= $creature['name_en'] ?></div>
+            </div>
+	      <div class="d-table w-100 table-item-attrs">
+		<div class="d-table-row">
+		  <div class="d-table-cell border border-black text-right w-16">
+		    &nbsp;<?= $creature['min_ad'] ?>~<?= $creature['max_ad'] ?>
+		  </div>
+		  <div class="d-table-cell border border-black text-right w-14">
+                    <?= $creature['as'] ?>
+                  </div>
+		  <div class="d-table-cell border border-black text-right w-14">
+                    <?= $creature['def'] ?>
+                  </div>
+		  <div class="d-table-cell border border-black text-right w-14">
+                    <?= $creature['dex'] ?>
+                  </div>
+		  <div class="d-table-cell border border-black text-right w-14">
+                    <?= $creature['vit'] ?>
+                  </div>
+		  <div class="d-table-cell border border-black text-right w-14">
+                    <?= $creature['voh'] ?>
+                  </div>
+		  <div class="d-table-cell border border-black text-right w-14">
+                    <?= $creature['dr'] ?>
+                  </div>
+		</div>
+	      </div>
           </div>
         </td>
       </tr>
