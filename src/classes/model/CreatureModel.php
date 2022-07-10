@@ -39,14 +39,14 @@ class CreatureModel extends Model {
 				'name_en' => $result['name_en'],
 				'name_ja' => $result['name_ja'],
 				'image_name' => $result['image_name'],
-				'min_ad' => $result['min_ad'],
-				'max_ad' => $result['max_ad'],
-				'as' => $result['as'],
-				'def' => $result['def'],
-				'dex' => $result['dex'],
-				'vit' => $result['vit'],
-				'voh' => $result['voh'],
-				'dr' => $result['dr']
+				'min_ad' => $this->getFormattedStats($result['min_ad']),
+				'max_ad' => $this->getFormattedStats($result['max_ad']),
+				'as' => $this->getFormattedStats($result['as']),
+				'def' => $this->getFormattedStats($result['def']),
+				'dex' => $this->getFormattedStats($result['dex']),
+				'vit' => $this->getFormattedStats($result['vit']),
+				'voh' => $this->getFormattedStats($result['voh']),
+				'dr' => $this->getFormattedStats($result['dr'])
 			];
 		}
 		return $creatures;
@@ -211,6 +211,17 @@ class CreatureModel extends Model {
 			];
 		}
 		return $floors;
+	}
+
+	private function getFormattedStats($as) {
+		switch ($as) {
+			case null:
+				return '?';
+			case -1:
+				return '-';
+			default:
+				return $as;
+		}
 	}
 
 }
