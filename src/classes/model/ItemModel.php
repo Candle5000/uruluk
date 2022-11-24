@@ -23,6 +23,7 @@ class ItemModel extends Model {
 
 	private const SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS = "  I.item_id"
 		. "  , I.item_class_id"
+		. "  , IC.name_en item_class_name"
 		. "  , I.image_name"
 		. "  , I.name_en"
 		. "  , I.name_ja"
@@ -175,6 +176,8 @@ class ItemModel extends Model {
 			. self::SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS
 			. "FROM"
 			. "  item I "
+			. "  LEFT JOIN item_class IC "
+			. "    ON I.item_class_id = IC.item_class_id "
 			. "  LEFT JOIN item_attribute IA "
 			. "    ON I.item_id = IA.item_id "
 			. "  LEFT JOIN attribute A "
@@ -206,6 +209,8 @@ class ItemModel extends Model {
 			. self::SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS
 			. "FROM"
 			. "  item I "
+			. "  LEFT JOIN item_class IC "
+			. "    ON I.item_class_id = IC.item_class_id "
 			. "  LEFT JOIN item_attribute IA "
 			. "    ON I.item_id = IA.item_id "
 			. "  LEFT JOIN attribute A "
@@ -237,6 +242,8 @@ class ItemModel extends Model {
 			  $select
 			FROM
 			  item I
+			  LEFT JOIN item_class IC
+			    ON I.item_class_id = IC.item_class_id
 			  LEFT JOIN item_attribute IA
 				ON I.item_id = IA.item_id
 			  LEFT JOIN attribute A
@@ -314,6 +321,7 @@ class ItemModel extends Model {
 				if (!empty($item)) $items[] = $item;
 				$item['item_id'] = $result['item_id'];
 				$item['item_class_id'] = $result['item_class_id'];
+				$item['item_class_name'] = strtolower($result['item_class_name']);
 				$item['image_name'] = ($result['image_name'] === null)
 					? "item_noimg.png" : $result['image_name'];
 				$item['name_en'] = $result['name_en'];

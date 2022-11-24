@@ -75,8 +75,7 @@ class SimulatorController extends Controller {
 		$itemClassNames = [];
 		if (array_key_exists('characterClass', $getParam) && array_key_exists($getParam['characterClass'], self::SLOT_ITEM_CLASSES)) {
 			if ($args['itemClassName'] == 'all') {
-				$itemClassNames[] = self::SLOT_ITEM_CLASSES[$getParam['characterClass']];
-				$itemClassNames = array_merge($itemClassNames, array_unique(self::SLOT_ITEM_CLASSES_COMMON));
+				$itemClassNames = array_merge(self::SLOT_ITEM_CLASSES[$getParam['characterClass']], self::SLOT_ITEM_CLASSES_COMMON);
 			} else {
 				$itemClassNames[] = $args['itemClassName'];
 			}
