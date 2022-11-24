@@ -445,7 +445,9 @@ $(function() {
 		});
 
 		// Noneを追加
-		modalItems.unshift(null);
+		if (target.data("slot-index") != 0) {
+			modalItems.unshift(null);
+		}
 
 		// アイテムリストの表示
 		showItems();
@@ -494,6 +496,7 @@ $(function() {
 		$("#table-items a.item-name").on("click", function() {
 			$(this).closest("div.d-table-row").find("a.item-img").click();
 		});
+		$("#table-items a.item-img").off("click");
 		$("#table-items a.item-img").on("click", function() {
 			const itemClass = target.data("item-class");
 			if ($(this).data("row-index") === undefined) {
@@ -501,15 +504,36 @@ $(function() {
 				slotItems[target.data("slot-index")] = undefined;
 			} else {
 				const modalItem = modalItems[$(this).data("row-index")];
-				setItem(target, modalItem);
+
+				// 対象装備枠の取得
+				let targetSlot;
+				if (target.data("slot-index") == 0) {
+					const targetSlots = $(".table-item-slot a").toArray().filter(link => {
+						return $(link).data("item-class") == modalItem.item_class_name;
+					});
+					for (let i = 0; i < targetSlots.length; i++) {
+						if (slotItems[$(targetSlots[i]).data("slot-index")] === undefined
+								|| slotItems[$(targetSlots[i]).data("slot-index")].item_id === undefined) {
+							targetSlot = $(targetSlots[i]);
+							break;
+						}
+						if (i + 1 == targetSlots.length) {
+							targetSlot = $(targetSlots[i]);
+						}
+					}
+				} else {
+					targetSlot = target;
+				}
+
+				setItem(targetSlot, modalItem);
 				if (modalItem.skill_en || modalItem["skill_" + $("select.character-class").val() + "_en"]) {
-					const skill = target.closest("div.d-table-row").find(".item-skill");
+					const skill = targetSlot.closest("div.d-table-row").find(".item-skill");
 					const newSkill = $(skill.prop("outerHTML"));
 					skill.remove();
-					target.closest("div.d-table-row").find(".item-name").after(newSkill);
+					targetSlot.closest("div.d-table-row").find(".item-name").after(newSkill);
 					newSkill.tooltip();
 				}
-				slotItems[target.data("slot-index")] = modalItems[$(this).data("row-index")];
+				slotItems[targetSlot.data("slot-index")] = modalItem;
 			}
 			calcAttrs();
 			$("#modal-items").modal("hide");
@@ -523,6 +547,8 @@ $(function() {
 	$(".table-item-slot a.item-img").on("click", function() {
 		target = $(this);
 		const rarity = [];
+		const charaClass = $("select.character-class").val();
+
 		if ($("#modal-items").hasClass("show")) {
 			if ($("#search-rarity-common").prop("checked")) rarity.push("common");
 			if ($("#search-rarity-rare").prop("checked")) rarity.push("rare");
@@ -543,10 +569,13 @@ $(function() {
 		$.ajax({
 			url : "/simulator/item/" + target.data("item-class"),
 			type : "GET",
-			data : {"rarity" : rarity}
+			data : {
+				"rarity" : rarity,
+				"characterClass" : charaClass
+			}
 		}).done(data => {
 			modalItemIndex = 0;
-			modalItems = [null];
+			modalItems = target.data("slot-index") == 0 ? [] : [null];
 			currentSortAttr = '';
 			Array.prototype.push.apply(modalItems, data.items);
 			$("#scroll-loading").removeClass("d-none").addClass("d-flex");
@@ -599,7 +628,7 @@ $(function() {
 	// スロット初期化
 	let itemIndex = 0;
 	const initItems = $.parseJSON($("#init-items").html());
-	$(".table-item-slot a.item-img").toArray().forEach(link => {
+	$(".table-item-slot a.item-img:not(.search-all)").toArray().forEach(link => {
 		setItem($(link), initItems[itemIndex]);
 		slotItems[itemIndex + 1] = initItems[itemIndex];
 		itemIndex++;

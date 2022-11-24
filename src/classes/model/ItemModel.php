@@ -23,6 +23,7 @@ class ItemModel extends Model {
 
 	private const SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS = "  I.item_id"
 		. "  , I.item_class_id"
+		. "  , IC.name_en item_class_name"
 		. "  , I.image_name"
 		. "  , I.name_en"
 		. "  , I.name_ja"
@@ -65,6 +66,34 @@ class ItemModel extends Model {
 		} else {
 			return null;
 		}
+	}
+
+	public function getItemClassIds(array $itemClassNames) {
+		$sql_itemClassNames = [];
+		foreach ($itemClassNames as $key => $itemClassName) {
+			$sql_itemClassNames[] = ":itemClassName$key";
+		}
+		$sql = 'SELECT'
+			. '  item_class_id '
+			. 'FROM'
+			. '  item_class '
+			. 'WHERE'
+			. '  name_en IN(' . implode($sql_itemClassNames, ', ') . ')';
+		$this->logger->debug($sql);
+		$stmt = $this->db->prepare($sql);
+		foreach ($itemClassNames as $key => $itemClassName) {
+			$params[] = ['param' => ":itemClassName$key",
+				'var' => $itemClassNames[$key], 'type' => PDO::PARAM_STR];
+		}
+		foreach ($params as $param) {
+			$stmt->bindParam($param['param'], $param['var'], $param['type']);
+		}
+		$stmt->execute();
+		$itemClassIds = [];
+		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			$itemClassIds[] = $result['item_class_id'];
+		}
+		return $itemClassIds;
 	}
 
 	public function getBaseItems() {
@@ -147,6 +176,8 @@ class ItemModel extends Model {
 			. self::SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS
 			. "FROM"
 			. "  item I "
+			. "  LEFT JOIN item_class IC "
+			. "    ON I.item_class_id = IC.item_class_id "
 			. "  LEFT JOIN item_attribute IA "
 			. "    ON I.item_id = IA.item_id "
 			. "  LEFT JOIN attribute A "
@@ -162,10 +193,14 @@ class ItemModel extends Model {
 	}
 
 	public function getItemsByClassAndRarity(int $itemClassId, string $rarity) {
-		return $this->getItemsByClassAndRarities($itemClassId, [$rarity]);
+		return $this->getItemsByClassAndRarities([$itemClassId], [$rarity]);
 	}
 
-	public function getItemsByClassAndRarities(int $itemClassId, array $rarities) {
+	public function getItemsByClassAndRarities(array $itemClassIds, array $rarities) {
+		$sql_itemClassId = [];
+		foreach ($itemClassIds as $key => $itemClassId) {
+			$sql_itemClassId[] = ":itemClassId$key";
+		}
 		$sql_rarity = [];
 		foreach ($rarities as $key => $rarity) {
 			$sql_rarity[] = ":rarity$key";
@@ -174,12 +209,14 @@ class ItemModel extends Model {
 			. self::SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS
 			. "FROM"
 			. "  item I "
+			. "  LEFT JOIN item_class IC "
+			. "    ON I.item_class_id = IC.item_class_id "
 			. "  LEFT JOIN item_attribute IA "
 			. "    ON I.item_id = IA.item_id "
 			. "  LEFT JOIN attribute A "
 			. "    ON IA.attribute_id = A.attribute_id "
 			. "WHERE"
-			. "  I.item_class_id = :itemClassId ";
+			. "  I.item_class_id IN(" . implode($sql_itemClassId, ", ") . ")";
 		if (count($sql_rarity) > 0) {
 			$sql .= "  AND I.rarity IN(" . implode($sql_rarity, ", ") . ")";
 		}
@@ -187,7 +224,10 @@ class ItemModel extends Model {
 			. "  I.sort_key"
 			. "  , A.sort_key"
 			. "  , IA.flactuable";
-		$params[] = ['param' => 'itemClassId', 'var' => $itemClassId, 'type' => PDO::PARAM_INT];
+		foreach ($itemClassIds as $key => $itemClassId) {
+			$params[] = ['param' => ":itemClassId$key",
+				'var' => $itemClassIds[$key], 'type' => PDO::PARAM_INT];
+		}
 		foreach ($rarities as $key => $rarity) {
 			$params[] = ['param' => ":rarity$key",
 				'var' => $rarities[$key], 'type' => PDO::PARAM_STR];
@@ -202,6 +242,8 @@ class ItemModel extends Model {
 			  $select
 			FROM
 			  item I
+			  LEFT JOIN item_class IC
+			    ON I.item_class_id = IC.item_class_id
 			  LEFT JOIN item_attribute IA
 				ON I.item_id = IA.item_id
 			  LEFT JOIN attribute A
@@ -279,6 +321,7 @@ class ItemModel extends Model {
 				if (!empty($item)) $items[] = $item;
 				$item['item_id'] = $result['item_id'];
 				$item['item_class_id'] = $result['item_class_id'];
+				$item['item_class_name'] = strtolower($result['item_class_name']);
 				$item['image_name'] = ($result['image_name'] === null)
 					? "item_noimg.png" : $result['image_name'];
 				$item['name_en'] = $result['name_en'];
