@@ -1,13 +1,15 @@
 -- Project Name : Uruluk
--- Date/Time    : 2020/08/08 9:46:22
+-- Date/Time    : 2022/12/20 7:36:13
 -- Author       : Candle
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
 
 /*
+  << 注意！！ >>
   BackupToTempTable, RestoreFromTempTable疑似命令が付加されています。
   これにより、drop table, create table 後もデータが残ります。
   この機能は一時的に $$TableName のような一時テーブルを作成します。
+  この機能は A5:SQL Mk-2でのみ有効であることに注意してください。
 */
 
 -- アクセスカウント
@@ -119,6 +121,28 @@ create table `creature_special_attack` (
   , constraint `creature_special_attack_PKC` primary key (`creature_id`,`special_attack_id`)
 ) comment 'クリーチャースペシャルアタック' ;
 
+-- ドロップアイテムグループ
+--* BackupToTempTable
+drop table if exists `drop_item_group` cascade;
+
+--* RestoreFromTempTable
+create table `drop_item_group` (
+  `drop_item_group_id` INT not null comment 'ドロップアイテムグループID'
+  , `item_id` INT not null comment 'アイテムID'
+  , constraint `drop_item_group_PKC` primary key (`drop_item_group_id`,`item_id`)
+) comment 'ドロップアイテムグループ' ;
+
+-- ドロップアイテムグループ名
+--* BackupToTempTable
+drop table if exists `drop_item_group_name` cascade;
+
+--* RestoreFromTempTable
+create table `drop_item_group_name` (
+  `drop_item_group_id` INT not null AUTO_INCREMENT comment 'ドロップアイテムグループID'
+  , `label` VARCHAR(64) comment 'ラベル'
+  , constraint `drop_item_group_name_PKC` primary key (`drop_item_group_id`)
+) comment 'ドロップアイテムグループ名' ;
+
 -- フロア
 --* BackupToTempTable
 drop table if exists `floor` cascade;
@@ -137,6 +161,17 @@ create table `floor` (
 ) comment 'フロア' ;
 
 alter table `floor` add unique `floor_IX1` (`sort_key`) ;
+
+-- フロアバナナドロップグループ
+--* BackupToTempTable
+drop table if exists `floor_banana_drop_group` cascade;
+
+--* RestoreFromTempTable
+create table `floor_banana_drop_group` (
+  `floor_id` INT not null comment 'フロアID'
+  , `drop_item_group_id` INT not null comment 'ドロップアイテムグループID'
+  , constraint `floor_banana_drop_group_PKC` primary key (`floor_id`,`drop_item_group_id`)
+) comment 'フロアバナナドロップグループ' ;
 
 -- フロアバナナアイテム
 --* BackupToTempTable
@@ -174,6 +209,17 @@ create table `floor_destination` (
   , `destination_floor_id` INT not null comment '移動先フロアID'
   , constraint `floor_destination_PKC` primary key (`floor_id`,`destination_floor_id`)
 ) comment 'フロア移動先' ;
+
+-- フロアドロップグループ
+--* BackupToTempTable
+drop table if exists `floor_drop_group` cascade;
+
+--* RestoreFromTempTable
+create table `floor_drop_group` (
+  `floor_id` INT not null comment 'フロアID'
+  , `drop_item_group_id` INT not null comment 'ドロップアイテムグループID'
+  , constraint `floor_drop_group_PKC` primary key (`floor_id`,`drop_item_group_id`)
+) comment 'フロアドロップグループ' ;
 
 -- フロアドロップアイテム
 --* BackupToTempTable
