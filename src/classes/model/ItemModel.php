@@ -21,42 +21,46 @@ class ItemModel extends Model {
 		'puppet' => 'puppet0.png'
 	];
 
-	private const SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS = "  I.item_id"
-		. "  , I.item_class_id"
-		. "  , IC.name_en item_class_name"
-		. "  , I.image_name"
-		. "  , I.name_en"
-		. "  , I.name_ja"
-		. "  , I.rarity"
-		. "  , I.skill_en"
-		. "  , I.skill_axe_en"
-		. "  , I.skill_sword_en"
-		. "  , I.skill_dagger_en"
-		. "  , I.comment_en"
-		. "  , I.comment_ja"
-		. "  , I.sort_key"
-		. "  , I.price"
-		. "  , A.short_name"
-		. "  , IA.color"
-		. "  , IA.flactuable"
-		. "  , IA.based_source"
-		. "  , IA.attribute_value"
-		. "  , IA.attribute_value_sword"
-		. "  , IA.attribute_value_axe"
-		. "  , IA.attribute_value_dagger"
-		. "  , A.unit"
-		. "  , IA.max_required"
-		. "  , IA.max_required_sword"
-		. "  , IA.max_required_axe"
-		. "  , IA.max_required_dagger ";
+	private const SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS = <<<SQL
+		I.item_id
+		, I.item_class_id
+		, IC.name_en item_class_name
+		, I.image_name
+		, I.name_en
+		, I.name_ja
+		, I.rarity
+		, I.skill_en
+		, I.skill_axe_en
+		, I.skill_sword_en
+		, I.skill_dagger_en
+		, I.comment_en
+		, I.comment_ja
+		, I.sort_key
+		, I.price
+		, A.short_name
+		, IA.color
+		, IA.flactuable
+		, IA.based_source
+		, IA.attribute_value
+		, IA.attribute_value_sword
+		, IA.attribute_value_axe
+		, IA.attribute_value_dagger
+		, A.unit
+		, IA.max_required
+		, IA.max_required_sword
+		, IA.max_required_axe
+		, IA.max_required_dagger
+		SQL;
 
 	public function getItemClassId(string $itemClassName) {
-		$sql = 'SELECT'
-			. '  item_class_id '
-			. 'FROM'
-			. '  item_class '
-			. 'WHERE'
-			. '  name_en = :itemClassName';
+		$sql = <<<SQL
+			SELECT
+			  item_class_id
+			FROM
+			  item_class
+			WHERE
+			  name_en = :itemClassName
+			SQL;
 		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindParam(':itemClassName', $itemClassName, PDO::PARAM_STR);
@@ -73,12 +77,15 @@ class ItemModel extends Model {
 		foreach ($itemClassNames as $key => $itemClassName) {
 			$sql_itemClassNames[] = ":itemClassName$key";
 		}
-		$sql = 'SELECT'
-			. '  item_class_id '
-			. 'FROM'
-			. '  item_class '
-			. 'WHERE'
-			. '  name_en IN(' . implode($sql_itemClassNames, ', ') . ')';
+		$str_itemClassNames = implode($sql_itemClassNames, ', ');
+		$sql = <<<SQL
+			SELECT
+			  item_class_id
+			FROM
+			  item_class
+			WHERE
+			  name_en IN($str_itemClassNames)
+			SQL;
 		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
 		foreach ($itemClassNames as $key => $itemClassName) {
@@ -172,22 +179,25 @@ class ItemModel extends Model {
 	}
 
 	public function getItemsByClass(int $itemClassId) {
-		$sql = "SELECT"
-			. self::SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS
-			. "FROM"
-			. "  item I "
-			. "  LEFT JOIN item_class IC "
-			. "    ON I.item_class_id = IC.item_class_id "
-			. "  LEFT JOIN item_attribute IA "
-			. "    ON I.item_id = IA.item_id "
-			. "  LEFT JOIN attribute A "
-			. "    ON IA.attribute_id = A.attribute_id "
-			. "WHERE"
-			. "  I.item_class_id = :itemClassId "
-			. "ORDER BY"
-			. "  I.sort_key"
-			. "  , A.sort_key"
-			. "  , IA.flactuable";
+		$columns = self::SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS;
+		$sql = <<<SQL
+			SELECT
+			  $columns
+			FROM
+			  item I
+			  LEFT JOIN item_class IC
+			    ON I.item_class_id = IC.item_class_id
+			  LEFT JOIN item_attribute IA
+			    ON I.item_id = IA.item_id
+			  LEFT JOIN attribute A
+			    ON IA.attribute_id = A.attribute_id
+			WHERE
+			  I.item_class_id = :itemClassId
+			ORDER BY
+			  I.sort_key
+			  , A.sort_key
+			  , IA.flactuable
+			SQL;
 		$params = [['param' => 'itemClassId', 'var' => $itemClassId, 'type' => PDO::PARAM_INT]];
 		return $this->getItemsObject($sql, $params);
 	}
@@ -205,25 +215,31 @@ class ItemModel extends Model {
 		foreach ($rarities as $key => $rarity) {
 			$sql_rarity[] = ":rarity$key";
 		}
-		$sql = "SELECT"
-			. self::SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS
-			. "FROM"
-			. "  item I "
-			. "  LEFT JOIN item_class IC "
-			. "    ON I.item_class_id = IC.item_class_id "
-			. "  LEFT JOIN item_attribute IA "
-			. "    ON I.item_id = IA.item_id "
-			. "  LEFT JOIN attribute A "
-			. "    ON IA.attribute_id = A.attribute_id "
-			. "WHERE"
-			. "  I.item_class_id IN(" . implode($sql_itemClassId, ", ") . ")";
+		$columns = self::SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS;
+		$str_itemClassId = implode($sql_itemClassId, ", ");
+		$sql = <<<SQL
+			SELECT
+			  $columns
+			FROM
+			  item I
+			  LEFT JOIN item_class IC
+			    ON I.item_class_id = IC.item_class_id
+			  LEFT JOIN item_attribute IA
+			    ON I.item_id = IA.item_id
+			  LEFT JOIN attribute A
+			    ON IA.attribute_id = A.attribute_id
+			WHERE
+			  I.item_class_id IN($str_itemClassId)
+			SQL;
 		if (count($sql_rarity) > 0) {
 			$sql .= "  AND I.rarity IN(" . implode($sql_rarity, ", ") . ")";
 		}
-		$sql .= "ORDER BY"
-			. "  I.sort_key"
-			. "  , A.sort_key"
-			. "  , IA.flactuable";
+		$sql .= <<<SQL
+			ORDER BY
+			  I.sort_key
+			  , A.sort_key
+			  , IA.flactuable
+			SQL;
 		foreach ($itemClassIds as $key => $itemClassId) {
 			$params[] = ['param' => ":itemClassId$key",
 				'var' => $itemClassIds[$key], 'type' => PDO::PARAM_INT];
@@ -261,19 +277,22 @@ class ItemModel extends Model {
 	}
 
 	public function getItemByIdAndClass(int $itemId, string $itemClass) {
-		$sql = "SELECT"
-			. self::SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS
-			. "FROM"
-			. "  item I "
-			. "  LEFT JOIN item_class IC "
-			. "    ON I.item_class_id = IC.item_class_id "
-			. "  LEFT JOIN item_attribute IA "
-			. "    ON I.item_id = IA.item_id "
-			. "  LEFT JOIN attribute A "
-			. "    ON IA.attribute_id = A.attribute_id "
-			. "WHERE"
-			. "  I.item_id = :itemId "
-			. "  AND IC.name_en = :itemClassName ";
+		$columns = self::SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS;
+		$sql = <<<SQL
+			SELECT
+			  $columns
+			FROM
+			  item I
+			  LEFT JOIN item_class IC
+			    ON I.item_class_id = IC.item_class_id
+			  LEFT JOIN item_attribute IA
+			    ON I.item_id = IA.item_id
+			  LEFT JOIN attribute A
+			    ON IA.attribute_id = A.attribute_id
+			WHERE
+			  I.item_id = :itemId
+			  AND IC.name_en = :itemClassName
+			SQL;
 		$params = [
 			['param' => 'itemId', 'var' => $itemId, 'type' => PDO::PARAM_INT],
 			['param' => 'itemClassName', 'var' => $itemClass, 'type' => PDO::PARAM_STR]
