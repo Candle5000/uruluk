@@ -6,6 +6,8 @@ use \PDO;
 
 class FloorModel extends Model {
 
+	private const RARITY_RARE = "rare";
+
 	public function getFloorIndex() {
 		$floorIndex = [];
 		$floors = $this->getFloorList();
@@ -113,8 +115,9 @@ class FloorModel extends Model {
 	}
 
 	private function getFloorRareItemList($floorId) {
+		$rarity = self::RARITY_RARE;
 		$sql = <<<SQL
-			SELECT
+			SELECT DISTINCT
 			  I.item_id
 			  , IC.name_en item_class
 			  , I.base_item_id
@@ -124,13 +127,16 @@ class FloorModel extends Model {
 			  , I.rarity
 			  , I.image_name
 			FROM
-			  floor_drop_item FI
+			  floor_drop_group FG
+			  INNER JOIN drop_item_group DG
+			    ON FG.drop_item_group_id = DG.drop_item_group_id
 			  INNER JOIN item I
-			    ON FI.item_id = I.item_id
+			    ON DG.item_id = I.item_id
 			  INNER JOIN item_class IC
 			    ON I.item_class_id = IC.item_class_id
 			WHERE
-			  FI.floor_id = :floor_id
+			  FG.floor_id = :floor_id
+			  AND I.rarity = :rarity
 			ORDER BY
 			  I.sort_key
 			  , I.item_id
@@ -138,6 +144,7 @@ class FloorModel extends Model {
 		$this->logger->debug($sql);
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindParam(':floor_id', $floorId, PDO::PARAM_INT);
+		$stmt->bindParam(':rarity', $rarity, PDO::PARAM_STR);
 		$stmt->execute();
 		$items = [];
 		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
