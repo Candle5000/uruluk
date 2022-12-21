@@ -474,15 +474,17 @@ class ItemModel extends Model {
 
 	private function getBananaFloorsByItemId(int $id) {
 		$sql = <<<SQL
-			SELECT
+			SELECT DISTINCT
 			  F.floor_id
 			  , F.short_name
 			FROM
-			  floor_banana_item FI
+			  floor_banana_drop_group FG
+			  INNER JOIN drop_item_group DG
+			    ON FG.drop_item_group_id = DG.drop_item_group_id
 			  INNER JOIN floor F
-			    ON FI.floor_id = F.floor_id
+			    ON FG.floor_id = F.floor_id
 			WHERE
-			  FI.item_id = :id
+			  DG.item_id = :id
 			ORDER BY
 			  F.sort_key
 			SQL;

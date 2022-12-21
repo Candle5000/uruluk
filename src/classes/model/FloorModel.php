@@ -164,7 +164,7 @@ class FloorModel extends Model {
 
 	private function getFloorBananaItemList($floorId) {
 		$sql = <<<SQL
-			SELECT
+			SELECT DISTINCT
 			  I.item_id
 			  , IC.name_en item_class
 			  , I.base_item_id
@@ -174,13 +174,16 @@ class FloorModel extends Model {
 			  , I.rarity
 			  , I.image_name
 			FROM
-			  floor_banana_item FI
+			  floor_banana_drop_group FG
+			  INNER JOIN drop_item_group DG
+			    ON FG.drop_item_group_id = DG.drop_item_group_id
 			  INNER JOIN item I
-			    ON FI.item_id = I.item_id
+			    ON DG.item_id = I.item_id
 			  INNER JOIN item_class IC
 			    ON I.item_class_id = IC.item_class_id
 			WHERE
-			  FI.floor_id = :floor_id
+			  FG.floor_id = :floor_id
+			  AND rarity IN ('rare', 'artifact')
 			ORDER BY
 			  I.sort_key
 			  , I.item_id
