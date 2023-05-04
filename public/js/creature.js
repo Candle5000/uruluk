@@ -44,6 +44,7 @@ $(function() {
 			$("#detail-def").text(creature.def ? creature.def : '?');
 			$("#detail-dex").text(creature.dex ? creature.dex : '?');
 			$("#detail-vit").text(creature.vit ? creature.vit : '?');
+			$("#detail-ws").text(creature.ws ? creature.ws : '?');
 			$("#detail-voh").text((creature.voh ? creature.voh : '?') + '%');
 			$("#detail-dr").text((creature.dr ? creature.dr : '?') + '%');
 			$("#detail-xp").text(creature.xp ? creature.xp : '?');
