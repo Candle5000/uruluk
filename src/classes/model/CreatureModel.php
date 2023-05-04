@@ -65,9 +65,20 @@ class CreatureModel extends Model {
 			  , def
 			  , dex
 			  , vit
+			  , ws
 			  , voh
 			  , dr
 			  , xp
+			  , tb
+			  , tb_ad
+			  , tb_as
+			  , tb_def
+			  , tb_dex
+			  , tb_vit
+			  , tb_ws
+			  , tb_voh
+			  , tb_dr
+			  , tb_xp
 			  , note
 			  , image_name
 			FROM
@@ -92,9 +103,20 @@ class CreatureModel extends Model {
 				'def' => $result['def'],
 				'dex' => $result['dex'],
 				'vit' => $result['vit'],
+				'ws' => $result['ws'],
 				'voh' => $result['voh'],
 				'dr' => $result['dr'],
 				'xp' => $result['xp'],
+				'tb' => $result['tb'],
+				'tb_ad' => $result['tb_ad'],
+				'tb_as' => $result['tb_as'],
+				'tb_def' => $result['tb_def'],
+				'tb_dex' => $result['tb_dex'],
+				'tb_vit' => $result['tb_vit'],
+				'tb_ws' => $result['tb_ws'],
+				'tb_voh' => $result['tb_voh'],
+				'tb_dr' => $result['tb_dr'],
+				'tb_xp' => $result['tb_xp'],
 				'special_attacks' => $this->getSpecialAttacksByCreatureId($id),
 				'items' => $this->getItemsByCreatureId($id),
 				'floors' => $this->getFloorsByCreatureId($id),
