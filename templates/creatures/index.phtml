@@ -27,6 +27,18 @@
                 <col class="w-20"/>
                 <col class="w-20"/>
               </colgroup>
+              <tr id="detail-row-tb-phase">
+                <td colspan="2">TB Phase</td>
+                <td class="text-right" colspan="3">
+                  <select class="form-control tb-phase p-0 h-auto">
+                    <?php foreach (range(0, 63) as $phaseLevel) : ?>
+                      <option value="<?=$phaseLevel?>">
+                        <?=$phaseLevel * 4 + 1?>～<?=$phaseLevel * 4 + 4?>
+                      </option>
+                    <?php endforeach; ?>
+                  </select>
+                </td>
+              </tr>
               <tr>
                 <td class="text-center" colspan="2">AD</td>
                 <td class="text-center">AS</td>
@@ -55,6 +67,48 @@
                 <td class="text-center" id="detail-dr">0%</td>
                 <td class="text-center" id="detail-xp">2</td>
               </tr>
+            </table>
+            <table class="table-dark table-striped table-bordered w-100 mb-2 d-none" id="detail-tb-boosts">
+              <colgroup>
+                <col class="w-20"/>
+                <col class="w-20"/>
+                <col class="w-20"/>
+                <col class="w-20"/>
+                <col class="w-20"/>
+              </colgroup>
+              <thead>
+                <tr>
+                  <th class="pl-1" colspan="5">TB Phase Boosts</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center" colspan="2">AD</td>
+                  <td class="text-center">AS</td>
+                  <td class="text-center">Def</td>
+                  <td class="text-center">Dex</td>
+                </tr>
+                <tr>
+                  <td class="text-center" id="tb-ad" colspan="2">-</td>
+                  <td class="text-center" id="tb-as">-</td>
+                  <td class="text-center" id="tb-def">-</td>
+                  <td class="text-center" id="tb-dex">-</td>
+                </tr>
+                <tr>
+                  <td class="text-center">Vit</td>
+                  <td class="text-center">WS</td>
+                  <td class="text-center">VoH</td>
+                  <td class="text-center">DR</td>
+                  <td class="text-center">XP</td>
+                </tr>
+                <tr>
+                  <td class="text-center" id="tb-vit">-</td>
+                  <td class="text-center" id="tb-ws">-</td>
+                  <td class="text-center" id="tb-voh">-</td>
+                  <td class="text-center" id="tb-dr">-</td>
+                  <td class="text-center" id="tb-xp">2%</td>
+                </tr>
+              </tbody>
             </table>
             <table class="table-dark table-striped table-bordered w-100 mb-2">
               <thead>
@@ -157,15 +211,15 @@
         <tr>
           <td style="padding-left: 33px;">
             <div class="d-table w-100 table-item-attrs">
-	      <div class="d-table-row rare">
-	        <div class="d-table-cell border border-black text-center w-16">AD</div>
-	        <div class="d-table-cell border border-black text-center w-14">AS</div>
-	        <div class="d-table-cell border border-black text-center w-14">Def</div>
-	        <div class="d-table-cell border border-black text-center w-14">Dex</div>
-	        <div class="d-table-cell border border-black text-center w-14">Vit</div>
-	        <div class="d-table-cell border border-black text-center w-14">VoH</div>
-	        <div class="d-table-cell border border-black text-center w-14">DR</div>
-	      </div>
+          <div class="d-table-row rare">
+            <div class="d-table-cell border border-black text-center w-16">AD</div>
+            <div class="d-table-cell border border-black text-center w-14">AS</div>
+            <div class="d-table-cell border border-black text-center w-14">Def</div>
+            <div class="d-table-cell border border-black text-center w-14">Dex</div>
+            <div class="d-table-cell border border-black text-center w-14">Vit</div>
+            <div class="d-table-cell border border-black text-center w-14">VoH</div>
+            <div class="d-table-cell border border-black text-center w-14">DR</div>
+          </div>
             </div>
           </td>
         </tr>
@@ -176,35 +230,35 @@
             <img class="item-icon" src="/img/creature/<?= $creature['image_name'] == null ? 'creature_noimg.png' : $creature['image_name'] ?>" alt="<?= $creature['name_en'] ?>" />
           </div>
           <div class="d-table-cell w-100 align-top">
-	    <div class="pl-1 <?= $creature['boss'] ? 'boss' : '' ?>">
-	      <div><?= $creature['name_ja'] ?></div>
+            <div class="pl-1 <?= $creature['boss'] ? 'boss' : '' ?>">
+              <div><?= $creature['name_ja'] ?></div>
               <div><?= $creature['name_en'] ?></div>
             </div>
-	      <div class="d-table w-100 table-item-attrs">
-		<div class="d-table-row">
-		  <div class="d-table-cell border border-black text-right w-16">
-		    &nbsp;<?= $creature['min_ad'] ?>~<?= $creature['max_ad'] ?>
-		  </div>
-		  <div class="d-table-cell border border-black text-right w-14">
-                    <?= $creature['as'] ?>
-                  </div>
-		  <div class="d-table-cell border border-black text-right w-14">
-                    <?= $creature['def'] ?>
-                  </div>
-		  <div class="d-table-cell border border-black text-right w-14">
-                    <?= $creature['dex'] ?>
-                  </div>
-		  <div class="d-table-cell border border-black text-right w-14">
-                    <?= $creature['vit'] ?>
-                  </div>
-		  <div class="d-table-cell border border-black text-right w-14">
-                    <?= $creature['voh'] ?>
-                  </div>
-		  <div class="d-table-cell border border-black text-right w-14">
-                    <?= $creature['dr'] ?>
-                  </div>
-		</div>
-	      </div>
+            <div class="d-table w-100 table-item-attrs">
+              <div class="d-table-row">
+                <div class="d-table-cell border border-black text-right w-16">
+                  &nbsp;<?= $creature['min_ad'] ?>~<?= $creature['max_ad'] ?>
+                </div>
+                <div class="d-table-cell border border-black text-right w-14">
+                  <?= $creature['as'] ?>
+                </div>
+                <div class="d-table-cell border border-black text-right w-14">
+                  <?= $creature['def'] ?>
+                </div>
+                <div class="d-table-cell border border-black text-right w-14">
+                  <?= $creature['dex'] ?>
+                </div>
+                <div class="d-table-cell border border-black text-right w-14">
+                  <?= $creature['vit'] ?>
+                </div>
+                <div class="d-table-cell border border-black text-right w-14">
+                  <?= $creature['voh'] ?>
+                </div>
+                <div class="d-table-cell border border-black text-right w-14">
+                  <?= $creature['dr'] ?>
+                </div>
+              </div>
+            </div>
           </div>
         </td>
       </tr>

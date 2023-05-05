@@ -1,5 +1,17 @@
 $(function() {
 
+	const setPhaseBoost = function(baseTagId, boostVal, level, isPercentage) {
+		const base = $(baseTagId);
+		if (!base.data("base-val") || base.data("base-val") == 0 || !boostVal) {
+			return;
+		}
+		if (baseTagId == "#detail-as") {
+			base.text(Math.round(base.data("base-val") / (1 + boostVal * level / 100)));
+		} else {
+			base.text(Math.round(base.data("base-val") * (1 + boostVal * level / 100)) + (isPercentage ? '%' : ''));
+		}
+	}
+
 	let autoTransition = false;
 
 	window.addEventListener('popstate', e => {
@@ -34,24 +46,57 @@ $(function() {
 			const creature = data.creature;
 			const imgName = creature.image_name ?
 					creature.image_name : 'creature_noimg.png';
-			const as = creature.as ? creature.as == -1 ? '-' : creature.as : '?';
+			const as = creature.as ? creature.as == 0 ? '-' : creature.as : '?';
 			$("#detail-image").attr('src', '/img/creature/' + imgName);
 			$("#detail-name-ja").text(creature.name_ja);
 			$("#detail-name-en").text(creature.name_en);
-			$("#detail-min-ad").text(creature.min_ad ? creature.min_ad : '?');
-			$("#detail-max-ad").text(creature.max_ad ? creature.max_ad : '?');
-			$("#detail-as").text(as);
-			$("#detail-def").text(creature.def ? creature.def : '?');
-			$("#detail-dex").text(creature.dex ? creature.dex : '?');
-			$("#detail-vit").text(creature.vit ? creature.vit : '?');
-			$("#detail-ws").text(creature.ws ? creature.ws : '?');
-			$("#detail-voh").text((creature.voh ? creature.voh : '?') + '%');
-			$("#detail-dr").text((creature.dr ? creature.dr : '?') + '%');
-			$("#detail-xp").text(creature.xp ? creature.xp : '?');
+			$("#detail-min-ad").text(creature.min_ad ? creature.min_ad : '?')
+				.data("base-val", creature.min_ad);
+			$("#detail-max-ad").text(creature.max_ad ? creature.max_ad : '?')
+				.data("base-val", creature.max_ad);
+			$("#detail-as").text(as)
+				.data("base-val", creature.as);
+			$("#detail-def").text(creature.def ? creature.def : '?')
+				.data("base-val", creature.def);
+			$("#detail-dex").text(creature.dex ? creature.dex : '?')
+				.data("base-val", creature.dex);
+			$("#detail-vit").text(creature.vit ? creature.vit : '?')
+				.data("base-val", creature.vit);
+			$("#detail-ws").text(creature.ws ? creature.ws : '?')
+				.data("base-val", creature.ws);
+			$("#detail-voh").text((creature.voh ? creature.voh : '?') + '%')
+				.data("base-val", creature.voh);
+			$("#detail-dr").text((creature.dr ? creature.dr : '?') + '%')
+				.data("base-val", creature.dr);
+			$("#detail-xp").text(creature.xp ? creature.xp : '?')
+				.data("base-val", creature.xp);
+			$("#tb-ad").text(creature.tb_ad ? creature.tb_ad + '%' : '-')
+				.data("val", creature.tb_ad);
+			$("#tb-as").text(creature.tb_as ? creature.tb_as + '%' : '-')
+				.data("val", creature.tb_as);
+			$("#tb-def").text(creature.tb_def ? creature.tb_def + '%' : '-')
+				.data("val", creature.tb_def);
+			$("#tb-dex").text(creature.tb_dex ? creature.tb_dex + '%' : '-')
+				.data("val", creature.tb_dex);
+			$("#tb-vit").text(creature.tb_vit ? creature.tb_vit + '%' : '-')
+				.data("val", creature.tb_vit);
+			$("#tb-ws").text(creature.tb_ws ? creature.tb_ws + '%' : '-')
+				.data("val", creature.tb_ws);
+			$("#tb-voh").text(creature.tb_voh ? creature.tb_voh + '%' : '-')
+				.data("val", creature.tb_voh);
+			$("#tb-dr").text(creature.tb_dr ? creature.tb_dr + '%' : '-')
+				.data("val", creature.tb_dr);
+			$("#tb-xp").text(creature.tb_xp ? creature.tb_xp + '%' : '-')
+				.data("val", creature.tb_xp);
 			if (creature.boss == 1) {
 				$("#detail-name").addClass("boss");
 			} else {
 				$("#detail-name").removeClass("boss");
+			}
+			if (creature.tb == 1) {
+				$("#detail-tb-boosts,#detail-row-tb-phase").removeClass("d-none");
+			} else {
+				$("#detail-tb-boosts,#detail-row-tb-phase").addClass("d-none");
 			}
 
 			const saTbody = $("#detail-sa");
@@ -112,6 +157,20 @@ $(function() {
 
 			$("#modal-creature").modal("show");
 		});
+	});
+
+	$("select.tb-phase").on('change', function() {
+		const level = $(this).val();
+		setPhaseBoost("#detail-min-ad", $("#tb-ad").data("val"), level, false);
+		setPhaseBoost("#detail-max-ad", $("#tb-ad").data("val"), level, false);
+		setPhaseBoost("#detail-as", $("#tb-as").data("val"), level, false);
+		setPhaseBoost("#detail-def", $("#tb-def").data("val"), level, false);
+		setPhaseBoost("#detail-dex", $("#tb-dex").data("val"), level, false);
+		setPhaseBoost("#detail-vit", $("#tb-vit").data("val"), level, false);
+		setPhaseBoost("#detail-ws", $("#tb-ws").data("val"), level, false);
+		setPhaseBoost("#detail-voh", $("#tb-voh").data("val"), level, true);
+		setPhaseBoost("#detail-dr", $("#tb-dr").data("val"), level, true);
+		setPhaseBoost("#detail-xp", $("#tb-xp").data("val"), level, false);
 	});
 
 	if (location.pathname.split('/').length == 3) {
