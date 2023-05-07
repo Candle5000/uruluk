@@ -2,13 +2,24 @@ $(function() {
 
 	const setPhaseBoost = function(baseTagId, boostVal, level, isPercentage) {
 		const base = $(baseTagId);
+		const baseTd1 = $("td" + baseTagId);
+		const baseTd2 = $("span" + baseTagId).closest("td");
 		if (!base.data("base-val") || base.data("base-val") == 0 || !boostVal) {
+			baseTd1.removeClass('yellow');
+			baseTd2.removeClass('yellow');
 			return;
 		}
 		if (baseTagId == "#detail-as") {
 			base.text(Math.round(base.data("base-val") / (1 + boostVal * level / 100)));
 		} else {
 			base.text(Math.round(base.data("base-val") * (1 + boostVal * level / 100)) + (isPercentage ? '%' : ''));
+		}
+		if (level > 0) {
+			baseTd1.addClass('yellow');
+			baseTd2.addClass('yellow');
+		} else {
+			baseTd1.removeClass('yellow');
+			baseTd2.removeClass('yellow');
 		}
 	}
 
@@ -154,6 +165,8 @@ $(function() {
 			if (!at && location.pathname.split('/').length != 3) {
 				history.pushState(null, null, '/creatures/' + creatureId);
 			}
+
+			$("select.tb-phase").trigger('change');
 
 			$("#modal-creature").modal("show");
 		});
