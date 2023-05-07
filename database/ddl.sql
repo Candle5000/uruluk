@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2022/12/20 7:36:13
+-- Date/Time    : 2023/05/07 2:20:25
 -- Author       : Candle
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -70,13 +70,24 @@ create table `creature` (
   , `name_ja` VARCHAR(32) comment '名称(日本語)'
   , `min_ad` INT comment '最小攻撃力'
   , `max_ad` INT comment '最大攻撃力'
-  , `as` INT comment '攻撃スピード'
+  , `as` INT comment '攻撃速度'
   , `def` INT comment '防御力'
   , `dex` INT comment '技量'
   , `vit` INT comment '生命力'
+  , `ws` INT comment '移動速度'
   , `voh` INT comment '生命力吸収'
   , `dr` INT comment 'ダメージ反射'
   , `xp` INT comment '経験値'
+  , `tb` BIT(1) default FALSE not null comment '結界地出現'
+  , `tb_ad` DECIMAL(10,1) comment '結界地補正 攻撃力'
+  , `tb_as` DECIMAL(10,1) comment '結界地補正 攻撃速度'
+  , `tb_def` DECIMAL(10,1) comment '結界地補正 防御力'
+  , `tb_dex` DECIMAL(10,1) comment '結界地補正 技量'
+  , `tb_vit` DECIMAL(10,1) comment '結界地補正 生命力'
+  , `tb_ws` DECIMAL(10,1) comment '結界地補正 移動速度'
+  , `tb_voh` DECIMAL(10,1) comment '結界地補正 生命力吸収'
+  , `tb_dr` DECIMAL(10,1) comment '結界地補正 ダメージ反射'
+  , `tb_xp` DECIMAL(10,1) comment '結界地補正 経験値'
   , `note` TEXT comment '説明'
   , `image_name` VARCHAR(32) comment '画像名称'
   , `sort_key` INT not null comment 'ソート順'

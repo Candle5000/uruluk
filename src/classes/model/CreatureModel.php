@@ -39,14 +39,14 @@ class CreatureModel extends Model {
 				'name_en' => $result['name_en'],
 				'name_ja' => $result['name_ja'],
 				'image_name' => $result['image_name'],
-				'min_ad' => $this->getFormattedStats($result['min_ad']),
-				'max_ad' => $this->getFormattedStats($result['max_ad']),
-				'as' => $this->getFormattedStats($result['as']),
-				'def' => $this->getFormattedStats($result['def']),
-				'dex' => $this->getFormattedStats($result['dex']),
-				'vit' => $this->getFormattedStats($result['vit']),
-				'voh' => $this->getFormattedStats($result['voh']),
-				'dr' => $this->getFormattedStats($result['dr'])
+				'min_ad' => $this->getFormattedStats($result['min_ad'], false),
+				'max_ad' => $this->getFormattedStats($result['max_ad'], false),
+				'as' => $this->getFormattedStats($result['as'], true),
+				'def' => $this->getFormattedStats($result['def'], false),
+				'dex' => $this->getFormattedStats($result['dex'], false),
+				'vit' => $this->getFormattedStats($result['vit'], false),
+				'voh' => $this->getFormattedStats($result['voh'], false),
+				'dr' => $this->getFormattedStats($result['dr'], false)
 			];
 		}
 		return $creatures;
@@ -65,9 +65,20 @@ class CreatureModel extends Model {
 			  , def
 			  , dex
 			  , vit
+			  , ws
 			  , voh
 			  , dr
 			  , xp
+			  , tb
+			  , tb_ad
+			  , tb_as
+			  , tb_def
+			  , tb_dex
+			  , tb_vit
+			  , tb_ws
+			  , tb_voh
+			  , tb_dr
+			  , tb_xp
 			  , note
 			  , image_name
 			FROM
@@ -92,9 +103,20 @@ class CreatureModel extends Model {
 				'def' => $result['def'],
 				'dex' => $result['dex'],
 				'vit' => $result['vit'],
+				'ws' => $result['ws'],
 				'voh' => $result['voh'],
 				'dr' => $result['dr'],
 				'xp' => $result['xp'],
+				'tb' => $result['tb'],
+				'tb_ad' => $result['tb_ad'],
+				'tb_as' => $result['tb_as'],
+				'tb_def' => $result['tb_def'],
+				'tb_dex' => $result['tb_dex'],
+				'tb_vit' => $result['tb_vit'],
+				'tb_ws' => $result['tb_ws'],
+				'tb_voh' => $result['tb_voh'],
+				'tb_dr' => $result['tb_dr'],
+				'tb_xp' => $result['tb_xp'],
 				'special_attacks' => $this->getSpecialAttacksByCreatureId($id),
 				'items' => $this->getItemsByCreatureId($id),
 				'floors' => $this->getFloorsByCreatureId($id),
@@ -213,14 +235,15 @@ class CreatureModel extends Model {
 		return $floors;
 	}
 
-	private function getFormattedStats($as) {
-		switch ($as) {
+	private function getFormattedStats($value, bool $enableUndef) {
+		switch ($value) {
 			case null:
 				return '?';
-			case -1:
-				return '-';
+			case 0:
+				if ($enableUndef) return '-';
+				return $value;
 			default:
-				return $as;
+				return $value;
 		}
 	}
 
