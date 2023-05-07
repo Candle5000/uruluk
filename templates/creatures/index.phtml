@@ -33,7 +33,7 @@
                   <select class="form-control tb-phase p-0 h-auto">
                     <?php foreach (range(0, 63) as $phaseLevel) : ?>
                       <option value="<?=$phaseLevel?>">
-                        <?=$phaseLevel * 4 + 1?>～<?=$phaseLevel * 4 + 4?>
+                        #<?=$phaseLevel * 4 + 1?>&nbsp;～&nbsp;#<?=$phaseLevel * 4 + 4?>
                       </option>
                     <?php endforeach; ?>
                   </select>
