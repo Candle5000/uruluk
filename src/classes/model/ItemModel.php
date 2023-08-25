@@ -77,7 +77,7 @@ class ItemModel extends Model {
 		foreach ($itemClassNames as $key => $itemClassName) {
 			$sql_itemClassNames[] = ":itemClassName$key";
 		}
-		$str_itemClassNames = implode($sql_itemClassNames, ', ');
+		$str_itemClassNames = implode(', ', $sql_itemClassNames);
 		$sql = <<<SQL
 			SELECT
 			  item_class_id
@@ -216,7 +216,7 @@ class ItemModel extends Model {
 			$sql_rarity[] = ":rarity$key";
 		}
 		$columns = self::SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS;
-		$str_itemClassId = implode($sql_itemClassId, ", ");
+		$str_itemClassId = implode(', ', $sql_itemClassId);
 		$sql = <<<SQL
 			SELECT
 			  $columns
@@ -232,7 +232,7 @@ class ItemModel extends Model {
 			  I.item_class_id IN($str_itemClassId)
 			SQL;
 		if (count($sql_rarity) > 0) {
-			$sql .= "  AND I.rarity IN(" . implode($sql_rarity, ", ") . ")";
+			$sql .= "  AND I.rarity IN(" . implode(', ', $sql_rarity) . ")";
 		}
 		$sql .= <<<SQL
 			ORDER BY
