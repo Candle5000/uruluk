@@ -15,13 +15,13 @@
       <div class="card-footer border-0 text-center">
         <?php if ($page > 0) : ?>
           <a href="/news?page=<?= $page - 1 ?>" class="lemonchiffon">&lt;&lt; Prev</a>
-        <?php else: ?>
+        <?php else : ?>
           <span class="text-muted">&lt;&lt; Prev</span>
         <?php endif; ?>
         <span> | </span>
         <?php if ($page < $news['max_page']) : ?>
           <a href="/news?page=<?= $page + 1 ?>" class="lemonchiffon">Next &gt;&gt;</a>
-        <?php else: ?>
+        <?php else : ?>
           <span class="text-muted">Next &gt;&gt;</span>
         <?php endif; ?>
       </div>

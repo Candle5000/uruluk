@@ -9,28 +9,29 @@ use Slim\Http\Response;
 /**
  * プライバシーポリシー コントローラ.
  */
-class PrivacyPolicyController extends Controller {
+class PrivacyPolicyController extends Controller
+{
 
-	const PAGE_ID = 1;
+    const PAGE_ID = 1;
 
-	public function index(Request $request, Response $response) {
-		$this->title = 'プライバシーポリシー';
+    public function index(Request $request, Response $response)
+    {
+        $this->title = 'プライバシーポリシー';
 
-		try {
-			$this->db->beginTransaction();
+        try {
+            $this->db->beginTransaction();
 
-			$args = [
-				'header' => $this->getHeaderInfo(),
-				'footer' => $this->getFooterInfo()
-			];
+            $args = [
+                'header' => $this->getHeaderInfo(),
+                'footer' => $this->getFooterInfo()
+            ];
 
-			$this->db->commit();
-		} catch (Exception $e) {
-			$this->db->rollBack();
-			throw $e;
-		}
+            $this->db->commit();
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            throw $e;
+        }
 
         return $this->renderer->render($response, 'privacy/index.phtml', $args);
-	}
-
+    }
 }

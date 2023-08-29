@@ -12,7 +12,7 @@
 <div class="card mb-2 bg-darkblue img-floor">
   <?php if (empty($detail['image_name'])) : ?>
     <div class="text-center m-auto">No Image</div>
-  <?php else: ?>
+  <?php else : ?>
     <div class="my-gallery">
       <figure>
         <a href="/img/floor/<?= $detail['image_name'] ?>.png" data-size="<?= $detail['image_size'] ?>">
@@ -30,7 +30,9 @@
       <table class="table-dark table-striped table-bordered w-100 mb-2">
         <tbody>
           <?php if (empty($detail['items'])) : ?>
-            <tr><td>No Items</td></tr>
+            <tr>
+              <td>No Items</td>
+            </tr>
           <?php endif; ?>
           <?php foreach ($detail['items'] as $item) : ?>
             <tr>
@@ -71,7 +73,9 @@
       <table class="table-dark table-striped table-bordered w-100 mb-2">
         <tbody>
           <?php if (empty($quests)) : ?>
-            <tr><td>No Quests</td></tr>
+            <tr>
+              <td>No Quests</td>
+            </tr>
           <?php endif; ?>
           <?php foreach ($quests as $quest) : ?>
             <tr>
@@ -197,7 +201,9 @@
       <table class="table-dark table-striped table-bordered w-100 mb-2">
         <tbody>
           <?php if (empty($detail['creatures']['default'])) : ?>
-            <tr><td>No Creatures</td></tr>
+            <tr>
+              <td>No Creatures</td>
+            </tr>
           <?php endif; ?>
           <?php foreach ($detail['creatures']['default'] as $creature) : ?>
             <tr>

@@ -21,19 +21,19 @@
           <div class="col-12 col-sm-6">
             <table class="table-dark table-striped table-bordered w-100 mb-2">
               <colgroup>
-                <col class="w-20"/>
-                <col class="w-20"/>
-                <col class="w-20"/>
-                <col class="w-20"/>
-                <col class="w-20"/>
+                <col class="w-20" />
+                <col class="w-20" />
+                <col class="w-20" />
+                <col class="w-20" />
+                <col class="w-20" />
               </colgroup>
               <tr id="detail-row-tb-phase">
                 <td colspan="2">TB Phase</td>
                 <td class="text-right" colspan="3">
                   <select class="form-control tb-phase p-0 h-auto">
                     <?php foreach (range(0, 63) as $phaseLevel) : ?>
-                      <option value="<?=$phaseLevel?>">
-                        #<?=$phaseLevel * 4 + 1?>&nbsp;～&nbsp;#<?=$phaseLevel * 4 + 4?>
+                      <option value="<?= $phaseLevel ?>">
+                        #<?= $phaseLevel * 4 + 1 ?>&nbsp;～&nbsp;#<?= $phaseLevel * 4 + 4 ?>
                       </option>
                     <?php endforeach; ?>
                   </select>
@@ -70,11 +70,11 @@
             </table>
             <table class="table-dark table-striped table-bordered w-100 mb-2 d-none" id="detail-tb-boosts">
               <colgroup>
-                <col class="w-20"/>
-                <col class="w-20"/>
-                <col class="w-20"/>
-                <col class="w-20"/>
-                <col class="w-20"/>
+                <col class="w-20" />
+                <col class="w-20" />
+                <col class="w-20" />
+                <col class="w-20" />
+                <col class="w-20" />
               </colgroup>
               <thead>
                 <tr>
