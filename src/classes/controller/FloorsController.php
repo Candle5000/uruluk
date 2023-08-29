@@ -13,63 +13,65 @@ use Model\ShopModel;
 /**
  * フロアデータ コントローラ.
  */
-class FloorsController extends Controller {
+class FloorsController extends Controller
+{
 
-	public function index(Request $request, Response $response, array $args) {
-		$this->title = 'フロアデータ';
+    public function index(Request $request, Response $response, array $args)
+    {
+        $this->title = 'フロアデータ';
 
-		try {
-			$this->db->beginTransaction();
+        try {
+            $this->db->beginTransaction();
 
-			$floor = new FloorModel($this->db, $this->logger);
+            $floor = new FloorModel($this->db, $this->logger);
 
-			$args = [
-				'header' => $this->getHeaderInfo(),
-				'floorIndex' => $floor->getFloorIndex(),
-				'footer' => $this->getFooterInfo()
-			];
+            $args = [
+                'header' => $this->getHeaderInfo(),
+                'floorIndex' => $floor->getFloorIndex(),
+                'footer' => $this->getFooterInfo()
+            ];
 
-			$this->db->commit();
-		} catch (Exception $e) {
-			$this->db->rollBack();
-			throw $e;
-		}
+            $this->db->commit();
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            throw $e;
+        }
 
-		return $this->renderer->render($response, 'floors/index.phtml', $args);
-	}
+        return $this->renderer->render($response, 'floors/index.phtml', $args);
+    }
 
-	public function detail(Request $request, Response $response, array $args) {
-		$this->title = 'フロアデータ';
-		$this->scripts[] = '/js/floor.js?id=00046';
-		$this->scripts[] = '/lib/photoswipe/photoswipe.min.js?id=00041';
-		$this->scripts[] = '/lib/photoswipe/photoswipe-ui-default.min.js?id=00041';
+    public function detail(Request $request, Response $response, array $args)
+    {
+        $this->title = 'フロアデータ';
+        $this->scripts[] = '/js/floor.js?id=00046';
+        $this->scripts[] = '/lib/photoswipe/photoswipe.min.js?id=00041';
+        $this->scripts[] = '/lib/photoswipe/photoswipe-ui-default.min.js?id=00041';
 
-		try {
-			$this->db->beginTransaction();
+        try {
+            $this->db->beginTransaction();
 
-			$floor = new FloorModel($this->db, $this->logger);
-			$quest = new QuestModel($this->db, $this->logger);
-			$shop = new ShopModel($this->db, $this->logger);
-			$detail = $floor->getFloorDetail($args['floorId']);
+            $floor = new FloorModel($this->db, $this->logger);
+            $quest = new QuestModel($this->db, $this->logger);
+            $shop = new ShopModel($this->db, $this->logger);
+            $detail = $floor->getFloorDetail($args['floorId']);
 
-			if ($detail == null) throw new NotFoundException($request, $response);
+            if ($detail == null) throw new NotFoundException($request, $response);
 
-			$args = [
-				'header' => $this->getHeaderInfo(),
-				'floorIndex' => $floor->getFloorIndex(),
-				'detail' => $detail,
-				'quests' => $quest->getQuestDetailListByFloorId($args['floorId']),
-				'shops' => $shop->getShopListByFloorId($args['floorId']),
-				'footer' => $this->getFooterInfo()
-			];
+            $args = [
+                'header' => $this->getHeaderInfo(),
+                'floorIndex' => $floor->getFloorIndex(),
+                'detail' => $detail,
+                'quests' => $quest->getQuestDetailListByFloorId($args['floorId']),
+                'shops' => $shop->getShopListByFloorId($args['floorId']),
+                'footer' => $this->getFooterInfo()
+            ];
 
-			$this->db->commit();
-		} catch (Exception $e) {
-			$this->db->rollBack();
-			throw $e;
-		}
+            $this->db->commit();
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            throw $e;
+        }
 
-		return $this->renderer->render($response, 'floors/floor.phtml', $args);
-	}
-
+        return $this->renderer->render($response, 'floors/floor.phtml', $args);
+    }
 }

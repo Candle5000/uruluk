@@ -1,168 +1,196 @@
 @charset "UTF-8";
 
 html {
-	-webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch;
 }
 
 body {
-	color: #eed;
-	font-family: arial, sans-serif;
+  color: #eed;
+  font-family: arial, sans-serif;
 }
 
 h1 {
-	color: antiquewhite;
-	font-size: 2.0rem;
-	font-family: serif;
+  color: antiquewhite;
+  font-size: 2.0rem;
+  font-family: serif;
 }
 
 h3 {
-	font-size: 1.0rem;
+  font-size: 1.0rem;
 }
 
 p {
-	font-size: 0.8rem;
+  font-size: 0.8rem;
 }
 
 p.head {
-	font-size: 1.2rem;
-	font-weight: bold;
-	margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
 }
 
 .card-title a {
-	color: rgba(255,255,255,.5);
-	text-decoration: underline!important;
+  color: rgba(255, 255, 255, .5);
+  text-decoration: underline !important;
 }
 
-.card-title a:focus,.card-title a:hover {
-	color: rgba(255,255,255,.75);
-	text-decoration: underline!important;
+.card-title a:focus,
+.card-title a:hover {
+  color: rgba(255, 255, 255, .75);
+  text-decoration: underline !important;
 }
 
 a.link-home {
-	color: antiquewhite;
-	font-family: serif;
-	text-decoration: none;
+  color: antiquewhite;
+  font-family: serif;
+  text-decoration: none;
 }
 
 .bg-darkgreen {
-	background-color: #284044!important;
+  background-color: #284044 !important;
 }
+
 .bg-darkblue {
-	background-color: #263337!important;
+  background-color: #263337 !important;
 }
+
 .border-darkblue {
-	border-color: #263337!important;
+  border-color: #263337 !important;
 }
 
 .w-7-5 {
-	width: 7.5%!important;
+  width: 7.5% !important;
 }
+
 .w-8 {
-	width: 8%!important;
+  width: 8% !important;
 }
+
 .w-14 {
-	width: 14%!important;
+  width: 14% !important;
 }
+
 .w-15 {
-	width: 15%!important;
+  width: 15% !important;
 }
+
 .w-16 {
-	width: 16%!important;
+  width: 16% !important;
 }
+
 .w-20 {
-	width: 20%!important;
+  width: 20% !important;
 }
+
 .w-30 {
-	width: 30%!important;
+  width: 30% !important;
 }
+
 .w-45 {
-	width: 45%!important;
+  width: 45% !important;
 }
+
 .border-black {
-	border-color: #000!important;
+  border-color: #000 !important;
 }
 
 .selectable {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 /* Font Color */
 .red {
-	color: #cd4526;
+  color: #cd4526;
 }
+
 .yellow {
-	color: #ffce33;
+  color: #ffce33;
 }
+
 .artifact {
-	color: #aa66fc!important;
+  color: #aa66fc !important;
 }
+
 .rare {
-	color: #70c5db!important;
+  color: #70c5db !important;
 }
+
 .common {
-	color: #fff!important;
+  color: #fff !important;
 }
+
 .boss {
-	color: #ffd033!important;
+  color: #ffd033 !important;
 }
+
 .item-skill {
-	color: #9fd900!important;
+  color: #9fd900 !important;
 }
+
 .item-comment {
-	color: #bf8f00;
+  color: #bf8f00;
 }
+
 .button-close-white {
-	color: #fff;
-	text-shadow: 0 1px 0 #263337;
+  color: #fff;
+  text-shadow: 0 1px 0 #263337;
 }
+
 .lemonchiffon {
-	color: lemonchiffon!important;
+  color: lemonchiffon !important;
 }
+
 a:hover.lemonchiffon {
-	color: rgba(255,250,205,.75)!important;
+  color: rgba(255, 250, 205, .75) !important;
 }
+
 a.lemonchiffon {
-	text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* Image */
 img.item-detail {
-	width: 64px;
-	height: 64px;
-	-ms-interpolation-mode:nearest-neighbor;
-	image-rendering:-webkit-optimize-contrast;
-	image-rendering:-moz-crisp-edges;
-	image-rendering:-o-crisp-edges;
-	image-rendering:pixelated;
+  width: 64px;
+  height: 64px;
+  -ms-interpolation-mode: nearest-neighbor;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: pixelated;
 }
+
 img.item-icon {
-	width: 32px;
-	height: 32px;
-	-ms-interpolation-mode:nearest-neighbor;
-	image-rendering:-webkit-optimize-contrast;
-	image-rendering:-moz-crisp-edges;
-	image-rendering:-o-crisp-edges;
-	image-rendering:pixelated;
+  width: 32px;
+  height: 32px;
+  -ms-interpolation-mode: nearest-neighbor;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: pixelated;
 }
+
 img.class-icon {
-	width: 16px;
-	height: 16px;
+  width: 16px;
+  height: 16px;
 }
+
 div.img-floor {
-	min-height: 128px;
+  min-height: 128px;
 }
 
 /* Simulator */
 .table-item-attrs div.d-table-cell {
-	padding: 0 2px;
+  padding: 0 2px;
 }
+
 a.item-name {
-	padding-right: 5px;
+  padding-right: 5px;
 }
+
 div.tooltip-inner {
-	color: #9fd900!important;
+  color: #9fd900 !important;
 }
+
 figure {
-	margin: 0;
+  margin: 0;
 }
