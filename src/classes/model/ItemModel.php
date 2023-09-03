@@ -488,10 +488,11 @@ class ItemModel extends Model
                     $item['skill']['activation_rate'] = $result['skill_activation_rate'];
                     $item['skill']['trigger_charge'] = $result['skill_trigger_charge'];
                     $item['skill']['effect_type'] = $result['skill_effect_type'];
-                    $item['skill']['effect_target_attribute'] = $result['skill_effect_target_attribute'];
+                    $item['skill']['effect_target_attribute'] = strtolower($result['skill_effect_target_attribute']);
                     $item['skill']['effect_amount'] = $result['skill_effect_amount'];
                     $item['skill']['effect_duration'] = $result['skill_effect_duration'];
                     $item['skill']['sort_key'] = $result['skill_sort_key'];
+                    $item['skill']['enabled'] = false;
                 }
                 if ($result['skill_axe_id'] === null) {
                     $item['skill_axe'] = null;
@@ -504,10 +505,11 @@ class ItemModel extends Model
                     $item['skill_axe']['activation_rate'] = $result['skill_axe_activation_rate'];
                     $item['skill_axe']['trigger_charge'] = $result['skill_axe_trigger_charge'];
                     $item['skill_axe']['effect_type'] = $result['skill_axe_effect_type'];
-                    $item['skill_axe']['effect_target_attribute'] = $result['skill_axe_effect_target_attribute'];
+                    $item['skill_axe']['effect_target_attribute'] = strtolower($result['skill_axe_effect_target_attribute']);
                     $item['skill_axe']['effect_amount'] = $result['skill_axe_effect_amount'];
                     $item['skill_axe']['effect_duration'] = $result['skill_axe_effect_duration'];
                     $item['skill_axe']['sort_key'] = $result['skill_axe_sort_key'];
+                    $item['skill_axe']['enabled'] = false;
                 }
                 if ($result['skill_sword_id'] === null) {
                     $item['skill_sword'] = null;
@@ -520,10 +522,11 @@ class ItemModel extends Model
                     $item['skill_sword']['activation_rate'] = $result['skill_sword_activation_rate'];
                     $item['skill_sword']['trigger_charge'] = $result['skill_sword_trigger_charge'];
                     $item['skill_sword']['effect_type'] = $result['skill_sword_effect_type'];
-                    $item['skill_sword']['effect_target_attribute'] = $result['skill_sword_effect_target_attribute'];
+                    $item['skill_sword']['effect_target_attribute'] = strtolower($result['skill_sword_effect_target_attribute']);
                     $item['skill_sword']['effect_amount'] = $result['skill_sword_effect_amount'];
                     $item['skill_sword']['effect_duration'] = $result['skill_sword_effect_duration'];
                     $item['skill_sword']['sort_key'] = $result['skill_sword_sort_key'];
+                    $item['skill_sword']['enabled'] = false;
                 }
                 if ($result['skill_dagger_id'] === null) {
                     $item['skill_dagger'] = null;
@@ -536,10 +539,11 @@ class ItemModel extends Model
                     $item['skill_dagger']['activation_rate'] = $result['skill_dagger_activation_rate'];
                     $item['skill_dagger']['trigger_charge'] = $result['skill_dagger_trigger_charge'];
                     $item['skill_dagger']['effect_type'] = $result['skill_dagger_effect_type'];
-                    $item['skill_dagger']['effect_target_attribute'] = $result['skill_dagger_effect_target_attribute'];
+                    $item['skill_dagger']['effect_target_attribute'] = strtolower($result['skill_dagger_effect_target_attribute']);
                     $item['skill_dagger']['effect_amount'] = $result['skill_dagger_effect_amount'];
                     $item['skill_dagger']['effect_duration'] = $result['skill_dagger_effect_duration'];
                     $item['skill_dagger']['sort_key'] = $result['skill_dagger_sort_key'];
+                    $item['skill_dagger']['enabled'] = false;
                 }
                 $item['comment_en'] = $result['comment_en'];
                 $item['comment_ja'] = $result['comment_ja'];

@@ -46,6 +46,10 @@ a.link-home {
   text-decoration: none;
 }
 
+li.charge-type-skill>input.form-check-input {
+  margin-top: 0.2rem;
+}
+
 .bg-darkgreen {
   background-color: #284044 !important;
 }

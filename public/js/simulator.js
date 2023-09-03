@@ -113,6 +113,7 @@ $(function () {
     const attrs = Object.assign({}, characterAttrs[charaClass]);
     $("ul.item-skill").children().remove();
     const skills = [];
+    const skillCharacterClass = "skill_" + $("select.character-class").val();
 
     // XP, Killsの上限チェック
     if (parseInt($(".character-xp").val()) > parseInt($(".character-xp").attr("max"))) {
@@ -143,11 +144,23 @@ $(function () {
       if (item !== undefined) {
 
         // スキルの設定
-        if (item.skill_en || item["skill_" + $("select.character-class").val() + "_en"]) {
-          const skill = $("<li />").text(item.skill_en ? item.skill_en : item["skill_" + $("select.character-class").val() + "_en"]);
-          const skillCharacterClass = "skill_" + $("select.character-class").val();
-          const skillSortKey = item.skill_en ? item.skill.sort_key : item[skillCharacterClass].sort_key;
-          skills.push({ tag: skill, sortKey: skillSortKey });
+        if (item.skill_en || item[skillCharacterClass + "_en"]) {
+          const itemSkill = item.skill_en ? item.skill : item[skillCharacterClass];
+          const skillTag = $("<li />");
+          const skillText = item.skill_en ? item.skill_en : item[skillCharacterClass + "_en"];
+          if (itemSkill.trigger_charge > 0) {
+            skillTag.addClass("form-check charge-type-skill");
+            const skillCheckbox = $("<input />").attr("type", "checkbox").attr("id", "item-skill-" + index).addClass("form-check-input item-skill-check").data("slot-index", index);
+            if (itemSkill.enabled) {
+              skillCheckbox.attr("checked", "checked");
+            }
+            skillTag.append(skillCheckbox);
+            skillTag.append($("<label />").attr("for", "item-skill-" + index).addClass("form-check-label").text(skillText));
+          } else {
+            skillTag.text(skillText);
+          }
+          const skillSortKey = itemSkill.sort_key;
+          skills.push({ tag: skillTag, sortKey: skillSortKey });
         }
 
         // アイテム性能の設定
@@ -181,7 +194,27 @@ $(function () {
       skills.sort((a, b) => a.sortKey - b.sortKey).forEach(skill => {
         $("ul.item-skill").append(skill.tag);
       });
+      $("input.item-skill-check").on("click", function () {
+        const item = slotItems[$(this).data("slot-index")];
+        const itemSkill = item.skill_en ? item.skill : item[skillCharacterClass];
+        itemSkill.enabled = $(this).prop("checked");
+        calcAttrs();
+      });
     }
+
+    // パッシブスキル効果を計算
+    $(".attr-value").removeClass("item-skill");
+    $("input.item-skill-check:checked").toArray().forEach(checkbox => {
+      const item = slotItems[$(checkbox).data("slot-index")];
+      const itemSkill = item.skill_en ? item.skill : item[skillCharacterClass];
+      const skillAttr = itemSkill.effect_target_attribute;
+      if (skillAttr === "sa") {
+        attrs[skillAttr] = attrs[skillAttr] + Number(itemSkill.effect_amount);
+      } else {
+        attrs[skillAttr] = attrs[skillAttr] * itemSkill.effect_amount / 100;
+      }
+      $(".attr-value.attr-" + skillAttr + ",.attr-value:has(.attr-" + skillAttr + ")").addClass("item-skill");
+    });
 
     // StrをADに加算
     if (attrs.str > 0) {
