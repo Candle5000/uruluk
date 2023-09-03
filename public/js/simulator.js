@@ -215,6 +215,8 @@ $(function () {
       const skillAttr = itemSkill.effect_target_attribute;
       if (skillAttr === "sa") {
         attrs[skillAttr] = attrs[skillAttr] + Number(itemSkill.effect_amount);
+      } else if (skillAttr === "as") {
+        attrs[skillAttr] = attrs[skillAttr] * 100 / itemSkill.effect_amount;
       } else {
         attrs[skillAttr] = attrs[skillAttr] * itemSkill.effect_amount / 100;
       }
