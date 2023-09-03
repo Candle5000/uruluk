@@ -415,7 +415,7 @@ $(function () {
     if (currentSortAttr == attrName) {
       currentSortOrder *= -1;
     } else {
-      currentSortOrder = (attrName == 'AS' || attrName == 'SA') ? -1 : 1;
+      currentSortOrder = (attrName == 'AS' || attrName == 'SA' || attrName == 'Skill') ? -1 : 1;
     }
     currentSortAttr = attrName;
 
@@ -429,10 +429,10 @@ $(function () {
       let b_val = 0.0;
 
       if (attrName == 'Skill') {
-        a_val = a.skill_en ? a.skill_en : a["skill_" + charaClass + "_en"];
-        b_val = b.skill_en ? b.skill_en : b["skill_" + charaClass + "_en"];
-        if (a_val === null) a_val = "";
-        if (b_val === null) b_val = "";
+        const a_skill = a.skill_en ? a.skill : a["skill_" + charaClass];
+        const b_skill = b.skill_en ? b.skill : b["skill_" + charaClass];
+        a_val = a_skill === null ? 9999999 : a_skill.sort_key;
+        b_val = b_skill === null ? 9999999 : b_skill.sort_key;
       } else {
         a.attributes.forEach(attr => {
           if (attrName == 'AD') {
