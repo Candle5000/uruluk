@@ -34,6 +34,50 @@ class ItemModel extends Model
         , I.skill_axe_en
         , I.skill_sword_en
         , I.skill_dagger_en
+        , S.skill_id
+        , S.name skill_name
+        , S.trigger_type skill_trigger_type
+        , S.kill_trigger_type skill_kill_trigger_type
+        , S.activation_rate skill_activation_rate
+        , S.trigger_charge skill_trigger_charge
+        , S.effect_type skill_effect_type
+        , SAT.short_name skill_effect_target_attribute
+        , S.effect_amount skill_effect_amount
+        , S.effect_duration skill_effect_duration
+        , S.sort_key skill_sort_key
+        , SA.skill_id skill_axe_id
+        , SA.name skill_axe_name
+        , SA.trigger_type skill_axe_trigger_type
+        , SA.kill_trigger_type skill_axe_kill_trigger_type
+        , SA.activation_rate skill_axe_activation_rate
+        , SA.trigger_charge skill_axe_trigger_charge
+        , SA.effect_type skill_axe_effect_type
+        , SAAT.short_name skill_axe_effect_target_attribute
+        , SA.effect_amount skill_axe_effect_amount
+        , SA.effect_duration skill_axe_effect_duration
+        , SA.sort_key skill_axe_sort_key
+        , SS.skill_id skill_sword_id
+        , SS.name skill_sword_name
+        , SS.trigger_type skill_sword_trigger_type
+        , SS.kill_trigger_type skill_sword_kill_trigger_type
+        , SS.activation_rate skill_sword_activation_rate
+        , SS.trigger_charge skill_sword_trigger_charge
+        , SS.effect_type skill_sword_effect_type
+        , SSAT.short_name skill_sword_effect_target_attribute
+        , SS.effect_amount skill_sword_effect_amount
+        , SS.effect_duration skill_sword_effect_duration
+        , SS.sort_key skill_sword_sort_key
+        , SD.skill_id skill_dagger_id
+        , SD.name skill_dagger_name
+        , SD.trigger_type skill_dagger_trigger_type
+        , SD.kill_trigger_type skill_dagger_kill_trigger_type
+        , SD.activation_rate skill_dagger_activation_rate
+        , SD.trigger_charge skill_dagger_trigger_charge
+        , SD.effect_type skill_dagger_effect_type
+        , SDAT.short_name skill_dagger_effect_target_attribute
+        , SD.effect_amount skill_dagger_effect_amount
+        , SD.effect_duration skill_dagger_effect_duration
+        , SD.sort_key skill_dagger_sort_key
         , I.comment_en
         , I.comment_ja
         , I.sort_key
@@ -195,6 +239,22 @@ class ItemModel extends Model
                 item I
                 LEFT JOIN item_class IC
                     ON I.item_class_id = IC.item_class_id
+                LEFT JOIN item_skill S
+                    ON I.skill_id = S.skill_id
+                LEFT JOIN attribute SAT
+                    ON S.effect_target_attribute_id = SAT.attribute_id
+                LEFT JOIN item_skill SA
+                    ON I.skill_axe_id = SA.skill_id
+                LEFT JOIN attribute SAAT
+                    ON SA.effect_target_attribute_id = SAAT.attribute_id
+                LEFT JOIN item_skill SS
+                    ON I.skill_sword_id = SS.skill_id
+                LEFT JOIN attribute SSAT
+                    ON SS.effect_target_attribute_id = SSAT.attribute_id
+                LEFT JOIN item_skill SD
+                    ON I.skill_dagger_id = SD.skill_id
+                LEFT JOIN attribute SDAT
+                    ON SD.effect_target_attribute_id = SDAT.attribute_id
                 LEFT JOIN item_attribute IA
                     ON I.item_id = IA.item_id
                 LEFT JOIN attribute A
@@ -234,6 +294,22 @@ class ItemModel extends Model
                 item I
                 LEFT JOIN item_class IC
                     ON I.item_class_id = IC.item_class_id
+                LEFT JOIN item_skill S
+                    ON I.skill_id = S.skill_id
+                LEFT JOIN attribute SAT
+                    ON S.effect_target_attribute_id = SAT.attribute_id
+                LEFT JOIN item_skill SA
+                    ON I.skill_axe_id = SA.skill_id
+                LEFT JOIN attribute SAAT
+                    ON SA.effect_target_attribute_id = SAAT.attribute_id
+                LEFT JOIN item_skill SS
+                    ON I.skill_sword_id = SS.skill_id
+                LEFT JOIN attribute SSAT
+                    ON SS.effect_target_attribute_id = SSAT.attribute_id
+                LEFT JOIN item_skill SD
+                    ON I.skill_dagger_id = SD.skill_id
+                LEFT JOIN attribute SDAT
+                    ON SD.effect_target_attribute_id = SDAT.attribute_id
                 LEFT JOIN item_attribute IA
                     ON I.item_id = IA.item_id
                 LEFT JOIN attribute A
@@ -275,6 +351,22 @@ class ItemModel extends Model
                 item I
                 LEFT JOIN item_class IC
                     ON I.item_class_id = IC.item_class_id
+                LEFT JOIN item_skill S
+                    ON I.skill_id = S.skill_id
+                LEFT JOIN attribute SAT
+                    ON S.effect_target_attribute_id = SAT.attribute_id
+                LEFT JOIN item_skill SA
+                    ON I.skill_axe_id = SA.skill_id
+                LEFT JOIN attribute SAAT
+                    ON SA.effect_target_attribute_id = SAAT.attribute_id
+                LEFT JOIN item_skill SS
+                    ON I.skill_sword_id = SS.skill_id
+                LEFT JOIN attribute SSAT
+                    ON SS.effect_target_attribute_id = SSAT.attribute_id
+                LEFT JOIN item_skill SD
+                    ON I.skill_dagger_id = SD.skill_id
+                LEFT JOIN attribute SDAT
+                    ON SD.effect_target_attribute_id = SDAT.attribute_id
                 LEFT JOIN item_attribute IA
                     ON I.item_id = IA.item_id
                 LEFT JOIN attribute A
@@ -301,6 +393,22 @@ class ItemModel extends Model
                 item I
                 LEFT JOIN item_class IC
                     ON I.item_class_id = IC.item_class_id
+                LEFT JOIN item_skill S
+                    ON I.skill_id = S.skill_id
+                LEFT JOIN attribute SAT
+                    ON S.effect_target_attribute_id = SAT.attribute_id
+                LEFT JOIN item_skill SA
+                    ON I.skill_axe_id = SA.skill_id
+                LEFT JOIN attribute SAAT
+                    ON SA.effect_target_attribute_id = SAAT.attribute_id
+                LEFT JOIN item_skill SS
+                    ON I.skill_sword_id = SS.skill_id
+                LEFT JOIN attribute SSAT
+                    ON SS.effect_target_attribute_id = SSAT.attribute_id
+                LEFT JOIN item_skill SD
+                    ON I.skill_dagger_id = SD.skill_id
+                LEFT JOIN attribute SDAT
+                    ON SD.effect_target_attribute_id = SDAT.attribute_id
                 LEFT JOIN item_attribute IA
                     ON I.item_id = IA.item_id
                 LEFT JOIN attribute A
@@ -369,6 +477,74 @@ class ItemModel extends Model
                 $item['skill_axe_en'] = $result['skill_axe_en'];
                 $item['skill_sword_en'] = $result['skill_sword_en'];
                 $item['skill_dagger_en'] = $result['skill_dagger_en'];
+                if ($result['skill_id'] === null) {
+                    $item['skill'] = null;
+                } else {
+                    $item['skill'] = array();
+                    $item['skill']['id'] = $result['skill_id'];
+                    $item['skill']['name'] = $result['skill_name'];
+                    $item['skill']['trigger_type'] = $result['skill_trigger_type'];
+                    $item['skill']['kill_trigger_type'] = $result['skill_kill_trigger_type'];
+                    $item['skill']['activation_rate'] = $result['skill_activation_rate'];
+                    $item['skill']['trigger_charge'] = $result['skill_trigger_charge'];
+                    $item['skill']['effect_type'] = $result['skill_effect_type'];
+                    $item['skill']['effect_target_attribute'] = strtolower($result['skill_effect_target_attribute']);
+                    $item['skill']['effect_amount'] = $result['skill_effect_amount'];
+                    $item['skill']['effect_duration'] = $result['skill_effect_duration'];
+                    $item['skill']['sort_key'] = $result['skill_sort_key'];
+                    $item['skill']['enabled'] = false;
+                }
+                if ($result['skill_axe_id'] === null) {
+                    $item['skill_axe'] = null;
+                } else {
+                    $item['skill_axe'] = array();
+                    $item['skill_axe']['id'] = $result['skill_axe_id'];
+                    $item['skill_axe']['name'] = $result['skill_axe_name'];
+                    $item['skill_axe']['trigger_type'] = $result['skill_axe_trigger_type'];
+                    $item['skill_axe']['kill_trigger_type'] = $result['skill_axe_kill_trigger_type'];
+                    $item['skill_axe']['activation_rate'] = $result['skill_axe_activation_rate'];
+                    $item['skill_axe']['trigger_charge'] = $result['skill_axe_trigger_charge'];
+                    $item['skill_axe']['effect_type'] = $result['skill_axe_effect_type'];
+                    $item['skill_axe']['effect_target_attribute'] = strtolower($result['skill_axe_effect_target_attribute']);
+                    $item['skill_axe']['effect_amount'] = $result['skill_axe_effect_amount'];
+                    $item['skill_axe']['effect_duration'] = $result['skill_axe_effect_duration'];
+                    $item['skill_axe']['sort_key'] = $result['skill_axe_sort_key'];
+                    $item['skill_axe']['enabled'] = false;
+                }
+                if ($result['skill_sword_id'] === null) {
+                    $item['skill_sword'] = null;
+                } else {
+                    $item['skill_sword'] = array();
+                    $item['skill_sword']['id'] = $result['skill_sword_id'];
+                    $item['skill_sword']['name'] = $result['skill_sword_name'];
+                    $item['skill_sword']['trigger_type'] = $result['skill_sword_trigger_type'];
+                    $item['skill_sword']['kill_trigger_type'] = $result['skill_sword_kill_trigger_type'];
+                    $item['skill_sword']['activation_rate'] = $result['skill_sword_activation_rate'];
+                    $item['skill_sword']['trigger_charge'] = $result['skill_sword_trigger_charge'];
+                    $item['skill_sword']['effect_type'] = $result['skill_sword_effect_type'];
+                    $item['skill_sword']['effect_target_attribute'] = strtolower($result['skill_sword_effect_target_attribute']);
+                    $item['skill_sword']['effect_amount'] = $result['skill_sword_effect_amount'];
+                    $item['skill_sword']['effect_duration'] = $result['skill_sword_effect_duration'];
+                    $item['skill_sword']['sort_key'] = $result['skill_sword_sort_key'];
+                    $item['skill_sword']['enabled'] = false;
+                }
+                if ($result['skill_dagger_id'] === null) {
+                    $item['skill_dagger'] = null;
+                } else {
+                    $item['skill_dagger'] = array();
+                    $item['skill_dagger']['id'] = $result['skill_dagger_id'];
+                    $item['skill_dagger']['name'] = $result['skill_dagger_name'];
+                    $item['skill_dagger']['trigger_type'] = $result['skill_dagger_trigger_type'];
+                    $item['skill_dagger']['kill_trigger_type'] = $result['skill_dagger_kill_trigger_type'];
+                    $item['skill_dagger']['activation_rate'] = $result['skill_dagger_activation_rate'];
+                    $item['skill_dagger']['trigger_charge'] = $result['skill_dagger_trigger_charge'];
+                    $item['skill_dagger']['effect_type'] = $result['skill_dagger_effect_type'];
+                    $item['skill_dagger']['effect_target_attribute'] = strtolower($result['skill_dagger_effect_target_attribute']);
+                    $item['skill_dagger']['effect_amount'] = $result['skill_dagger_effect_amount'];
+                    $item['skill_dagger']['effect_duration'] = $result['skill_dagger_effect_duration'];
+                    $item['skill_dagger']['sort_key'] = $result['skill_dagger_sort_key'];
+                    $item['skill_dagger']['enabled'] = false;
+                }
                 $item['comment_en'] = $result['comment_en'];
                 $item['comment_ja'] = $result['comment_ja'];
                 $item['sort_key'] = $result['sort_key'];

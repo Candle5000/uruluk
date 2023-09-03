@@ -1,6 +1,6 @@
 -- Project Name : Uruluk
--- Date/Time    : 2023/05/07 2:20:25
--- Author       : Candle
+-- Date/Time    : 2023/09/03 2:07:11
+-- Author       : candl
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
 
@@ -13,10 +13,10 @@
 */
 
 -- アクセスカウント
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `access_count` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `access_count` (
   `page_id` INT not null comment 'ページID'
   , `count_date` DATE not null comment 'カウント日付'
@@ -25,10 +25,10 @@ create table `access_count` (
 ) comment 'アクセスカウント' ;
 
 -- 性能
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `attribute` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `attribute` (
   `attribute_id` INT not null AUTO_INCREMENT comment '性能ID'
   , `short_name` VARCHAR(8) comment '略称'
@@ -42,10 +42,10 @@ create table `attribute` (
 alter table `attribute` add unique `attribute_IX1` (`sort_key`) ;
 
 -- ベースアイテム
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `base_item` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `base_item` (
   `base_item_id` INT not null AUTO_INCREMENT comment 'ベースアイテムID'
   , `item_class_id` INT not null comment 'アイテムクラスID'
@@ -59,10 +59,10 @@ create table `base_item` (
 alter table `base_item` add unique `base_item_IX1` (`sort_key`) ;
 
 -- クリーチャー
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `creature` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `creature` (
   `creature_id` INT not null AUTO_INCREMENT comment 'クリーチャーID'
   , `boss` BIT(1) default FALSE not null comment 'ボス'
@@ -98,10 +98,10 @@ create unique index `creature_IX1`
   on `creature`(`boss`,`sort_key`);
 
 -- クリーチャードロップアイテム
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `creature_drop_item` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `creature_drop_item` (
   `creature_id` INT not null comment 'クリーチャーID'
   , `item_id` INT not null comment 'アイテムID'
@@ -111,10 +111,10 @@ create table `creature_drop_item` (
 alter table `creature_drop_item` add unique `creature_drop_item_IX1` (`item_id`,`creature_id`) ;
 
 -- クリーチャー出現条件
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `creature_pop_event` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `creature_pop_event` (
   `event_id` INT not null AUTO_INCREMENT comment 'イベントID'
   , `note` TEXT comment '説明'
@@ -122,10 +122,10 @@ create table `creature_pop_event` (
 ) comment 'クリーチャー出現条件' ;
 
 -- クリーチャースペシャルアタック
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `creature_special_attack` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `creature_special_attack` (
   `creature_id` INT not null comment 'クリーチャーID'
   , `special_attack_id` INT not null comment 'スペシャルアタックID'
@@ -133,10 +133,10 @@ create table `creature_special_attack` (
 ) comment 'クリーチャースペシャルアタック' ;
 
 -- ドロップアイテムグループ
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `drop_item_group` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `drop_item_group` (
   `drop_item_group_id` INT not null comment 'ドロップアイテムグループID'
   , `item_id` INT not null comment 'アイテムID'
@@ -144,10 +144,10 @@ create table `drop_item_group` (
 ) comment 'ドロップアイテムグループ' ;
 
 -- ドロップアイテムグループ名
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `drop_item_group_name` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `drop_item_group_name` (
   `drop_item_group_id` INT not null AUTO_INCREMENT comment 'ドロップアイテムグループID'
   , `label` VARCHAR(64) comment 'ラベル'
@@ -155,10 +155,10 @@ create table `drop_item_group_name` (
 ) comment 'ドロップアイテムグループ名' ;
 
 -- フロア
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `floor` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `floor` (
   `floor_id` INT not null AUTO_INCREMENT comment 'フロアID'
   , `floor_group_id` INT not null comment 'フロアグループID'
@@ -174,10 +174,10 @@ create table `floor` (
 alter table `floor` add unique `floor_IX1` (`sort_key`) ;
 
 -- フロアバナナドロップグループ
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `floor_banana_drop_group` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `floor_banana_drop_group` (
   `floor_id` INT not null comment 'フロアID'
   , `drop_item_group_id` INT not null comment 'ドロップアイテムグループID'
@@ -185,10 +185,10 @@ create table `floor_banana_drop_group` (
 ) comment 'フロアバナナドロップグループ' ;
 
 -- フロアバナナアイテム
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `floor_banana_item` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `floor_banana_item` (
   `floor_id` INT not null comment 'フロアID'
   , `item_id` INT not null comment 'アイテムID'
@@ -196,10 +196,10 @@ create table `floor_banana_item` (
 ) comment 'フロアバナナアイテム' ;
 
 -- フロアクリーチャー
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `floor_creature` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `floor_creature` (
   `floor_id` INT not null comment 'フロアID'
   , `event_id` INT default 0 not null comment 'イベントID'
@@ -211,10 +211,10 @@ create unique index `floor_creature_IX1`
   on `floor_creature`(`creature_id`,`floor_id`,`event_id`);
 
 -- フロア移動先
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `floor_destination` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `floor_destination` (
   `floor_id` INT not null comment '移動元フロアID'
   , `destination_floor_id` INT not null comment '移動先フロアID'
@@ -222,10 +222,10 @@ create table `floor_destination` (
 ) comment 'フロア移動先' ;
 
 -- フロアドロップグループ
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `floor_drop_group` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `floor_drop_group` (
   `floor_id` INT not null comment 'フロアID'
   , `drop_item_group_id` INT not null comment 'ドロップアイテムグループID'
@@ -233,10 +233,10 @@ create table `floor_drop_group` (
 ) comment 'フロアドロップグループ' ;
 
 -- フロアドロップアイテム
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `floor_drop_item` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `floor_drop_item` (
   `floor_id` INT not null comment 'フロアID'
   , `item_id` INT not null comment 'アイテムID'
@@ -244,10 +244,10 @@ create table `floor_drop_item` (
 ) comment 'フロアドロップアイテム' ;
 
 -- フロアグループ
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `floor_group` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `floor_group` (
   `floor_group_id` INT not null AUTO_INCREMENT comment 'フロアグループID'
   , `name_en` VARCHAR(32) comment '名称(英語)'
@@ -259,10 +259,10 @@ create table `floor_group` (
 alter table `floor_group` add unique `floor_group_IX1` (`sort_key`) ;
 
 -- フロア宝箱
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `floor_treasure` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `floor_treasure` (
   `floor_id` INT not null comment 'フロアID'
   , `item_id` INT not null comment 'アイテムID'
@@ -271,10 +271,10 @@ create table `floor_treasure` (
 ) comment 'フロア宝箱' ;
 
 -- アイテム
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `item` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `item` (
   `item_id` INT not null AUTO_INCREMENT comment 'アイテムID'
   , `item_class_id` INT not null comment 'アイテムクラスID'
@@ -284,8 +284,12 @@ create table `item` (
   , `name_en` VARCHAR(64) comment '名称(英語)'
   , `name_ja` VARCHAR(64) comment '名称(日本語)'
   , `rarity` ENUM('common', 'rare', 'artifact') not null comment 'レアリティ'
+  , `skill_id` INT comment 'スキルID'
   , `skill_en` VARCHAR(128) comment 'スキル(英語)'
   , `skill_ja` VARCHAR(64) comment 'スキル(日本語)'
+  , `skill_axe_id` INT comment 'スキルアックスID'
+  , `skill_sword_id` INT comment 'スキルソードID'
+  , `skill_dagger_id` INT comment 'スキルダガーID'
   , `skill_axe_en` VARCHAR(128) comment 'スキルアックス(英語)'
   , `skill_sword_en` VARCHAR(128) comment 'スキルソード(英語)'
   , `skill_dagger_en` VARCHAR(128) comment 'スキルダガー(英語)'
@@ -304,10 +308,10 @@ create unique index `item_IX2`
   on `item`(`item_class_id`,`rarity`,`sort_key`);
 
 -- アイテム性能
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `item_attribute` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `item_attribute` (
   `item_id` INT not null comment 'アイテムID'
   , `attribute_id` INT not null comment '性能ID'
@@ -326,10 +330,10 @@ create table `item_attribute` (
 ) comment 'アイテム性能' ;
 
 -- アイテムブランド
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `item_brand` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `item_brand` (
   `brand_id` INT not null AUTO_INCREMENT comment 'ブランドID'
   , `name_en` VARCHAR(32) comment '名称(英語)'
@@ -341,10 +345,10 @@ create table `item_brand` (
 alter table `item_brand` add unique `item_brand_IX1` (`sort_key`) ;
 
 -- アイテムクラス
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `item_class` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `item_class` (
   `item_class_id` INT not null AUTO_INCREMENT comment 'アイテムクラスID'
   , `name_en` VARCHAR(32) comment '名称(英語)'
@@ -359,11 +363,35 @@ alter table `item_class` add unique `item_class_IX1` (`sort_key`) ;
 
 alter table `item_class` add unique `item_class_IX2` (`shop_sort_key`) ;
 
+-- アイテムスキル
+-- * BackupToTempTable
+drop table if exists `item_skill` cascade;
+
+-- * RestoreFromTempTable
+create table `item_skill` (
+  `skill_id` INT AUTO_INCREMENT comment 'アイテムスキルID'
+  , `name` VARCHAR(64) not null comment 'スキル名'
+  , `trigger_type` ENUM('attack', 'kill', 'damage') not null comment 'トリガー種別'
+  , `kill_trigger_type` ENUM('any', 'dr', 'sa') comment '討伐トリガー種別'
+  , `activation_rate` INT not null comment '発動率(%)'
+  , `trigger_charge` INT not null comment 'トリガーチャージ'
+  , `effect_type` ENUM('heal', 'attribute', 'reduce', 'double', 'splash', 'missile', 'lightning') not null comment '効果種別'
+  , `effect_target_attribute_id` INT comment '対象スタッツ'
+  , `effect_amount` INT comment '効果量(%)'
+  , `effect_duration` INT comment '効果時間(sec)'
+  , `sort_key` INT not null comment 'ソート順'
+  , constraint `item_skill_PKC` primary key (`skill_id`)
+) comment 'アイテムスキル' ;
+
+alter table `item_skill` add unique `item_skill_IX1` (`name`) ;
+
+alter table `item_skill` add unique `item_skill_IX2` (`sort_key`) ;
+
 -- お知らせ
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `news` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `news` (
   `post_date` DATETIME not null comment '投稿日時'
   , `subject` VARCHAR(256) comment '件名'
@@ -372,10 +400,10 @@ create table `news` (
 ) comment 'お知らせ' ;
 
 -- クエスト
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `quest` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `quest` (
   `quest_id` INT not null AUTO_INCREMENT comment 'クエストID'
   , `floor_id` INT not null comment 'フロアID'
@@ -389,10 +417,10 @@ create table `quest` (
 ) comment 'クエスト' ;
 
 -- クエストアイコン
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `quest_icon` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `quest_icon` (
   `quest_id` INT not null comment 'クエストID'
   , `quest_reward` BIT(1) not null comment 'クエスト報酬'
@@ -402,10 +430,10 @@ create table `quest_icon` (
 ) comment 'クエストアイコン' ;
 
 -- クエスト要求アイテム
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `quest_required_item` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `quest_required_item` (
   `quest_id` INT not null comment 'クエストID'
   , `item_id` INT not null comment 'アイテムID'
@@ -413,10 +441,10 @@ create table `quest_required_item` (
 ) comment 'クエスト要求アイテム' ;
 
 -- クエスト報酬アイテム
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `quest_reward_item` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `quest_reward_item` (
   `quest_id` INT not null comment 'クエストID'
   , `item_id` INT not null comment 'アイテムID'
@@ -424,10 +452,10 @@ create table `quest_reward_item` (
 ) comment 'クエスト報酬アイテム' ;
 
 -- ショップ
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `shop` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `shop` (
   `shop_id` INT not null AUTO_INCREMENT comment 'ショップID'
   , `floor_id` INT not null comment 'フロアID'
@@ -439,10 +467,10 @@ create table `shop` (
 ) comment 'ショップ' ;
 
 -- ショップアイテム
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `shop_item` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `shop_item` (
   `shop_id` INT not null comment 'ショップID'
   , `item_id` INT not null comment 'アイテムID'
@@ -451,10 +479,10 @@ create table `shop_item` (
 ) comment 'ショップアイテム' ;
 
 -- 短縮URL
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `short_url` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `short_url` (
   `short_url_key` VARCHAR(6) not null comment '短縮URLキー'
   , `url` VARCHAR(511) not null comment 'URL'
@@ -466,10 +494,10 @@ create table `short_url` (
 alter table `short_url` add unique `short_url_IX1` (`url`) ;
 
 -- スペシャルアタック
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `special_attack` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `special_attack` (
   `special_attack_id` INT not null AUTO_INCREMENT comment 'スペシャルアタックID'
   , `name` VARCHAR(32) comment '名称'
@@ -479,10 +507,10 @@ create table `special_attack` (
 ) comment 'スペシャルアタック' ;
 
 -- Urulukユーザ
---* BackupToTempTable
+-- * BackupToTempTable
 drop table if exists `uruluk_user` cascade;
 
---* RestoreFromTempTable
+-- * RestoreFromTempTable
 create table `uruluk_user` (
   `user_id` INT not null AUTO_INCREMENT comment 'ユーザID'
   , `login_id` VARCHAR(64) not null comment 'ログインID'

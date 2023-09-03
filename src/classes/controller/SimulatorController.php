@@ -23,7 +23,7 @@ class SimulatorController extends Controller
     public function index(Request $request, Response $response)
     {
         $this->title = 'シミュレータ';
-        $this->scripts[] = '/js/simulator.js?id=00054';
+        $this->scripts[] = '/js/simulator.js?id=00071';
         $item = new ItemModel($this->db, $this->logger);
         $getParam = $request->getQueryParams();
         $charClass = array_key_exists('c', $getParam) && array_key_exists($getParam['c'], self::SLOT_ITEM_CLASSES) ? $getParam['c'] : 'sword';

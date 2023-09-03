@@ -112,7 +112,10 @@ $(function () {
     const charaClass = $("select.character-class").val();
     const attrs = Object.assign({}, characterAttrs[charaClass]);
     $("ul.item-skill").children().remove();
-    let noSkills = true;
+    $(".table-attributes .skill-reduce-label").addClass("d-none");
+    const skills = [];
+    const skillCharacterClass = "skill_" + $("select.character-class").val();
+    let reduceDamage = 0;
 
     // XP, Killsの上限チェック
     if (parseInt($(".character-xp").val()) > parseInt($(".character-xp").attr("max"))) {
@@ -143,10 +146,26 @@ $(function () {
       if (item !== undefined) {
 
         // スキルの設定
-        if (item.skill_en || item["skill_" + $("select.character-class").val() + "_en"]) {
-          const skill = $("<li />").text(item.skill_en ? item.skill_en : item["skill_" + $("select.character-class").val() + "_en"]);
-          $("ul.item-skill").append(skill);
-          noSkills = false;
+        if (item.skill_en || item[skillCharacterClass + "_en"]) {
+          const itemSkill = item.skill_en ? item.skill : item[skillCharacterClass];
+          const skillTag = $("<li />");
+          const skillText = item.skill_en ? item.skill_en : item[skillCharacterClass + "_en"];
+          if (itemSkill.trigger_charge > 0) {
+            skillTag.addClass("form-check charge-type-skill");
+            const skillCheckbox = $("<input />").attr("type", "checkbox").attr("id", "item-skill-" + index).addClass("form-check-input item-skill-check").data("slot-index", index);
+            if (itemSkill.enabled) {
+              skillCheckbox.attr("checked", "checked");
+            }
+            skillTag.append(skillCheckbox);
+            skillTag.append($("<label />").attr("for", "item-skill-" + index).addClass("form-check-label").text(skillText));
+          } else {
+            if (itemSkill.effect_type === "reduce") {
+              reduceDamage += Number(itemSkill.effect_amount);
+            }
+            skillTag.text(skillText);
+          }
+          const skillSortKey = itemSkill.sort_key;
+          skills.push({ tag: skillTag, sortKey: skillSortKey });
         }
 
         // アイテム性能の設定
@@ -173,9 +192,42 @@ $(function () {
       }
     });
 
-    // スキル無し
-    if (noSkills) {
+    // スキルを表示
+    if (skills.length === 0) {
       $("ul.item-skill").append("<li>No Skills</li>");
+    } else {
+      skills.sort((a, b) => a.sortKey - b.sortKey).forEach(skill => {
+        $("ul.item-skill").append(skill.tag);
+      });
+      $("input.item-skill-check").on("click", function () {
+        const item = slotItems[$(this).data("slot-index")];
+        const itemSkill = item.skill_en ? item.skill : item[skillCharacterClass];
+        itemSkill.enabled = $(this).prop("checked");
+        calcAttrs();
+      });
+    }
+
+    // チャージ型のパッシブスキル効果を計算
+    $(".attr-value").removeClass("item-skill");
+    $("input.item-skill-check:checked").toArray().forEach(checkbox => {
+      const item = slotItems[$(checkbox).data("slot-index")];
+      const itemSkill = item.skill_en ? item.skill : item[skillCharacterClass];
+      const skillAttr = itemSkill.effect_target_attribute;
+      if (skillAttr === "sa") {
+        attrs[skillAttr] = attrs[skillAttr] + Number(itemSkill.effect_amount);
+      } else if (skillAttr === "as") {
+        attrs[skillAttr] = attrs[skillAttr] * 100 / itemSkill.effect_amount;
+      } else {
+        attrs[skillAttr] = attrs[skillAttr] * itemSkill.effect_amount / 100;
+      }
+      $(".attr-value.attr-" + skillAttr + ",.attr-value:has(.attr-" + skillAttr + ")").addClass("item-skill");
+    });
+
+    // ダメージ軽減スキル効果を計算
+    if (reduceDamage > 0) {
+      reduceDamageValue = attrs.def * reduceDamage / 100;
+      $(".table-attributes .skill-reduce-label").removeClass("d-none");
+      $(".table-attributes .skill-reduce").text(Math.round(reduceDamageValue));
     }
 
     // StrをADに加算
@@ -363,7 +415,7 @@ $(function () {
     if (currentSortAttr == attrName) {
       currentSortOrder *= -1;
     } else {
-      currentSortOrder = (attrName == 'AS' || attrName == 'SA') ? -1 : 1;
+      currentSortOrder = (attrName == 'AS' || attrName == 'SA' || attrName == 'Skill') ? -1 : 1;
     }
     currentSortAttr = attrName;
 
@@ -377,10 +429,10 @@ $(function () {
       let b_val = 0.0;
 
       if (attrName == 'Skill') {
-        a_val = a.skill_en ? a.skill_en : a["skill_" + charaClass + "_en"];
-        b_val = b.skill_en ? b.skill_en : b["skill_" + charaClass + "_en"];
-        if (a_val === null) a_val = "";
-        if (b_val === null) b_val = "";
+        const a_skill = a.skill_en ? a.skill : a["skill_" + charaClass];
+        const b_skill = b.skill_en ? b.skill : b["skill_" + charaClass];
+        a_val = a_skill === null ? -9999999 * currentSortOrder : a_skill.sort_key;
+        b_val = b_skill === null ? -9999999 * currentSortOrder : b_skill.sort_key;
       } else {
         a.attributes.forEach(attr => {
           if (attrName == 'AD') {
