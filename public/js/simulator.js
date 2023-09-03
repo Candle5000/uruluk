@@ -112,7 +112,7 @@ $(function () {
     const charaClass = $("select.character-class").val();
     const attrs = Object.assign({}, characterAttrs[charaClass]);
     $("ul.item-skill").children().remove();
-    let noSkills = true;
+    const skills = [];
 
     // XP, Killsの上限チェック
     if (parseInt($(".character-xp").val()) > parseInt($(".character-xp").attr("max"))) {
@@ -145,8 +145,9 @@ $(function () {
         // スキルの設定
         if (item.skill_en || item["skill_" + $("select.character-class").val() + "_en"]) {
           const skill = $("<li />").text(item.skill_en ? item.skill_en : item["skill_" + $("select.character-class").val() + "_en"]);
-          $("ul.item-skill").append(skill);
-          noSkills = false;
+          const skillCharacterClass = "skill_" + $("select.character-class").val();
+          const skillSortKey = item.skill_en ? item.skill.sort_key : item[skillCharacterClass].sort_key;
+          skills.push({ tag: skill, sortKey: skillSortKey });
         }
 
         // アイテム性能の設定
@@ -173,9 +174,13 @@ $(function () {
       }
     });
 
-    // スキル無し
-    if (noSkills) {
+    // スキルを表示
+    if (skills.length === 0) {
       $("ul.item-skill").append("<li>No Skills</li>");
+    } else {
+      skills.sort((a, b) => a.sortKey - b.sortKey).forEach(skill => {
+        $("ul.item-skill").append(skill.tag);
+      });
     }
 
     // StrをADに加算
