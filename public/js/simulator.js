@@ -431,8 +431,8 @@ $(function () {
       if (attrName == 'Skill') {
         const a_skill = a.skill_en ? a.skill : a["skill_" + charaClass];
         const b_skill = b.skill_en ? b.skill : b["skill_" + charaClass];
-        a_val = a_skill === null ? 9999999 : a_skill.sort_key;
-        b_val = b_skill === null ? 9999999 : b_skill.sort_key;
+        a_val = a_skill === null ? -9999999 * currentSortOrder : a_skill.sort_key;
+        b_val = b_skill === null ? -9999999 * currentSortOrder : b_skill.sort_key;
       } else {
         a.attributes.forEach(attr => {
           if (attrName == 'AD') {
