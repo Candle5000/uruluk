@@ -112,8 +112,10 @@ $(function () {
     const charaClass = $("select.character-class").val();
     const attrs = Object.assign({}, characterAttrs[charaClass]);
     $("ul.item-skill").children().remove();
+    $(".table-attributes .skill-reduce-label").addClass("d-none");
     const skills = [];
     const skillCharacterClass = "skill_" + $("select.character-class").val();
+    let reduceDamage = 0;
 
     // XP, Killsの上限チェック
     if (parseInt($(".character-xp").val()) > parseInt($(".character-xp").attr("max"))) {
@@ -157,6 +159,9 @@ $(function () {
             skillTag.append(skillCheckbox);
             skillTag.append($("<label />").attr("for", "item-skill-" + index).addClass("form-check-label").text(skillText));
           } else {
+            if (itemSkill.effect_type === "reduce") {
+              reduceDamage += Number(itemSkill.effect_amount);
+            }
             skillTag.text(skillText);
           }
           const skillSortKey = itemSkill.sort_key;
@@ -202,7 +207,7 @@ $(function () {
       });
     }
 
-    // パッシブスキル効果を計算
+    // チャージ型のパッシブスキル効果を計算
     $(".attr-value").removeClass("item-skill");
     $("input.item-skill-check:checked").toArray().forEach(checkbox => {
       const item = slotItems[$(checkbox).data("slot-index")];
@@ -215,6 +220,13 @@ $(function () {
       }
       $(".attr-value.attr-" + skillAttr + ",.attr-value:has(.attr-" + skillAttr + ")").addClass("item-skill");
     });
+
+    // ダメージ軽減スキル効果を計算
+    if (reduceDamage > 0) {
+      reduceDamageValue = attrs.def * reduceDamage / 100;
+      $(".table-attributes .skill-reduce-label").removeClass("d-none");
+      $(".table-attributes .skill-reduce").text(Math.round(reduceDamageValue));
+    }
 
     // StrをADに加算
     if (attrs.str > 0) {
