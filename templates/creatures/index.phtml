@@ -1,4 +1,7 @@
 <?= $this->fetch('header.phtml', ['header' => $header]) ?>
+<script id="init-creatures" type="application/json">
+  <?= json_encode($creatures) ?>
+</script>
 <div class="modal fade" id="modal-creature" tabindex="-1" role="dialog" aria-labelledby="modal-creaturesTitle" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content bg-darkgreen">
@@ -30,7 +33,7 @@
               <tr id="detail-row-tb-phase">
                 <td colspan="2">TB Phase</td>
                 <td class="text-right" colspan="3">
-                  <select class="form-control tb-phase p-0 h-auto">
+                  <select id="tb-phase-detail" class="form-control tb-phase p-0 h-auto">
                     <?php foreach (range(0, 63) as $phaseLevel) : ?>
                       <option value="<?= $phaseLevel ?>">
                         #<?= $phaseLevel * 4 + 1 ?>&nbsp;～&nbsp;#<?= $phaseLevel * 4 + 4 ?>
@@ -199,8 +202,78 @@
 </div>
 <h2>Creatures</h2>
 <?= $this->fetch('adsense.phtml', ['google' => $header['google']]) ?>
+<div class="d-inline-block">
+  <select id="select-floor" class="form-control p-0 h-auto">
+    <option value="">All Floors</option>
+    <?php foreach ($floorIndex as $groupIndex => $floorGroup) : ?>
+      <?php foreach ($floorGroup['floors'] as $index => $floor) : ?>
+        <option value="<?= $floor['floor_id'] ?>">[<?= $floor['short_name'] ?>]&nbsp;<?= $floor['name_en'] ?></option>
+      <?php endforeach ?>
+    <?php endforeach ?>
+  </select>
+</div>
+<div class="d-inline-block pl-4">
+  <input type="checkbox" id="check-tb" class="form-check-input" value="true" /><label for="check-tb">TB Creature</label>
+</div>
 <table class="table-dark table-striped table-hover w-100 small" id="creature-list">
   <tbody>
+    <template id="list-label-row">
+      <tr>
+        <td style="padding-left: 33px;">
+          <div class="d-table w-100 table-item-attrs">
+            <div class="d-table-row rare">
+              <div class="d-table-cell border border-black text-center w-16">AD</div>
+              <div class="d-table-cell border border-black text-center w-14">AS</div>
+              <div class="d-table-cell border border-black text-center w-14">Def</div>
+              <div class="d-table-cell border border-black text-center w-14">Dex</div>
+              <div class="d-table-cell border border-black text-center w-14">Vit</div>
+              <div class="d-table-cell border border-black text-center w-14">VoH</div>
+              <div class="d-table-cell border border-black text-center w-14">DR</div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </template>
+    <template id="list-data-row">
+      <tr>
+        <td class="selectable" id="creature-0" data-creatureid="0" tabindex="0">
+          <div class="d-table-cell align-middle" style="width: 32px;">
+            <img class="item-icon" src="/img/creature/creature_noimg.png" alt="" />
+          </div>
+          <div class="d-table-cell w-100 align-top">
+            <div class="pl-1 boss">
+              <div class="name-ja"></div>
+              <div class="name-en"></div>
+            </div>
+            <div class="d-table w-100 table-item-attrs">
+              <div class="d-table-row">
+                <div class="d-table-cell border border-black text-right w-16">
+                  &nbsp;<span class="min-ad"></span>~<span class="max-ad"></span>
+                </div>
+                <div class="d-table-cell border border-black text-right w-14">
+                  <span class="as"></span>
+                </div>
+                <div class="d-table-cell border border-black text-right w-14">
+                  <span class="def"></span>
+                </div>
+                <div class="d-table-cell border border-black text-right w-14">
+                  <span class="dex"></span>
+                </div>
+                <div class="d-table-cell border border-black text-right w-14">
+                  <span class="vit"></span>
+                </div>
+                <div class="d-table-cell border border-black text-right w-14">
+                  <span class="voh"></span>
+                </div>
+                <div class="d-table-cell border border-black text-right w-14">
+                  <span class="dr"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </template>
     <?php if (empty($creatures)) : ?>
       <tr>
         <td>No Data</td>
@@ -225,7 +298,7 @@
         </tr>
       <?php endif; ?>
       <tr>
-        <td class="selectable" id="creature-<?= $creature['creature_id'] ?>" data-creatureid="<?= $creature['creature_id'] ?>" tabindex="<?= $creature['creature_id'] ?>">
+        <td class="selectable" id="creature-<?= $creature['creature_id'] ?>" data-creatureid="<?= $creature['creature_id'] ?>" tabindex="<?= $creature['sort_key'] ?>">
           <div class="d-table-cell align-middle" style="width: 32px;">
             <img class="item-icon" src="/img/creature/<?= $creature['image_name'] == null ? 'creature_noimg.png' : $creature['image_name'] ?>" alt="<?= $creature['name_en'] ?>" />
           </div>

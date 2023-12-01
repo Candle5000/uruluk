@@ -7,6 +7,7 @@ use Slim\Exception\NotFoundException;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Model\CreatureModel;
+use Model\FloorModel;
 
 /**
  * クリーチャーデータ コントローラ.
@@ -17,12 +18,13 @@ class CreaturesController extends Controller
     public function index(Request $request, Response $response, array $args)
     {
         $this->title = 'クリーチャーデータ';
-        $this->scripts[] = '/js/creature.js?id=00066';
+        $this->scripts[] = '/js/creature.js?id=00072';
 
         try {
             $this->db->beginTransaction();
 
             $creature = new CreatureModel($this->db, $this->logger);
+            $floor = new FloorModel($this->db, $this->logger);
 
             if (array_key_exists('creatureId', $args)) {
                 $detail = $creature->getCreatureDetailById($args['creatureId']);
@@ -32,6 +34,7 @@ class CreaturesController extends Controller
             $args = [
                 'header' => $this->getHeaderInfo(),
                 'creatures' => $creature->getCreatureStutsList(),
+                'floorIndex' => $floor->getFloorIndex(),
                 'footer' => $this->getFooterInfo()
             ];
 
