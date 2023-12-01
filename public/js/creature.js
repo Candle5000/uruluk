@@ -1,5 +1,7 @@
 $(function () {
 
+  const allCreatures = $.parseJSON($("#init-items").html());
+
   const setPhaseBoost = function (baseTagId, boostVal, level, isPercentage) {
     const base = $(baseTagId);
     const baseTd1 = $("td" + baseTagId);
