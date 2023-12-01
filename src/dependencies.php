@@ -42,6 +42,8 @@ return function (App $app) {
         $google = [
             'analytics_id' => $settings['analytics_id'],
             'adsense_id' => $settings['adsense_id'],
+            'adsense_unit' => $settings['adsense_unit'],
+            'adsense_enabled' => $settings['adsense_enabled'],
         ];
         return $google;
     };
