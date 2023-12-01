@@ -33,6 +33,7 @@ class CreatureModel extends Model
                 , c.tb_ws
                 , c.tb_voh
                 , c.tb_dr
+                , c.sort_key
                 , fc.floor_id
                 , fc.event_id
             FROM
