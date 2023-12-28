@@ -38,9 +38,9 @@ class CreatureModel extends Model
                 , fc.event_id
             FROM
                 creature c
-                INNER JOIN floor_creature fc
+                LEFT JOIN floor_creature fc
                     ON fc.creature_id = c.creature_id
-                INNER JOIN floor f
+                LEFT JOIN floor f
                     ON f.floor_id = fc.floor_id
             ORDER BY
                 c.boss
