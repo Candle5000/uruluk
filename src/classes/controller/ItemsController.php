@@ -9,6 +9,7 @@ use Slim\Http\Response;
 use Model\ItemModel;
 use Model\QuestModel;
 use Model\ShopModel;
+use Model\TagModel;
 
 /**
  * アイテムデータ コントローラ.
@@ -42,7 +43,7 @@ class ItemsController extends Controller
     public function rareItem(Request $request, Response $response, array $args)
     {
         $this->title = ucfirst($args['itemClassName']) . ' レアアイテム';
-        $this->scripts[] = '/js/item.js?id=00047';
+        $this->scripts[] = '/js/item.js?id=00075';
 
         try {
             $this->db->beginTransaction();
@@ -107,11 +108,13 @@ class ItemsController extends Controller
         $item = new ItemModel($this->db, $this->logger);
         $quest = new QuestModel($this->db, $this->logger);
         $shop = new ShopModel($this->db, $this->logger);
+        $tag = new TagModel($this->db, $this->logger);
         $detail = $item->getItemDetailById($args['itemId']);
         $data = [
             'item' => $detail,
             'quests' => $quest->getQuestDetailListByItemId($args['itemId']),
-            'shops' => $shop->getShopListByItemId($args['itemId'])
+            'shops' => $shop->getShopListByItemId($args['itemId']),
+            'tags' => $tag->getTagsByItemId($args['itemId'])
         ];
         return $response->withJson($data);
     }

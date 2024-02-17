@@ -63,6 +63,7 @@ $(function () {
       const item = data.item;
       const quests = data.quests;
       const shops = data.shops;
+      const tags = data.tags;
 
       $('#detail-floors').children('li.detail-row').remove();
       if (item.floors.length) {
@@ -203,6 +204,20 @@ $(function () {
             .attr('src', '/img/' + icon.image_path));
         });
         $('#detail-quest-required').append(row);
+      });
+
+      $('#detail-tags').children('li.detail-row').remove();
+      if (tags.length) {
+        $('#detail-tags-none').addClass('d-none');
+      } else {
+        $('#detail-tags-none').removeClass('d-none');
+      }
+      tags.forEach(tag => {
+        const row = $($("#modal-tag-row").html());
+        row.find('.tag-name')
+          .attr('href', '/tags/' + tag.tag_url)
+          .text(tag.tag_name);
+        $('#detail-tags').append(row);
       });
 
       if (!at && location.pathname.split('/').length != 5) {

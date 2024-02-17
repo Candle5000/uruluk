@@ -429,6 +429,53 @@ class ItemModel extends Model
         }
     }
 
+    public function getItemsByTag(string $tagUrl)
+    {
+        $sql = <<<SQL
+            SELECT
+                I.item_id
+                , I.item_class_id
+                , IC.name_en item_class
+                , I.base_item_id
+                , I.class_flactuable
+                , I.name_en
+                , I.name_ja
+                , I.rarity
+                , I.image_name
+            FROM
+                item I
+                LEFT JOIN item_class IC
+                    ON I.item_class_id = IC.item_class_id
+                LEFT JOIN item_tag IT
+                    ON I.item_id = IT.item_id
+                LEFT JOIN tag T
+                    ON IT.tag_id = T.tag_id
+            WHERE
+                T.tag_url = :tagUrl
+            ORDER BY
+                I.sort_key
+            SQL;
+        $this->logger->debug($sql);
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':tagUrl', $tagUrl, PDO::PARAM_STR);
+        $stmt->execute();
+        $items = [];
+        while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $items[] = [
+                'item_id' => $result['item_id'],
+                'item_class_id' => $result['item_class_id'],
+                'item_class' => $result['item_class'],
+                'base_item_id' => $result['base_item_id'],
+                'class_flactuable' => $result['class_flactuable'],
+                'name_en' => $result['name_en'],
+                'name_ja' => $result['name_ja'],
+                'rarity' => $result['rarity'],
+                'image_name' => $result['image_name'],
+            ];
+        }
+        return $items;
+    }
+
     public function getNone($itemClass)
     {
         return [
