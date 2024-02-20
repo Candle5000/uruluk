@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2023/09/03 2:07:11
+-- Date/Time    : 2024/02/20 17:18:34
 -- Author       : candl
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -387,6 +387,17 @@ alter table `item_skill` add unique `item_skill_IX1` (`name`) ;
 
 alter table `item_skill` add unique `item_skill_IX2` (`sort_key`) ;
 
+-- アイテムタグ
+-- * BackupToTempTable
+drop table if exists `item_tag` cascade;
+
+-- * RestoreFromTempTable
+create table `item_tag` (
+  `item_id` INT not null comment 'アイテムID'
+  , `tag_id` INT not null comment 'タグID'
+  , constraint `item_tag_PKC` primary key (`item_id`,`tag_id`)
+) comment 'アイテムタグ' ;
+
 -- お知らせ
 -- * BackupToTempTable
 drop table if exists `news` cascade;
@@ -505,6 +516,23 @@ create table `special_attack` (
   , `note` TEXT comment '説明'
   , constraint `special_attack_PKC` primary key (`special_attack_id`)
 ) comment 'スペシャルアタック' ;
+
+-- タグ
+-- * BackupToTempTable
+drop table if exists `tag` cascade;
+
+-- * RestoreFromTempTable
+create table `tag` (
+  `tag_id` INT not null AUTO_INCREMENT comment 'タグID'
+  , `tag_url` VARCHAR(32) not null comment 'タグURL'
+  , `tag_name` VARCHAR(100) comment 'タグ名'
+  , `sort_key` VARCHAR(16) not null comment 'ソート順'
+  , constraint `tag_PKC` primary key (`tag_id`)
+) comment 'タグ' ;
+
+alter table `tag` add unique `tag_IX1` (`tag_url`) ;
+
+alter table `tag` add unique `tag_IX2` (`sort_key`) ;
 
 -- Urulukユーザ
 -- * BackupToTempTable
