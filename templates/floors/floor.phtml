@@ -29,12 +29,12 @@
       <div class="lemonchiffon">Rare Items</div>
       <table class="table-dark table-striped table-bordered w-100 mb-2">
         <tbody>
-          <?php if (empty($detail['items'])) : ?>
+          <?php if (empty($items)) : ?>
             <tr>
               <td>No Items</td>
             </tr>
           <?php endif; ?>
-          <?php foreach ($detail['items'] as $item) : ?>
+          <?php foreach ($items as $item) : ?>
             <tr>
               <td>
                 <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
@@ -48,11 +48,11 @@
           <?php endforeach; ?>
         </tbody>
       </table>
-      <?php if (!empty($detail['banana'])) : ?>
+      <?php if (!empty($banana)) : ?>
         <div class="lemonchiffon">Banana Items</div>
         <table class="table-dark table-striped table-bordered w-100 mb-2">
           <tbody>
-            <?php foreach ($detail['banana'] as $item) : ?>
+            <?php foreach ($banana as $item) : ?>
               <tr>
                 <td>
                   <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
@@ -178,11 +178,11 @@
           </tbody>
         </table>
       <?php endif; ?>
-      <?php if (!empty($detail['treasure'])) : ?>
+      <?php if (!empty($treasure)) : ?>
         <div class="lemonchiffon">Treasure Items</div>
         <table class="table-dark table-striped table-bordered w-100 mb-2">
           <tbody>
-            <?php foreach ($detail['treasure'] as $item) : ?>
+            <?php foreach ($treasure as $item) : ?>
               <tr>
                 <td>
                   <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
@@ -200,12 +200,12 @@
       <div class="lemonchiffon">Creatures</div>
       <table class="table-dark table-striped table-bordered w-100 mb-2">
         <tbody>
-          <?php if (empty($detail['creatures']['default'])) : ?>
+          <?php if (empty($creatures['default'])) : ?>
             <tr>
               <td>No Creatures</td>
             </tr>
           <?php endif; ?>
-          <?php foreach ($detail['creatures']['default'] as $creature) : ?>
+          <?php foreach ($creatures['default'] as $creature) : ?>
             <tr>
               <td>
                 <a href="/creatures/<?= $creature['creature_id'] ?>" class="<?= $creature['boss'] ? 'boss' : 'text-light' ?>">
@@ -216,12 +216,12 @@
           <?php endforeach; ?>
         </tbody>
       </table>
-      <?php if (!empty($detail['creatures']['events'])) : ?>
+      <?php if (!empty($creatures['events'])) : ?>
         <div>
           <a href="#collapse-creatures" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-creatures">Additional Creatures<i class="fas fa-chevron-circle-down"></i></a>
         </div>
         <div class="collapse" id="collapse-creatures">
-          <?php foreach ($detail['creatures']['events'] as $event) : ?>
+          <?php foreach ($creatures['events'] as $event) : ?>
             <div class="lemonchiffon"><?= $event['note'] ?></div>
             <table class="table-dark table-striped table-bordered w-100 mb-2">
               <tbody>

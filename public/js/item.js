@@ -60,17 +60,21 @@ $(function () {
       url: '/items/detail/' + itemId,
       type: 'GET',
     }).done(data => {
-      const item = data.item;
+      const floors = data.floors;
+      const bananaFloors = data.banana;
+      const treasureFloors = data.treasure;
+      const creatures = data.creatures;
       const quests = data.quests;
       const shops = data.shops;
+      const tags = data.tags;
 
       $('#detail-floors').children('li.detail-row').remove();
-      if (item.floors.length) {
+      if (floors.length) {
         $('#detail-floor-none').addClass('d-none');
       } else {
         $('#detail-floor-none').removeClass('d-none');
       }
-      item.floors.forEach(floor => {
+      floors.forEach(floor => {
         const row = $($("#modal-floor-row").html());
         row.find(".floor-name").text(floor.short_name)
           .attr('href', '/floors/' + floor.floor_id);
@@ -78,12 +82,12 @@ $(function () {
       });
 
       $('#detail-banana').children('li.detail-row').remove();
-      if (item.banana.length) {
+      if (bananaFloors.length) {
         $('#detail-banana-none').addClass('d-none');
       } else {
         $('#detail-banana-none').removeClass('d-none');
       }
-      item.banana.forEach(floor => {
+      bananaFloors.forEach(floor => {
         const row = $($("#modal-banana-row").html());
         row.find(".floor-name").text(floor.short_name)
           .attr('href', '/floors/' + floor.floor_id);
@@ -91,12 +95,12 @@ $(function () {
       });
 
       $('#detail-treasure').children('li.detail-row').remove();
-      if (item.treasure.length) {
+      if (treasureFloors.length) {
         $('#detail-treasure-none').addClass('d-none');
       } else {
         $('#detail-treasure-none').removeClass('d-none');
       }
-      item.treasure.forEach(floor => {
+      treasureFloors.forEach(floor => {
         const row = $($("#modal-treasure-row").html());
         row.find(".floor-name").text(floor.short_name)
           .attr('href', '/floors/' + floor.floor_id);
@@ -110,12 +114,12 @@ $(function () {
       $('#detail-treasure').find('a.treasure-note').tooltip();
 
       $('#detail-creatures').children('li.detail-row').remove();
-      if (item.creatures.length) {
+      if (creatures.length) {
         $('#detail-creature-none').addClass('d-none');
       } else {
         $('#detail-creature-none').removeClass('d-none');
       }
-      item.creatures.forEach(creature => {
+      creatures.forEach(creature => {
         const row = $($("#modal-creature-row").html());
         const imgName = creature.image_name ?
           creature.image_name : 'creature_noimg.png';
@@ -203,6 +207,20 @@ $(function () {
             .attr('src', '/img/' + icon.image_path));
         });
         $('#detail-quest-required').append(row);
+      });
+
+      $('#detail-tags').children('li.detail-row').remove();
+      if (tags.length) {
+        $('#detail-tags-none').addClass('d-none');
+      } else {
+        $('#detail-tags-none').removeClass('d-none');
+      }
+      tags.forEach(tag => {
+        const row = $($("#modal-tag-row").html());
+        row.find('.tag-name')
+          .attr('href', '/tags/' + tag.tag_url)
+          .text(tag.tag_name);
+        $('#detail-tags').append(row);
       });
 
       if (!at && location.pathname.split('/').length != 5) {

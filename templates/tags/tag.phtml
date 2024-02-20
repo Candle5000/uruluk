@@ -1,0 +1,35 @@
+<?= $this->fetch('header.phtml', ['header' => $header]) ?>
+<div>
+  <a href="/tags" class="lemonchiffon"><i class="fas fa-chevron-circle-left"></i>All Tags</a>
+</div>
+<h2><?= $detail['tag_name'] ?></h2>
+<?= $this->fetch('adsense.phtml', ['google' => $header['google']]) ?>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-sm-6">
+      <h4>Items</h4>
+      <table class="table-dark table-striped table-bordered w-100 mb-2">
+        <tbody>
+          <?php if (empty($items)) : ?>
+            <tr>
+              <td>No Items</td>
+            </tr>
+          <?php endif; ?>
+          <?php foreach ($items as $item) : ?>
+            <tr>
+              <td>
+                <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
+                  <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
+                </a>
+                <?php if ($item['class_flactuable']) : ?>
+                  <img class="class-icon" src="/img/common/<?= strtolower($item['item_class']) ?>.png" />
+                <?php endif; ?>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<?= $this->fetch('footer.phtml', ['footer' => $footer]) ?>

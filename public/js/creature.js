@@ -117,6 +117,8 @@ $(function () {
         type: 'GET',
       }).done(data => {
         const creature = data.creature;
+        const items = data.items;
+        const floors = data.floors;
         const imgName = creature.image_name ?
           creature.image_name : 'creature_noimg.png';
         const as = creature.as ? creature.as == 0 ? '-' : creature.as : '?';
@@ -187,10 +189,10 @@ $(function () {
 
         const itemTbody = $("#detail-items");
         itemTbody.children('tr').remove();
-        if (creature.items.length == 0) {
+        if (items.length == 0) {
           itemTbody.append($("<tr>").append($("<td>").addClass("pl-2").text("None")));
         }
-        creature.items.forEach(item => {
+        items.forEach(item => {
           const row = $($("#modal-item-row").html());
           const link = '/items/' + item.item_class.toLowerCase() + '/'
             + (item.rarity == 'common' ? item.base_item_id : 'rare') + '/' + item.item_id;
@@ -207,12 +209,12 @@ $(function () {
           itemTbody.append(row);
         });
 
-        const floors = $("#detail-floors");
-        floors.children('li').remove();
-        if (creature.floors.length == 0) {
-          floors.append($("<li>").addClass("list-inline-item").text("None"));
+        const floorList = $("#detail-floors");
+        floorList.children('li').remove();
+        if (floors.length == 0) {
+          floorList.append($("<li>").addClass("list-inline-item").text("None"));
         }
-        creature.floors.forEach(floor => {
+        floors.forEach(floor => {
           const li = $($("#modal-floor-li").html());
           li.find(".floor-name").text(floor.short_name).attr('href', "/floors/" + floor.floor_id);
           if (floor.note) {
@@ -220,9 +222,9 @@ $(function () {
           } else {
             li.find(".floor-note").remove();
           }
-          floors.append(li);
+          floorList.append(li);
         });
-        floors.find("a.floor-note").tooltip();
+        floorList.find("a.floor-note").tooltip();
 
         if (!at && location.pathname.split('/').length != 3) {
           history.pushState(null, null, '/creatures/' + creatureId);

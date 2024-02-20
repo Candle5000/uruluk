@@ -8,6 +8,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Model\CreatureModel;
 use Model\FloorModel;
+use Model\ItemModel;
 
 /**
  * クリーチャーデータ コントローラ.
@@ -18,7 +19,7 @@ class CreaturesController extends Controller
     public function index(Request $request, Response $response, array $args)
     {
         $this->title = 'クリーチャーデータ';
-        $this->scripts[] = '/js/creature.js?id=00072';
+        $this->scripts[] = '/js/creature.js?id=00075';
 
         try {
             $this->db->beginTransaction();
@@ -50,10 +51,14 @@ class CreaturesController extends Controller
     public function detail(Request $request, Response $response, array $args)
     {
         $creature = new CreatureModel($this->db, $this->logger);
+        $item = new ItemModel($this->db, $this->logger);
+        $floor = new FloorModel($this->db, $this->logger);
         $detail = $creature->getCreatureDetailById($args['creatureId']);
         if ($detail == null) throw new NotFoundException($request, $response);
         $data = [
-            'creature' => $detail
+            'creature' => $detail,
+            'items' => $item->getItemsByCreatureId($args['creatureId']),
+            'floors' => $floor->getFloorsByCreatureId($args['creatureId'])
         ];
 
         return $response->withJson($data);

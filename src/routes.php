@@ -9,6 +9,7 @@ use Controller\CreaturesController;
 use Controller\FloorsController;
 use Controller\SimulatorController;
 use Controller\ShortURLController;
+use Controller\TagController;
 
 return function (App $app) {
     $container = $app->getContainer();
@@ -44,6 +45,10 @@ return function (App $app) {
     $app->get('/simulator', SimulatorController::class . ':index');
 
     $app->get('/simulator/item/{itemClassName}', SimulatorController::class . ':item');
+
+    $app->get('/tags', TagController::class . ':index');
+
+    $app->get('/tags/{tagUrl}', TagController::class . ':detail');
 
     $app->get('/s', ShortURLController::class . ':index');
 
