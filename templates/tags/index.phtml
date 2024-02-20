@@ -3,7 +3,7 @@
 <?= $this->fetch('adsense.phtml', ['google' => $header['google']]) ?>
 <div class="card mb-2 bg-darkblue">
   <div class="card-body">
-    <ul class="list-inline mb-4">
+    <ul class="list-inline mb-0">
       <?php foreach ($tags as $tag) : ?>
         <li class="list-inline-item">
           <a href="/tags/<?= $tag['tag_url'] ?>" class="badge badge-pill badge-secondary mb-1"><?= $tag['tag_name'] ?></a>
