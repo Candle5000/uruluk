@@ -56,5 +56,6 @@ tags
 /public/img/common
 /public/favicon.ico
 /templates/privacy/index.phtml
+!/templates/tags
 
 # End of https://www.gitignore.io/api/vim,linux,laravel,composer

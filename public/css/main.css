@@ -191,6 +191,10 @@ a.item-name {
   padding-right: 5px;
 }
 
+a.tag-name.badge {
+  font-size: 85%;
+}
+
 div.tooltip-inner {
   color: #9fd900 !important;
 }
