@@ -53,8 +53,6 @@ class QuestModel extends Model
                 'reward_common_items' => $result['reward_common_items'],
                 'note' => $result['note'],
                 'icons' => $this->getQuestIcons($result['quest_id']),
-                'required_items' => $this->getQuestRequiredItems($result['quest_id']),
-                'reward_items' => $this->getQuestRewardItems($result['quest_id']),
             ];
         }
         return $quests;
@@ -135,97 +133,5 @@ class QuestModel extends Model
             ];
         }
         return $icons;
-    }
-
-    private function getQuestRequiredItems($questId)
-    {
-        $sql = <<<SQL
-            SELECT
-                I.item_id
-                , I.item_class_id
-                , IC.name_en item_class
-                , I.base_item_id
-                , I.class_flactuable
-                , I.name_en
-                , I.name_ja
-                , I.rarity
-                , I.image_name
-            FROM
-                quest_required_item QRI
-                INNER JOIN item I
-                    ON QRI.item_id = I.item_id
-                INNER JOIN item_class IC
-                    ON I.item_class_id = IC.item_class_id
-            WHERE
-                QRI.quest_id = :quest_id
-            ORDER BY
-                I.sort_key
-                , I.item_id
-            SQL;
-        $this->logger->debug($sql);
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':quest_id', $questId, PDO::PARAM_INT);
-        $stmt->execute();
-        $items = [];
-        while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $items[] = [
-                'item_id' => $result['item_id'],
-                'item_class_id' => $result['item_class_id'],
-                'item_class' => $result['item_class'],
-                'base_item_id' => $result['base_item_id'],
-                'class_flactuable' => $result['class_flactuable'],
-                'name_en' => $result['name_en'],
-                'name_ja' => $result['name_ja'],
-                'rarity' => $result['rarity'],
-                'image_name' => $result['image_name'],
-            ];
-        }
-        return $items;
-    }
-
-    private function getQuestRewardItems($questId)
-    {
-        $sql = <<<SQL
-            SELECT
-                I.item_id
-                , I.item_class_id
-                , IC.name_en item_class
-                , I.base_item_id
-                , I.class_flactuable
-                , I.name_en
-                , I.name_ja
-                , I.rarity
-                , I.image_name
-            FROM
-                quest_reward_item QRI
-                INNER JOIN item I
-                    ON QRI.item_id = I.item_id
-                INNER JOIN item_class IC
-                    ON I.item_class_id = IC.item_class_id
-            WHERE
-                QRI.quest_id = :quest_id
-            ORDER BY
-                I.sort_key
-                , I.item_id
-            SQL;
-        $this->logger->debug($sql);
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':quest_id', $questId, PDO::PARAM_INT);
-        $stmt->execute();
-        $items = [];
-        while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $items[] = [
-                'item_id' => $result['item_id'],
-                'item_class_id' => $result['item_class_id'],
-                'item_class' => $result['item_class'],
-                'base_item_id' => $result['base_item_id'],
-                'class_flactuable' => $result['class_flactuable'],
-                'name_en' => $result['name_en'],
-                'name_ja' => $result['name_ja'],
-                'rarity' => $result['rarity'],
-                'image_name' => $result['image_name'],
-            ];
-        }
-        return $items;
     }
 }

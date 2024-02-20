@@ -97,6 +97,20 @@ class ItemModel extends Model
         , IA.max_required_dagger
         SQL;
 
+    private const SQL_COLUMNS_FOR_ITEM_LINK_LIST = <<<SQL
+        I.item_id
+        , I.item_class_id
+        , IC.name_en item_class
+        , I.base_item_id
+        , I.class_flactuable
+        , I.name_en
+        , I.name_ja
+        , I.rarity
+        , I.image_name
+        SQL;
+
+    private const RARITY_RARE = "rare";
+
     public function getItemClassId(string $itemClassName)
     {
         $sql = <<<SQL
@@ -431,17 +445,10 @@ class ItemModel extends Model
 
     public function getItemsByTag(string $tagUrl)
     {
+        $columns = self::SQL_COLUMNS_FOR_ITEM_LINK_LIST;
         $sql = <<<SQL
             SELECT
-                I.item_id
-                , I.item_class_id
-                , IC.name_en item_class
-                , I.base_item_id
-                , I.class_flactuable
-                , I.name_en
-                , I.name_ja
-                , I.rarity
-                , I.image_name
+                $columns
             FROM
                 item I
                 LEFT JOIN item_class IC
@@ -455,9 +462,108 @@ class ItemModel extends Model
             ORDER BY
                 I.sort_key
             SQL;
+        $params = [['param' => 'tagUrl', 'var' => $tagUrl, 'type' => PDO::PARAM_STR]];
+        return $this->getItemLinkList($sql, $params);
+    }
+
+    public function getItemsByCreatureId(int $creatureId)
+    {
+        $columns = self::SQL_COLUMNS_FOR_ITEM_LINK_LIST;
+        $sql = <<<SQL
+            SELECT
+                $columns
+            FROM
+                creature_drop_item CDI
+                INNER JOIN item I
+                    ON CDI.item_id = I.item_id
+                INNER JOIN item_class IC
+                    ON I.item_class_id = IC.item_class_id
+            WHERE
+                CDI.creature_id = :id
+            ORDER BY
+                I.sort_key
+                , I.item_id
+            SQL;
+        $params = [['param' => 'id', 'var' => $creatureId, 'type' => PDO::PARAM_INT]];
+        return $this->getItemLinkList($sql, $params);
+    }
+
+    public function getRareItemsByFloorId(int $floorId)
+    {
+        $columns = self::SQL_COLUMNS_FOR_ITEM_LINK_LIST;
+        $rarity = self::RARITY_RARE;
+        $sql = <<<SQL
+            SELECT DISTINCT
+                $columns
+            FROM
+                floor_drop_group FG
+                INNER JOIN drop_item_group DG
+                    ON FG.drop_item_group_id = DG.drop_item_group_id
+                INNER JOIN item I
+                    ON DG.item_id = I.item_id
+                INNER JOIN item_class IC
+                    ON I.item_class_id = IC.item_class_id
+            WHERE
+                FG.floor_id = :floor_id
+                AND I.rarity = :rarity
+            ORDER BY
+                I.sort_key
+                , I.item_id
+            SQL;
+        $params = [
+            ['param' => 'floor_id', 'var' => $floorId, 'type' => PDO::PARAM_INT],
+            ['param' => 'rarity', 'var' => $rarity, 'type' => PDO::PARAM_STR]
+        ];
+        return $this->getItemLinkList($sql, $params);
+    }
+
+    public function getBananaItemsByFloorId(int $floorId)
+    {
+        $columns = self::SQL_COLUMNS_FOR_ITEM_LINK_LIST;
+        $sql = <<<SQL
+            SELECT DISTINCT
+                $columns
+            FROM
+                floor_banana_drop_group FG
+                INNER JOIN drop_item_group DG
+                    ON FG.drop_item_group_id = DG.drop_item_group_id
+                INNER JOIN item I
+                    ON DG.item_id = I.item_id
+                INNER JOIN item_class IC
+                    ON I.item_class_id = IC.item_class_id
+            WHERE
+                FG.floor_id = :floor_id
+                AND rarity IN ('rare', 'artifact')
+            ORDER BY
+                I.sort_key
+                , I.item_id
+            SQL;
+        $params = [['param' => 'floor_id', 'var' => $floorId, 'type' => PDO::PARAM_INT]];
+        return $this->getItemLinkList($sql, $params);
+    }
+
+    public function getTreasureItemsByFloorId(int $floorId)
+    {
+        $columns = self::SQL_COLUMNS_FOR_ITEM_LINK_LIST;
+        $sql = <<<SQL
+            SELECT
+                $columns
+                , FT.note
+            FROM
+                floor_treasure FT
+                INNER JOIN item I
+                    ON FT.item_id = I.item_id
+                INNER JOIN item_class IC
+                    ON I.item_class_id = IC.item_class_id
+            WHERE
+                FT.floor_id = :floor_id
+            ORDER BY
+                I.sort_key
+                , I.item_id
+            SQL;
         $this->logger->debug($sql);
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':tagUrl', $tagUrl, PDO::PARAM_STR);
+        $stmt->bindParam(':floor_id', $floorId, PDO::PARAM_INT);
         $stmt->execute();
         $items = [];
         while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -471,6 +577,92 @@ class ItemModel extends Model
                 'name_ja' => $result['name_ja'],
                 'rarity' => $result['rarity'],
                 'image_name' => $result['image_name'],
+                'note' => $result['note'],
+            ];
+        }
+        return $items;
+    }
+
+    public function getQuestRequiredItemsByQuestId(int $questId)
+    {
+        $columns = self::SQL_COLUMNS_FOR_ITEM_LINK_LIST;
+        $sql = <<<SQL
+            SELECT
+                $columns
+            FROM
+                quest_required_item QRI
+                INNER JOIN item I
+                    ON QRI.item_id = I.item_id
+                INNER JOIN item_class IC
+                    ON I.item_class_id = IC.item_class_id
+            WHERE
+                QRI.quest_id = :quest_id
+            ORDER BY
+                I.sort_key
+                , I.item_id
+            SQL;
+        $params = [['param' => 'quest_id', 'var' => $questId, 'type' => PDO::PARAM_INT]];
+        return $this->getItemLinkList($sql, $params);
+    }
+
+    public function getQuestRewardItemsByQuestId(int $questId)
+    {
+        $columns = self::SQL_COLUMNS_FOR_ITEM_LINK_LIST;
+        $sql = <<<SQL
+            SELECT
+                $columns
+            FROM
+                quest_reward_item QRI
+                INNER JOIN item I
+                    ON QRI.item_id = I.item_id
+                INNER JOIN item_class IC
+                    ON I.item_class_id = IC.item_class_id
+            WHERE
+                QRI.quest_id = :quest_id
+            ORDER BY
+                I.sort_key
+                , I.item_id
+            SQL;
+        $params = [['param' => 'quest_id', 'var' => $questId, 'type' => PDO::PARAM_INT]];
+        return $this->getItemLinkList($sql, $params);
+    }
+
+    public function getShopItemsByShopId(int $shopId)
+    {
+        $columns = self::SQL_COLUMNS_FOR_ITEM_LINK_LIST;
+        $sql = <<<SQL
+            SELECT
+                $columns
+                , SI.price
+            FROM
+                shop_item SI
+                INNER JOIN item I
+                    ON SI.item_id = I.item_id
+                INNER JOIN item_class IC
+                    ON I.item_class_id = IC.item_class_id
+            WHERE
+                SI.shop_id = :shop_id
+            ORDER BY
+                IC.shop_sort_key
+                , I.sort_key
+            SQL;
+        $this->logger->debug($sql);
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':shop_id', $shopId, PDO::PARAM_INT);
+        $stmt->execute();
+        $items = [];
+        while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $items[] = [
+                'item_id' => $result['item_id'],
+                'item_class_id' => $result['item_class_id'],
+                'item_class' => $result['item_class'],
+                'base_item_id' => $result['base_item_id'],
+                'class_flactuable' => $result['class_flactuable'],
+                'name_en' => $result['name_en'],
+                'name_ja' => $result['name_ja'],
+                'rarity' => $result['rarity'],
+                'image_name' => $result['image_name'],
+                'price' => $result['price'],
             ];
         }
         return $items;
@@ -483,16 +675,6 @@ class ItemModel extends Model
             'rarity' => 'common',
             'image_name' => self::DEFAULT_IMG[$itemClass],
             'attributes' => []
-        ];
-    }
-
-    public function getItemDetailById(int $id)
-    {
-        return [
-            'floors' => $this->getFloorsByItemId($id),
-            'banana' => $this->getBananaFloorsByItemId($id),
-            'treasure' => $this->getTreasureFloorsByItemId($id),
-            'creatures' => $this->getCreaturesByItemId($id)
         ];
     }
 
@@ -684,129 +866,28 @@ class ItemModel extends Model
         return $items;
     }
 
-    private function getFloorsByItemId(int $id)
+    private function getItemLinkList(string $sql, array $params)
     {
-        $sql = <<<SQL
-            SELECT DISTINCT
-                F.floor_id
-                , F.short_name
-            FROM
-                floor_drop_group FG
-                INNER JOIN floor F
-                    ON FG.floor_id = F.floor_id
-                INNER JOIN drop_item_group IG
-                    ON IG.drop_item_group_id = FG.drop_item_group_id
-            WHERE
-                IG.item_id = :id
-            ORDER BY
-                F.sort_key
-            SQL;
         $this->logger->debug($sql);
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
-        $floors = [];
-        while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $floors[] = [
-                'floor_id' => $result['floor_id'],
-                'short_name' => $result['short_name'],
-            ];
+        foreach ($params as $param) {
+            $stmt->bindParam($param['param'], $param['var'], $param['type']);
         }
-        return $floors;
-    }
-
-    private function getBananaFloorsByItemId(int $id)
-    {
-        $sql = <<<SQL
-            SELECT DISTINCT
-                F.floor_id
-                , F.short_name
-            FROM
-                floor_banana_drop_group FG
-                INNER JOIN drop_item_group DG
-                    ON FG.drop_item_group_id = DG.drop_item_group_id
-                INNER JOIN floor F
-                    ON FG.floor_id = F.floor_id
-            WHERE
-                DG.item_id = :id
-            ORDER BY
-                F.sort_key
-            SQL;
-        $this->logger->debug($sql);
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
-        $floors = [];
+        $items = [];
         while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $floors[] = [
-                'floor_id' => $result['floor_id'],
-                'short_name' => $result['short_name'],
-            ];
-        }
-        return $floors;
-    }
-
-    private function getTreasureFloorsByItemId(int $id)
-    {
-        $sql = <<<SQL
-            SELECT
-                F.floor_id
-                , F.short_name
-                , FT.note
-            FROM
-                floor_treasure FT
-                INNER JOIN floor F
-                    ON FT.floor_id = F.floor_id
-            WHERE
-                FT.item_id = :id
-            ORDER BY
-                F.sort_key
-            SQL;
-        $this->logger->debug($sql);
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
-        $floors = [];
-        while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $floors[] = [
-                'floor_id' => $result['floor_id'],
-                'short_name' => $result['short_name'],
-                'note' => $result['note'],
-            ];
-        }
-        return $floors;
-    }
-
-    private function getCreaturesByItemId(int $id)
-    {
-        $sql = <<<SQL
-            SELECT
-                C.creature_id
-                , C.boss
-                , C.name_en
-                , C.image_name
-            FROM
-                creature_drop_item CI
-                INNER JOIN creature C
-                ON CI.creature_id = C.creature_id
-            WHERE
-                CI.item_id = :id
-            ORDER BY
-                C.sort_key
-            SQL;
-        $this->logger->debug($sql);
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
-        $creatures = [];
-        while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $creatures[] = [
-                'creature_id' => $result['creature_id'],
-                'boss' => $result['boss'],
+            $items[] = [
+                'item_id' => $result['item_id'],
+                'item_class_id' => $result['item_class_id'],
+                'item_class' => $result['item_class'],
+                'base_item_id' => $result['base_item_id'],
+                'class_flactuable' => $result['class_flactuable'],
                 'name_en' => $result['name_en'],
+                'name_ja' => $result['name_ja'],
+                'rarity' => $result['rarity'],
                 'image_name' => $result['image_name'],
             ];
         }
-        return $creatures;
+        return $items;
     }
 }

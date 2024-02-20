@@ -95,7 +95,7 @@ class CreatureModel extends Model
         return $creatures;
     }
 
-    public function getCreatureDetailById($id)
+    public function getCreatureDetailById($creatureId)
     {
         $sql = <<<SQL
             SELECT
@@ -132,7 +132,7 @@ class CreatureModel extends Model
             SQL;
         $this->logger->debug($sql);
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $creatureId, PDO::PARAM_INT);
         $stmt->execute();
         if ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
             return [
@@ -161,9 +161,7 @@ class CreatureModel extends Model
                 'tb_voh' => $result['tb_voh'],
                 'tb_dr' => $result['tb_dr'],
                 'tb_xp' => $result['tb_xp'],
-                'special_attacks' => $this->getSpecialAttacksByCreatureId($id),
-                'items' => $this->getItemsByCreatureId($id),
-                'floors' => $this->getFloorsByCreatureId($id),
+                'special_attacks' => $this->getSpecialAttacksByCreatureId($creatureId),
                 'note' => $result['note'],
             ];
         } else {
@@ -171,7 +169,96 @@ class CreatureModel extends Model
         }
     }
 
-    private function getSpecialAttacksByCreatureId($id)
+    public function getCreaturesByItemId(int $itemId)
+    {
+        $sql = <<<SQL
+            SELECT
+                C.creature_id
+                , C.boss
+                , C.name_en
+                , C.image_name
+            FROM
+                creature_drop_item CI
+                INNER JOIN creature C
+                ON CI.creature_id = C.creature_id
+            WHERE
+                CI.item_id = :id
+            ORDER BY
+                C.sort_key
+            SQL;
+        $this->logger->debug($sql);
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $itemId, PDO::PARAM_INT);
+        $stmt->execute();
+        $creatures = [];
+        while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $creatures[] = [
+                'creature_id' => $result['creature_id'],
+                'boss' => $result['boss'],
+                'name_en' => $result['name_en'],
+                'image_name' => $result['image_name'],
+            ];
+        }
+        return $creatures;
+    }
+
+    public function getCreaturesByFloorId(int $floorId)
+    {
+        $sql = <<<SQL
+            SELECT
+                FC.event_id
+                , E.note
+                , C.creature_id
+                , C.boss
+                , C.name_en
+                , C.name_ja
+                , C.image_name
+            FROM
+                floor_creature FC
+                INNER JOIN creature C
+                    ON FC.creature_id = C.creature_id
+                LEFT JOIN creature_pop_event E
+                    ON FC.event_id = E.event_id
+            WHERE
+                FC.floor_id = :floor_id
+            ORDER BY
+                FC.event_id
+                , C.boss
+                , C.sort_key
+            SQL;
+        $this->logger->debug($sql);
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':floor_id', $floorId, PDO::PARAM_INT);
+        $stmt->execute();
+        $floorCreatures = [
+            'default' => [],
+            'events' => []
+        ];
+        while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $creature = [
+                'creature_id' => $result['creature_id'],
+                'boss' => $result['boss'],
+                'name_en' => $result['name_en'],
+                'name_ja' => $result['name_ja'],
+                'image_name' => $result['image_name']
+            ];
+            $eventId = $result['event_id'];
+            if ($eventId == 0) {
+                $floorCreatures['default'][] = $creature;
+            } else {
+                if (!array_key_exists($eventId, $floorCreatures['events'])) {
+                    $floorCreatures['events'][$eventId] = [
+                        'note' => $result['note'],
+                        'creatures' => []
+                    ];
+                }
+                $floorCreatures['events'][$eventId]['creatures'][] = $creature;
+            }
+        }
+        return $floorCreatures;
+    }
+
+    private function getSpecialAttacksByCreatureId(int $creatureId)
     {
         $sql = <<<SQL
             SELECT
@@ -190,7 +277,7 @@ class CreatureModel extends Model
             SQL;
         $this->logger->debug($sql);
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $creatureId, PDO::PARAM_INT);
         $stmt->execute();
         $sa = [];
         while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -202,84 +289,6 @@ class CreatureModel extends Model
             ];
         }
         return $sa;
-    }
-
-    private function getItemsByCreatureId($id)
-    {
-        $sql = <<<SQL
-            SELECT
-                I.item_id
-                , IC.name_en item_class
-                , I.base_item_id
-                , I.class_flactuable
-                , I.name_en
-                , I.rarity
-                , I.image_name
-            FROM
-                creature_drop_item CDI
-                INNER JOIN item I
-                    ON CDI.item_id = I.item_id
-                INNER JOIN item_class IC
-                    ON I.item_class_id = IC.item_class_id
-            WHERE
-                CDI.creature_id = :id
-            ORDER BY
-                I.sort_key
-                , I.item_id
-            SQL;
-        $this->logger->debug($sql);
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
-        $items = [];
-        while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $items[] = [
-                'item_id' => $result['item_id'],
-                'item_class' => $result['item_class'],
-                'base_item_id' => $result['base_item_id'],
-                'class_flactuable' => $result['class_flactuable'],
-                'name_en' => $result['name_en'],
-                'rarity' => $result['rarity'],
-                'image_name' => $result['image_name'],
-            ];
-        }
-        return $items;
-    }
-
-    private function getFloorsByCreatureId($id)
-    {
-        $sql = <<<SQL
-            SELECT
-                F.floor_id
-                , F.short_name
-                , F.name_en
-                , E.note
-            FROM
-                floor_creature FC
-                INNER JOIN floor F
-                    ON FC.floor_id = F.floor_id
-                LEFT JOIN creature_pop_event E
-                    ON FC.event_id = E.event_id
-            WHERE
-                FC.creature_id = :id
-            ORDER BY
-                F.sort_key
-                , E.event_id
-            SQL;
-        $this->logger->debug($sql);
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
-        $floors = [];
-        while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $floors[] = [
-                'floor_id' => $result['floor_id'],
-                'short_name' => $result['short_name'],
-                'name_en' => $result['name_en'],
-                'note' => $result['note'],
-            ];
-        }
-        return $floors;
     }
 
     private function getFormattedStats($value, bool $enableUndef)

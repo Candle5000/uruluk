@@ -3,6 +3,8 @@
 namespace Controller;
 
 use \Exception;
+use Model\CreatureModel;
+use Model\FloorModel;
 use Slim\Exception\NotFoundException;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -74,7 +76,7 @@ class ItemsController extends Controller
     public function commonItem(Request $request, Response $response, array $args)
     {
         $this->title = ucfirst($args['itemClassName']) . ' ノーマルアイテム';
-        $this->scripts[] = '/js/item.js?id=00047';
+        $this->scripts[] = '/js/item.js?id=00075';
 
         try {
             $this->db->beginTransaction();
@@ -105,13 +107,16 @@ class ItemsController extends Controller
 
     public function detail(Request $request, Response $response, array $args)
     {
-        $item = new ItemModel($this->db, $this->logger);
+        $floor = new FloorModel($this->db, $this->logger);
+        $creature = new CreatureModel($this->db, $this->logger);
         $quest = new QuestModel($this->db, $this->logger);
         $shop = new ShopModel($this->db, $this->logger);
         $tag = new TagModel($this->db, $this->logger);
-        $detail = $item->getItemDetailById($args['itemId']);
         $data = [
-            'item' => $detail,
+            'floors' => $floor->getFloorsByItemId($args['itemId']),
+            'banana' => $floor->getBananaFloorsByItemId($args['itemId']),
+            'treasure' => $floor->getTreasureFloorsByItemId($args['itemId']),
+            'creatures' => $creature->getCreaturesByItemId($args['itemId']),
             'quests' => $quest->getQuestDetailListByItemId($args['itemId']),
             'shops' => $shop->getShopListByItemId($args['itemId']),
             'tags' => $tag->getTagsByItemId($args['itemId'])

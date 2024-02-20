@@ -78,57 +78,8 @@ class ShopModel extends Model
                 'image_name' => $result['image_name'],
                 'random' => $result['random'],
                 'note' => $result['note'],
-                'items' => $this->getShopItemList($result['shop_id'])
             ];
         }
         return $shops;
-    }
-
-    private function getShopItemList(int $shopId)
-    {
-        $sql = <<<SQL
-            SELECT
-                I.item_id
-                , I.item_class_id
-                , IC.name_en item_class
-                , I.base_item_id
-                , I.name_en
-                , I.name_ja
-                , I.rarity
-                , I.image_name
-                , I.sort_key
-                , SI.price
-            FROM
-                shop_item SI
-                INNER JOIN item I
-                    ON SI.item_id = I.item_id
-                INNER JOIN item_class IC
-                    ON I.item_class_id = IC.item_class_id
-            WHERE
-                SI.shop_id = :shop_id
-            ORDER BY
-                IC.shop_sort_key
-                , I.sort_key
-            SQL;
-        $this->logger->debug($sql);
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':shop_id', $shopId, PDO::PARAM_INT);
-        $stmt->execute();
-        $items = [];
-        while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $items[] = [
-                'item_id' => $result['item_id'],
-                'item_class_id' => $result['item_class_id'],
-                'item_class' => $result['item_class'],
-                'base_item_id' => $result['base_item_id'],
-                'name_en' => $result['name_en'],
-                'name_ja' => $result['name_ja'],
-                'rarity' => $result['rarity'],
-                'image_name' => $result['image_name'],
-                'sort_key' => $result['sort_key'],
-                'price' => $result['price']
-            ];
-        }
-        return $items;
     }
 }
