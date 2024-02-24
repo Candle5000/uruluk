@@ -287,6 +287,13 @@ $(function () {
         .addClass("d-none")
         .attr("title", "");
     }
+    if (item.item_id) {
+      link.closest("div.d-table-row").find(".item-link")
+        .attr("href", "/items/" + item.item_class_name + "/" + (item.rarity == "common" ? item.base_item_id : "rare") + "/" + item.item_id);
+    } else {
+      link.closest("div.d-table-row").find(".item-link")
+        .addClass("d-none");
+    }
     link.children().remove();
     link.append(img);
     link.closest("div.d-table-row").find(".attr").children().remove();

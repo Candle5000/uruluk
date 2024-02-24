@@ -26,6 +26,7 @@ class ItemModel extends Model
         I.item_id
         , I.item_class_id
         , IC.name_en item_class_name
+        , I.base_item_id
         , I.image_name
         , I.name_en
         , I.name_ja
@@ -697,6 +698,7 @@ class ItemModel extends Model
                 $item['item_id'] = $result['item_id'];
                 $item['item_class_id'] = $result['item_class_id'];
                 $item['item_class_name'] = strtolower($result['item_class_name']);
+                $item['base_item_id'] = $result['base_item_id'];
                 $item['image_name'] = ($result['image_name'] === null)
                     ? "item_noimg.png" : $result['image_name'];
                 $item['name_en'] = $result['name_en'];
