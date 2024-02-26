@@ -6,6 +6,7 @@
   <h2>Simulator</h2>
   <?= $this->fetch('adsense.phtml', ['google' => $header['google']]) ?>
   <?= $this->fetch('simulator/itemModal.phtml') ?>
+  <?= $this->fetch('simulator/saveModal.phtml') ?>
   <div class="row mb-md-2">
     <div class="col-12 col-md-6 px-1">
       <table class="table-attributes table-dark table-striped w-100 small">
@@ -17,10 +18,17 @@
         <tbody>
           <tr>
             <td colspan="3">
-              <label class="w-100 mb-0">
-                <a href="javascript:void(0);" class="lemonchiffon link-share ml-1"><i class="fas fa-share-square"></i>Share by URL</a><br />
-                <input type="text" class="form-control p-0 h-auto pr-2 text-share" />
-              </label>
+              <div class="w-100 mb-0">
+                <div class="w-45 d-inline-block">
+                  <a href="javascript:void(0);" class="lemonchiffon link-share ml-1"><i class="fas fa-share-square"></i>Share by URL</a>
+                </div>
+                <div class="w-50 d-inline-block ml-2 text-right">
+                  <a href="javascript:void(0);" class="lemonchiffon link-save"><i class="fas fa-save"></i>Save / Load</a>
+                </div>
+                <div>
+                  <input type="text" class="form-control p-0 h-auto pr-2 text-share" />
+                </div>
+              </div>
             </td>
           </tr>
           <tr>

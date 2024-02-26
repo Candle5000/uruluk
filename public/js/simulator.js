@@ -107,6 +107,9 @@ $(function () {
     "puppet": "puppet0.png"
   }
 
+  // ビルドの最大保存数
+  const savedBuildsMax = 100;
+
   // 性能の計算
   const calcAttrs = function () {
     const charaClass = $("select.character-class").val();
@@ -694,5 +697,183 @@ $(function () {
   });
   $(".table-item-slot a.item-skill[data-toggle=tooltip]").tooltip();
   calcAttrs();
+
+  // 保存画面を表示
+  $("a.link-save").on("click", function () {
+    // ロード開始
+    $.LoadingOverlay("show", {
+      background: "rgba(0, 0, 0, 0.5)",
+      imageColor: "#787878",
+    });
+
+    slotItems.forEach((item, index) => {
+      if (item.item_id) {
+        $("#table-current-build li.item-slot-" + index + " img")
+          .attr("src", "/img/item/" + item.image_name)
+          .attr("alt", item.name_en);
+      } else {
+        $("#table-current-build li.item-slot-" + index + " img")
+          .attr("src", "/img/common/other.png")
+          .attr("alt", "");
+      }
+    });
+    loadSavedBuilds();
+
+    $("#modal-save").modal("show");
+
+    // ロード完了
+    $.LoadingOverlay("hide", true);
+  });
+
+  // ローカルストレージからビルドを取得する
+  const loadSavedBuildsObjectFromLocalStorage = function () {
+    let savedBuildsStr = window.localStorage.getItem("saved-builds");
+    if (savedBuildsStr == null) savedBuildsStr = JSON.stringify({ "builds": [] });
+    return $.parseJSON(savedBuildsStr);
+  }
+
+  // ローカルストレージにビルドを保存する
+  const saveBuildsToLocalStorage = function (builds) {
+    window.localStorage.setItem("saved-builds", JSON.stringify(builds));
+  }
+
+  // ビルドの保存
+  $("#modal-save a.link-save-current-build").on("click", function () {
+    // ロード開始
+    $.LoadingOverlay("show", {
+      background: "rgba(0, 0, 0, 0.5)",
+      imageColor: "#787878",
+    });
+
+    const characterClass = $("select.character-class").val();
+    const buildName = $("#modal-save input.text-save-name").val();
+    const images = [];
+    slotItems.forEach((item) => {
+      if (item.item_id) {
+        images.push(item.image_name);
+      } else {
+        images.push(null);
+      }
+    });
+    const path = location.pathname + location.search.replace(/\[/g, "%5B").replace(/\]/g, "%5D");
+
+    const savedBuilds = loadSavedBuildsObjectFromLocalStorage();
+    if (savedBuilds.builds.length < savedBuildsMax) {
+      savedBuilds.builds.push({
+        "characterClass": characterClass,
+        "buildName": buildName,
+        "images": images,
+        "path": path
+      })
+    }
+    saveBuildsToLocalStorage(savedBuilds);
+    loadSavedBuilds();
+
+    // ロード完了
+    $.LoadingOverlay("hide", true);
+  });
+
+  // ローカルストレージが別タブで更新された場合
+  window.addEventListener("storage", function () {
+    $("#modal-save").modal("hide");
+  });
+
+  // 保存済みビルドの読み込み
+  const loadSavedBuilds = function () {
+    $("#table-saved-build>tbody>tr").remove();
+
+    const savedBuilds = loadSavedBuildsObjectFromLocalStorage();
+    savedBuilds.builds.forEach((build, index) => {
+      const row = $($("#modal-build-row").html());
+      row.find(".class-icon").attr("src", "/img/common/" + build.characterClass + ".png");
+      row.find(".build-name").text(build.buildName);
+      build.images.forEach((image, index) => {
+        const src = image == null ? "/img/common/other.png" : "/img/item/" + image;
+        row.find(".item-slot-" + (index + 1) + " img").attr("src", src);
+      });
+      row.find(".link-load-build").attr("href", build.path);
+      row.find(".link-delete-build").on("click", function () {
+        deleteSavedBuild(index);
+      });
+      row.find(".link-move-up-build").on("click", function () {
+        moveUpSavedBuild(index);
+      })
+      row.find(".link-move-down-build").on("click", function () {
+        moveDownSavedBuild(index);
+      })
+      $("#table-saved-build>tbody").append(row);
+    })
+
+    $("#table-saved-build .builds-count").text(savedBuilds.builds.length + " / " + savedBuildsMax);
+    if (savedBuilds.builds.length < savedBuildsMax) {
+      $("#table-saved-build .builds-count").removeClass("text-warning");
+      $("#modal-save a.link-save-current-build").removeClass("d-none");
+    } else {
+      $("#table-saved-build .builds-count").addClass("text-warning");
+      $("#modal-save a.link-save-current-build").addClass("d-none");
+    }
+  }
+
+  const deleteSavedBuild = function (buildIndex) {
+    // ロード開始
+    $.LoadingOverlay("show", {
+      background: "rgba(0, 0, 0, 0.5)",
+      imageColor: "#787878",
+    });
+
+    const savedBuilds = loadSavedBuildsObjectFromLocalStorage();
+    savedBuilds.builds.splice(buildIndex, 1);
+    saveBuildsToLocalStorage(savedBuilds);
+    loadSavedBuilds();
+
+    // ロード完了
+    $.LoadingOverlay("hide", true);
+  }
+
+  const moveUpSavedBuild = function (buildIndex) {
+    if (buildIndex == 0) return;
+
+    // ロード開始
+    $.LoadingOverlay("show", {
+      background: "rgba(0, 0, 0, 0.5)",
+      imageColor: "#787878",
+    });
+
+    const savedBuilds = loadSavedBuildsObjectFromLocalStorage();
+    savedBuilds.builds = savedBuilds.builds.reduce((resultArray, element, id, originalArray) => [
+      ...resultArray,
+      id === buildIndex - 1 ? originalArray[buildIndex] :
+        id === buildIndex ? originalArray[buildIndex - 1] :
+          element
+    ], []);
+    saveBuildsToLocalStorage(savedBuilds);
+    loadSavedBuilds();
+
+    // ロード完了
+    $.LoadingOverlay("hide", true);
+  }
+
+  const moveDownSavedBuild = function (buildIndex) {
+    const savedBuilds = loadSavedBuildsObjectFromLocalStorage();
+    if (buildIndex >= savedBuilds.builds.length - 1) return;
+
+    // ロード開始
+    $.LoadingOverlay("show", {
+      background: "rgba(0, 0, 0, 0.5)",
+      imageColor: "#787878",
+    });
+
+    savedBuilds.builds = savedBuilds.builds.reduce((resultArray, element, id, originalArray) => [
+      ...resultArray,
+      id === buildIndex + 1 ? originalArray[buildIndex] :
+        id === buildIndex ? originalArray[buildIndex + 1] :
+          element
+    ], []);
+    saveBuildsToLocalStorage(savedBuilds);
+    loadSavedBuilds();
+
+    // ロード完了
+    $.LoadingOverlay("hide", true);
+  }
 
 });
