@@ -292,9 +292,11 @@ $(function () {
     }
     if (item.item_id) {
       link.closest("div.d-table-row").find(".item-link")
-        .attr("href", "/items/" + item.item_class_name + "/" + (item.rarity == "common" ? item.base_item_id : "rare") + "/" + item.item_id);
+        .attr("href", "/items/" + item.item_class_name + "/" + (item.rarity == "common" ? item.base_item_id : "rare") + "/" + item.item_id)
+        .removeClass("d-none");
     } else {
       link.closest("div.d-table-row").find(".item-link")
+        .attr("href", "#")
         .addClass("d-none");
     }
     link.children().remove();

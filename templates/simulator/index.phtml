@@ -26,7 +26,7 @@
                   <a href="javascript:void(0);" class="lemonchiffon link-save"><i class="fas fa-save"></i>Save / Load</a>
                 </div>
                 <div>
-                  <input type="text" class="form-control p-0 h-auto pr-2 text-share" />
+                  <input type="text" name="text-share" class="form-control p-0 h-auto pr-2 text-share" />
                 </div>
               </div>
             </td>
@@ -216,7 +216,7 @@
                     </div>
                     <div class="d-table-cell align-top">
                       <div class="pl-1">
-                        <a href="javascript:void(0);" class="item-name"></a><a href="javascript:void(0);" class="item-skill d-none" data-toggle="tooltip" data-placement="top" title=""><i class="fas fa-exclamation-circle"></i></a>
+                        <a href="javascript:void(0);" class="item-name"></a><a href="javascript:void(0);" class="item-skill d-none" data-toggle="tooltip" data-placement="top" title=""><i class="fas fa-exclamation-circle"></i></a><a href="javascript:void(0);" target="_blank" class="item-link text-light ml-5"><i class="fas fa-external-link-alt"></i></a>
                       </div>
                       <div class="d-table w-100 small table-item-attrs">
                         <?= $this->fetch('simulator/itemStatsRow.phtml') ?>
