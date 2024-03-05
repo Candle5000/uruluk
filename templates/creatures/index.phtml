@@ -25,13 +25,14 @@
             <table class="table-dark table-striped table-bordered w-100 mb-2">
               <colgroup>
                 <col class="w-20" />
-                <col class="w-20" />
-                <col class="w-20" />
-                <col class="w-20" />
-                <col class="w-20" />
+                <col class="w-16" />
+                <col class="w-16" />
+                <col class="w-16" />
+                <col class="w-16" />
+                <col class="w-16" />
               </colgroup>
               <tr id="detail-row-tb-phase">
-                <td colspan="2">TB Phase</td>
+                <td colspan="3">TB Phase</td>
                 <td class="text-right" colspan="3">
                   <select id="tb-phase-detail" class="form-control tb-phase p-0 h-auto">
                     <?php foreach (range(0, 63) as $phaseLevel) : ?>
@@ -45,6 +46,7 @@
               <tr>
                 <td class="text-center" colspan="2">AD</td>
                 <td class="text-center">AS</td>
+                <td class="text-center">Str</td>
                 <td class="text-center">Def</td>
                 <td class="text-center">Dex</td>
               </tr>
@@ -53,6 +55,7 @@
                   <span id="detail-min-ad">1</span>～<span id="detail-max-ad">4</span>
                 </td>
                 <td class="text-center" id="detail-as">29</td>
+                <td class="text-center" id="detail-str">0</td>
                 <td class="text-center" id="detail-def">0</td>
                 <td class="text-center" id="detail-dex">4</td>
               </tr>
@@ -62,6 +65,7 @@
                 <td class="text-center">VoH</td>
                 <td class="text-center">DR</td>
                 <td class="text-center">XP</td>
+                <td class="text-center"></td>
               </tr>
               <tr>
                 <td class="text-center" id="detail-vit">15</td>
@@ -69,31 +73,35 @@
                 <td class="text-center" id="detail-voh">0%</td>
                 <td class="text-center" id="detail-dr">0%</td>
                 <td class="text-center" id="detail-xp">2</td>
+                <td class="text-center" id="detail-blank"></td>
               </tr>
             </table>
             <table class="table-dark table-striped table-bordered w-100 mb-2 d-none" id="detail-tb-boosts">
               <colgroup>
                 <col class="w-20" />
-                <col class="w-20" />
-                <col class="w-20" />
-                <col class="w-20" />
-                <col class="w-20" />
+                <col class="w-16" />
+                <col class="w-16" />
+                <col class="w-16" />
+                <col class="w-16" />
+                <col class="w-16" />
               </colgroup>
               <thead>
                 <tr>
-                  <th class="pl-1" colspan="5">TB Phase Boosts</th>
+                  <th class="pl-1" colspan="6">TB Phase Boosts</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td class="text-center" colspan="2">AD</td>
                   <td class="text-center">AS</td>
+                  <td class="text-center">Str</td>
                   <td class="text-center">Def</td>
                   <td class="text-center">Dex</td>
                 </tr>
                 <tr>
                   <td class="text-center" id="tb-ad" colspan="2">-</td>
                   <td class="text-center" id="tb-as">-</td>
+                  <td class="text-center" id="tb-str">-</td>
                   <td class="text-center" id="tb-def">-</td>
                   <td class="text-center" id="tb-dex">-</td>
                 </tr>
@@ -103,6 +111,7 @@
                   <td class="text-center">VoH</td>
                   <td class="text-center">DR</td>
                   <td class="text-center">XP</td>
+                  <td class="text-center"></td>
                 </tr>
                 <tr>
                   <td class="text-center" id="tb-vit">-</td>
@@ -110,6 +119,7 @@
                   <td class="text-center" id="tb-voh">-</td>
                   <td class="text-center" id="tb-dr">-</td>
                   <td class="text-center" id="tb-xp">2%</td>
+                  <td class="text-center" id="tb-blank"></td>
                 </tr>
               </tbody>
             </table>
@@ -310,7 +320,7 @@
             <div class="d-table w-100 table-item-attrs">
               <div class="d-table-row">
                 <div class="d-table-cell border border-black text-right w-16">
-                  &nbsp;<?= $creature['min_ad'] ?>~<?= $creature['max_ad'] ?>
+                  &nbsp;<?= $creature['min_ad'] + floor($creature['str'] / 2) ?>~<?= $creature['max_ad'] + $creature['str'] ?>
                 </div>
                 <div class="d-table-cell border border-black text-right w-14">
                   <?= $creature['as'] ?>

@@ -19,6 +19,7 @@ class CreatureModel extends Model
                 , c.min_ad
                 , c.max_ad
                 , c.`as`
+                , c.str
                 , c.def
                 , c.dex
                 , c.vit
@@ -27,6 +28,7 @@ class CreatureModel extends Model
                 , c.tb
                 , c.tb_ad
                 , c.tb_as
+                , c.tb_str
                 , c.tb_def
                 , c.tb_dex
                 , c.tb_vit
@@ -65,6 +67,7 @@ class CreatureModel extends Model
                     'min_ad' => $this->getFormattedStats($result['min_ad'], false),
                     'max_ad' => $this->getFormattedStats($result['max_ad'], false),
                     'as' => $this->getFormattedStats($result['as'], true),
+                    'str' => $this->getFormattedStats($result['str'], true),
                     'def' => $this->getFormattedStats($result['def'], false),
                     'dex' => $this->getFormattedStats($result['dex'], false),
                     'vit' => $this->getFormattedStats($result['vit'], false),
@@ -73,6 +76,7 @@ class CreatureModel extends Model
                     'tb' => $result['tb'],
                     'tb_ad' => $result['tb_ad'],
                     'tb_as' => $result['tb_as'],
+                    'tb_str' => $result['tb_str'],
                     'tb_def' => $result['tb_def'],
                     'tb_dex' => $result['tb_dex'],
                     'tb_vit' => $result['tb_vit'],
@@ -106,6 +110,7 @@ class CreatureModel extends Model
                 , min_ad
                 , max_ad
                 , `as`
+                , str
                 , def
                 , dex
                 , vit
@@ -116,6 +121,7 @@ class CreatureModel extends Model
                 , tb
                 , tb_ad
                 , tb_as
+                , tb_str
                 , tb_def
                 , tb_dex
                 , tb_vit
@@ -144,6 +150,7 @@ class CreatureModel extends Model
                 'min_ad' => $result['min_ad'],
                 'max_ad' => $result['max_ad'],
                 'as' => $result['as'],
+                'str' => $result['str'],
                 'def' => $result['def'],
                 'dex' => $result['dex'],
                 'vit' => $result['vit'],
@@ -154,6 +161,7 @@ class CreatureModel extends Model
                 'tb' => $result['tb'],
                 'tb_ad' => $result['tb_ad'],
                 'tb_as' => $result['tb_as'],
+                'tb_str' => $result['tb_str'],
                 'tb_def' => $result['tb_def'],
                 'tb_dex' => $result['tb_dex'],
                 'tb_vit' => $result['tb_vit'],

@@ -30,8 +30,13 @@ $(function () {
       }
       row.find('.name-ja').text(creature['name_ja']);
       row.find('.name-en').text(creature['name_en']);
-      row.find('.min-ad').text(creature['min_ad']);
-      row.find('.max-ad').text(creature['max_ad']);
+      if (isNaN(creature['str'])) {
+        row.find('.min-ad').text(creature['min_ad']);
+        row.find('.max-ad').text(creature['max_ad']);
+      } else {
+        row.find('.min-ad').text(Number(creature['min_ad']) + Math.floor(Number(creature['str']) / 2));
+        row.find('.max-ad').text(Number(creature['max_ad']) + Number(creature['str']));
+      }
       row.find('.as').text(creature['as']);
       row.find('.def').text(creature['def']);
       row.find('.dex').text(creature['dex']);
@@ -48,8 +53,6 @@ $(function () {
     const floorId = $('#select-floor').val();
     const isTBOnly = $('#check-tb').prop('checked');
     creatureList = allCreatures;
-    console.log(floorId);
-    console.log(isTBOnly);
     if (floorId) {
       creatureList = creatureList.filter(
         creature => creature['floors'] && creature['floors'].some(floor => floor['floor_id'] == floorId));
@@ -57,7 +60,6 @@ $(function () {
     if (isTBOnly) {
       creatureList = creatureList.filter(creature => creature['tb'] == 1);
     }
-    console.log(creatureList);
     showCreatureList();
   }
 
@@ -71,10 +73,35 @@ $(function () {
       return;
     }
     if (baseTagId == "#detail-as") {
-      base.text(Math.round(base.data("base-val") / (1 + boostVal * level / 100)));
+      base.text(Math.round(base.data("base-val") / (1 + boostVal * level / 100) - 0.0000005));
     } else {
-      base.text(Math.round(base.data("base-val") * (1 + boostVal * level / 100)) + (isPercentage ? '%' : ''));
+      base.text(Math.round(base.data("base-val") * (1 + boostVal * level / 100) - 0.0000005) + (isPercentage ? '%' : ''));
     }
+    if (level > 0) {
+      baseTd1.addClass('yellow');
+      baseTd2.addClass('yellow');
+    } else {
+      baseTd1.removeClass('yellow');
+      baseTd2.removeClass('yellow');
+    }
+  }
+
+  const setAdPhaseBoost = function (baseTagId, adBoostVal, strBoostVal, level, isMinAd) {
+    const base = $(baseTagId);
+    const baseTd1 = $("td" + baseTagId);
+    const baseTd2 = $("span" + baseTagId).closest("td");
+    if (!base.data("base-val") || (base.data("base-val") == 0 && !strBoostVal) || (!adBoostVal && !strBoostVal)) {
+      baseTd1.removeClass('yellow');
+      baseTd2.removeClass('yellow');
+      return;
+    }
+    const strBaseVal = $("#detail-str").data("base-val");
+    const strVal = strBaseVal
+      ? strBoostVal
+        ? Number(strBaseVal) * (1 + strBoostVal * level / 100)
+        : Number(strBaseVal)
+      : 0;
+    base.text(Math.round(base.data("base-val") * (1 + adBoostVal * level / 100) + (isMinAd ? strVal / 2 : strVal) - 0.0000005));
     if (level > 0) {
       baseTd1.addClass('yellow');
       baseTd2.addClass('yellow');
@@ -121,16 +148,28 @@ $(function () {
         const floors = data.floors;
         const imgName = creature.image_name ?
           creature.image_name : 'creature_noimg.png';
+        const minAd = creature.min_ad
+          ? creature.str
+            ? Number(creature.min_ad) + Math.floor(Number(creature.str) / 2)
+            : creature.min_ad
+          : '?';
+        const maxAd = creature.max_ad
+          ? creature.str
+            ? Number(creature.max_ad) + Number(creature.str)
+            : creature.max_ad
+          : '?';
         const as = creature.as ? creature.as == 0 ? '-' : creature.as : '?';
         $("#detail-image").attr('src', '/img/creature/' + imgName);
         $("#detail-name-ja").text(creature.name_ja);
         $("#detail-name-en").text(creature.name_en);
-        $("#detail-min-ad").text(creature.min_ad ? creature.min_ad : '?')
+        $("#detail-min-ad").text(minAd)
           .data("base-val", creature.min_ad);
-        $("#detail-max-ad").text(creature.max_ad ? creature.max_ad : '?')
+        $("#detail-max-ad").text(maxAd)
           .data("base-val", creature.max_ad);
         $("#detail-as").text(as)
           .data("base-val", creature.as);
+        $("#detail-str").text(creature.str ? creature.str : '?')
+          .data("base-val", creature.str);
         $("#detail-def").text(creature.def ? creature.def : '?')
           .data("base-val", creature.def);
         $("#detail-dex").text(creature.dex ? creature.dex : '?')
@@ -149,6 +188,8 @@ $(function () {
           .data("val", creature.tb_ad);
         $("#tb-as").text(creature.tb_as ? creature.tb_as + '%' : '-')
           .data("val", creature.tb_as);
+        $("#tb-str").text(creature.tb_str ? creature.tb_str + '%' : '-')
+          .data("val", creature.tb_str);
         $("#tb-def").text(creature.tb_def ? creature.tb_def + '%' : '-')
           .data("val", creature.tb_def);
         $("#tb-dex").text(creature.tb_dex ? creature.tb_dex + '%' : '-')
@@ -248,9 +289,10 @@ $(function () {
 
   $("select.tb-phase").on('change', function () {
     const level = $(this).val();
-    setPhaseBoost("#detail-min-ad", $("#tb-ad").data("val"), level, false);
-    setPhaseBoost("#detail-max-ad", $("#tb-ad").data("val"), level, false);
+    setAdPhaseBoost("#detail-min-ad", $("#tb-ad").data("val"), $("#tb-str").data("val"), level, true);
+    setAdPhaseBoost("#detail-max-ad", $("#tb-ad").data("val"), $("#tb-str").data("val"), level, false);
     setPhaseBoost("#detail-as", $("#tb-as").data("val"), level, false);
+    setPhaseBoost("#detail-str", $("#tb-str").data("val"), level, false);
     setPhaseBoost("#detail-def", $("#tb-def").data("val"), level, false);
     setPhaseBoost("#detail-dex", $("#tb-dex").data("val"), level, false);
     setPhaseBoost("#detail-vit", $("#tb-vit").data("val"), level, false);
