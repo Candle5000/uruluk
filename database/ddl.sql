@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2024/02/20 17:18:34
+-- Date/Time    : 2024/02/28 22:48:09
 -- Author       : candl
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -71,6 +71,7 @@ create table `creature` (
   , `min_ad` INT comment '最小攻撃力'
   , `max_ad` INT comment '最大攻撃力'
   , `as` INT comment '攻撃速度'
+  , `str` INT comment '筋力'
   , `def` INT comment '防御力'
   , `dex` INT comment '技量'
   , `vit` INT comment '生命力'
@@ -81,6 +82,7 @@ create table `creature` (
   , `tb` BIT(1) default FALSE not null comment '結界地出現'
   , `tb_ad` DECIMAL(10,1) comment '結界地補正 攻撃力'
   , `tb_as` DECIMAL(10,1) comment '結界地補正 攻撃速度'
+  , `tb_str` DECIMAL(10,1) comment '結界地補正 筋力'
   , `tb_def` DECIMAL(10,1) comment '結界地補正 防御力'
   , `tb_dex` DECIMAL(10,1) comment '結界地補正 技量'
   , `tb_vit` DECIMAL(10,1) comment '結界地補正 生命力'
