@@ -225,6 +225,9 @@
 <div class="d-inline-block pl-4">
   <input type="checkbox" id="check-tb" class="form-check-input" value="true" /><label for="check-tb">TB Creature</label>
 </div>
+<div>
+  <a href=" javascript:void(0);" id="tooltip-creature-stats-description" class="text-light" data-toggle="tooltip" data-placement="top" data-html="true" title="<?= $this->fetch('common/tooltipCreatureStatsDescription.phtml') ?>"><i class="fas fa-question-circle"></i></a>
+</div>
 <table class="table-dark table-striped table-hover w-100 small" id="creature-list">
   <tbody>
     <template id="list-label-row">

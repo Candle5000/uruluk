@@ -307,4 +307,6 @@ $(function () {
     $("#creature-" + location.pathname.split('/')[2]).click();
   }
 
+  $("#tooltip-creature-stats-description").tooltip();
+
 });
