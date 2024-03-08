@@ -238,4 +238,6 @@ $(function () {
     $("#" + location.pathname.split('/')[4]).click();
   }
 
+  $("#tooltip-class-stats-description").tooltip();
+
 });

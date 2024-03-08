@@ -10,6 +10,9 @@
 <?= $this->fetch('adsense.phtml', ['google' => $header['google']]) ?>
 
 <h2 class="common mt-3"><?= $base_item['name_en'] ?></h2>
+<div>
+  <a href="javascript:void(0);" id="tooltip-class-stats-description" class="text-light" data-toggle="tooltip" data-placement="top" data-html="true" title="<?= $this->fetch('common/tooltipClassStatsDescription.phtml') ?>"><i class="fas fa-question-circle"></i></a>
+</div>
 <?php if (empty($items)) : ?>
   <h3>No Data</h3>
 <?php endif; ?>

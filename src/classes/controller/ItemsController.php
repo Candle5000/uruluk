@@ -76,7 +76,7 @@ class ItemsController extends Controller
     public function commonItem(Request $request, Response $response, array $args)
     {
         $this->title = ucfirst($args['itemClassName']) . ' ノーマルアイテム';
-        $this->scripts[] = '/js/item.js?id=00075';
+        $this->scripts[] = '/js/item.js?id=00080';
 
         try {
             $this->db->beginTransaction();
