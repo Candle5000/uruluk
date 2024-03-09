@@ -19,7 +19,7 @@ class CreaturesController extends Controller
     public function index(Request $request, Response $response, array $args)
     {
         $this->title = 'クリーチャーデータ';
-        $this->scripts[] = '/js/creature.js?id=00078';
+        $this->scripts[] = '/js/creature.js?id=00080';
 
         try {
             $this->db->beginTransaction();

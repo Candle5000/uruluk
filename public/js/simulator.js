@@ -878,4 +878,7 @@ $(function () {
     $.LoadingOverlay("hide", true);
   }
 
+  // スタッツ略称説明のツールチップ
+  $("#tooltip-short-stats-description").tooltip();
+
 });
