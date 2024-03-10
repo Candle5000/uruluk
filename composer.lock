@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5148d4d4e29b8dc24bdb7ed4b8f202db",
+    "content-hash": "ba8048b8eb7e3daebd239396018b7f41",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -571,6 +571,48 @@
                 "router"
             ],
             "time": "2019-04-16T16:47:29+00:00"
+        },
+        {
+            "name": "zonuexe/http-accept-language",
+            "version": "0.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/BaguettePHP/http-accept-language.git",
+                "reference": "9f49905c2a8d47d711cd8d8dd1f08917026cc648"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/BaguettePHP/http-accept-language/zipball/9f49905c2a8d47d711cd8d8dd1f08917026cc648",
+                "reference": "9f49905c2a8d47d711cd8d8dd1f08917026cc648",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phploc/phploc": "*",
+                "phpunit/phpunit": "4.1.*",
+                "theseer/phpdox": "0.6.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Teto\\HTTP\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "USAMI Kenta",
+                    "email": "tadsan@zonu.me"
+                }
+            ],
+            "description": "HTTP Accept-Language Header parser",
+            "support": {
+                "issues": "https://github.com/BaguettePHP/http-accept-language/issues",
+                "source": "https://github.com/BaguettePHP/http-accept-language/tree/0.4.0"
+            },
+            "time": "2014-08-14T15:51:21+00:00"
         }
     ],
     "packages-dev": [

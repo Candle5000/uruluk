@@ -29,6 +29,30 @@ return function (App $app) {
         return $logger;
     };
 
+    // i18n
+    $container['i18n'] = function ($c) {
+        $defaultLanguage = 'en';
+        $knownLanguages = ['en', 'ja'];
+        $language = array_key_exists('language', $_COOKIE) ? $_COOKIE['language'] : null;
+        $strategy = function (array $locale) use ($knownLanguages) {
+            $is_wildcard = isset($locale['language']) && $locale['language'] === '*';
+            if (empty($locale['language']) && !$is_wildcard) return null;
+            if ($is_wildcard || $locale['language'] === 'zh') {
+                if (!empty($locale['region']) && $locale['region'] == 'TW') return 'zh_tw';
+                if (!empty($locale['script']) && $locale['script'] == 'Hant') return 'zh_tw';
+                if ($locale['language'] === 'zh') return 'zh_cn';
+            }
+            if (in_array($locale['language'], $knownLanguages)) return $locale['language'];
+            return null;
+        };
+        if (!in_array($language, $knownLanguages)) {
+            $language = \Teto\HTTP\AcceptLanguage::detect($strategy, $defaultLanguage);
+        }
+
+        $parser = new \I18n\YamlFileParser();
+        return new \I18n\I18n($parser->parse($language . '.yaml', $c->get('logger')));
+    };
+
     // csrf guard
     $container['csrf'] = function ($c) {
         $csrf = new \Slim\Csrf\Guard();

@@ -8,7 +8,8 @@ insert_final_newline = false
 trim_trailing_whitespace = false
 max_line_length = 120
 indent_size = 4
+insert_final_newline = true
 
-[{*.html,*.phtml,*.js,*.css}]
+[{*.html,*.phtml,*.js,*.css,*.yaml}]
 max_line_length = 80
 indent_size = 2
