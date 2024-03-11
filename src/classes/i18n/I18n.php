@@ -5,10 +5,14 @@ namespace I18n;
 class I18n
 {
     private $messages;
+    private $langCode;
+    private $knownLanguages;
 
-    public function __construct(array $messages)
+    public function __construct(array $messages, string $langCode, array $knownLanguages)
     {
         $this->messages = $messages;
+        $this->langCode = $langCode;
+        $this->knownLanguages = $knownLanguages;
     }
 
     public function s(string $key, ...$args)
@@ -22,5 +26,15 @@ class I18n
         }
 
         return htmlspecialchars($message);
+    }
+
+    public function getLangCode()
+    {
+        return $this->langCode;
+    }
+
+    public function getKnownLanguages()
+    {
+        return $this->knownLanguages;
     }
 }

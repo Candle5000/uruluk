@@ -36,7 +36,7 @@ abstract class Controller
 
     protected function getHeaderInfo()
     {
-        $this->scripts[] = '/js/main.js';
+        $this->scripts[] = '/js/main.js?id=00081';
         return [
             'title' => $this->title,
             'scripts' => $this->scripts,

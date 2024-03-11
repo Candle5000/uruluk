@@ -48,9 +48,10 @@ return function (App $app) {
         if (!in_array($language, $knownLanguages)) {
             $language = \Teto\HTTP\AcceptLanguage::detect($strategy, $defaultLanguage);
         }
+        setcookie('language', $language, time() + 5184000);
 
         $parser = new \I18n\YamlFileParser();
-        return new \I18n\I18n($parser->parse($language . '.yaml', $c->get('logger')));
+        return new \I18n\I18n($parser->parse($language . '.yaml'), $language, $knownLanguages);
     };
 
     // csrf guard

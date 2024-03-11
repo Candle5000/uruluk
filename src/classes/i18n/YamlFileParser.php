@@ -2,12 +2,9 @@
 
 namespace I18n;
 
-use Monolog\Logger;
-use Symfony\Component\Yaml\Yaml;
-
 class YamlFileParser
 {
-    public function parse($file, $logger)
+    public function parse($file)
     {
         return $this->convert(yaml_parse_file(__DIR__ . '/../../resources/' . $file));
     }

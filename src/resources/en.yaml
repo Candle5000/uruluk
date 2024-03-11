@@ -11,6 +11,12 @@ common:
   currency_unit: 'G'
   currency_unit_full: 'Gold'
 
+lang:
+  ja: '日本語'
+  en: 'English'
+  zh-CN: '简体中文'
+  zh-TW: '繁體中文'
+
 stats:
   ad: 'AD'
   ad_full: 'Attack Damage'
@@ -162,7 +168,7 @@ simulator:
   boost_ups: 'Boost Ups'
   boost_up_nostrum: 'Nostrum'
   boost_up_elixir: 'Elixir'
-  boost_up_giogan: 'Gio'Gan'
+  boost_up_giogan: 'Gio''Gan'
   boost_up_necter: 'Necter'
   boost_up_hydrabrew: 'Hydrabrew'
   equipment_items: 'Equipment Items'
