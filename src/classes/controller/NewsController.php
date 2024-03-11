@@ -30,7 +30,8 @@ class NewsController extends Controller
                 'header' => $this->getHeaderInfo(),
                 'news' => $news->getNews($page),
                 'page' => $page,
-                'footer' => $this->getFooterInfo()
+                'footer' => $this->getFooterInfo(),
+                'l' => $this->i18n
             ];
 
             $this->db->commit();

@@ -30,7 +30,8 @@ class FloorsController extends Controller
             $args = [
                 'header' => $this->getHeaderInfo(),
                 'floorIndex' => $floor->getFloorIndex(),
-                'footer' => $this->getFooterInfo()
+                'footer' => $this->getFooterInfo(),
+                'l' => $this->i18n
             ];
 
             $this->db->commit();
@@ -84,7 +85,8 @@ class FloorsController extends Controller
                 'creatures' => $creature->getCreaturesByFloorId($args['floorId']),
                 'quests' => $quests,
                 'shops' => $shops,
-                'footer' => $this->getFooterInfo()
+                'footer' => $this->getFooterInfo(),
+                'l' => $this->i18n
             ];
 
             $this->db->commit();

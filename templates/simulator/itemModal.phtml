@@ -2,32 +2,32 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content bg-darkgreen">
       <div class="modal-header">
-        <h4 class="modal-title" id="modal-itemsTitle">Select Item</h4>
+        <h4 class="modal-title" id="modal-itemsTitle"><?= $l->s('simulator_item_modal.modal_title') ?></h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true" class="button-close-white">&times;</span>
         </button>
       </div>
       <div class="modal-body overflow-auto">
         <div>
-          <a href="#collapse-search" class="lemonchiffon" data-toggle="collapse" aria-expanded="true" aria-controls="collapseExample"><i class="fas fa-search"></i>Search</a>
+          <a href="#collapse-search" class="lemonchiffon" data-toggle="collapse" aria-expanded="true" aria-controls="collapseExample"><i class="fas fa-search"></i><?= $l->s('simulator_item_modal.search') ?></a>
         </div>
         <div class="collapse show" id="collapse-search">
           <div class="card mb-2 bg-darkblue">
             <div class="card-body p-2">
               <div class="form-check form-check-inline">
                 <input id="search-rarity-common" class="form-check-input" type="checkbox" value="true" />
-                <label class="form-check-label small" for="search-rarity-common">Common</label>
+                <label class="form-check-label small" for="search-rarity-common"><?= $l->s('simulator_item_modal.rarity_common') ?></label>
               </div>
               <div class="form-check form-check-inline">
                 <input id="search-rarity-rare" class="form-check-input" type="checkbox" value="true" />
-                <label class="form-check-label small rare" for="search-rarity-rare">Rare</label>
+                <label class="form-check-label small rare" for="search-rarity-rare"><?= $l->s('simulator_item_modal.rarity_rare') ?></label>
               </div>
               <div class="form-check form-check-inline">
                 <input id="search-rarity-artifact" class="form-check-input" type="checkbox" value="true" />
-                <label class="form-check-label small artifact" for="search-rarity-artifact">Artifact</label>
+                <label class="form-check-label small artifact" for="search-rarity-artifact"><?= $l->s('simulator_item_modal.rarity_artifact') ?></label>
               </div>
               <div class="text-right">
-                <a href="javascript:void(0);" class="lemonchiffon" id="link-search-submit" data-item-slot=""><i class="far fa-check-circle"></i>Submit</a>
+                <a href="javascript:void(0);" class="lemonchiffon" id="link-search-submit" data-item-slot=""><i class="far fa-check-circle"></i><?= $l->s('simulator_item_modal.search_submit') ?></a>
               </div>
             </div>
           </div>
@@ -45,40 +45,40 @@
                       <div class="d-table w-100 small table-item-attrs">
                         <div class="d-table-row">
                           <div class="d-table-cell border border-black text-center w-15 align-middle py-1">
-                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="AD">AD</a>
+                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="AD"><?= $l->s('stats.ad') ?></a>
                           </div>
                           <div class="d-table-cell border border-black text-center w-7-5 align-middle py-1">
-                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="AS">AS</a>
+                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="AS"><?= $l->s('stats.as') ?></a>
                           </div>
                           <div class="d-table-cell border border-black text-center w-8 align-middle py-1">
-                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="AR">AR</a>
+                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="AR"><?= $l->s('stats.ar') ?></a>
                           </div>
                           <div class="d-table-cell border border-black text-center w-8 align-middle py-1">
-                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="Str">Str</a>
+                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="Str"><?= $l->s('stats.str') ?></a>
                           </div>
                           <div class="d-table-cell border border-black text-center w-7-5 align-middle py-1">
-                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="Def">Def</a>
+                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="Def"><?= $l->s('stats.def') ?></a>
                           </div>
                           <div class="d-table-cell border border-black text-center w-7-5 align-middle py-1">
-                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="Dex">Dex</a>
+                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="Dex"><?= $l->s('stats.dex') ?></a>
                           </div>
                           <div class="d-table-cell border border-black text-center w-8 align-middle py-1">
-                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="Vit">Vit</a>
+                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="Vit"><?= $l->s('stats.vit') ?></a>
                           </div>
                           <div class="d-table-cell border border-black text-center w-8 align-middle py-1">
-                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="WS">WS</a>
+                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="WS"><?= $l->s('stats.ws') ?></a>
                           </div>
                           <div class="d-table-cell border border-black text-center w-7-5 align-middle py-1">
-                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="SA">SA</a>
+                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="SA"><?= $l->s('stats.sa') ?></a>
                           </div>
                           <div class="d-table-cell border border-black text-center w-7-5 align-middle py-1">
-                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="VoH">VoH</a>
+                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="VoH"><?= $l->s('stats.voh') ?></a>
                           </div>
                           <div class="d-table-cell border border-black text-center w-8 align-middle py-1">
-                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="DR">DR</a>
+                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="DR"><?= $l->s('stats.dr') ?></a>
                           </div>
                           <div class="d-table-cell border border-black text-center w-7-5 align-middle py-1">
-                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="XPG">XPG</a>
+                            <a href="javascript:void(0);" class="thead-sort lemonchiffon" data-attr="XPG"><?= $l->s('stats.xpg') ?></a>
                           </div>
                         </div>
                       </div>
@@ -102,7 +102,7 @@
                           <a href="javascript:void(0);" class="item-name"></a><a href="javascript:void(0);" class="item-skill d-none" data-toggle="tooltip" data-placement="top" title=""><i class="fas fa-exclamation-circle"></i></a><a href="javascript:void(0);" target="_blank" class="item-link text-light ml-5"><i class="fas fa-external-link-alt"></i></a>
                         </div>
                         <div class="d-table w-100 small table-item-attrs">
-                          <?= $this->fetch('simulator/itemStatsRow.phtml') ?>
+                          <?= $this->fetch('simulator/itemStatsRow.phtml', ['l' => $l]) ?>
                         </div>
                       </div>
                     </div>
@@ -113,7 +113,7 @@
             <template id="modal-label-row">
               <tr>
                 <td style="padding-left: 33px;">
-                  <?= $this->fetch('simulator/itemAttrsRow.phtml') ?>
+                  <?= $this->fetch('simulator/itemAttrsRow.phtml', ['l' => $l]) ?>
                 </td>
               </tr>
             </template>
@@ -121,7 +121,7 @@
         </table>
         <div class="d-flex justify-content-center mt-3" id="scroll-loading">
           <div class="spinner-border text-lignt" role="status">
-            <span class="sr-only">Loading...</span>
+            <span class="sr-only"><?= $l->s('common.loading') ?></span>
           </div>
         </div>
       </div>

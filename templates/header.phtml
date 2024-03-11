@@ -21,7 +21,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" href="/css/main.css?id=00075">
+  <link rel="stylesheet" href="/css/main.css?id=00081">
   <link rel="stylesheet" href="/lib/photoswipe/photoswipe.css">
   <link rel="stylesheet" href="/lib/photoswipe/default-skin/default-skin.css">
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -32,22 +32,22 @@
   <?php foreach ($header['scripts'] as $script) : ?>
     <script src="<?= $script ?>"></script>
   <?php endforeach; ?>
-  <title><?= !empty($header['title']) ? $header['title'] . " - " : "" ?>TRIGLAV Indexes</title>
+  <title><?= !empty($header['title']) ? $header['title'] . " - " : "" ?><?= $l->s('page_title.triglav_indexes') ?></title>
   <link href='//fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
 </head>
 
 <body class="bg-darkgreen">
   <nav class="navbar navbar-expand-sm navbar-dark bg-darkblue sticky-top">
-    <a href="/" class="link-home mr-2">TRIGLAV Indexes</a>
+    <a href="/" class="link-home mr-2"><?= $l->s('common_header.triglav_indexes') ?></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navmenu1" aria-controls="navmenu1" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navmenu1">
       <div class="navbar-nav">
-        <a class="nav-item nav-link" href="/items">Items</a>
-        <a class="nav-item nav-link" href="/creatures">Creatures</a>
-        <a class="nav-item nav-link" href="/floors">Floors</a>
-        <a class="nav-item nav-link" href="/simulator">Simulator</a>
+        <a class="nav-item nav-link" href="/items"><?= $l->s('common_header.items') ?></a>
+        <a class="nav-item nav-link" href="/creatures"><?= $l->s('common_header.creatures') ?></a>
+        <a class="nav-item nav-link" href="/floors"><?= $l->s('common_header.floors') ?></a>
+        <a class="nav-item nav-link" href="/simulator"><?= $l->s('common_header.simulator') ?></a>
       </div>
     </div>
   </nav>

@@ -23,7 +23,8 @@ class PrivacyPolicyController extends Controller
 
             $args = [
                 'header' => $this->getHeaderInfo(),
-                'footer' => $this->getFooterInfo()
+                'footer' => $this->getFooterInfo(),
+                'l' => $this->i18n
             ];
 
             $this->db->commit();

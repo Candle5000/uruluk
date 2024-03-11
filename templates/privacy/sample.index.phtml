@@ -1,4 +1,4 @@
-<?= $this->fetch('header.phtml', ['header' => $header]) ?>
+<?= $this->fetch('header.phtml', ['header' => $header, 'l' => $l]) ?>
 <h1>Privacy Policy</h1>
 <p class="head mx-1">1.タイトル</p>
 <p class="mx-2">
@@ -12,4 +12,4 @@
 <p class="mx-2">
   本文。
 </p>
-<?= $this->fetch('footer.phtml', ['footer' => $footer]) ?>
+<?= $this->fetch('footer.phtml', ['footer' => $footer, 'l' => $l]) ?>

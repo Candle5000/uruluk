@@ -59,7 +59,8 @@ class SimulatorController extends Controller
                 'boostups' => $boostups,
                 'items' => $items,
                 'slots' => array_merge(self::SLOT_ITEM_CLASSES[$charClass], self::SLOT_ITEM_CLASSES_COMMON),
-                'footer' => $this->getFooterInfo()
+                'footer' => $this->getFooterInfo(),
+                'l' => $this->i18n
             ];
 
             $this->db->commit();

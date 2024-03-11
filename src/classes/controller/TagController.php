@@ -27,7 +27,8 @@ class TagController extends Controller
             $args = [
                 'header' => $this->getHeaderInfo(),
                 'tags' => $tag->getTags(),
-                'footer' => $this->getFooterInfo()
+                'footer' => $this->getFooterInfo(),
+                'l' => $this->i18n
             ];
 
             $this->db->commit();
@@ -56,7 +57,8 @@ class TagController extends Controller
                 'header' => $this->getHeaderInfo(),
                 'detail' => $detail,
                 'items' => $item->getItemsByTag($args['tagUrl']),
-                'footer' => $this->getFooterInfo()
+                'footer' => $this->getFooterInfo(),
+                'l' => $this->i18n
             ];
 
             $this->db->commit();

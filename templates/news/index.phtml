@@ -1,10 +1,13 @@
-<?= $this->fetch('header.phtml', ['header' => $header]) ?>
-<h1>TRIGLAV Indexes</h1>
-<h3>スマートフォンアプリ『TRIGLAV』<br />データベース&amp;シミュレータ</h3>
+<?= $this->fetch('header.phtml', ['header' => $header, 'l' => $l]) ?>
+<h1><?= $l->s('index.title') ?></h1>
+<h3>
+  <div><?= $l->s('index.website_description_1') ?></div>
+  <div><?= $l->s('index.website_description_2') ?></div>
+</h3>
 <div class="row">
   <div class="col-12 mb-3">
     <div class="card bg-darkblue">
-      <h5 class="card-header border-secondary">News and Updates</h5>
+      <h5 class="card-header border-secondary"><?= $l->s('index.news_and_update') ?></h5>
       <?php foreach ($news['list'] as $n) : ?>
         <div class="card-body border-bottom border-secondary">
           <h5 class="card-title"><?= $n['post_date'] ?></h5>
@@ -14,18 +17,18 @@
       <?php endforeach ?>
       <div class="card-footer border-0 text-center">
         <?php if ($page > 0) : ?>
-          <a href="/news?page=<?= $page - 1 ?>" class="lemonchiffon">&lt;&lt; Prev</a>
+          <a href="/news?page=<?= $page - 1 ?>" class="lemonchiffon"><?= $l->s('index.pagination_prev') ?></a>
         <?php else : ?>
-          <span class="text-muted">&lt;&lt; Prev</span>
+          <span class="text-muted"><?= $l->s('index.pagination_prev') ?></span>
         <?php endif; ?>
         <span> | </span>
         <?php if ($page < $news['max_page']) : ?>
-          <a href="/news?page=<?= $page + 1 ?>" class="lemonchiffon">Next &gt;&gt;</a>
+          <a href="/news?page=<?= $page + 1 ?>" class="lemonchiffon"><?= $l->s('index.pagination_next') ?></a>
         <?php else : ?>
-          <span class="text-muted">Next &gt;&gt;</span>
+          <span class="text-muted"><?= $l->s('index.pagination_next') ?></span>
         <?php endif; ?>
       </div>
     </div>
   </div>
 </div>
-<?= $this->fetch('footer.phtml', ['footer' => $footer]) ?>
+<?= $this->fetch('footer.phtml', ['footer' => $footer, 'l' => $l]) ?>

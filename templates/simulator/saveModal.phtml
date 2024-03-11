@@ -2,7 +2,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content bg-darkgreen">
       <div class="modal-header">
-        <h4 class="modal-title" id="modal-saveTitle">Save / Load</h4>
+        <h4 class="modal-title" id="modal-saveTitle"><?= $l->s('simulator_save_modal.modal_title') ?></h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true" class="button-close-white">&times;</span>
         </button>
@@ -11,14 +11,14 @@
         <table id="table-current-build" class="table-dark table-striped w-100 mt-2">
           <thead>
             <tr>
-              <th class="pl-1">Current Build</th>
+              <th class="pl-1"><?= $l->s('simulator_save_modal.current_build') ?></th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>
                 <div class="m-1">
-                  <input type="text" maxlength="32" name="text-save-name" placeholder="Build Name" class="form-control p-0 h-auto pr-2 text-save-name" />
+                  <input type="text" maxlength="32" name="text-save-name" placeholder="<?= $l->s('simulator_save_modal.build_name_placeholder') ?>" class="form-control p-0 h-auto pr-2 text-save-name" />
                 </div>
                 <div class="d-table w-100">
                   <div class="d-table-row">
@@ -47,49 +47,11 @@
           </colgroup>
           <thead>
             <tr>
-              <th class="pl-1">Saved Build</th>
+              <th class="pl-1"><?= $l->s('simulator_save_modal.saved_build') ?></th>
               <th class="builds-count text-right pr-1 small">0&nbsp;/&nbsp;100</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td colspan="2">
-                <div class="small m-1 d-flex align-items-center">
-                  <img class="class-icon" src="/img/common/axe.png" /><span class="pl-1">Sample 1</span>
-                </div>
-                <div class="d-table w-100">
-                  <div class="d-table-row">
-                    <div class="d-table-cell">
-                      <ul class="list-inline ml-1 mb-1">
-                        <?php for ($i = 1; $i <= 12; $i++) : ?>
-                          <li class="item-slot-<?= $i ?> list-inline-item mr-1 mt-1">
-                            <img class="item-icon" src="/img/common/other.png" alt="" />
-                          </li>
-                        <?php endfor; ?>
-                      </ul>
-                    </div>
-                    <div class="d-table-cell text-center align-middle w-25 font-large">
-                      <ul class="list-inline mb-0">
-                        <li class="list-inline-item m-2">
-                          <a href="javascript:void(0);" class="lemonchiffon link-load"><i class="fas fa-download"></i></a>
-                        </li>
-                        <li class="list-inline-item mr-2 mt-1">
-                          <div class="dropdown">
-                            <a href="#" class="lemonchiffon link-load dropdown-toggle" role="button" id="dropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
-                              <a href="javascript:void(0);" class="text-danger dropdown-item text-decoration-none"><i class="fas fa-trash-alt"></i>&nbsp;Delete</a>
-                              <div class="dropdown-divider"></div>
-                              <a href="javascript:void(0);" class="text-info dropdown-item text-decoration-none"><i class="fas fa-arrow-circle-up"></i>&nbsp;Move Up</a>
-                              <a href="javascript:void(0);" class="text-info dropdown-item text-decoration-none"><i class="fas fa-arrow-circle-down"></i>&nbsp;Move Down</a>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </td>
-            </tr>
             <template id="modal-build-row">
               <tr>
                 <td colspan="2">
@@ -116,10 +78,10 @@
                             <div class="dropdown">
                               <a href="#" class="lemonchiffon link-build-option dropdown-toggle" role="button" id="dropdownMenuLink0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
                               <div class="dropdown-menu" aria-labelledby="dropdownMenuLink0">
-                                <a href="javascript:void(0);" class="link-move-up-build text-info dropdown-item text-decoration-none"><i class="fas fa-arrow-circle-up"></i>&nbsp;Move Up</a>
-                                <a href="javascript:void(0);" class="link-move-down-build text-info dropdown-item text-decoration-none"><i class="fas fa-arrow-circle-down"></i>&nbsp;Move Down</a>
+                                <a href="javascript:void(0);" class="link-move-up-build text-info dropdown-item text-decoration-none"><i class="fas fa-arrow-circle-up"></i>&nbsp;<?= $l->s('simulator_save_modal.build_move_up') ?></a>
+                                <a href="javascript:void(0);" class="link-move-down-build text-info dropdown-item text-decoration-none"><i class="fas fa-arrow-circle-down"></i>&nbsp;<?= $l->s('simulator_save_modal.build_move_down') ?></a>
                                 <div class="dropdown-divider"></div>
-                                <a href="javascript:void(0);" class="link-delete-build text-danger dropdown-item text-decoration-none"><i class="fas fa-trash-alt"></i>&nbsp;Delete</a>
+                                <a href="javascript:void(0);" class="link-delete-build text-danger dropdown-item text-decoration-none"><i class="fas fa-trash-alt"></i>&nbsp;<?= $l->s('simulator_save_modal.build_delete') ?></a>
                               </div>
                             </div>
                           </li>

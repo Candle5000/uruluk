@@ -1,32 +1,32 @@
-<?= $this->fetch('header.phtml', ['header' => $header]) ?>
-<?= $this->fetch('items/detail.phtml') ?>
+<?= $this->fetch('header.phtml', ['header' => $header, 'l' => $l]) ?>
+<?= $this->fetch('items/detail.phtml', ['l' => $l]) ?>
 <div>
-  <a href="#collapse-menu" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-menu">Menu<i class="fas fa-chevron-circle-down"></i></a>
+  <a href="#collapse-menu" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-menu"><?= $l->s('items.menu') ?><i class="fas fa-chevron-circle-down"></i></a>
 </div>
 <div class="collapse" id="collapse-menu">
-  <?= $this->fetch('items/menu.phtml', ['menu' => $menu]) ?>
+  <?= $this->fetch('items/menu.phtml', ['menu' => $menu, 'l' => $l]) ?>
 </div>
 
 <?= $this->fetch('adsense.phtml', ['google' => $header['google']]) ?>
 
-<h2 class="rare mt-3"><?= $item_class ?>&nbsp;Rare</h2>
+<h2 class="rare mt-3"><?= $item_class ?>&nbsp;<?= $l->s('items.list_rare') ?></h2>
 <div>
-  <a href="javascript:void(0);" id="tooltip-class-stats-description" class="text-light" data-toggle="tooltip" data-placement="top" data-html="true" title="<?= $this->fetch('common/tooltipClassStatsDescription.phtml') ?>"><i class="fas fa-question-circle"></i></a>
+  <a href="javascript:void(0);" id="tooltip-class-stats-description" class="text-light" data-toggle="tooltip" data-placement="top" data-html="true" title="<?= $this->fetch('common/tooltipClassStatsDescription.phtml', ['l' => $l]) ?>"><i class="fas fa-question-circle"></i></a>
 </div>
 <?php if (empty($items['rare'])) : ?>
-  <h3>No Data</h3>
+  <h3><?= $l->s('common.no_data') ?></h3>
 <?php endif; ?>
 <?php foreach ($items['rare'] as $item) : ?>
-  <?= $this->fetch('items/row.phtml', ['item' => $item]) ?>
+  <?= $this->fetch('items/row.phtml', ['item' => $item, 'l' => $l]) ?>
 <?php endforeach ?>
 
 <?= $this->fetch('adsense.phtml', ['google' => $header['google']]) ?>
 
-<h2 class="artifact mt-3"><?= $item_class ?>&nbsp;Artifact</h2>
+<h2 class="artifact mt-3"><?= $item_class ?>&nbsp;<?= $l->s('items.list_artifact') ?></h2>
 <?php if (empty($items['artifact'])) : ?>
-  <h3>No Data</h3>
+  <h3><?= $l->s('common.no_data') ?></h3>
 <?php endif; ?>
 <?php foreach ($items['artifact'] as $item) : ?>
-  <?= $this->fetch('items/row.phtml', ['item' => $item]) ?>
+  <?= $this->fetch('items/row.phtml', ['item' => $item, 'l' => $l]) ?>
 <?php endforeach ?>
-<?= $this->fetch('footer.phtml', ['footer' => $footer]) ?>
+<?= $this->fetch('footer.phtml', ['footer' => $footer, 'l' => $l]) ?>

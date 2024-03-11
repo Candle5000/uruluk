@@ -30,7 +30,8 @@ class ItemsController extends Controller
             $args = [
                 'header' => $this->getHeaderInfo(),
                 'menu' => $item->getBaseItems(),
-                'footer' => $this->getFooterInfo()
+                'footer' => $this->getFooterInfo(),
+                'l' => $this->i18n
             ];
 
             $this->db->commit();
@@ -61,7 +62,8 @@ class ItemsController extends Controller
                     'rare' => $item->getItemsByClassAndRarity($itemClassId, 'rare'),
                     'artifact' => $item->getItemsByClassAndRarity($itemClassId, 'artifact')
                 ],
-                'footer' => $this->getFooterInfo()
+                'footer' => $this->getFooterInfo(),
+                'l' => $this->i18n
             ];
 
             $this->db->commit();
@@ -93,7 +95,8 @@ class ItemsController extends Controller
                 'item_class' => ucfirst($args['itemClassName']),
                 'base_item' => $baseItem,
                 'items' => $item->getCommonItemsByClassAndBaseItem($itemClassId, $args['baseItemId']),
-                'footer' => $this->getFooterInfo()
+                'footer' => $this->getFooterInfo(),
+                'l' => $this->i18n
             ];
 
             $this->db->commit();

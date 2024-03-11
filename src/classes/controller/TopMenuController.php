@@ -25,7 +25,8 @@ class TopMenuController extends Controller
             $args = [
                 'header' => $this->getHeaderInfo(),
                 'newsList' => $news->getLatestNews()['list'],
-                'footer' => $this->getFooterInfo()
+                'footer' => $this->getFooterInfo(),
+                'l' => $this->i18n
             ];
 
             $this->db->commit();

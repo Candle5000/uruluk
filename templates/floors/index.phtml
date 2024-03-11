@@ -1,5 +1,5 @@
-<?= $this->fetch('header.phtml', ['header' => $header]) ?>
-<h2>Floors</h2>
+<?= $this->fetch('header.phtml', ['header' => $header, 'l' => $l]) ?>
+<h2><?= $l->s('floors.floors') ?></h2>
 <?= $this->fetch('adsense.phtml', ['google' => $header['google']]) ?>
 <?= $this->fetch('floors/menu.phtml', ['floorIndex' => $floorIndex]) ?>
-<?= $this->fetch('footer.phtml', ['footer' => $footer]) ?>
+<?= $this->fetch('footer.phtml', ['footer' => $footer, 'l' => $l]) ?>

@@ -36,7 +36,8 @@ class CreaturesController extends Controller
                 'header' => $this->getHeaderInfo(),
                 'creatures' => $creature->getCreatureStutsList(),
                 'floorIndex' => $floor->getFloorIndex(),
-                'footer' => $this->getFooterInfo()
+                'footer' => $this->getFooterInfo(),
+                'l' => $this->i18n
             ];
 
             $this->db->commit();

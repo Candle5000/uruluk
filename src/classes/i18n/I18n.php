@@ -21,6 +21,6 @@ class I18n
             $message = str_replace('{' . $argKey . '}', $arg, $message);
         }
 
-        return $message;
+        return htmlspecialchars($message);
     }
 }

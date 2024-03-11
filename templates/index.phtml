@@ -1,11 +1,14 @@
-<?= $this->fetch('header.phtml', ['header' => $header]) ?>
-<h1>TRIGLAV Indexes</h1>
-<h3>スマートフォンアプリ『TRIGLAV』<br />データベース&amp;シミュレータ</h3>
+<?= $this->fetch('header.phtml', ['header' => $header, 'l' => $l]) ?>
+<h1><?= $l->s('index.title') ?></h1>
+<h3>
+  <div><?= $l->s('index.website_description_1') ?></div>
+  <div><?= $l->s('index.website_description_2') ?></div>
+</h3>
 <?= $this->fetch('adsense.phtml', ['google' => $header['google']]) ?>
 <div class="row">
   <div class="col-12 col-md-6 col-xl-4 mb-3">
     <div class="card bg-darkblue">
-      <h5 class="card-header border-secondary">News and Updates</h5>
+      <h5 class="card-header border-secondary"><?= $l->s('index.news_and_update') ?></h5>
       <?php foreach ($newsList as $news) : ?>
         <div class="card-body border-bottom border-secondary">
           <h5 class="card-title"><?= $news['post_date'] ?></h5>
@@ -14,7 +17,7 @@
         </div>
       <?php endforeach ?>
       <div class="card-footer border-0">
-        <a href="/news" class="lemonchiffon">&gt;&gt; Archive</a>
+        <a href="/news" class="lemonchiffon">&gt;&gt;&nbsp;<?= $l->s('index.news_and_update_archive') ?></a>
       </div>
     </div>
   </div>
@@ -23,36 +26,36 @@
       <div class="col-12 col-xl-6 mb-3 ">
         <div class="card bg-darkblue">
           <div class="card-body">
-            <h5 class="card-title"><a href="/items">Items</a></h5>
-            <p class="mb-0">アイテムデータ</p>
+            <h5 class="card-title"><a href="/items"><?= $l->s('index.items') ?></a></h5>
+            <p class="mb-0"><?= $l->s('index.items_description') ?></p>
           </div>
         </div>
       </div>
       <div class="col-12 col-xl-6 mb-3 ">
         <div class="card bg-darkblue">
           <div class="card-body">
-            <h5 class="card-title"><a href="/creatures">Creatures</a></h5>
-            <p class="mb-0">クリーチャーデータ</p>
+            <h5 class="card-title"><a href="/creatures"><?= $l->s('index.creatures') ?></a></h5>
+            <p class="mb-0"><?= $l->s('index.creatures_description') ?></p>
           </div>
         </div>
       </div>
       <div class="col-12 col-xl-6 mb-3 ">
         <div class="card bg-darkblue">
           <div class="card-body">
-            <h5 class="card-title"><a href="/floors">Floors</a></h5>
-            <p class="mb-0">フロアデータ</p>
+            <h5 class="card-title"><a href="/floors"><?= $l->s('index.floors') ?></a></h5>
+            <p class="mb-0"><?= $l->s('index.floors_description') ?></p>
           </div>
         </div>
       </div>
       <div class="col-12 col-xl-6 mb-3 ">
         <div class="card bg-darkblue">
           <div class="card-body">
-            <h5 class="card-title"><a href="/simulator">Simulator</a></h5>
-            <p class="mb-0">装備シミュレータ</p>
+            <h5 class="card-title"><a href="/simulator"><?= $l->s('index.simulator') ?></a></h5>
+            <p class="mb-0"><?= $l->s('index.simulator_description') ?></p>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<?= $this->fetch('footer.phtml', ['footer' => $footer]) ?>
+<?= $this->fetch('footer.phtml', ['footer' => $footer, 'l' => $l]) ?>

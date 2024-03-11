@@ -1,4 +1,4 @@
-<?= $this->fetch('header.phtml', ['header' => $header]) ?>
+<?= $this->fetch('header.phtml', ['header' => $header, 'l' => $l]) ?>
 <script id="init-creatures" type="application/json">
   <?= json_encode($creatures) ?>
 </script>
@@ -8,11 +8,11 @@
       <div class="modal-header">
         <div class="modal-title text-middle" id="modal-creaturesTitle">
           <div class="d-table-cell align-middle">
-            <img class="item-detail" id="detail-image" src="/img/creature/goblin.png" alt="" />
+            <img class="item-detail" id="detail-image" src="/img/common/other.png" alt="" />
           </div>
           <div class="d-table-cell align-middle pl-2" id="detail-name">
-            <div class="m-0" id="detail-name-ja">ゴブリン</div>
-            <div class="m-0" id="detail-name-en">Goblin</div>
+            <div class="m-0" id="detail-name-ja"></div>
+            <div class="m-0" id="detail-name-en"></div>
           </div>
         </div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -32,7 +32,7 @@
                 <col class="w-16" />
               </colgroup>
               <tr id="detail-row-tb-phase">
-                <td colspan="3">TB Phase</td>
+                <td colspan="3"><?= $l->s('creatures_detail.tb_phase') ?></td>
                 <td class="text-right" colspan="3">
                   <select id="tb-phase-detail" class="form-control tb-phase p-0 h-auto">
                     <?php foreach (range(0, 63) as $phaseLevel) : ?>
@@ -44,35 +44,35 @@
                 </td>
               </tr>
               <tr>
-                <td class="text-center" colspan="2">AD</td>
-                <td class="text-center">AS</td>
-                <td class="text-center">Str</td>
-                <td class="text-center">Def</td>
-                <td class="text-center">Dex</td>
+                <td class="text-center" colspan="2"><?= $l->s('stats.ad') ?></td>
+                <td class="text-center"><?= $l->s('stats.as') ?></td>
+                <td class="text-center"><?= $l->s('stats.str') ?></td>
+                <td class="text-center"><?= $l->s('stats.def') ?></td>
+                <td class="text-center"><?= $l->s('stats.dex') ?></td>
               </tr>
               <tr>
                 <td class="text-center" colspan="2">
-                  <span id="detail-min-ad">1</span>～<span id="detail-max-ad">4</span>
+                  <span id="detail-min-ad"></span>～<span id="detail-max-ad"></span>
                 </td>
-                <td class="text-center" id="detail-as">29</td>
-                <td class="text-center" id="detail-str">0</td>
-                <td class="text-center" id="detail-def">0</td>
-                <td class="text-center" id="detail-dex">4</td>
+                <td class="text-center" id="detail-as"></td>
+                <td class="text-center" id="detail-str"></td>
+                <td class="text-center" id="detail-def"></td>
+                <td class="text-center" id="detail-dex"></td>
               </tr>
               <tr>
-                <td class="text-center">Vit</td>
-                <td class="text-center">WS</td>
-                <td class="text-center">VoH</td>
-                <td class="text-center">DR</td>
-                <td class="text-center">XP</td>
+                <td class="text-center"><?= $l->s('stats.vit') ?></td>
+                <td class="text-center"><?= $l->s('stats.ws') ?></td>
+                <td class="text-center"><?= $l->s('stats.voh') ?></td>
+                <td class="text-center"><?= $l->s('stats.dr') ?></td>
+                <td class="text-center"><?= $l->s('stats.xp') ?></td>
                 <td class="text-center"></td>
               </tr>
               <tr>
-                <td class="text-center" id="detail-vit">15</td>
-                <td class="text-center" id="detail-ws">10</td>
-                <td class="text-center" id="detail-voh">0%</td>
-                <td class="text-center" id="detail-dr">0%</td>
-                <td class="text-center" id="detail-xp">2</td>
+                <td class="text-center" id="detail-vit"></td>
+                <td class="text-center" id="detail-ws"></td>
+                <td class="text-center" id="detail-voh"></td>
+                <td class="text-center" id="detail-dr"></td>
+                <td class="text-center" id="detail-xp"></td>
                 <td class="text-center" id="detail-blank"></td>
               </tr>
             </table>
@@ -87,16 +87,16 @@
               </colgroup>
               <thead>
                 <tr>
-                  <th class="pl-1" colspan="6">TB Phase Boosts</th>
+                  <th class="pl-1" colspan="6"><?= $l->s('creatures_detail.tb_phase_boosts') ?></th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td class="text-center" colspan="2">AD</td>
-                  <td class="text-center">AS</td>
-                  <td class="text-center">Str</td>
-                  <td class="text-center">Def</td>
-                  <td class="text-center">Dex</td>
+                  <td class="text-center" colspan="2"><?= $l->s('stats.ad') ?></td>
+                  <td class="text-center"><?= $l->s('stats.as') ?></td>
+                  <td class="text-center"><?= $l->s('stats.str') ?></td>
+                  <td class="text-center"><?= $l->s('stats.def') ?></td>
+                  <td class="text-center"><?= $l->s('stats.dex') ?></td>
                 </tr>
                 <tr>
                   <td class="text-center" id="tb-ad" colspan="2">-</td>
@@ -106,11 +106,11 @@
                   <td class="text-center" id="tb-dex">-</td>
                 </tr>
                 <tr>
-                  <td class="text-center">Vit</td>
-                  <td class="text-center">WS</td>
-                  <td class="text-center">VoH</td>
-                  <td class="text-center">DR</td>
-                  <td class="text-center">XP</td>
+                  <td class="text-center"><?= $l->s('stats.vit') ?></td>
+                  <td class="text-center"><?= $l->s('stats.ws') ?></td>
+                  <td class="text-center"><?= $l->s('stats.voh') ?></td>
+                  <td class="text-center"><?= $l->s('stats.dr') ?></td>
+                  <td class="text-center"><?= $l->s('stats.xp') ?></td>
                   <td class="text-center"></td>
                 </tr>
                 <tr>
@@ -118,7 +118,7 @@
                   <td class="text-center" id="tb-ws">-</td>
                   <td class="text-center" id="tb-voh">-</td>
                   <td class="text-center" id="tb-dr">-</td>
-                  <td class="text-center" id="tb-xp">2%</td>
+                  <td class="text-center" id="tb-xp">-</td>
                   <td class="text-center" id="tb-blank"></td>
                 </tr>
               </tbody>
@@ -126,7 +126,7 @@
             <table class="table-dark table-striped table-bordered w-100 mb-2">
               <thead>
                 <tr>
-                  <th class="pl-1">Special Abilities</th>
+                  <th class="pl-1"><?= $l->s('creatures_detail.special_abilities') ?></th>
                 </tr>
               </thead>
               <tbody id="detail-sa">
@@ -140,7 +140,7 @@
                 </template>
                 <tr>
                   <td class="pl-2">
-                    None
+                    <?= $l->s('common.none') ?>
                   </td>
                 </tr>
               </tbody>
@@ -150,7 +150,7 @@
             <table class="table-dark table-striped table-bordered w-100 mb-2">
               <thead>
                 <tr>
-                  <th class="pl-1">Items</th>
+                  <th class="pl-1"><?= $l->s('creatures_detail.items') ?></th>
                 </tr>
               </thead>
               <tbody id="detail-items">
@@ -166,7 +166,7 @@
                 </template>
                 <tr>
                   <td class="pl-2">
-                    None
+                    <?= $l->s('common.none') ?>
                   </td>
                 </tr>
               </tbody>
@@ -174,7 +174,7 @@
             <table class="table-dark table-striped table-bordered w-100 mb-2">
               <thead>
                 <tr>
-                  <th class="pl-1">Floors</th>
+                  <th class="pl-1"><?= $l->s('creatures_detail.floors') ?></th>
                 </tr>
               </thead>
               <tbody>
@@ -186,7 +186,7 @@
                           <a class="floor-name text-light"></a><a href="javascript:void(0);" class="floor-note item-skill" data-toggle="tooltip" data-placement="top" title=""><i class="fas fa-exclamation-circle"></i></a>
                         </li>
                       </template>
-                      <li class="list-inline-item">None</li>
+                      <li class="list-inline-item"><?= $l->s('common.none') ?></li>
                     </ul>
                   </td>
                 </tr>
@@ -198,10 +198,10 @@
           <div class="col-12">
             <table class="table-dark table-striped table-bordered w-100 mb-2">
               <thead>
-                <th class="pl-1">Note</th>
+                <th class="pl-1"><?= $l->s('creatures_detail.note') ?></th>
               </thead>
               <tbody>
-                <td class="px-1" id="detail-note">特になし。</td>
+                <td class="px-1" id="detail-note"><?= $l->s('common.none') ?></td>
               </tbody>
             </table>
           </div>
@@ -210,11 +210,11 @@
     </div>
   </div>
 </div>
-<h2>Creatures</h2>
+<h2><?= $l->s('creatures.creatures') ?></h2>
 <?= $this->fetch('adsense.phtml', ['google' => $header['google']]) ?>
 <div class="d-inline-block">
   <select id="select-floor" class="form-control p-0 h-auto">
-    <option value="">All Floors</option>
+    <option value=""><?= $l->s('creatures.floors_all') ?></option>
     <?php foreach ($floorIndex as $groupIndex => $floorGroup) : ?>
       <?php foreach ($floorGroup['floors'] as $index => $floor) : ?>
         <option value="<?= $floor['floor_id'] ?>">[<?= $floor['short_name'] ?>]&nbsp;<?= $floor['name_en'] ?></option>
@@ -223,10 +223,10 @@
   </select>
 </div>
 <div class="d-inline-block pl-4">
-  <input type="checkbox" id="check-tb" class="form-check-input" value="true" /><label for="check-tb">TB Creature</label>
+  <input type="checkbox" id="check-tb" class="form-check-input" value="true" /><label for="check-tb"><?= $l->s('creatures.tb_creature') ?></label>
 </div>
 <div>
-  <a href=" javascript:void(0);" id="tooltip-creature-stats-description" class="text-light" data-toggle="tooltip" data-placement="top" data-html="true" title="<?= $this->fetch('common/tooltipCreatureStatsDescription.phtml') ?>"><i class="fas fa-question-circle"></i></a>
+  <a href=" javascript:void(0);" id="tooltip-creature-stats-description" class="text-light" data-toggle="tooltip" data-placement="top" data-html="true" title="<?= $this->fetch('common/tooltipCreatureStatsDescription.phtml', ['l' => $l]) ?>"><i class="fas fa-question-circle"></i></a>
 </div>
 <table class="table-dark table-striped table-hover w-100 small" id="creature-list">
   <tbody>
@@ -235,13 +235,13 @@
         <td style="padding-left: 33px;">
           <div class="d-table w-100 table-item-attrs">
             <div class="d-table-row rare">
-              <div class="d-table-cell border border-black text-center w-16">AD</div>
-              <div class="d-table-cell border border-black text-center w-14">AS</div>
-              <div class="d-table-cell border border-black text-center w-14">Def</div>
-              <div class="d-table-cell border border-black text-center w-14">Dex</div>
-              <div class="d-table-cell border border-black text-center w-14">Vit</div>
-              <div class="d-table-cell border border-black text-center w-14">VoH</div>
-              <div class="d-table-cell border border-black text-center w-14">DR</div>
+              <div class="d-table-cell border border-black text-center w-16"><?= $l->s('stats.ad') ?></div>
+              <div class="d-table-cell border border-black text-center w-14"><?= $l->s('stats.as') ?></div>
+              <div class="d-table-cell border border-black text-center w-14"><?= $l->s('stats.def') ?></div>
+              <div class="d-table-cell border border-black text-center w-14"><?= $l->s('stats.dex') ?></div>
+              <div class="d-table-cell border border-black text-center w-14"><?= $l->s('stats.vit') ?></div>
+              <div class="d-table-cell border border-black text-center w-14"><?= $l->s('stats.voh') ?></div>
+              <div class="d-table-cell border border-black text-center w-14"><?= $l->s('stats.dr') ?></div>
             </div>
           </div>
         </td>
@@ -289,7 +289,7 @@
     </template>
     <?php if (empty($creatures)) : ?>
       <tr>
-        <td>No Data</td>
+        <td><?= $l->s('common.no_data') ?></td>
       </tr>
     <?php endif; ?>
     <?php foreach ($creatures as $index => $creature) : ?>
@@ -298,13 +298,13 @@
           <td style="padding-left: 33px;">
             <div class="d-table w-100 table-item-attrs">
               <div class="d-table-row rare">
-                <div class="d-table-cell border border-black text-center w-16">AD</div>
-                <div class="d-table-cell border border-black text-center w-14">AS</div>
-                <div class="d-table-cell border border-black text-center w-14">Def</div>
-                <div class="d-table-cell border border-black text-center w-14">Dex</div>
-                <div class="d-table-cell border border-black text-center w-14">Vit</div>
-                <div class="d-table-cell border border-black text-center w-14">VoH</div>
-                <div class="d-table-cell border border-black text-center w-14">DR</div>
+                <div class="d-table-cell border border-black text-center w-16"><?= $l->s('stats.ad') ?></div>
+                <div class="d-table-cell border border-black text-center w-14"><?= $l->s('stats.as') ?></div>
+                <div class="d-table-cell border border-black text-center w-14"><?= $l->s('stats.def') ?></div>
+                <div class="d-table-cell border border-black text-center w-14"><?= $l->s('stats.dex') ?></div>
+                <div class="d-table-cell border border-black text-center w-14"><?= $l->s('stats.vit') ?></div>
+                <div class="d-table-cell border border-black text-center w-14"><?= $l->s('stats.voh') ?></div>
+                <div class="d-table-cell border border-black text-center w-14"><?= $l->s('stats.dr') ?></div>
               </div>
             </div>
           </td>
@@ -351,4 +351,4 @@
     <?php endforeach; ?>
   </tbody>
 </table>
-<?= $this->fetch('footer.phtml', ['footer' => $footer]) ?>
+<?= $this->fetch('footer.phtml', ['footer' => $footer, 'l' => $l]) ?>
