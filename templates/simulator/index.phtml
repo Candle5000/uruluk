@@ -2,6 +2,7 @@
 <script id="init-items" type="application/json">
   <?= json_encode($items) ?>
 </script>
+<div class="d-none" id="set-none-name" data-message="<?= $l->s('common.none') ?>"></div>
 <div class="container">
   <h2><?= $l->s('simulator.simulator') ?></h2>
   <?= $this->fetch('adsense.phtml', ['google' => $header['google']]) ?>
