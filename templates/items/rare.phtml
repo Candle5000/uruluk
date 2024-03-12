@@ -9,7 +9,7 @@
 
 <?= $this->fetch('adsense.phtml', ['google' => $header['google']]) ?>
 
-<h2 class="rare mt-3"><?= $item_class ?>&nbsp;<?= $l->s('items.list_rare') ?></h2>
+<h2 class="rare mt-3"><?= $l->s('item_class_name.' . $itemClass) ?>&nbsp;<?= $l->s('items.list_rare') ?></h2>
 <div>
   <a href="javascript:void(0);" id="tooltip-class-stats-description" class="text-light" data-toggle="tooltip" data-placement="top" data-html="true" title="<?= $this->fetch('common/tooltipClassStatsDescription.phtml', ['l' => $l]) ?>"><i class="fas fa-question-circle"></i></a>
 </div>
@@ -22,7 +22,7 @@
 
 <?= $this->fetch('adsense.phtml', ['google' => $header['google']]) ?>
 
-<h2 class="artifact mt-3"><?= $item_class ?>&nbsp;<?= $l->s('items.list_artifact') ?></h2>
+<h2 class="artifact mt-3"><?= $l->s('item_class_name.' . $itemClass) ?>&nbsp;<?= $l->s('items.list_artifact') ?></h2>
 <?php if (empty($items['artifact'])) : ?>
   <h3><?= $l->s('common.no_data') ?></h3>
 <?php endif; ?>

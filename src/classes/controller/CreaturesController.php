@@ -24,8 +24,8 @@ class CreaturesController extends Controller
         try {
             $this->db->beginTransaction();
 
-            $creature = new CreatureModel($this->db, $this->logger);
-            $floor = new FloorModel($this->db, $this->logger);
+            $creature = new CreatureModel($this->db, $this->logger, $this->i18n);
+            $floor = new FloorModel($this->db, $this->logger, $this->i18n);
 
             if (array_key_exists('creatureId', $args)) {
                 $detail = $creature->getCreatureDetailById($args['creatureId']);
@@ -51,9 +51,9 @@ class CreaturesController extends Controller
 
     public function detail(Request $request, Response $response, array $args)
     {
-        $creature = new CreatureModel($this->db, $this->logger);
-        $item = new ItemModel($this->db, $this->logger);
-        $floor = new FloorModel($this->db, $this->logger);
+        $creature = new CreatureModel($this->db, $this->logger, $this->i18n);
+        $item = new ItemModel($this->db, $this->logger, $this->i18n);
+        $floor = new FloorModel($this->db, $this->logger, $this->i18n);
         $detail = $creature->getCreatureDetailById($args['creatureId']);
         if ($detail == null) throw new NotFoundException($request, $response);
         $data = [

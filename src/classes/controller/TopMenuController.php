@@ -20,7 +20,7 @@ class TopMenuController extends Controller
         try {
             $this->db->beginTransaction();
 
-            $news = new NewsModel($this->db, $this->logger);
+            $news = new NewsModel($this->db, $this->logger, $this->i18n);
 
             $args = [
                 'header' => $this->getHeaderInfo(),

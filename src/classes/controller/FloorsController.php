@@ -25,7 +25,7 @@ class FloorsController extends Controller
         try {
             $this->db->beginTransaction();
 
-            $floor = new FloorModel($this->db, $this->logger);
+            $floor = new FloorModel($this->db, $this->logger, $this->i18n);
 
             $args = [
                 'header' => $this->getHeaderInfo(),
@@ -53,11 +53,11 @@ class FloorsController extends Controller
         try {
             $this->db->beginTransaction();
 
-            $floor = new FloorModel($this->db, $this->logger);
-            $quest = new QuestModel($this->db, $this->logger);
-            $shop = new ShopModel($this->db, $this->logger);
-            $item = new ItemModel($this->db, $this->logger);
-            $creature = new CreatureModel($this->db, $this->logger);
+            $floor = new FloorModel($this->db, $this->logger, $this->i18n);
+            $quest = new QuestModel($this->db, $this->logger, $this->i18n);
+            $shop = new ShopModel($this->db, $this->logger, $this->i18n);
+            $item = new ItemModel($this->db, $this->logger, $this->i18n);
+            $creature = new CreatureModel($this->db, $this->logger, $this->i18n);
             $detail = $floor->getFloorDetail($args['floorId']);
 
             if ($detail == null) throw new NotFoundException($request, $response);

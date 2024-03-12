@@ -48,10 +48,13 @@ return function (App $app) {
         if (!in_array($language, $knownLanguages)) {
             $language = \Teto\HTTP\AcceptLanguage::detect($strategy, $defaultLanguage);
         }
-        setcookie('language', $language, time() + 5184000);
+        setcookie('language', $language, time() + 5184000, '/');
 
         $parser = new \I18n\YamlFileParser();
-        return new \I18n\I18n($parser->parse($language . '.yaml'), $language, $knownLanguages);
+        $yamlMessages = $parser->parse($language . '.yaml');
+        $i18nMessageModel = new \Model\I18nMessageModel($c->get('db'), $c->get('logger'), new \I18n\I18n([], $language, $knownLanguages));
+        $dbMessages = $i18nMessageModel->getMessagesByLanguageCode($language);
+        return new \I18n\I18n(array_merge($yamlMessages, $dbMessages), $language, $knownLanguages);
     };
 
     // csrf guard

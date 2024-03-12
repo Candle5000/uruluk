@@ -18,7 +18,7 @@ $(function () {
 
   $("#language-setting a").on('click', function (e) {
     const lang = $(this).data('lang');
-    document.cookie = 'language=' + lang;
+    document.cookie = 'language=' + lang + ';path=/';
     location.reload();
   });
 

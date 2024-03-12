@@ -88,15 +88,15 @@
           </tr>
           <tr>
             <td colspan="2"><?= $l->s('stats.voh_full') ?></td>
-            <td class="text-right attr-value"><span class="attr-voh">0</span>%</td>
+            <td class="text-right attr-value"><span class="attr-voh">0</span><?= $l->s('common.unit_percent') ?></td>
           </tr>
           <tr>
             <td colspan="2"><?= $l->s('stats.dr_full') ?></td>
-            <td class="text-right attr-value"><span class="attr-dr">0</span>%</td>
+            <td class="text-right attr-value"><span class="attr-dr">0</span><?= $l->s('common.unit_percent') ?></td>
           </tr>
           <tr>
             <td colspan="2"><?= $l->s('stats.xpg_full') ?></td>
-            <td class="text-right attr-value">+<span class="attr-xpg">0</span>%</td>
+            <td class="text-right attr-value">+<span class="attr-xpg">0</span><?= $l->s('common.unit_percent') ?></td>
           </tr>
           <tr>
             <td colspan="3">
@@ -126,7 +126,7 @@
             </td>
           </tr>
           <tr>
-            <td><?= $l->s('stats.kills') ?></td>
+            <td><?= $l->s('stats.kills_full') ?></td>
             <td colspan="2">
               <div class="form-group m-0">
                 <input type="number" class="form-control character-kills p-0 h-auto text-right pr-2" min="0" max="9999999" value="<?= $kills ?>" />

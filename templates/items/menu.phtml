@@ -7,7 +7,7 @@
       <?php foreach ($menu as $itemClass) : ?>
         <li class="list-inline-item m-1">
           <a href="/items/<?= strtolower($itemClass['name_en']) ?>/rare">
-            <img src="/img/item/<?= $itemClass['image_name'] ?>" alt="<?= $itemClass['name_en'] ?>" class="item-icon" />
+            <img src="/img/item/<?= $itemClass['image_name'] ?>" alt="<?= $itemClass['name'] ?>" class="item-icon" />
           </a>
         </li>
       <?php endforeach ?>
@@ -17,13 +17,13 @@
     </h4>
     <?php foreach ($menu as $itemClass) : ?>
       <h3 class="card-title">
-        <?= $itemClass['name_en'] ?>
+        <?= $itemClass['name'] ?>
       </h3>
       <ul class="list-inline">
         <?php foreach ($itemClass['base_items'] as $item) : ?>
           <li class="list-inline-item m-1">
             <a href="/items/<?= strtolower($itemClass['name_en']) ?>/<?= $item['id'] ?>">
-              <img src="/img/item/<?= $item['image_name'] ?>" alt="<?= $item['name_en'] ?>" class="item-icon" />
+              <img src="/img/item/<?= $item['image_name'] ?>" alt="<?= $item['name'] ?>" class="item-icon" />
             </a>
           </li>
         <?php endforeach ?>

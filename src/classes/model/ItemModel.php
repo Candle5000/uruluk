@@ -25,9 +25,11 @@ class ItemModel extends Model
     private const SQL_COLUMNS_FOR_ITEMS_WITH_ATTRS = <<<SQL
         I.item_id
         , I.item_class_id
+        , IC.name_key item_class_name_key
         , IC.name_en item_class_name
         , I.base_item_id
         , I.image_name
+        , I.name_key
         , I.name_en
         , I.name_ja
         , I.rarity
@@ -45,6 +47,10 @@ class ItemModel extends Model
         , SAT.short_name skill_effect_target_attribute
         , S.effect_amount skill_effect_amount
         , S.effect_duration skill_effect_duration
+        , S.description_key skill_description_key
+        , S.description_arg_1 skill_description_arg_1
+        , S.description_arg_2 skill_description_arg_2
+        , S.description_arg_3 skill_description_arg_3
         , S.sort_key skill_sort_key
         , SA.skill_id skill_axe_id
         , SA.name skill_axe_name
@@ -56,6 +62,10 @@ class ItemModel extends Model
         , SAAT.short_name skill_axe_effect_target_attribute
         , SA.effect_amount skill_axe_effect_amount
         , SA.effect_duration skill_axe_effect_duration
+        , SA.description_key skill_axe_description_key
+        , SA.description_arg_1 skill_axe_description_arg_1
+        , SA.description_arg_2 skill_axe_description_arg_2
+        , SA.description_arg_3 skill_axe_description_arg_3
         , SA.sort_key skill_axe_sort_key
         , SS.skill_id skill_sword_id
         , SS.name skill_sword_name
@@ -67,6 +77,10 @@ class ItemModel extends Model
         , SSAT.short_name skill_sword_effect_target_attribute
         , SS.effect_amount skill_sword_effect_amount
         , SS.effect_duration skill_sword_effect_duration
+        , SS.description_key skill_sword_description_key
+        , SS.description_arg_1 skill_sword_description_arg_1
+        , SS.description_arg_2 skill_sword_description_arg_2
+        , SS.description_arg_3 skill_sword_description_arg_3
         , SS.sort_key skill_sword_sort_key
         , SD.skill_id skill_dagger_id
         , SD.name skill_dagger_name
@@ -78,12 +92,18 @@ class ItemModel extends Model
         , SDAT.short_name skill_dagger_effect_target_attribute
         , SD.effect_amount skill_dagger_effect_amount
         , SD.effect_duration skill_dagger_effect_duration
+        , SD.description_key skill_dagger_description_key
+        , SD.description_arg_1 skill_dagger_description_arg_1
+        , SD.description_arg_2 skill_dagger_description_arg_2
+        , SD.description_arg_3 skill_dagger_description_arg_3
         , SD.sort_key skill_dagger_sort_key
+        , I.description_key
         , I.comment_en
         , I.comment_ja
         , I.sort_key
         , I.price
         , A.short_name
+        , A.name_key attribute_name_key
         , IA.color
         , IA.flactuable
         , IA.based_source
@@ -91,6 +111,7 @@ class ItemModel extends Model
         , IA.attribute_value_sword
         , IA.attribute_value_axe
         , IA.attribute_value_dagger
+        , A.unit_key attribute_unit_key
         , A.unit
         , IA.max_required
         , IA.max_required_sword
@@ -104,6 +125,7 @@ class ItemModel extends Model
         , IC.name_en item_class
         , I.base_item_id
         , I.class_flactuable
+        , I.name_key
         , I.name_en
         , I.name_ja
         , I.rarity
@@ -172,10 +194,12 @@ class ItemModel extends Model
         $sql = <<<SQL
             SELECT
                 IC.item_class_id
+                , IC.name_key class_name_key
                 , IC.name_en class_name_en
                 , IC.name_ja class_name_ja
                 , IC.image_name class_image_name
                 , BI.base_item_id
+                , BI.name_key base_name_key
                 , BI.name_en base_name_en
                 , BI.name_ja base_name_ja
                 , BI.image_name base_image_name
@@ -196,6 +220,7 @@ class ItemModel extends Model
             if ($result['item_class_id'] !== $prevClassId) {
                 $itemClassList[] = [
                     'id' => $result['item_class_id'],
+                    'name' => $this->i18n->s($result['class_name_key']),
                     'name_en' => $result['class_name_en'],
                     'name_ja' => $result['class_name_ja'],
                     'image_name' => $result['class_image_name'],
@@ -205,6 +230,7 @@ class ItemModel extends Model
             }
             $itemClassList[count($itemClassList) - 1]['base_items'][] = [
                 'id' => $result['base_item_id'],
+                'name' => $this->i18n->s($result['base_name_key']),
                 'name_en' => $result['base_name_en'],
                 'name_ja' => $result['base_name_ja'],
                 'image_name' => $result['base_image_name']
@@ -217,7 +243,8 @@ class ItemModel extends Model
     {
         $sql = <<<SQL
             SELECT
-                name_en
+                name_key
+                , name_en
                 , name_ja
                 , image_name
                 , sort_key
@@ -234,6 +261,7 @@ class ItemModel extends Model
         $stmt->execute();
         if ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
             return [
+                'name' => $this->i18n->s($result['name_key']),
                 'name_en' => $result['name_en'],
                 'name_ja' => $result['name_ja'],
                 'image_name' => $result['image_name'],
@@ -574,6 +602,7 @@ class ItemModel extends Model
                 'item_class' => $result['item_class'],
                 'base_item_id' => $result['base_item_id'],
                 'class_flactuable' => $result['class_flactuable'],
+                'name' => $this->i18n->s($result['name_key']),
                 'name_en' => $result['name_en'],
                 'name_ja' => $result['name_ja'],
                 'rarity' => $result['rarity'],
@@ -659,6 +688,7 @@ class ItemModel extends Model
                 'item_class' => $result['item_class'],
                 'base_item_id' => $result['base_item_id'],
                 'class_flactuable' => $result['class_flactuable'],
+                'name' => $this->i18n->s($result['name_key']),
                 'name_en' => $result['name_en'],
                 'name_ja' => $result['name_ja'],
                 'rarity' => $result['rarity'],
@@ -672,6 +702,7 @@ class ItemModel extends Model
     public function getNone($itemClass)
     {
         return [
+            'name' => $this->i18n->s('common.none'),
             'name_en' => 'None',
             'rarity' => 'common',
             'image_name' => self::DEFAULT_IMG[$itemClass],
@@ -701,6 +732,7 @@ class ItemModel extends Model
                 $item['base_item_id'] = $result['base_item_id'];
                 $item['image_name'] = ($result['image_name'] === null)
                     ? "item_noimg.png" : $result['image_name'];
+                $item['name'] = $this->i18n->s($result['name_key']);
                 $item['name_en'] = $result['name_en'];
                 $item['name_ja'] = $result['name_ja'];
                 $item['rarity'] = $result['rarity'];
@@ -722,6 +754,12 @@ class ItemModel extends Model
                     $item['skill']['effect_target_attribute'] = strtolower($result['skill_effect_target_attribute']);
                     $item['skill']['effect_amount'] = $result['skill_effect_amount'];
                     $item['skill']['effect_duration'] = $result['skill_effect_duration'];
+                    $item['skill']['description'] = $this->i18n->s(
+                        $result['skill_description_key'],
+                        $result['skill_description_arg_1'],
+                        $result['skill_description_arg_2'],
+                        $result['skill_description_arg_3']
+                    );
                     $item['skill']['sort_key'] = $result['skill_sort_key'];
                     $item['skill']['enabled'] = false;
                 }
@@ -739,6 +777,12 @@ class ItemModel extends Model
                     $item['skill_axe']['effect_target_attribute'] = strtolower($result['skill_axe_effect_target_attribute']);
                     $item['skill_axe']['effect_amount'] = $result['skill_axe_effect_amount'];
                     $item['skill_axe']['effect_duration'] = $result['skill_axe_effect_duration'];
+                    $item['skill_axe']['description'] = $this->i18n->s(
+                        $result['skill_axe_description_key'],
+                        $result['skill_axe_description_arg_1'],
+                        $result['skill_axe_description_arg_2'],
+                        $result['skill_axe_description_arg_3']
+                    );
                     $item['skill_axe']['sort_key'] = $result['skill_axe_sort_key'];
                     $item['skill_axe']['enabled'] = false;
                 }
@@ -756,6 +800,12 @@ class ItemModel extends Model
                     $item['skill_sword']['effect_target_attribute'] = strtolower($result['skill_sword_effect_target_attribute']);
                     $item['skill_sword']['effect_amount'] = $result['skill_sword_effect_amount'];
                     $item['skill_sword']['effect_duration'] = $result['skill_sword_effect_duration'];
+                    $item['skill_sword']['description'] = $this->i18n->s(
+                        $result['skill_sword_description_key'],
+                        $result['skill_sword_description_arg_1'],
+                        $result['skill_sword_description_arg_2'],
+                        $result['skill_sword_description_arg_3']
+                    );
                     $item['skill_sword']['sort_key'] = $result['skill_sword_sort_key'];
                     $item['skill_sword']['enabled'] = false;
                 }
@@ -773,8 +823,19 @@ class ItemModel extends Model
                     $item['skill_dagger']['effect_target_attribute'] = strtolower($result['skill_dagger_effect_target_attribute']);
                     $item['skill_dagger']['effect_amount'] = $result['skill_dagger_effect_amount'];
                     $item['skill_dagger']['effect_duration'] = $result['skill_dagger_effect_duration'];
+                    $item['skill_dagger']['description'] = $this->i18n->s(
+                        $result['skill_dagger_description_key'],
+                        $result['skill_dagger_description_arg_1'],
+                        $result['skill_dagger_description_arg_2'],
+                        $result['skill_dagger_description_arg_3']
+                    );
                     $item['skill_dagger']['sort_key'] = $result['skill_dagger_sort_key'];
                     $item['skill_dagger']['enabled'] = false;
+                }
+                if ($result['description_key'] === null) {
+                    $item['description'] = null;
+                } else {
+                    $item['description'] = $this->i18n->s($result['description_key']);
                 }
                 $item['comment_en'] = $result['comment_en'];
                 $item['comment_ja'] = $result['comment_ja'];
@@ -790,6 +851,7 @@ class ItemModel extends Model
 
             if ($result['short_name'] === null) continue;
 
+            $attribute['name'] = $this->i18n->s($result['attribute_name_key']);
             $attribute['based_source'] = $result['based_source'];
             $attribute['value'] = $result['attribute_value'];
             $attribute['value_axe'] = $result['attribute_value_axe'];
@@ -806,6 +868,7 @@ class ItemModel extends Model
                     $ad = array();
                     $ad['color'] = $minAD['color'];
                     $ad['short_name'] = 'AD';
+                    $ad['name'] = $this->i18n->s('stats.ad_full');
                     $attr_val = '';
                     if ($result['attribute_value'] === null) {
                         foreach ($charaClass as $key => $name) {
@@ -830,8 +893,7 @@ class ItemModel extends Model
             $attr_val = '';
 
             if ($result['flactuable']) {
-                $attr_val .= 'Based on '
-                    . ($result['based_source'] === 'xp' ? 'XP' : 'Kills') . ' [';
+                $attr_val .= $this->i18n->s($result['based_source'] === 'xp' ? 'stats.based_on_xp' : 'stats.based_on_kills') . ' [';
             }
 
             if ($result['attribute_value'] === null) {
@@ -839,20 +901,20 @@ class ItemModel extends Model
                     if ($key != 'A') $attr_val .= ' / ';
                     $attr_val .= $key . ':'
                         . ($result['attribute_value_' . $name] === '0' ? '?' : $result['attribute_value_' . $name])
-                        . ($result['unit'] === null ? '' : $result['unit']);
+                        . ($result['attribute_unit_key'] === null ? '' : $this->i18n->s($result['attribute_unit_key']));
                     if ($result['flactuable']) {
                         $attr_val .= " ("
                             . ($result['max_required_' . $name] === '0' ? '?' : $result['max_required_' . $name]) . ' '
-                            . ($result['based_source'] === 'xp' ? 'XP' : 'Kills') . ")";
+                            . $this->i18n->s($result['based_source'] === 'xp' ? 'stats.xp_full' : 'stats.kills') . ")";
                     }
                 }
             } else {
                 $attr_val .= ($result['attribute_value'] === '0' ? '?' : $result['attribute_value'])
-                    . ($result['unit'] === null ? '' : $result['unit']);
+                    . ($result['attribute_unit_key'] === null ? '' : $this->i18n->s($result['attribute_unit_key']));
                 if ($result['flactuable']) {
                     $attr_val .= " ("
                         . ($result['max_required'] === '0' ? '?' : $result['max_required']) . ' '
-                        . ($result['based_source'] === 'xp' ? 'XP' : 'Kills') . ")";
+                        . $this->i18n->s($result['based_source'] === 'xp' ? 'stats.xp_full' : 'stats.kills') . ")";
                 }
             }
 
@@ -884,6 +946,7 @@ class ItemModel extends Model
                 'item_class' => $result['item_class'],
                 'base_item_id' => $result['base_item_id'],
                 'class_flactuable' => $result['class_flactuable'],
+                'name' => $this->i18n->s($result['name_key']),
                 'name_en' => $result['name_en'],
                 'name_ja' => $result['name_ja'],
                 'rarity' => $result['rarity'],

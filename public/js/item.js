@@ -51,8 +51,7 @@ $(function () {
     } else {
       $("#detail-name").addClass("common");
     }
-    $("#detail-name-ja").text($(this).find("span.name-ja").text());
-    $("#detail-name-en").text($(this).find("span.name-en").text());
+    $("#detail-item-name").text($(this).find("span.item-name").text());
     $("#detail-main").children().remove();
     $("#detail-main").append($(this).find("ul.detail-main").clone());
     $("#sell-price").text($(this).data('price') !== '' ? $(this).data('price') : '?');

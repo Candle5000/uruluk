@@ -46,7 +46,7 @@ abstract class Controller
 
     protected function getFooterInfo()
     {
-        $accessCount = new AccessCountModel($this->db, $this->logger);
+        $accessCount = new AccessCountModel($this->db, $this->logger, $this->i18n);
         return [
             'pv_today' => $accessCount->getTodayPvWithCountUp(TopMenuController::PAGE_ID),
             'pv_yesterday' => $accessCount->getYesterdayPv(TopMenuController::PAGE_ID)

@@ -4,33 +4,32 @@
       <img src="/img/item/<?= $item['image_name'] ?>" alt="<?= $item['name_en'] ?>" class="item-detail" />
     </div>
     <div class="col-12 col-md-9">
-      <div class="item-name text-center text-md-left font-weight-bold <?= $item['rarity'] ?>">
-        <span class="name-ja"><?= $item['name_ja'] ?></span><br />
-        <span class="name-en"><?= $item['name_en'] ?></span>
+      <div class="item-name text-center text-md-left font-weight-bold py-1 <?= $item['rarity'] ?>">
+        <span class="item-name"><?= $item['name'] ?></span>
       </div>
       <ul class="detail-main list-unstyled text-white ml-2 small">
         <?php foreach ($item['attributes'] as $attr) : ?>
           <?php if (isset($attr['attribute_value'])) : ?>
             <li class="<?= $attr['color'] ?>">
-              <?= $attr['short_name'] ?> <?= $attr['attribute_value'] ?>
+              <span class="pr-2"><?= $attr['name'] ?></span><span><?= $attr['attribute_value'] ?></span>
             </li>
           <?php endif; ?>
         <?php endforeach ?>
-        <?php if (!empty($item['skill_en'])) : ?>
-          <li class="item-skill"><?= $item['skill_en'] ?></li>
+        <?php if (!empty($item['skill'])) : ?>
+          <li class="item-skill"><?= $item['skill']['description'] ?></li>
         <?php else : ?>
-          <?php if (!empty($item['skill_axe_en'])) : ?>
-            <li class="item-skill"><?= $l->s('character_class.axe') ?>:<?= $item['skill_axe_en'] ?></li>
+          <?php if (!empty($item['skill_axe'])) : ?>
+            <li class="item-skill"><?= $l->s('character_class.axe') ?>:<?= $item['skill_axe']['description'] ?></li>
           <?php endif; ?>
-          <?php if (!empty($item['skill_sword_en'])) : ?>
-            <li class="item-skill"><?= $l->s('character_class.sword') ?>:<?= $item['skill_sword_en'] ?></li>
+          <?php if (!empty($item['skill_sword'])) : ?>
+            <li class="item-skill"><?= $l->s('character_class.sword') ?>:<?= $item['skill_sword']['description'] ?></li>
           <?php endif; ?>
-          <?php if (!empty($item['skill_dagger_en'])) : ?>
-            <li class="item-skill"><?= $l->s('character_class.dagger') ?>:<?= $item['skill_dagger_en'] ?></li>
+          <?php if (!empty($item['skill_dagger'])) : ?>
+            <li class="item-skill"><?= $l->s('character_class.dagger') ?>:<?= $item['skill_dagger']['description'] ?></li>
           <?php endif; ?>
         <?php endif; ?>
-        <?php if (!empty($item['comment_en'])) : ?>
-          <li class="item-comment">"<?= $item['comment_en'] ?>"</li>
+        <?php if (!empty($item['description'])) : ?>
+          <li class="item-comment">"<?= $item['description'] ?>"</li>
         <?php endif; ?>
       </ul>
     </div>

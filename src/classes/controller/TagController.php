@@ -22,7 +22,7 @@ class TagController extends Controller
         try {
             $this->db->beginTransaction();
 
-            $tag = new TagModel($this->db, $this->logger);
+            $tag = new TagModel($this->db, $this->logger, $this->i18n);
 
             $args = [
                 'header' => $this->getHeaderInfo(),
@@ -45,8 +45,8 @@ class TagController extends Controller
         try {
             $this->db->beginTransaction();
 
-            $tag = new TagModel($this->db, $this->logger);
-            $item = new ItemModel($this->db, $this->logger);
+            $tag = new TagModel($this->db, $this->logger, $this->i18n);
+            $item = new ItemModel($this->db, $this->logger, $this->i18n);
             $detail = $tag->getTagByTagurl($args['tagUrl']);
 
             if ($detail == null) throw new NotFoundException($request, $response);

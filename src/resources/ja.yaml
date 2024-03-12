@@ -4,6 +4,7 @@ common:
   quest_repeatable: '繰り返し可能'
   quest_auto_save: '自動セーブ'
   tags: 'タグ'
+  unit_percent: '%'
   unit_sec: '秒'
   tooltip_class_stats_description: 'クラス別スタッツの表記'
   tooltip_stats_short_name_description: 'スタッツの略称表記'
@@ -20,6 +21,10 @@ lang:
 stats:
   ad: 'AD'
   ad_full: '攻撃力'
+  min_ad: 'MinAD'
+  min_ad_full: '最小攻撃力'
+  max_ad: 'MaxAD'
+  max_ad_full: '最大攻撃力'
   as: 'AS'
   as_full: '攻撃速度'
   ar: 'AR'
@@ -54,7 +59,8 @@ stats:
   dps_full: 'DPS (1秒あたりのダメージ)'
   sa_no_delay: 'ND'
   sa_no_delay_full: 'No Delay'
-  kills: '討伐数'
+  kills: '討伐'
+  kills_full: '討伐数'
   based_on_xp: 'EXPベース'
   based_on_kills: '討伐数ベース'
 

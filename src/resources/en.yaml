@@ -4,6 +4,7 @@ common:
   quest_repeatable: 'Repeatable'
   quest_auto_save: 'Auto Save'
   tags: 'Tags'
+  unit_percent: '%'
   unit_sec: 'sec'
   tooltip_class_stats_description: 'Character class abbreviation'
   tooltip_stats_short_name_description: 'Stats abbreviation'
@@ -20,6 +21,10 @@ lang:
 stats:
   ad: 'AD'
   ad_full: 'Attack Damage'
+  min_ad: 'MinAD'
+  min_ad_full: 'Min Attack Damage'
+  max_ad: 'MaxAD'
+  max_ad_full: 'Max Attack Damage'
   as: 'AS'
   as_full: 'Attack Speed'
   ar: 'AR'
@@ -55,6 +60,7 @@ stats:
   sa_no_delay: 'NoD'
   sa_no_delay_full: 'No Delay'
   kills: 'Kills'
+  kills_full: 'Kills'
   based_on_xp: 'Based on XP'
   based_on_kills: 'Based on Kills'
 
