@@ -11,8 +11,7 @@
             <img class="item-detail" id="detail-image" src="/img/common/other.png" alt="" />
           </div>
           <div class="d-table-cell align-middle pl-2" id="detail-name">
-            <div class="m-0" id="detail-name-ja"></div>
-            <div class="m-0" id="detail-name-en"></div>
+            <div class="m-0" id="detail-creature-name"></div>
           </div>
         </div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -131,14 +130,14 @@
               </thead>
               <tbody id="detail-sa">
                 <template id="modal-sa-row">
-                  <tr>
+                  <tr class="row-data">
                     <td class="pl-2">
                       <span class="sa-name"></span>
                       <a href="javascript:void(0);" class="sa-note item-skill" data-toggle="tooltip" data-placement="top" title=""><i class="fas fa-exclamation-circle"></i></a>
                     </td>
                   </tr>
                 </template>
-                <tr>
+                <tr class="row-none d-none">
                   <td class="pl-2">
                     <?= $l->s('common.none') ?>
                   </td>
@@ -155,7 +154,7 @@
               </thead>
               <tbody id="detail-items">
                 <template id="modal-item-row">
-                  <tr>
+                  <tr class="row-data">
                     <td>
                       <a>
                         <img class="item-icon" /><span class="pl-1"></span>
@@ -164,7 +163,7 @@
                     </td>
                   </tr>
                 </template>
-                <tr>
+                <tr class="row-none d-none">
                   <td class="pl-2">
                     <?= $l->s('common.none') ?>
                   </td>
@@ -182,11 +181,11 @@
                   <td class="pl-2">
                     <ul class="list-inline m-0" id="detail-floors">
                       <template id="modal-floor-li">
-                        <li class="list-inline-item">
+                        <li class="list-inline-item list-data">
                           <a class="floor-name text-light"></a><a href="javascript:void(0);" class="floor-note item-skill" data-toggle="tooltip" data-placement="top" title=""><i class="fas fa-exclamation-circle"></i></a>
                         </li>
                       </template>
-                      <li class="list-inline-item"><?= $l->s('common.none') ?></li>
+                      <li class="list-inline-item list-none d-none"><?= $l->s('common.none') ?></li>
                     </ul>
                   </td>
                 </tr>
@@ -255,8 +254,7 @@
           </div>
           <div class="d-table-cell w-100 align-top">
             <div class="pl-1 boss">
-              <div class="name-ja"></div>
-              <div class="name-en"></div>
+              <div class="creature-name"></div>
             </div>
             <div class="d-table w-100 table-item-attrs">
               <div class="d-table-row">
@@ -313,12 +311,11 @@
       <tr>
         <td class="selectable" id="creature-<?= $creature['creature_id'] ?>" data-creatureid="<?= $creature['creature_id'] ?>" tabindex="<?= $creature['sort_key'] ?>">
           <div class="d-table-cell align-middle" style="width: 32px;">
-            <img class="item-icon" src="/img/creature/<?= $creature['image_name'] == null ? 'creature_noimg.png' : $creature['image_name'] ?>" alt="<?= $creature['name_en'] ?>" />
+            <img class="item-icon" src="/img/creature/<?= $creature['image_name'] == null ? 'creature_noimg.png' : $creature['image_name'] ?>" alt="<?= $creature['name'] ?>" />
           </div>
           <div class="d-table-cell w-100 align-top">
             <div class="pl-1 <?= $creature['boss'] ? 'boss' : '' ?>">
-              <div><?= $creature['name_ja'] ?></div>
-              <div><?= $creature['name_en'] ?></div>
+              <div><?= $creature['name'] ?></div>
             </div>
             <div class="d-table w-100 table-item-attrs">
               <div class="d-table-row">

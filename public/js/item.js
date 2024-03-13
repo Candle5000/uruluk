@@ -123,7 +123,7 @@ $(function () {
         const imgName = creature.image_name ?
           creature.image_name : 'creature_noimg.png';
         row.find('img').attr('src', '/img/creature/' + imgName);
-        row.find('span').text(creature.name_en);
+        row.find('span').text($('<div/>').html(creature.name).text());
         row.find('.creature-name')
           .attr('href', '/creatures/' + creature.creature_id)
           .addClass(creature.boss == 1 ? 'boss' : 'text-light');

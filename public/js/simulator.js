@@ -696,6 +696,10 @@ $(function () {
   // スロット初期化
   let itemIndex = 0;
   const initItems = $.parseJSON($("#init-items").html());
+  // HTMLエスケープをデコード
+  initItems.forEach(item => {
+    item.name = $("<div/>").html(item.name).text();
+  });
   $(".table-item-slot a.item-img:not(.search-all)").toArray().forEach(link => {
     setItem($(link), initItems[itemIndex]);
     slotItems[itemIndex + 1] = initItems[itemIndex];
