@@ -6,8 +6,7 @@
 <div class="collapse" id="collapse-menu">
   <?= $this->fetch('floors/menu.phtml', ['floorIndex' => $floorIndex]) ?>
 </div>
-<h2><?= $detail['short_name'] ?> / <?= $detail['name_en'] ?></h2>
-<h2><?= $detail['name_ja'] ?></h2>
+<h2><?= $detail['short_name'] ?> / <?= $detail['name'] ?></h2>
 <?= $this->fetch('adsense.phtml', ['google' => $header['google']]) ?>
 <div class="card mb-2 bg-darkblue img-floor">
   <?php if (empty($detail['image_name'])) : ?>
@@ -16,7 +15,7 @@
     <div class="my-gallery">
       <figure>
         <a href="/img/floor/<?= $detail['image_name'] ?>.png" data-size="<?= $detail['image_size'] ?>">
-          <img src="/img/floor/<?= $detail['image_name'] ?>-800.jpg" alt="<?= $detail['name_en'] ?>" style="width: 100%;" />
+          <img src="/img/floor/<?= $detail['image_name'] ?>-800.jpg" alt="<?= $detail['name'] ?>" style="width: 100%;" />
         </a>
         <figcaption></figcaption>
       </figure>
@@ -38,7 +37,7 @@
             <tr>
               <td>
                 <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
-                  <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
+                  <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name'] ?></span>
                 </a>
                 <?php if ($item['class_flactuable']) : ?>
                   <img class="class-icon" src="/img/common/<?= strtolower($item['item_class']) ?>.png" />
@@ -56,7 +55,7 @@
               <tr>
                 <td>
                   <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
-                    <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
+                    <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name'] ?></span>
                   </a>
                   <?php if ($item['class_flactuable']) : ?>
                     <img class="class-icon" src="/img/common/<?= strtolower($item['item_class']) ?>.png" />
@@ -108,7 +107,7 @@
                       <?php foreach ($quest['required_items'] as $item) : ?>
                         <li>
                           <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
-                            <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
+                            <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name'] ?></span>
                           </a>
                           <?php if ($item['class_flactuable']) : ?>
                             <img class="class-icon" src="/img/common/<?= strtolower($item['item_class']) ?>.png" />
@@ -131,7 +130,7 @@
                       <?php foreach ($quest['reward_items'] as $item) : ?>
                         <li>
                           <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
-                            <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
+                            <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name'] ?></span>
                           </a>
                           <?php if ($item['class_flactuable']) : ?>
                             <img class="class-icon" src="/img/common/<?= strtolower($item['item_class']) ?>.png" />
@@ -165,7 +164,7 @@
                       <?php foreach ($shop['items'] as $item) : ?>
                         <li>
                           <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
-                            <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
+                            <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name'] ?></span>
                           </a><span class="small">(<?= $item['price'] ?>)</span>
                         </li>
                       <?php endforeach; ?>
@@ -186,7 +185,7 @@
               <tr>
                 <td>
                   <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
-                    <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
+                    <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name'] ?></span>
                   </a>
                   <?php if (!empty($item['note'])) : ?>
                     <a href="javascript:void(0);" class="item-skill treasure-note" data-toggle="tooltip" data-placement="top" title="<?= $item['note'] ?>"><i class="fas fa-exclamation-circle"></i></a>
@@ -209,7 +208,7 @@
             <tr>
               <td>
                 <a href="/creatures/<?= $creature['creature_id'] ?>" class="<?= $creature['boss'] ? 'boss' : 'text-light' ?>">
-                  <img class="item-icon" src="/img/creature/<?= $creature['image_name'] ? $creature['image_name'] : 'creature_noimg.png' ?>" /><span class="pl-1"><?= $creature['name_en'] ?></span>
+                  <img class="item-icon" src="/img/creature/<?= $creature['image_name'] ? $creature['image_name'] : 'creature_noimg.png' ?>" /><span class="pl-1"><?= $creature['name'] ?></span>
                 </a>
               </td>
             </tr>
@@ -229,7 +228,7 @@
                   <tr>
                     <td>
                       <a href="/creatures/<?= $creature['creature_id'] ?>" class="<?= $creature['boss'] ? 'boss' : 'text-light' ?>">
-                        <img class="item-icon" src="/img/creature/<?= $creature['image_name'] ? $creature['image_name'] : 'creature_noimg.png' ?>" /><span class="pl-1"><?= $creature['name_en'] ?></span>
+                        <img class="item-icon" src="/img/creature/<?= $creature['image_name'] ? $creature['image_name'] : 'creature_noimg.png' ?>" /><span class="pl-1"><?= $creature['name'] ?></span>
                       </a>
                     </td>
                   </tr>

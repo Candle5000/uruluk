@@ -216,7 +216,7 @@
     <option value=""><?= $l->s('creatures.floors_all') ?></option>
     <?php foreach ($floorIndex as $groupIndex => $floorGroup) : ?>
       <?php foreach ($floorGroup['floors'] as $index => $floor) : ?>
-        <option value="<?= $floor['floor_id'] ?>">[<?= $floor['short_name'] ?>]&nbsp;<?= $floor['name_en'] ?></option>
+        <option value="<?= $floor['floor_id'] ?>">[<?= $floor['short_name'] ?>]&nbsp;<?= $floor['name'] ?></option>
       <?php endforeach ?>
     <?php endforeach ?>
   </select>

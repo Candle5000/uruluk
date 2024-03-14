@@ -19,7 +19,7 @@
             <tr>
               <td>
                 <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
-                  <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
+                  <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name'] ?></span>
                 </a>
                 <?php if ($item['class_flactuable']) : ?>
                   <img class="class-icon" src="/img/common/<?= strtolower($item['item_class']) ?>.png" />

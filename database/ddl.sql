@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2024/03/12 18:20:45
+-- Date/Time    : 2024/03/13 2:48:00
 -- Author       : candl
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -70,6 +70,7 @@ drop table if exists `creature` cascade;
 create table `creature` (
   `creature_id` INT not null AUTO_INCREMENT comment 'クリーチャーID'
   , `boss` BIT(1) default FALSE not null comment 'ボス'
+  , `name_key` VARCHAR(128) comment '名称キー'
   , `name_en` VARCHAR(32) comment '名称(英語)'
   , `name_ja` VARCHAR(32) comment '名称(日本語)'
   , `min_ad` INT comment '最小攻撃力'
@@ -169,6 +170,7 @@ create table `floor` (
   `floor_id` INT not null AUTO_INCREMENT comment 'フロアID'
   , `floor_group_id` INT not null comment 'フロアグループID'
   , `short_name` VARCHAR(16) comment '略称'
+  , `name_key` VARCHAR(128) comment '名称キー'
   , `name_en` VARCHAR(64) comment '名称(英語)'
   , `name_ja` VARCHAR(64) comment '名称(日本語)'
   , `image_name` VARCHAR(64) comment '画像名称'
@@ -256,6 +258,7 @@ drop table if exists `floor_group` cascade;
 -- * RestoreFromTempTable
 create table `floor_group` (
   `floor_group_id` INT not null AUTO_INCREMENT comment 'フロアグループID'
+  , `name_key` VARCHAR(128) comment '名称キー'
   , `name_en` VARCHAR(32) comment '名称(英語)'
   , `name_ja` VARCHAR(32) comment '名称(日本語)'
   , `sort_key` INT not null comment 'ソート順'
