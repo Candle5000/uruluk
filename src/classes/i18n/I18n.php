@@ -15,7 +15,7 @@ class I18n
         $this->knownLanguages = $knownLanguages;
     }
 
-    public function s(string $key, ...$args)
+    public function s(?string $key, ...$args)
     {
         if (!array_key_exists($key, $this->messages)) return '';
 

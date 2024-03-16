@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2024/03/13 2:48:00
+-- Date/Time    : 2024/03/16 13:23:13
 -- Author       : candl
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -125,6 +125,7 @@ drop table if exists `creature_pop_event` cascade;
 create table `creature_pop_event` (
   `event_id` INT not null AUTO_INCREMENT comment 'イベントID'
   , `note` TEXT comment '説明'
+  , `description_key` VARCHAR(128) comment '説明キー'
   , constraint `creature_pop_event_PKC` primary key (`event_id`)
 ) comment 'クリーチャー出現条件' ;
 
@@ -276,6 +277,7 @@ create table `floor_treasure` (
   `floor_id` INT not null comment 'フロアID'
   , `item_id` INT not null comment 'アイテムID'
   , `note` VARCHAR(256) comment '備考'
+  , `description_key` VARCHAR(128) comment '説明キー'
   , constraint `floor_treasure_PKC` primary key (`floor_id`,`item_id`)
 ) comment 'フロア宝箱' ;
 

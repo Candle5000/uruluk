@@ -577,6 +577,7 @@ class ItemModel extends Model
         $sql = <<<SQL
             SELECT
                 $columns
+                , FT.description_key
                 , FT.note
             FROM
                 floor_treasure FT
@@ -607,6 +608,7 @@ class ItemModel extends Model
                 'name_ja' => $result['name_ja'],
                 'rarity' => $result['rarity'],
                 'image_name' => $result['image_name'],
+                'description' => $this->i18n->s($result['description_key']),
                 'note' => $result['note'],
             ];
         }

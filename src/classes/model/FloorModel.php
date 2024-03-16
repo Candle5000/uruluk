@@ -126,6 +126,7 @@ class FloorModel extends Model
             SELECT
                 F.floor_id
                 , F.short_name
+                , FT.description_key
                 , FT.note
             FROM
                 floor_treasure FT
@@ -145,6 +146,7 @@ class FloorModel extends Model
             $floors[] = [
                 'floor_id' => $result['floor_id'],
                 'short_name' => $result['short_name'],
+                'description' => $this->i18n->s($result['description_key']),
                 'note' => $result['note'],
             ];
         }
@@ -159,6 +161,7 @@ class FloorModel extends Model
                 , F.short_name
                 , F.name_key
                 , F.name_en
+                , E.description_key
                 , E.note
             FROM
                 floor_creature FC
@@ -183,6 +186,7 @@ class FloorModel extends Model
                 'short_name' => $result['short_name'],
                 'name' => $this->i18n->s($result['name_key']),
                 'name_en' => $result['name_en'],
+                'description' => $this->i18n->s($result['description_key']),
                 'note' => $result['note'],
             ];
         }

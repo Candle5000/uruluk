@@ -187,8 +187,8 @@
                   <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
                     <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name'] ?></span>
                   </a>
-                  <?php if (!empty($item['note'])) : ?>
-                    <a href="javascript:void(0);" class="item-skill treasure-note" data-toggle="tooltip" data-placement="top" title="<?= $item['note'] ?>"><i class="fas fa-exclamation-circle"></i></a>
+                  <?php if (!empty($item['description'])) : ?>
+                    <a href="javascript:void(0);" class="item-skill treasure-description" data-toggle="tooltip" data-placement="top" title="<?= $item['description'] ?>"><i class="fas fa-exclamation-circle"></i></a>
                   <?php endif; ?>
                 </td>
               </tr>
@@ -221,7 +221,7 @@
         </div>
         <div class="collapse" id="collapse-creatures">
           <?php foreach ($creatures['events'] as $event) : ?>
-            <div class="lemonchiffon"><?= $event['note'] ?></div>
+            <div class="lemonchiffon"><?= $event['description'] ?></div>
             <table class="table-dark table-striped table-bordered w-100 mb-2">
               <tbody>
                 <?php foreach ($event['creatures'] as $creature) : ?>

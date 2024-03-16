@@ -103,14 +103,14 @@ $(function () {
         const row = $($("#modal-treasure-row").html());
         row.find(".floor-name").text(floor.short_name)
           .attr('href', '/floors/' + floor.floor_id);
-        if (floor.note) {
-          row.find('a.treasure-note').attr('title', floor.note);
+        if (floor.description) {
+          row.find('a.treasure-description').attr('title', $('<div/>').html(floor.description).text());
         } else {
-          row.find('a.treasure-note').remove();
+          row.find('a.treasure-description').remove();
         }
         $('#detail-treasure').append(row);
       });
-      $('#detail-treasure').find('a.treasure-note').tooltip();
+      $('#detail-treasure').find('a.treasure-description').tooltip();
 
       $('#detail-creatures').children('li.detail-row').remove();
       if (creatures.length) {

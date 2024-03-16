@@ -268,14 +268,14 @@ $(function () {
         floors.forEach(floor => {
           const li = $($("#modal-floor-li").html());
           li.find(".floor-name").text(floor.short_name).attr('href', "/floors/" + floor.floor_id);
-          if (floor.note) {
-            li.find(".floor-note").attr('title', floor.note);
+          if (floor.description) {
+            li.find(".floor-description").attr('title', $('<div/>').html(floor.description).text());
           } else {
-            li.find(".floor-note").remove();
+            li.find(".floor-description").remove();
           }
           floorList.append(li);
         });
-        floorList.find("a.floor-note").tooltip();
+        floorList.find("a.floor-description").tooltip();
 
         if (!at && location.pathname.split('/').length != 3) {
           history.pushState(null, null, '/creatures/' + creatureId);

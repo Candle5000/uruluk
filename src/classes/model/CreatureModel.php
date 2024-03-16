@@ -221,6 +221,7 @@ class CreatureModel extends Model
         $sql = <<<SQL
             SELECT
                 FC.event_id
+                , E.description_key
                 , E.note
                 , C.creature_id
                 , C.boss
@@ -264,6 +265,7 @@ class CreatureModel extends Model
             } else {
                 if (!array_key_exists($eventId, $floorCreatures['events'])) {
                     $floorCreatures['events'][$eventId] = [
+                        'description' => $this->i18n->s($result['description_key']),
                         'note' => $result['note'],
                         'creatures' => []
                     ];

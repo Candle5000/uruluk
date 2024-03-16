@@ -12,7 +12,7 @@ $(function () {
       .addClass('fa-chevron-circle-down');
   });
 
-  $("a.treasure-note").tooltip();
+  $("a.treasure-description").tooltip();
 
   var initPhotoSwipeFromDOM = function (gallerySelector) {
 
