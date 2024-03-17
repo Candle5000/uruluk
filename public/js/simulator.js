@@ -114,7 +114,7 @@ $(function () {
   const calcAttrs = function () {
     const charaClass = $("select.character-class").val();
     const attrs = Object.assign({}, characterAttrs[charaClass]);
-    $("ul.item-skill").children().remove();
+    $("ul.item-skill").children(".item-passive-skill").remove();
     $(".table-attributes .skill-reduce-label").addClass("d-none");
     const skills = [];
     const skillCharacterClass = "skill_" + $("select.character-class").val();
@@ -152,6 +152,7 @@ $(function () {
         if (item.skill || item[skillCharacterClass]) {
           const itemSkill = item.skill ? item.skill : item[skillCharacterClass];
           const skillTag = $("<li />");
+          skillTag.addClass("item-passive-skill");
           const skillText = item.skill ? item.skill.description : item[skillCharacterClass].description;
           if (itemSkill.trigger_charge > 0) {
             skillTag.addClass("form-check charge-type-skill");
@@ -197,8 +198,9 @@ $(function () {
 
     // スキルを表示
     if (skills.length === 0) {
-      $("ul.item-skill").append("<li>No Skills</li>");
+      $("ul.item-skill .no-skills").removeClass("d-none");
     } else {
+      $("ul.item-skill .no-skills").addClass("d-none");
       skills.sort((a, b) => a.sortKey - b.sortKey).forEach(skill => {
         $("ul.item-skill").append(skill.tag);
       });
