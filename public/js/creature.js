@@ -1,6 +1,10 @@
 $(function () {
 
   const allCreatures = $.parseJSON($("#init-creatures").html());
+  // HTMLエスケープをデコード
+  allCreatures.forEach(creature => {
+    creature.name = $("<div/>").html(creature.name).text();
+  });
   let creatureList = allCreatures;
 
   const showCreatureList = function () {
@@ -24,12 +28,11 @@ $(function () {
         : creature['image_name'];
       row.find('.item-icon')
         .attr('src', '/img/creature/' + imageName)
-        .attr('alt', creature['name_en']);
+        .attr('alt', creature.name);
       if (!creature['boss']) {
         row.find('.boss').removeClass('boss');
       }
-      row.find('.name-ja').text(creature['name_ja']);
-      row.find('.name-en').text(creature['name_en']);
+      row.find('.creature-name').text(creature.name);
       if (isNaN(creature['str'])) {
         row.find('.min-ad').text(creature['min_ad']);
         row.find('.max-ad').text(creature['max_ad']);
@@ -144,6 +147,7 @@ $(function () {
         type: 'GET',
       }).done(data => {
         const creature = data.creature;
+        creature.name = $('<div/>').html(creature.name).text();
         const items = data.items;
         const floors = data.floors;
         const imgName = creature.image_name ?
@@ -160,8 +164,7 @@ $(function () {
           : '?';
         const as = creature.as ? creature.as == 0 ? '-' : creature.as : '?';
         $("#detail-image").attr('src', '/img/creature/' + imgName);
-        $("#detail-name-ja").text(creature.name_ja);
-        $("#detail-name-en").text(creature.name_en);
+        $("#detail-creature-name").text(creature.name);
         $("#detail-min-ad").text(minAd)
           .data("base-val", creature.min_ad);
         $("#detail-max-ad").text(maxAd)
@@ -216,9 +219,11 @@ $(function () {
         }
 
         const saTbody = $("#detail-sa");
-        saTbody.children('tr').remove();
+        saTbody.children('tr.row-data').remove();
         if (creature.special_attacks.length == 0) {
-          saTbody.append($("<tr>").append($("<td>").addClass("pl-2").text("None")));
+          saTbody.find('tr.row-none').removeClass('d-none');
+        } else {
+          saTbody.find('tr.row-none').addClass('d-none');
         }
         creature.special_attacks.forEach(sa => {
           const row = $($("#modal-sa-row").html());
@@ -229,19 +234,22 @@ $(function () {
         saTbody.find("a.sa-note").tooltip();
 
         const itemTbody = $("#detail-items");
-        itemTbody.children('tr').remove();
+        itemTbody.children('tr.row-data').remove();
         if (items.length == 0) {
-          itemTbody.append($("<tr>").append($("<td>").addClass("pl-2").text("None")));
+          itemTbody.find('tr.row-none').removeClass('d-none');
+        } else {
+          itemTbody.find('tr.row-none').addClass('d-none');
         }
         items.forEach(item => {
+          item.name = $('<div/>').html(item.name).text();
           const row = $($("#modal-item-row").html());
           const link = '/items/' + item.item_class.toLowerCase() + '/'
             + (item.rarity == 'common' ? item.base_item_id : 'rare') + '/' + item.item_id;
           const img = item.image_name ? item.image_name : 'item_noimg.png';
           row.find('a').attr('href', link).addClass(item.rarity);
           row.find('img.item-icon')
-            .attr('src', '/img/item/' + img).attr('alt', item.name_en);
-          row.find('span').text(item.name_en);
+            .attr('src', '/img/item/' + img).attr('alt', item.name);
+          row.find('span').text(item.name);
           if (item.class_flactuable == 0) {
             row.find('img.class-icon').remove();
           } else {
@@ -251,21 +259,23 @@ $(function () {
         });
 
         const floorList = $("#detail-floors");
-        floorList.children('li').remove();
+        floorList.children('li.list-data').remove();
         if (floors.length == 0) {
-          floorList.append($("<li>").addClass("list-inline-item").text("None"));
+          floorList.find('li.list-none').removeClass('d-none');
+        } else {
+          floorList.find('li.list-none').addClass('d-none');
         }
         floors.forEach(floor => {
           const li = $($("#modal-floor-li").html());
           li.find(".floor-name").text(floor.short_name).attr('href', "/floors/" + floor.floor_id);
-          if (floor.note) {
-            li.find(".floor-note").attr('title', floor.note);
+          if (floor.description) {
+            li.find(".floor-description").attr('title', $('<div/>').html(floor.description).text());
           } else {
-            li.find(".floor-note").remove();
+            li.find(".floor-description").remove();
           }
           floorList.append(li);
         });
-        floorList.find("a.floor-note").tooltip();
+        floorList.find("a.floor-description").tooltip();
 
         if (!at && location.pathname.split('/').length != 3) {
           history.pushState(null, null, '/creatures/' + creatureId);

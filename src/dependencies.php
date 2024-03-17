@@ -29,6 +29,34 @@ return function (App $app) {
         return $logger;
     };
 
+    // i18n
+    $container['i18n'] = function ($c) {
+        $defaultLanguage = 'en';
+        $knownLanguages = ['en', 'ja'];
+        $language = array_key_exists('language', $_COOKIE) ? $_COOKIE['language'] : null;
+        $strategy = function (array $locale) use ($knownLanguages) {
+            $is_wildcard = isset($locale['language']) && $locale['language'] === '*';
+            if (empty($locale['language']) && !$is_wildcard) return null;
+            if ($is_wildcard || $locale['language'] === 'zh') {
+                if (!empty($locale['region']) && $locale['region'] == 'TW') return 'zh_tw';
+                if (!empty($locale['script']) && $locale['script'] == 'Hant') return 'zh_tw';
+                if ($locale['language'] === 'zh') return 'zh_cn';
+            }
+            if (in_array($locale['language'], $knownLanguages)) return $locale['language'];
+            return null;
+        };
+        if (!in_array($language, $knownLanguages)) {
+            $language = \Teto\HTTP\AcceptLanguage::detect($strategy, $defaultLanguage);
+        }
+        setcookie('language', $language, time() + 5184000, '/');
+
+        $parser = new \I18n\YamlFileParser();
+        $yamlMessages = $parser->parse($language . '.yaml');
+        $i18nMessageModel = new \Model\I18nMessageModel($c->get('db'), $c->get('logger'), new \I18n\I18n([], $language, $knownLanguages));
+        $dbMessages = $i18nMessageModel->getMessagesByLanguageCode($language);
+        return new \I18n\I18n(array_merge($yamlMessages, $dbMessages), $language, $knownLanguages);
+    };
+
     // csrf guard
     $container['csrf'] = function ($c) {
         $csrf = new \Slim\Csrf\Guard();

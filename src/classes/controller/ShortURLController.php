@@ -26,7 +26,7 @@ class ShortURLController extends Controller
                 throw new NotFoundException($request, $response);
             }
 
-            $shortURL = new ShortURLModel($this->db, $this->logger);
+            $shortURL = new ShortURLModel($this->db, $this->logger, $this->i18n);
             $url = $shortURL->getUrlByKey($args['key']);
 
             if ($url === null) throw new NotFoundException($request, $response);
@@ -57,7 +57,7 @@ class ShortURLController extends Controller
         try {
             $this->db->beginTransaction();
 
-            $shortURL = new ShortURLModel($this->db, $this->logger);
+            $shortURL = new ShortURLModel($this->db, $this->logger, $this->i18n);
             $data['result'] = ['urlKey' => $shortURL->createShortUrl($url)];
 
             $this->db->commit();

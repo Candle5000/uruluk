@@ -25,12 +25,13 @@ class FloorsController extends Controller
         try {
             $this->db->beginTransaction();
 
-            $floor = new FloorModel($this->db, $this->logger);
+            $floor = new FloorModel($this->db, $this->logger, $this->i18n);
 
             $args = [
                 'header' => $this->getHeaderInfo(),
                 'floorIndex' => $floor->getFloorIndex(),
-                'footer' => $this->getFooterInfo()
+                'footer' => $this->getFooterInfo(),
+                'l' => $this->i18n
             ];
 
             $this->db->commit();
@@ -45,18 +46,18 @@ class FloorsController extends Controller
     public function detail(Request $request, Response $response, array $args)
     {
         $this->title = 'フロアデータ';
-        $this->scripts[] = '/js/floor.js?id=00046';
+        $this->scripts[] = '/js/floor.js?id=00081';
         $this->scripts[] = '/lib/photoswipe/photoswipe.min.js?id=00041';
         $this->scripts[] = '/lib/photoswipe/photoswipe-ui-default.min.js?id=00041';
 
         try {
             $this->db->beginTransaction();
 
-            $floor = new FloorModel($this->db, $this->logger);
-            $quest = new QuestModel($this->db, $this->logger);
-            $shop = new ShopModel($this->db, $this->logger);
-            $item = new ItemModel($this->db, $this->logger);
-            $creature = new CreatureModel($this->db, $this->logger);
+            $floor = new FloorModel($this->db, $this->logger, $this->i18n);
+            $quest = new QuestModel($this->db, $this->logger, $this->i18n);
+            $shop = new ShopModel($this->db, $this->logger, $this->i18n);
+            $item = new ItemModel($this->db, $this->logger, $this->i18n);
+            $creature = new CreatureModel($this->db, $this->logger, $this->i18n);
             $detail = $floor->getFloorDetail($args['floorId']);
 
             if ($detail == null) throw new NotFoundException($request, $response);
@@ -84,7 +85,8 @@ class FloorsController extends Controller
                 'creatures' => $creature->getCreaturesByFloorId($args['floorId']),
                 'quests' => $quests,
                 'shops' => $shops,
-                'footer' => $this->getFooterInfo()
+                'footer' => $this->getFooterInfo(),
+                'l' => $this->i18n
             ];
 
             $this->db->commit();

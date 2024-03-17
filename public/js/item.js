@@ -51,8 +51,7 @@ $(function () {
     } else {
       $("#detail-name").addClass("common");
     }
-    $("#detail-name-ja").text($(this).find("span.name-ja").text());
-    $("#detail-name-en").text($(this).find("span.name-en").text());
+    $("#detail-item-name").text($(this).find("span.item-name").text());
     $("#detail-main").children().remove();
     $("#detail-main").append($(this).find("ul.detail-main").clone());
     $("#sell-price").text($(this).data('price') !== '' ? $(this).data('price') : '?');
@@ -104,14 +103,14 @@ $(function () {
         const row = $($("#modal-treasure-row").html());
         row.find(".floor-name").text(floor.short_name)
           .attr('href', '/floors/' + floor.floor_id);
-        if (floor.note) {
-          row.find('a.treasure-note').attr('title', floor.note);
+        if (floor.description) {
+          row.find('a.treasure-description').attr('title', $('<div/>').html(floor.description).text());
         } else {
-          row.find('a.treasure-note').remove();
+          row.find('a.treasure-description').remove();
         }
         $('#detail-treasure').append(row);
       });
-      $('#detail-treasure').find('a.treasure-note').tooltip();
+      $('#detail-treasure').find('a.treasure-description').tooltip();
 
       $('#detail-creatures').children('li.detail-row').remove();
       if (creatures.length) {
@@ -124,7 +123,7 @@ $(function () {
         const imgName = creature.image_name ?
           creature.image_name : 'creature_noimg.png';
         row.find('img').attr('src', '/img/creature/' + imgName);
-        row.find('span').text(creature.name_en);
+        row.find('span').text($('<div/>').html(creature.name).text());
         row.find('.creature-name')
           .attr('href', '/creatures/' + creature.creature_id)
           .addClass(creature.boss == 1 ? 'boss' : 'text-light');

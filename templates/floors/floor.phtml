@@ -1,22 +1,21 @@
-<?= $this->fetch('header.phtml', ['header' => $header]) ?>
+<?= $this->fetch('header.phtml', ['header' => $header, 'l' => $l]) ?>
 <?= $this->fetch('photoswipe.phtml') ?>
 <div>
-  <a href="#collapse-menu" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-menu">Menu<i class="fas fa-chevron-circle-down"></i></a>
+  <a href="#collapse-menu" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-menu"><?= $l->s('floors.menu') ?><i class="fas fa-chevron-circle-down"></i></a>
 </div>
 <div class="collapse" id="collapse-menu">
   <?= $this->fetch('floors/menu.phtml', ['floorIndex' => $floorIndex]) ?>
 </div>
-<h2><?= $detail['short_name'] ?> / <?= $detail['name_en'] ?></h2>
-<h2><?= $detail['name_ja'] ?></h2>
+<h2><?= $detail['short_name'] ?> / <?= $detail['name'] ?></h2>
 <?= $this->fetch('adsense.phtml', ['google' => $header['google']]) ?>
 <div class="card mb-2 bg-darkblue img-floor">
   <?php if (empty($detail['image_name'])) : ?>
-    <div class="text-center m-auto">No Image</div>
+    <div class="text-center m-auto"><?= $l->s('floors.no_image') ?></div>
   <?php else : ?>
     <div class="my-gallery">
       <figure>
         <a href="/img/floor/<?= $detail['image_name'] ?>.png" data-size="<?= $detail['image_size'] ?>">
-          <img src="/img/floor/<?= $detail['image_name'] ?>-800.jpg" alt="<?= $detail['name_en'] ?>" style="width: 100%;" />
+          <img src="/img/floor/<?= $detail['image_name'] ?>-800.jpg" alt="<?= $detail['name'] ?>" style="width: 100%;" />
         </a>
         <figcaption></figcaption>
       </figure>
@@ -26,19 +25,19 @@
 <div class="container">
   <div class="row">
     <div class="col-12 col-sm-6">
-      <div class="lemonchiffon">Rare Items</div>
+      <div class="lemonchiffon"><?= $l->s('floors.rare_items') ?></div>
       <table class="table-dark table-striped table-bordered w-100 mb-2">
         <tbody>
           <?php if (empty($items)) : ?>
             <tr>
-              <td>No Items</td>
+              <td><?= $l->s('floors.no_items') ?></td>
             </tr>
           <?php endif; ?>
           <?php foreach ($items as $item) : ?>
             <tr>
               <td>
                 <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
-                  <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
+                  <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name'] ?></span>
                 </a>
                 <?php if ($item['class_flactuable']) : ?>
                   <img class="class-icon" src="/img/common/<?= strtolower($item['item_class']) ?>.png" />
@@ -49,14 +48,14 @@
         </tbody>
       </table>
       <?php if (!empty($banana)) : ?>
-        <div class="lemonchiffon">Banana Items</div>
+        <div class="lemonchiffon"><?= $l->s('floors.banana_items') ?></div>
         <table class="table-dark table-striped table-bordered w-100 mb-2">
           <tbody>
             <?php foreach ($banana as $item) : ?>
               <tr>
                 <td>
                   <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
-                    <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
+                    <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name'] ?></span>
                   </a>
                   <?php if ($item['class_flactuable']) : ?>
                     <img class="class-icon" src="/img/common/<?= strtolower($item['item_class']) ?>.png" />
@@ -69,12 +68,12 @@
       <?php endif; ?>
     </div>
     <div class="col-12 col-sm-6">
-      <div class="lemonchiffon">Quests</div>
+      <div class="lemonchiffon"><?= $l->s('floors.quests') ?></div>
       <table class="table-dark table-striped table-bordered w-100 mb-2">
         <tbody>
           <?php if (empty($quests)) : ?>
             <tr>
-              <td>No Quests</td>
+              <td><?= $l->s('floors.no_quests') ?></td>
             </tr>
           <?php endif; ?>
           <?php foreach ($quests as $quest) : ?>
@@ -92,23 +91,23 @@
                 </div>
                 <div class="small">
                   <?php if ($quest['repeatable']) : ?>
-                    <span class="badge badge-pill badge-success ml-1">Repeatable <i class="fas fa-sync-alt"></i></span>
+                    <span class="badge badge-pill badge-success ml-1"><?= $l->s('common.quest_repeatable') ?>&nbsp;<i class="fas fa-sync-alt"></i></span>
                   <?php endif; ?>
                   <?php if ($quest['autosave']) : ?>
-                    <span class="badge badge-pill badge-warning ml-1">Auto Save <i class="fas fa-save"></i></span>
+                    <span class="badge badge-pill badge-warning ml-1"><?= $l->s('common.quest_auto_save') ?>&nbsp;<i class="fas fa-save"></i></span>
                   <?php endif; ?>
                 </div>
                 <?php if (!empty($quest['required_items'])) : ?>
                   <div>
-                    <a href="#collapse-quest<?= $quest['quest_id'] ?>n" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-quest<?= $quest['quest_id'] ?>n">Required Items<i class="fas fa-chevron-circle-down"></i></a>
+                    <a href="#collapse-quest<?= $quest['quest_id'] ?>n" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-quest<?= $quest['quest_id'] ?>n"><?= $l->s('floors.quest_required_items') ?><i class="fas fa-chevron-circle-down"></i></a>
                   </div>
                   <div class="collapse mb-1" id="collapse-quest<?= $quest['quest_id'] ?>n">
-                    <?= $quest['required_items_note'] ?>
+                    <?= $quest['required_items_description'] ?>
                     <ul class="m-0 list-unstyled">
                       <?php foreach ($quest['required_items'] as $item) : ?>
                         <li>
                           <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
-                            <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
+                            <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name'] ?></span>
                           </a>
                           <?php if ($item['class_flactuable']) : ?>
                             <img class="class-icon" src="/img/common/<?= strtolower($item['item_class']) ?>.png" />
@@ -120,18 +119,18 @@
                 <?php endif; ?>
                 <?php if (!empty($quest['reward_common_items']) || !empty($quest['reward_items']) || $quest['reward_common_items']) : ?>
                   <div>
-                    <a href="#collapse-quest<?= $quest['quest_id'] ?>r" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-quest<?= $quest['quest_id'] ?>r">Reward Items<i class="fas fa-chevron-circle-down"></i></a>
+                    <a href="#collapse-quest<?= $quest['quest_id'] ?>r" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-quest<?= $quest['quest_id'] ?>r"><?= $l->s('floors.quest_reward_items') ?><i class="fas fa-chevron-circle-down"></i></a>
                   </div>
                   <div class="collapse mb-1" id="collapse-quest<?= $quest['quest_id'] ?>r">
-                    <?= $quest['reward_items_note'] ?>
+                    <?= $quest['reward_items_description'] ?>
                     <ul class="m-0 list-unstyled">
                       <?php if (!empty($quest['reward_common_items'])) : ?>
-                        <li><img class="item-icon" src="/img/common/other.png" /><span class="pl-1">Common Items</span></li>
+                        <li><img class="item-icon" src="/img/common/other.png" /><span class="pl-1"><?= $l->s('floors.quest_reward_common_items') ?></span></li>
                       <?php endif; ?>
                       <?php foreach ($quest['reward_items'] as $item) : ?>
                         <li>
                           <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
-                            <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
+                            <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name'] ?></span>
                           </a>
                           <?php if ($item['class_flactuable']) : ?>
                             <img class="class-icon" src="/img/common/<?= strtolower($item['item_class']) ?>.png" />
@@ -141,14 +140,14 @@
                     </ul>
                   </div>
                 <?php endif; ?>
-                <div><?= $quest['note'] ?></div>
+                <div><?= $quest['description'] ?></div>
               </td>
             </tr>
           <?php endforeach; ?>
         </tbody>
       </table>
       <?php if (!empty($shops)) : ?>
-        <div class="lemonchiffon">Shops</div>
+        <div class="lemonchiffon"><?= $l->s('floors.shops') ?></div>
         <table class="table-dark table-striped table-bordered w-100 mb-2">
           <tbody>
             <?php foreach ($shops as $shop) : ?>
@@ -160,18 +159,18 @@
                     </a>
                   </div>
                   <div class="collapse mb-1" id="collapse-shop<?= $shop['shop_id'] ?>r">
-                    <div><?= $shop['random'] ? 'Random Items' : '' ?></div>
+                    <div><?= $shop['random'] ? $l->s('floors.shops_random_items') : '' ?></div>
                     <ul class="m-0 list-unstyled">
                       <?php foreach ($shop['items'] as $item) : ?>
                         <li>
                           <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
-                            <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
+                            <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name'] ?></span>
                           </a><span class="small">(<?= $item['price'] ?>)</span>
                         </li>
                       <?php endforeach; ?>
                     </ul>
                   </div>
-                  <div><?= $shop['note'] ?></div>
+                  <div><?= $shop['description'] ?></div>
                 </td>
               </tr>
             <?php endforeach; ?>
@@ -179,17 +178,17 @@
         </table>
       <?php endif; ?>
       <?php if (!empty($treasure)) : ?>
-        <div class="lemonchiffon">Treasure Items</div>
+        <div class="lemonchiffon"><?= $l->s('floors.treasure_items') ?></div>
         <table class="table-dark table-striped table-bordered w-100 mb-2">
           <tbody>
             <?php foreach ($treasure as $item) : ?>
               <tr>
                 <td>
                   <a href="/items/<?= strtolower($item['item_class']) ?>/<?= $item['rarity'] == 'common' ? $item['base_item_id'] : 'rare' ?>/<?= $item['item_id'] ?>" class="<?= $item['rarity'] ?>">
-                    <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name_en'] ?></span>
+                    <img class="item-icon" src="/img/item/<?= $item['image_name'] ?>" /><span class="pl-1"><?= $item['name'] ?></span>
                   </a>
-                  <?php if (!empty($item['note'])) : ?>
-                    <a href="javascript:void(0);" class="item-skill treasure-note" data-toggle="tooltip" data-placement="top" title="<?= $item['note'] ?>"><i class="fas fa-exclamation-circle"></i></a>
+                  <?php if (!empty($item['description'])) : ?>
+                    <a href="javascript:void(0);" class="item-skill treasure-description" data-toggle="tooltip" data-placement="top" title="<?= $item['description'] ?>"><i class="fas fa-exclamation-circle"></i></a>
                   <?php endif; ?>
                 </td>
               </tr>
@@ -197,19 +196,19 @@
           </tbody>
         </table>
       <?php endif; ?>
-      <div class="lemonchiffon">Creatures</div>
+      <div class="lemonchiffon"><?= $l->s('floors.creatures') ?></div>
       <table class="table-dark table-striped table-bordered w-100 mb-2">
         <tbody>
           <?php if (empty($creatures['default'])) : ?>
             <tr>
-              <td>No Creatures</td>
+              <td><?= $l->s('floors.no_creatures') ?></td>
             </tr>
           <?php endif; ?>
           <?php foreach ($creatures['default'] as $creature) : ?>
             <tr>
               <td>
                 <a href="/creatures/<?= $creature['creature_id'] ?>" class="<?= $creature['boss'] ? 'boss' : 'text-light' ?>">
-                  <img class="item-icon" src="/img/creature/<?= $creature['image_name'] ? $creature['image_name'] : 'creature_noimg.png' ?>" /><span class="pl-1"><?= $creature['name_en'] ?></span>
+                  <img class="item-icon" src="/img/creature/<?= $creature['image_name'] ? $creature['image_name'] : 'creature_noimg.png' ?>" /><span class="pl-1"><?= $creature['name'] ?></span>
                 </a>
               </td>
             </tr>
@@ -218,18 +217,18 @@
       </table>
       <?php if (!empty($creatures['events'])) : ?>
         <div>
-          <a href="#collapse-creatures" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-creatures">Additional Creatures<i class="fas fa-chevron-circle-down"></i></a>
+          <a href="#collapse-creatures" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-creatures"><?= $l->s('floors.creatures_additional') ?><i class="fas fa-chevron-circle-down"></i></a>
         </div>
         <div class="collapse" id="collapse-creatures">
           <?php foreach ($creatures['events'] as $event) : ?>
-            <div class="lemonchiffon"><?= $event['note'] ?></div>
+            <div class="lemonchiffon"><?= $event['description'] ?></div>
             <table class="table-dark table-striped table-bordered w-100 mb-2">
               <tbody>
                 <?php foreach ($event['creatures'] as $creature) : ?>
                   <tr>
                     <td>
                       <a href="/creatures/<?= $creature['creature_id'] ?>" class="<?= $creature['boss'] ? 'boss' : 'text-light' ?>">
-                        <img class="item-icon" src="/img/creature/<?= $creature['image_name'] ? $creature['image_name'] : 'creature_noimg.png' ?>" /><span class="pl-1"><?= $creature['name_en'] ?></span>
+                        <img class="item-icon" src="/img/creature/<?= $creature['image_name'] ? $creature['image_name'] : 'creature_noimg.png' ?>" /><span class="pl-1"><?= $creature['name'] ?></span>
                       </a>
                     </td>
                   </tr>
@@ -242,4 +241,4 @@
     </div>
   </div>
 </div>
-<?= $this->fetch('footer.phtml', ['footer' => $footer]) ?>
+<?= $this->fetch('footer.phtml', ['footer' => $footer, 'l' => $l]) ?>

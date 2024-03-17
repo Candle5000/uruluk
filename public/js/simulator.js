@@ -114,7 +114,7 @@ $(function () {
   const calcAttrs = function () {
     const charaClass = $("select.character-class").val();
     const attrs = Object.assign({}, characterAttrs[charaClass]);
-    $("ul.item-skill").children().remove();
+    $("ul.item-skill").children(".item-passive-skill").remove();
     $(".table-attributes .skill-reduce-label").addClass("d-none");
     const skills = [];
     const skillCharacterClass = "skill_" + $("select.character-class").val();
@@ -149,10 +149,11 @@ $(function () {
       if (item !== undefined) {
 
         // スキルの設定
-        if (item.skill_en || item[skillCharacterClass + "_en"]) {
-          const itemSkill = item.skill_en ? item.skill : item[skillCharacterClass];
+        if (item.skill || item[skillCharacterClass]) {
+          const itemSkill = item.skill ? item.skill : item[skillCharacterClass];
           const skillTag = $("<li />");
-          const skillText = item.skill_en ? item.skill_en : item[skillCharacterClass + "_en"];
+          skillTag.addClass("item-passive-skill");
+          const skillText = item.skill ? item.skill.description : item[skillCharacterClass].description;
           if (itemSkill.trigger_charge > 0) {
             skillTag.addClass("form-check charge-type-skill");
             const skillCheckbox = $("<input />").attr("type", "checkbox").attr("id", "item-skill-" + index).addClass("form-check-input item-skill-check").data("slot-index", index);
@@ -197,14 +198,15 @@ $(function () {
 
     // スキルを表示
     if (skills.length === 0) {
-      $("ul.item-skill").append("<li>No Skills</li>");
+      $("ul.item-skill .no-skills").removeClass("d-none");
     } else {
+      $("ul.item-skill .no-skills").addClass("d-none");
       skills.sort((a, b) => a.sortKey - b.sortKey).forEach(skill => {
         $("ul.item-skill").append(skill.tag);
       });
       $("input.item-skill-check").on("click", function () {
         const item = slotItems[$(this).data("slot-index")];
-        const itemSkill = item.skill_en ? item.skill : item[skillCharacterClass];
+        const itemSkill = item.skill ? item.skill : item[skillCharacterClass];
         itemSkill.enabled = $(this).prop("checked");
         calcAttrs();
       });
@@ -214,7 +216,7 @@ $(function () {
     $(".attr-value").removeClass("item-skill");
     $("input.item-skill-check:checked").toArray().forEach(checkbox => {
       const item = slotItems[$(checkbox).data("slot-index")];
-      const itemSkill = item.skill_en ? item.skill : item[skillCharacterClass];
+      const itemSkill = item.skill ? item.skill : item[skillCharacterClass];
       const skillAttr = itemSkill.effect_target_attribute;
       if (skillAttr === "sa") {
         attrs[skillAttr] = attrs[skillAttr] + Number(itemSkill.effect_amount);
@@ -276,15 +278,15 @@ $(function () {
   const setItem = function (link, item) {
     const img = $("<img />")
       .attr("src", "/img/item/" + item.image_name)
-      .attr("alt", item.name_en)
+      .attr("alt", item.name)
       .addClass("item-icon");
     link.closest("div.d-table-row").find(".item-name").removeClass("common rare artifact")
       .addClass(item.rarity)
-      .text(" " + item.name_en);
-    if (item.skill_en || item["skill_" + $("select.character-class").val() + "_en"]) {
+      .text(" " + item.name);
+    if (item.skill || item["skill_" + $("select.character-class").val()]) {
       link.closest("div.d-table-row").find(".item-skill")
         .removeClass("d-none")
-        .attr("title", (item.skill_en ? item.skill_en : item["skill_" + $("select.character-class").val() + "_en"]));
+        .attr("title", (item.skill ? item.skill.description : item["skill_" + $("select.character-class").val()].description));
     } else {
       link.closest("div.d-table-row").find(".item-skill")
         .addClass("d-none")
@@ -341,7 +343,7 @@ $(function () {
   // スロットにNoneを設定
   const setNone = function (link) {
     const item = {
-      "name_en": "None",
+      "name": $('#set-none-name').data('message'),
       "rarity": "common",
       "image_name": default_img[link.data("item-class")],
       "attributes": []
@@ -441,8 +443,8 @@ $(function () {
       let b_val = 0.0;
 
       if (attrName == 'Skill') {
-        const a_skill = a.skill_en ? a.skill : a["skill_" + charaClass];
-        const b_skill = b.skill_en ? b.skill : b["skill_" + charaClass];
+        const a_skill = a.skill ? a.skill : a["skill_" + charaClass];
+        const b_skill = b.skill ? b.skill : b["skill_" + charaClass];
         a_val = a_skill === null ? -9999999 * currentSortOrder : a_skill.sort_key;
         b_val = b_skill === null ? -9999999 * currentSortOrder : b_skill.sort_key;
       } else {
@@ -590,7 +592,7 @@ $(function () {
         }
 
         setItem(targetSlot, modalItem);
-        if (modalItem.skill_en || modalItem["skill_" + $("select.character-class").val() + "_en"]) {
+        if (modalItem.skill || modalItem["skill_" + $("select.character-class").val()]) {
           const skill = targetSlot.closest("div.d-table-row").find(".item-skill");
           const newSkill = $(skill.prop("outerHTML"));
           skill.remove();
@@ -641,6 +643,10 @@ $(function () {
       modalItemIndex = 0;
       modalItems = target.data("slot-index") == 0 ? [] : [null];
       currentSortAttr = '';
+      // HTMLエスケープをデコード
+      data.items.forEach(item => {
+        item.name = $("<div/>").html(item.name).text();
+      });
       Array.prototype.push.apply(modalItems, data.items);
       $("#scroll-loading").removeClass("d-none").addClass("d-flex");
 
@@ -692,6 +698,10 @@ $(function () {
   // スロット初期化
   let itemIndex = 0;
   const initItems = $.parseJSON($("#init-items").html());
+  // HTMLエスケープをデコード
+  initItems.forEach(item => {
+    item.name = $("<div/>").html(item.name).text();
+  });
   $(".table-item-slot a.item-img:not(.search-all)").toArray().forEach(link => {
     setItem($(link), initItems[itemIndex]);
     slotItems[itemIndex + 1] = initItems[itemIndex];
@@ -712,7 +722,7 @@ $(function () {
       if (item.item_id) {
         $("#table-current-build li.item-slot-" + index + " img")
           .attr("src", "/img/item/" + item.image_name)
-          .attr("alt", item.name_en);
+          .attr("alt", item.name);
       } else {
         $("#table-current-build li.item-slot-" + index + " img")
           .attr("src", "/img/common/other.png")

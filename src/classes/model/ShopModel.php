@@ -17,6 +17,7 @@ class ShopModel extends Model
                 , S.name
                 , S.image_name
                 , S.random
+                , S.description_key
                 , S.note
                 , SI.price
             FROM
@@ -43,6 +44,7 @@ class ShopModel extends Model
                 'name' => $result['name'],
                 'image_name' => $result['image_name'],
                 'random' => $result['random'],
+                'description' => $this->i18n->s($result['description_key']),
                 'note' => $result['note'],
                 'price' => $result['price']
             ];
@@ -59,6 +61,7 @@ class ShopModel extends Model
                 , name
                 , image_name
                 , random
+                , description_key
                 , note
             FROM
                 shop
@@ -77,6 +80,7 @@ class ShopModel extends Model
                 'name' => $result['name'],
                 'image_name' => $result['image_name'],
                 'random' => $result['random'],
+                'description' => $this->i18n->s($result['description_key']),
                 'note' => $result['note'],
             ];
         }

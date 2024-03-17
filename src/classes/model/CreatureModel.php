@@ -13,6 +13,7 @@ class CreatureModel extends Model
             SELECT
                 c.creature_id
                 , c.boss
+                , c.name_key
                 , c.name_en
                 , c.name_ja
                 , c.image_name
@@ -61,6 +62,7 @@ class CreatureModel extends Model
                 $creatures[] = [
                     'creature_id' => $result['creature_id'],
                     'boss' => $result['boss'] == 1,
+                    'name' => $this->i18n->s($result['name_key']),
                     'name_en' => $result['name_en'],
                     'name_ja' => $result['name_ja'],
                     'image_name' => $result['image_name'],
@@ -105,6 +107,7 @@ class CreatureModel extends Model
             SELECT
                 creature_id
                 , boss
+                , name_key
                 , name_en
                 , name_ja
                 , min_ad
@@ -144,6 +147,7 @@ class CreatureModel extends Model
             return [
                 'creature_id' => $result['creature_id'],
                 'boss' => $result['boss'],
+                'name' => $this->i18n->s($result['name_key']),
                 'name_en' => $result['name_en'],
                 'name_ja' => $result['name_ja'],
                 'image_name' => $result['image_name'],
@@ -183,6 +187,7 @@ class CreatureModel extends Model
             SELECT
                 C.creature_id
                 , C.boss
+                , C.name_key
                 , C.name_en
                 , C.image_name
             FROM
@@ -203,6 +208,7 @@ class CreatureModel extends Model
             $creatures[] = [
                 'creature_id' => $result['creature_id'],
                 'boss' => $result['boss'],
+                'name' => $this->i18n->s($result['name_key']),
                 'name_en' => $result['name_en'],
                 'image_name' => $result['image_name'],
             ];
@@ -215,9 +221,11 @@ class CreatureModel extends Model
         $sql = <<<SQL
             SELECT
                 FC.event_id
+                , E.description_key
                 , E.note
                 , C.creature_id
                 , C.boss
+                , C.name_key
                 , C.name_en
                 , C.name_ja
                 , C.image_name
@@ -246,6 +254,7 @@ class CreatureModel extends Model
             $creature = [
                 'creature_id' => $result['creature_id'],
                 'boss' => $result['boss'],
+                'name' => $this->i18n->s($result['name_key']),
                 'name_en' => $result['name_en'],
                 'name_ja' => $result['name_ja'],
                 'image_name' => $result['image_name']
@@ -256,6 +265,7 @@ class CreatureModel extends Model
             } else {
                 if (!array_key_exists($eventId, $floorCreatures['events'])) {
                     $floorCreatures['events'][$eventId] = [
+                        'description' => $this->i18n->s($result['description_key']),
                         'note' => $result['note'],
                         'creatures' => []
                     ];

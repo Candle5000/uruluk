@@ -24,7 +24,7 @@ class SimulatorController extends Controller
     {
         $this->title = 'シミュレータ';
         $this->scripts[] = '/js/simulator.js?id=00080';
-        $item = new ItemModel($this->db, $this->logger);
+        $item = new ItemModel($this->db, $this->logger, $this->i18n);
         $getParam = $request->getQueryParams();
         $charClass = array_key_exists('c', $getParam) && array_key_exists($getParam['c'], self::SLOT_ITEM_CLASSES) ? $getParam['c'] : 'sword';
         $xp = array_key_exists('xp', $getParam) ? $getParam['xp'] : self::XP_DEFAULT;
@@ -59,7 +59,8 @@ class SimulatorController extends Controller
                 'boostups' => $boostups,
                 'items' => $items,
                 'slots' => array_merge(self::SLOT_ITEM_CLASSES[$charClass], self::SLOT_ITEM_CLASSES_COMMON),
-                'footer' => $this->getFooterInfo()
+                'footer' => $this->getFooterInfo(),
+                'l' => $this->i18n
             ];
 
             $this->db->commit();
@@ -73,7 +74,7 @@ class SimulatorController extends Controller
 
     public function item(Request $request, Response $response, array $args)
     {
-        $item = new ItemModel($this->db, $this->logger);
+        $item = new ItemModel($this->db, $this->logger, $this->i18n);
         $getParam = $request->getQueryParams();
         $itemClassNames = [];
         if (array_key_exists('characterClass', $getParam) && array_key_exists($getParam['characterClass'], self::SLOT_ITEM_CLASSES)) {

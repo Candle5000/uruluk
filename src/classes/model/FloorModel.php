@@ -28,6 +28,7 @@ class FloorModel extends Model
         $sql = <<<SQL
             SELECT
                 short_name
+                , name_key
                 , name_en
                 , name_ja
                 , image_name
@@ -46,6 +47,7 @@ class FloorModel extends Model
             return [
                 'floor_id' => $floorId,
                 'short_name' => $result['short_name'],
+                'name' => $this->i18n->s($result['name_key']),
                 'name_en' => $result['name_en'],
                 'name_ja' => $result['name_ja'],
                 'image_name' => $result['image_name'],
@@ -124,6 +126,7 @@ class FloorModel extends Model
             SELECT
                 F.floor_id
                 , F.short_name
+                , FT.description_key
                 , FT.note
             FROM
                 floor_treasure FT
@@ -143,6 +146,7 @@ class FloorModel extends Model
             $floors[] = [
                 'floor_id' => $result['floor_id'],
                 'short_name' => $result['short_name'],
+                'description' => $this->i18n->s($result['description_key']),
                 'note' => $result['note'],
             ];
         }
@@ -155,7 +159,9 @@ class FloorModel extends Model
             SELECT
                 F.floor_id
                 , F.short_name
+                , F.name_key
                 , F.name_en
+                , E.description_key
                 , E.note
             FROM
                 floor_creature FC
@@ -178,7 +184,9 @@ class FloorModel extends Model
             $floors[] = [
                 'floor_id' => $result['floor_id'],
                 'short_name' => $result['short_name'],
+                'name' => $this->i18n->s($result['name_key']),
                 'name_en' => $result['name_en'],
+                'description' => $this->i18n->s($result['description_key']),
                 'note' => $result['note'],
             ];
         }
@@ -190,6 +198,7 @@ class FloorModel extends Model
         $sql = <<<SQL
             SELECT
                 floor_group_id
+                , name_key
                 , name_en
                 , name_ja
             FROM
@@ -204,6 +213,7 @@ class FloorModel extends Model
         while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $floorGroups[] = [
                 'floor_group_id' => $result['floor_group_id'],
+                'name' => $this->i18n->s($result['name_key']),
                 'name_en' => $result['name_en'],
                 'name_ja' => $result['name_ja']
             ];
@@ -218,6 +228,7 @@ class FloorModel extends Model
                 floor_id
                 , floor_group_id
                 , short_name
+                , name_key
                 , name_en
                 , name_ja
             FROM
@@ -235,6 +246,7 @@ class FloorModel extends Model
                 'floor_id' => $result['floor_id'],
                 'floor_group_id' => $result['floor_group_id'],
                 'short_name' => $result['short_name'],
+                'name' => $this->i18n->s($result['name_key']),
                 'name_en' => $result['name_en'],
                 'name_ja' => $result['name_ja']
             ];

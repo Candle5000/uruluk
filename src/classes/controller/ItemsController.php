@@ -26,11 +26,12 @@ class ItemsController extends Controller
         try {
             $this->db->beginTransaction();
 
-            $item = new ItemModel($this->db, $this->logger);
+            $item = new ItemModel($this->db, $this->logger, $this->i18n);
             $args = [
                 'header' => $this->getHeaderInfo(),
                 'menu' => $item->getBaseItems(),
-                'footer' => $this->getFooterInfo()
+                'footer' => $this->getFooterInfo(),
+                'l' => $this->i18n
             ];
 
             $this->db->commit();
@@ -45,23 +46,24 @@ class ItemsController extends Controller
     public function rareItem(Request $request, Response $response, array $args)
     {
         $this->title = ucfirst($args['itemClassName']) . ' レアアイテム';
-        $this->scripts[] = '/js/item.js?id=00080';
+        $this->scripts[] = '/js/item.js?id=00081';
 
         try {
             $this->db->beginTransaction();
 
-            $item = new ItemModel($this->db, $this->logger);
+            $item = new ItemModel($this->db, $this->logger, $this->i18n);
             $itemClassId = $item->getItemClassId($args['itemClassName']);
             if ($itemClassId === null) throw new NotFoundException($request, $response);
             $args = [
                 'header' => $this->getHeaderInfo(),
                 'menu' => $item->getBaseItems(),
-                'item_class' => ucfirst($args['itemClassName']),
+                'itemClass' => $args['itemClassName'],
                 'items' => [
                     'rare' => $item->getItemsByClassAndRarity($itemClassId, 'rare'),
                     'artifact' => $item->getItemsByClassAndRarity($itemClassId, 'artifact')
                 ],
-                'footer' => $this->getFooterInfo()
+                'footer' => $this->getFooterInfo(),
+                'l' => $this->i18n
             ];
 
             $this->db->commit();
@@ -76,12 +78,12 @@ class ItemsController extends Controller
     public function commonItem(Request $request, Response $response, array $args)
     {
         $this->title = ucfirst($args['itemClassName']) . ' ノーマルアイテム';
-        $this->scripts[] = '/js/item.js?id=00080';
+        $this->scripts[] = '/js/item.js?id=00081';
 
         try {
             $this->db->beginTransaction();
 
-            $item = new ItemModel($this->db, $this->logger);
+            $item = new ItemModel($this->db, $this->logger, $this->i18n);
             if (!is_numeric($args['baseItemId'])) throw new NotFoundException($request, $response);
             $itemClassId = $item->getItemClassId($args['itemClassName']);
             if ($itemClassId === null) throw new NotFoundException($request, $response);
@@ -90,10 +92,11 @@ class ItemsController extends Controller
             $args = [
                 'header' => $this->getHeaderInfo(),
                 'menu' => $item->getBaseItems(),
-                'item_class' => ucfirst($args['itemClassName']),
-                'base_item' => $baseItem,
+                'itemClass' => $args['itemClassName'],
+                'baseItem' => $baseItem,
                 'items' => $item->getCommonItemsByClassAndBaseItem($itemClassId, $args['baseItemId']),
-                'footer' => $this->getFooterInfo()
+                'footer' => $this->getFooterInfo(),
+                'l' => $this->i18n
             ];
 
             $this->db->commit();
@@ -107,11 +110,11 @@ class ItemsController extends Controller
 
     public function detail(Request $request, Response $response, array $args)
     {
-        $floor = new FloorModel($this->db, $this->logger);
-        $creature = new CreatureModel($this->db, $this->logger);
-        $quest = new QuestModel($this->db, $this->logger);
-        $shop = new ShopModel($this->db, $this->logger);
-        $tag = new TagModel($this->db, $this->logger);
+        $floor = new FloorModel($this->db, $this->logger, $this->i18n);
+        $creature = new CreatureModel($this->db, $this->logger, $this->i18n);
+        $quest = new QuestModel($this->db, $this->logger, $this->i18n);
+        $shop = new ShopModel($this->db, $this->logger, $this->i18n);
+        $tag = new TagModel($this->db, $this->logger, $this->i18n);
         $data = [
             'floors' => $floor->getFloorsByItemId($args['itemId']),
             'banana' => $floor->getBananaFloorsByItemId($args['itemId']),

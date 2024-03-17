@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2024/02/28 22:48:09
+-- Date/Time    : 2024/03/18 0:16:48
 -- Author       : candl
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -31,9 +31,12 @@ drop table if exists `attribute` cascade;
 -- * RestoreFromTempTable
 create table `attribute` (
   `attribute_id` INT not null AUTO_INCREMENT comment '性能ID'
+  , `short_name_key` VARCHAR(128) comment '略称キー'
+  , `name_key` VARCHAR(128) comment '名称キー'
   , `short_name` VARCHAR(8) comment '略称'
   , `name_en` VARCHAR(32) comment '名称(英語)'
   , `name_ja` VARCHAR(32) comment '名称(日本語)'
+  , `unit_key` VARCHAR(128) comment '単位キー'
   , `unit` VARCHAR(16) comment '単位'
   , `sort_key` INT not null comment 'ソート順'
   , constraint `attribute_PKC` primary key (`attribute_id`)
@@ -49,6 +52,7 @@ drop table if exists `base_item` cascade;
 create table `base_item` (
   `base_item_id` INT not null AUTO_INCREMENT comment 'ベースアイテムID'
   , `item_class_id` INT not null comment 'アイテムクラスID'
+  , `name_key` VARCHAR(32) comment '名称キー'
   , `name_en` VARCHAR(32) comment '名称(英語)'
   , `name_ja` VARCHAR(32) comment '名称(日本語)'
   , `image_name` VARCHAR(64) comment '画像名称'
@@ -66,6 +70,7 @@ drop table if exists `creature` cascade;
 create table `creature` (
   `creature_id` INT not null AUTO_INCREMENT comment 'クリーチャーID'
   , `boss` BIT(1) default FALSE not null comment 'ボス'
+  , `name_key` VARCHAR(128) comment '名称キー'
   , `name_en` VARCHAR(32) comment '名称(英語)'
   , `name_ja` VARCHAR(32) comment '名称(日本語)'
   , `min_ad` INT comment '最小攻撃力'
@@ -120,6 +125,7 @@ drop table if exists `creature_pop_event` cascade;
 create table `creature_pop_event` (
   `event_id` INT not null AUTO_INCREMENT comment 'イベントID'
   , `note` TEXT comment '説明'
+  , `description_key` VARCHAR(128) comment '説明キー'
   , constraint `creature_pop_event_PKC` primary key (`event_id`)
 ) comment 'クリーチャー出現条件' ;
 
@@ -165,6 +171,7 @@ create table `floor` (
   `floor_id` INT not null AUTO_INCREMENT comment 'フロアID'
   , `floor_group_id` INT not null comment 'フロアグループID'
   , `short_name` VARCHAR(16) comment '略称'
+  , `name_key` VARCHAR(128) comment '名称キー'
   , `name_en` VARCHAR(64) comment '名称(英語)'
   , `name_ja` VARCHAR(64) comment '名称(日本語)'
   , `image_name` VARCHAR(64) comment '画像名称'
@@ -252,6 +259,7 @@ drop table if exists `floor_group` cascade;
 -- * RestoreFromTempTable
 create table `floor_group` (
   `floor_group_id` INT not null AUTO_INCREMENT comment 'フロアグループID'
+  , `name_key` VARCHAR(128) comment '名称キー'
   , `name_en` VARCHAR(32) comment '名称(英語)'
   , `name_ja` VARCHAR(32) comment '名称(日本語)'
   , `sort_key` INT not null comment 'ソート順'
@@ -269,8 +277,22 @@ create table `floor_treasure` (
   `floor_id` INT not null comment 'フロアID'
   , `item_id` INT not null comment 'アイテムID'
   , `note` VARCHAR(256) comment '備考'
+  , `description_key` VARCHAR(128) comment '説明キー'
   , constraint `floor_treasure_PKC` primary key (`floor_id`,`item_id`)
 ) comment 'フロア宝箱' ;
+
+-- 多言語メッセージ
+-- * BackupToTempTable
+drop table if exists `i18n_message` cascade;
+
+-- * RestoreFromTempTable
+create table `i18n_message` (
+  `language_code` VARCHAR(8) not null comment '言語コード'
+  , `category` VARCHAR(64) not null comment 'カテゴリ'
+  , `message_key` VARCHAR(64) not null comment 'キー'
+  , `message` VARCHAR(256) not null comment 'メッセージ'
+  , constraint `i18n_message_PKC` primary key (`language_code`,`category`,`message_key`)
+) comment '多言語メッセージ' ;
 
 -- アイテム
 -- * BackupToTempTable
@@ -283,6 +305,7 @@ create table `item` (
   , `base_item_id` INT comment 'ベースアイテムID'
   , `brand_id` INT comment 'ブランドID'
   , `class_flactuable` BIT(1) default 0 not null comment 'クラス変動'
+  , `name_key` VARCHAR(128) comment '名称キー'
   , `name_en` VARCHAR(64) comment '名称(英語)'
   , `name_ja` VARCHAR(64) comment '名称(日本語)'
   , `rarity` ENUM('common', 'rare', 'artifact') not null comment 'レアリティ'
@@ -295,6 +318,7 @@ create table `item` (
   , `skill_axe_en` VARCHAR(128) comment 'スキルアックス(英語)'
   , `skill_sword_en` VARCHAR(128) comment 'スキルソード(英語)'
   , `skill_dagger_en` VARCHAR(128) comment 'スキルダガー(英語)'
+  , `description_key` VARCHAR(128) comment '説明文キー'
   , `comment_en` VARCHAR(64) comment 'コメント(英語)'
   , `comment_ja` VARCHAR(64) comment 'コメント(日本語)'
   , `note` TEXT comment '説明'
@@ -353,6 +377,7 @@ drop table if exists `item_class` cascade;
 -- * RestoreFromTempTable
 create table `item_class` (
   `item_class_id` INT not null AUTO_INCREMENT comment 'アイテムクラスID'
+  , `name_key` VARCHAR(128) comment '名称キー'
   , `name_en` VARCHAR(32) comment '名称(英語)'
   , `name_ja` VARCHAR(32) comment '名称(日本語)'
   , `image_name` VARCHAR(64) comment '画像名称'
@@ -381,6 +406,10 @@ create table `item_skill` (
   , `effect_target_attribute_id` INT comment '対象スタッツ'
   , `effect_amount` INT comment '効果量(%)'
   , `effect_duration` INT comment '効果時間(sec)'
+  , `description_key` VARCHAR(128) comment '説明文キー'
+  , `description_arg_1` INT comment '説明文引数1'
+  , `description_arg_2` INT comment '説明文引数2'
+  , `description_arg_3` INT comment '説明文引数3'
   , `sort_key` INT not null comment 'ソート順'
   , constraint `item_skill_PKC` primary key (`skill_id`)
 ) comment 'アイテムスキル' ;
@@ -422,9 +451,12 @@ create table `quest` (
   , `floor_id` INT not null comment 'フロアID'
   , `repeatable` BIT(1) not null comment '繰り返し可能'
   , `autosave` BIT(1) not null comment '自動セーブ'
+  , `required_items_description_key` VARCHAR(128) comment '要求アイテム説明キー'
   , `required_items_note` VARCHAR(64) comment '要求アイテム備考'
+  , `reward_items_description_key` VARCHAR(128) comment '報酬アイテム説明キー'
   , `reward_items_note` VARCHAR(64) comment '報酬アイテム備考'
   , `reward_common_items` BIT(1) not null comment '報酬コモンアイテム'
+  , `description_key` VARCHAR(128) comment '説明キー'
   , `note` VARCHAR(256) comment '備考'
   , constraint `quest_PKC` primary key (`quest_id`)
 ) comment 'クエスト' ;
@@ -475,6 +507,7 @@ create table `shop` (
   , `name` VARCHAR(64) not null comment '名称'
   , `image_name` VARCHAR(64) comment '画像名称'
   , `random` BIT(1) not null comment 'ランダム'
+  , `description_key` VARCHAR(128) comment '説明キー'
   , `note` VARCHAR(256) comment '備考'
   , constraint `shop_PKC` primary key (`shop_id`)
 ) comment 'ショップ' ;

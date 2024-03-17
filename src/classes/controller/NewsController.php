@@ -24,13 +24,14 @@ class NewsController extends Controller
         try {
             $this->db->beginTransaction();
 
-            $news = new NewsModel($this->db, $this->logger);
+            $news = new NewsModel($this->db, $this->logger, $this->i18n);
 
             $args = [
                 'header' => $this->getHeaderInfo(),
                 'news' => $news->getNews($page),
                 'page' => $page,
-                'footer' => $this->getFooterInfo()
+                'footer' => $this->getFooterInfo(),
+                'l' => $this->i18n
             ];
 
             $this->db->commit();

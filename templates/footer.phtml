@@ -4,10 +4,10 @@
     <footer class="border-top border-darkblue">
       <div class="container">
         <ul class="float-right list-inline my-2">
-          <li class="list-inline-item">Today Page Views : <?= $footer['pv_today'] ?></li>
-          <li class="list-inline-item">Yesterday Page Views : <?= $footer['pv_yesterday'] ?></li>
-          <li class="list-inline-item"><a href="/privacy" class="lemonchiffon">プライバシーポリシー</a></li>
-          <li class="list-inline-item"><a href="http://www.smokymonkeys.com/triglav/" target="_blank" class="lemonchiffon">TRIGLAV 公式サイト</a></li>
+          <li class="list-inline-item"><?= $l->s('common_footer.pv_today') ?>&nbsp;:&nbsp;<?= $footer['pv_today'] ?></li>
+          <li class="list-inline-item"><?= $l->s('common_footer.pv_yesterday') ?>&nbsp;:&nbsp;<?= $footer['pv_yesterday'] ?></li>
+          <li class="list-inline-item"><a href="/privacy" class="lemonchiffon"><?= $l->s('common_footer.privacy_policy') ?></a></li>
+          <li class="list-inline-item"><a href="http://www.smokymonkeys.com/triglav/" target="_blank" class="lemonchiffon"><?= $l->s('common_footer.triglav_website') ?></a></li>
         </ul>
       </div>
     </footer>
