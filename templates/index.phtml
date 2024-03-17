@@ -11,7 +11,7 @@
       <h5 class="card-header border-secondary"><?= $l->s('index.news_and_update') ?></h5>
       <?php foreach ($newsList as $news) : ?>
         <div class="card-body border-bottom border-secondary">
-          <h5 class="card-title"><?= $news['post_date'] ?></h5>
+          <h5 class="card-title"><?= $news['post_date'] ?><?= $l->getLangCode() != 'ja' ? '&nbsp;(JST)' : '' ?></h5>
           <div class="card-title"><?= $news['subject'] ?></div>
           <p class="mb-0"><?= nl2br($news['content']) ?></p>
         </div>

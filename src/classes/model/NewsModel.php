@@ -27,7 +27,9 @@ class NewsModel extends Model
                 SQL_CALC_FOUND_ROWS
                 post_date
                 , subject
+                , subject_en
                 , content
+                , content_en
             FROM
                 news
             ORDER BY
@@ -42,10 +44,19 @@ class NewsModel extends Model
         $stmt->execute();
         $newsList = [];
         while ($result = $stmt->fetch()) {
+            switch ($this->i18n->getLangCode()) {
+                case 'en':
+                    $subject = empty($result['subject_en']) ? $result['subject'] : $result['subject_en'];
+                    $content = empty($result['content_en']) ? $result['content'] : $result['content_en'];
+                    break;
+                default:
+                    $subject = $result['subject'];
+                    $content = $result['content'];
+            }
             $newsList[] = [
                 'post_date' => $result['post_date'],
-                'subject' => $result['subject'],
-                'content' => $result['content']
+                'subject' => $subject,
+                'content' => $content
             ];
         }
         $sql = <<<SQL

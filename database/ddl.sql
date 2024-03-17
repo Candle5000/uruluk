@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2024/03/18 0:16:48
+-- Date/Time    : 2024/03/18 4:06:59
 -- Author       : candl
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -437,7 +437,9 @@ drop table if exists `news` cascade;
 create table `news` (
   `post_date` DATETIME not null comment '投稿日時'
   , `subject` VARCHAR(256) comment '件名'
+  , `subject_en` VARCHAR(256) comment '件名(英語)'
   , `content` TEXT comment '本文'
+  , `content_en` TEXT comment '本文(英語)'
   , constraint `news_PKC` primary key (`post_date`)
 ) comment 'お知らせ' ;
 
