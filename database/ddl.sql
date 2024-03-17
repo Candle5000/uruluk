@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2024/03/17 2:17:59
+-- Date/Time    : 2024/03/18 0:16:48
 -- Author       : candl
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -507,6 +507,7 @@ create table `shop` (
   , `name` VARCHAR(64) not null comment '名称'
   , `image_name` VARCHAR(64) comment '画像名称'
   , `random` BIT(1) not null comment 'ランダム'
+  , `description_key` VARCHAR(128) comment '説明キー'
   , `note` VARCHAR(256) comment '備考'
   , constraint `shop_PKC` primary key (`shop_id`)
 ) comment 'ショップ' ;
