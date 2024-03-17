@@ -26,9 +26,12 @@ class QuestModel extends Model
                 , floor_id
                 , repeatable
                 , autosave
+                , required_items_description_key
                 , required_items_note
+                , reward_items_description_key
                 , reward_items_note
                 , reward_common_items
+                , description_key
                 , note
             FROM
                 quest
@@ -48,9 +51,12 @@ class QuestModel extends Model
                 'floor_id' => $floorId,
                 'repeatable' => $result['repeatable'],
                 'autosave' => $result['autosave'],
+                'required_items_description' => $this->i18n->s($result['required_items_description_key']),
                 'required_items_note' => $result['required_items_note'],
+                'reward_items_description' => $this->i18n->s($result['reward_items_description_key']),
                 'reward_items_note' => $result['reward_items_note'],
                 'reward_common_items' => $result['reward_common_items'],
+                'description' => $this->i18n->s($result['description_key']),
                 'note' => $result['note'],
                 'icons' => $this->getQuestIcons($result['quest_id']),
             ];
@@ -68,9 +74,12 @@ class QuestModel extends Model
                 , F.short_name
                 , Q.repeatable
                 , Q.autosave
+                , Q.required_items_description_key
                 , Q.required_items_note
+                , Q.reward_items_description_key
                 , Q.reward_items_note
                 , Q.reward_common_items
+                , Q.description_key
                 , Q.note
             FROM
                 quest Q
@@ -95,9 +104,12 @@ class QuestModel extends Model
                 'short_name' => $result['short_name'],
                 'repeatable' => $result['repeatable'],
                 'autosave' => $result['autosave'],
+                'required_items_description' => $this->i18n->s($result['required_items_description_key']),
                 'required_items_note' => $result['required_items_note'],
+                'reward_items_description' => $this->i18n->s($result['reward_items_description_key']),
                 'reward_items_note' => $result['reward_items_note'],
                 'reward_common_items' => $result['reward_common_items'],
+                'description' => $this->i18n->s($result['description_key']),
                 'note' => $result['note'],
                 'icons' => $this->getQuestIcons($result['quest_id'])
             ];

@@ -102,7 +102,7 @@
                     <a href="#collapse-quest<?= $quest['quest_id'] ?>n" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-quest<?= $quest['quest_id'] ?>n"><?= $l->s('floors.quest_required_items') ?><i class="fas fa-chevron-circle-down"></i></a>
                   </div>
                   <div class="collapse mb-1" id="collapse-quest<?= $quest['quest_id'] ?>n">
-                    <?= $quest['required_items_note'] ?>
+                    <?= $quest['required_items_description'] ?>
                     <ul class="m-0 list-unstyled">
                       <?php foreach ($quest['required_items'] as $item) : ?>
                         <li>
@@ -122,7 +122,7 @@
                     <a href="#collapse-quest<?= $quest['quest_id'] ?>r" class="lemonchiffon collapse-link" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-quest<?= $quest['quest_id'] ?>r"><?= $l->s('floors.quest_reward_items') ?><i class="fas fa-chevron-circle-down"></i></a>
                   </div>
                   <div class="collapse mb-1" id="collapse-quest<?= $quest['quest_id'] ?>r">
-                    <?= $quest['reward_items_note'] ?>
+                    <?= $quest['reward_items_description'] ?>
                     <ul class="m-0 list-unstyled">
                       <?php if (!empty($quest['reward_common_items'])) : ?>
                         <li><img class="item-icon" src="/img/common/other.png" /><span class="pl-1"><?= $l->s('floors.quest_reward_common_items') ?></span></li>
@@ -140,7 +140,7 @@
                     </ul>
                   </div>
                 <?php endif; ?>
-                <div><?= $quest['note'] ?></div>
+                <div><?= $quest['description'] ?></div>
               </td>
             </tr>
           <?php endforeach; ?>

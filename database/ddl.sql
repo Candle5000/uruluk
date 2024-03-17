@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2024/03/16 13:23:13
+-- Date/Time    : 2024/03/17 2:17:59
 -- Author       : candl
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -451,9 +451,12 @@ create table `quest` (
   , `floor_id` INT not null comment 'フロアID'
   , `repeatable` BIT(1) not null comment '繰り返し可能'
   , `autosave` BIT(1) not null comment '自動セーブ'
+  , `required_items_description_key` VARCHAR(128) comment '要求アイテム説明キー'
   , `required_items_note` VARCHAR(64) comment '要求アイテム備考'
+  , `reward_items_description_key` VARCHAR(128) comment '報酬アイテム説明キー'
   , `reward_items_note` VARCHAR(64) comment '報酬アイテム備考'
   , `reward_common_items` BIT(1) not null comment '報酬コモンアイテム'
+  , `description_key` VARCHAR(128) comment '説明キー'
   , `note` VARCHAR(256) comment '備考'
   , constraint `quest_PKC` primary key (`quest_id`)
 ) comment 'クエスト' ;
