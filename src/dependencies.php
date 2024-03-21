@@ -38,9 +38,10 @@ return function (App $app) {
             $is_wildcard = isset($locale['language']) && $locale['language'] === '*';
             if (empty($locale['language']) && !$is_wildcard) return null;
             if ($is_wildcard || $locale['language'] === 'zh') {
-                if (!empty($locale['region']) && $locale['region'] == 'TW') return 'zh_tw';
-                if (!empty($locale['script']) && $locale['script'] == 'Hant') return 'zh_tw';
-                if ($locale['language'] === 'zh') return 'zh_cn';
+                // TODO 中国語対応実施時にコメントアウトを外す
+                // if (!empty($locale['region']) && $locale['region'] == 'TW') return 'zh_tw';
+                // if (!empty($locale['script']) && $locale['script'] == 'Hant') return 'zh_tw';
+                // if ($locale['language'] === 'zh') return 'zh_cn';
             }
             if (in_array($locale['language'], $knownLanguages)) return $locale['language'];
             return null;
