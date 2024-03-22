@@ -41,6 +41,8 @@ stats:
   ws_full: 'Walk Speed'
   sa: 'SA'
   sa_full: 'Special Attack'
+  sad: 'SAD'
+  sad_full: 'Special Attack Damage'
   voh: 'VoH'
   voh_full: 'Vitality on Hit'
   dr: 'DR'

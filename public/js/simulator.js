@@ -12,6 +12,9 @@ $(function () {
     "vit",
     "ws",
     "sa",
+    "sad",
+    "minsad",
+    "maxsad",
     "voh",
     "dr",
     "xpg"
@@ -33,6 +36,9 @@ $(function () {
       "vit": 100,
       "ws": 56.55,
       "sa": 30,
+      "sad": 150,
+      "minsad": 0,
+      "maxsad": 0,
       "voh": 0,
       "dr": 0,
       "xpg": 0
@@ -48,6 +54,9 @@ $(function () {
       "vit": 120,
       "ws": 53.55,
       "sa": 30,
+      "sad": 300,
+      "minsad": 0,
+      "maxsad": 0,
       "voh": 0,
       "dr": 0,
       "xpg": 0
@@ -63,6 +72,9 @@ $(function () {
       "vit": 80,
       "ws": 59.55,
       "sa": 30,
+      "sad": 300,
+      "minsad": 0,
+      "maxsad": 0,
       "voh": 0,
       "dr": 0,
       "xpg": 0
@@ -241,12 +253,16 @@ $(function () {
       attrs.maxad += attrs.str;
     }
 
+    // SADを計算
+    attrs.minsad = attrs.minad * attrs.sad / 100;
+    attrs.maxsad = attrs.maxad * attrs.sad / 100;
+
     // 画面に反映
     attrNames.forEach(attrName => {
       if (attrs[attrName] < 0) {
         attrs[attrName] = 0;
       }
-      $(".table-attributes .attr-" + attrName).text(Math.round(attrs[attrName]));
+      $(".table-attributes .attr-" + attrName).text(Math.round(attrs[attrName] - 0.0000005));
 
       // No Delay判定
       if (attrName == "sa") {

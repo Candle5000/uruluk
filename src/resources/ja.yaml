@@ -41,6 +41,8 @@ stats:
   ws_full: '移動速度'
   sa: 'SA'
   sa_full: 'スペシャルアタック'
+  sad: 'SAD'
+  sad_full: 'スペシャルアタックダメージ'
   voh: 'VoH'
   voh_full: '生命力吸収'
   dr: 'DR'
