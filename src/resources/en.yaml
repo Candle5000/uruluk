@@ -17,6 +17,7 @@ lang:
   en: 'English'
   zh-CN: '简体中文'
   zh-TW: '繁體中文'
+  pt-BR: 'Português Brasileiro'
 
 stats:
   ad: 'AD'
@@ -140,10 +141,8 @@ creatures:
   tb_creature: 'TB Creature'
 
 creatures_detail:
-  special_abilities: 'Special Abilities'
   items: 'Items'
   floors: 'Floors'
-  note: 'Note'
   tb_phase: 'TB Phase'
   tb_phase_boosts: 'TB Phase Boosts'
 
@@ -176,8 +175,8 @@ simulator:
   boost_ups: 'Boost Ups'
   boost_up_nostrum: 'Nostrum'
   boost_up_elixir: 'Elixir'
-  boost_up_giogan: 'Gio''Gan'
-  boost_up_necter: 'Necter'
+  boost_up_giogan: 'Gio'' Gan'
+  boost_up_necter: 'Nectar'
   boost_up_hydrabrew: 'Hydrabrew'
   equipment_items: 'Equipment Items'
   search_all_items: 'Search All Items'

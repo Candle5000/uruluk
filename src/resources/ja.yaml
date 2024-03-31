@@ -17,6 +17,7 @@ lang:
   en: 'English'
   zh-CN: '简体中文'
   zh-TW: '繁體中文'
+  pt-BR: 'Português Brasileiro'
 
 stats:
   ad: 'AD'
@@ -140,10 +141,8 @@ creatures:
   tb_creature: '結界地のみ'
 
 creatures_detail:
-  special_abilities: '特殊能力'
   items: '固有ドロップ'
   floors: '出現フロア'
-  note: '備考'
   tb_phase: '結界地フェーズ'
   tb_phase_boosts: '結界地フェーズ補正'
 
