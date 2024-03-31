@@ -32,16 +32,17 @@ return function (App $app) {
     // i18n
     $container['i18n'] = function ($c) {
         $defaultLanguage = 'en';
-        $knownLanguages = ['en', 'ja'];
-        $language = array_key_exists('language', $_COOKIE) ? $_COOKIE['language'] : null;
+        $knownLanguages = ['en', 'ja', 'zh-CN', 'zh-TW'];
+        $currentLangVersion = '00086';
+        $langVersion = array_key_exists('langVersion', $_COOKIE) ? $_COOKIE['langVersion'] : null;
+        $language = $currentLangVersion == $langVersion && array_key_exists('language', $_COOKIE) ? $_COOKIE['language'] : null;
         $strategy = function (array $locale) use ($knownLanguages) {
             $is_wildcard = isset($locale['language']) && $locale['language'] === '*';
             if (empty($locale['language']) && !$is_wildcard) return null;
             if ($is_wildcard || $locale['language'] === 'zh') {
-                // TODO 中国語対応実施時にコメントアウトを外す
-                // if (!empty($locale['region']) && $locale['region'] == 'TW') return 'zh_tw';
-                // if (!empty($locale['script']) && $locale['script'] == 'Hant') return 'zh_tw';
-                // if ($locale['language'] === 'zh') return 'zh_cn';
+                if (!empty($locale['region']) && $locale['region'] == 'TW') return 'zh-TW';
+                if (!empty($locale['script']) && $locale['script'] == 'Hant') return 'zh-TW';
+                if ($locale['language'] === 'zh') return 'zh-CN';
             }
             if (in_array($locale['language'], $knownLanguages)) return $locale['language'];
             return null;
@@ -49,6 +50,7 @@ return function (App $app) {
         if (!in_array($language, $knownLanguages)) {
             $language = \Teto\HTTP\AcceptLanguage::detect($strategy, $defaultLanguage);
         }
+        setcookie('langVersion', $currentLangVersion, time() + 5184000, '/');
         setcookie('language', $language, time() + 5184000, '/');
 
         $parser = new \I18n\YamlFileParser();
