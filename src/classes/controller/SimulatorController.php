@@ -17,13 +17,13 @@ class SimulatorController extends Controller
     private const XP_DEFAULT = 10000000;
     private const KILLS_DEFAULT = 1000000;
     private const BOOSTUPS_NAME = ['nostrum', 'elixir', 'giogan', 'necter', 'hydrabrew'];
-    private const SLOT_ITEM_CLASSES = ['sword' => ['sword', 'shield'], 'axe' => ['axe', 'mantle'], 'dagger' => ['dagger', 'dagger']];
+    private const SLOT_ITEM_CLASSES = ['sword' => ['sword', 'shield'], 'axe' => ['axe', 'mantle'], 'dagger' => ['dagger', 'dagger'], 'princess' => ['axe', 'mantle']];
     private const SLOT_ITEM_CLASSES_COMMON = ['ring', 'ring', 'helm', 'armor', 'gloves', 'boots', 'freshy', 'puppet', 'puppet', 'puppet'];
 
     public function index(Request $request, Response $response)
     {
         $this->title = 'シミュレータ';
-        $this->scripts[] = '/js/simulator.js?id=00084';
+        $this->scripts[] = '/js/simulator.js?id=x0001';
         $item = new ItemModel($this->db, $this->logger, $this->i18n);
         $getParam = $request->getQueryParams();
         $charClass = array_key_exists('c', $getParam) && array_key_exists($getParam['c'], self::SLOT_ITEM_CLASSES) ? $getParam['c'] : 'sword';
