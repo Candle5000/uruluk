@@ -26,6 +26,7 @@ $(function () {
   // キャラクタークラスの性能
   const characterAttrs = {
     "sword": {
+      "type": "sword",
       "minad": 0,
       "maxad": 0,
       "as": 18,
@@ -44,6 +45,7 @@ $(function () {
       "xpg": 0
     },
     "axe": {
+      "type": "axe",
       "minad": 0,
       "maxad": 0,
       "as": 25,
@@ -62,6 +64,7 @@ $(function () {
       "xpg": 0
     },
     "dagger": {
+      "type": "dagger",
       "minad": 0,
       "maxad": 0,
       "as": 10,
@@ -77,6 +80,25 @@ $(function () {
       "maxsad": 0,
       "voh": 0,
       "dr": 0,
+      "xpg": 0
+    },
+    "princess": {
+      "type": "axe",
+      "minad": 7,
+      "maxad": 50,
+      "as": 20,
+      "ar": 120,
+      "str": 40,
+      "def": 66,
+      "dex": 30,
+      "vit": 1450,
+      "ws": 64.55,
+      "sa": 30,
+      "sad": 200,
+      "minsad": 0,
+      "maxsad": 0,
+      "voh": 5,
+      "dr": 3,
       "xpg": 0
     }
   };
@@ -100,6 +122,12 @@ $(function () {
       "def": 1,
       "dex": 3,
       "vit": 10
+    },
+    "princess": {
+      "str": 6,
+      "def": 2,
+      "dex": 2,
+      "vit": 22
     }
   };
 
@@ -122,6 +150,12 @@ $(function () {
   // ビルドの最大保存数
   const savedBuildsMax = 100;
 
+  // キャラクター種別の取得
+  const getCharacterType = function () {
+    const charaClass = $("select.character-class").val();
+    return characterAttrs[charaClass].type;
+  }
+
   // 性能の計算
   const calcAttrs = function () {
     const charaClass = $("select.character-class").val();
@@ -129,7 +163,7 @@ $(function () {
     $("ul.item-skill").children(".item-passive-skill").remove();
     $(".table-attributes .skill-reduce-label").addClass("d-none");
     const skills = [];
-    const skillCharacterClass = "skill_" + $("select.character-class").val();
+    const skillCharacterClass = "skill_" + getCharacterType();
     let reduceDamage = 0;
 
     // XP, Killsの上限チェック
@@ -187,8 +221,8 @@ $(function () {
         // アイテム性能の設定
         item.attributes.forEach(attr => {
           if (attr.short_name == "AD") return;
-          const valueMax = attr.value === null ? attr["value_" + charaClass] : attr.value;
-          const maxRequired = attr.max_required ? attr.max_required : attr["max_required_" + charaClass];
+          const valueMax = attr.value === null ? attr["value_" + getCharacterType()] : attr.value;
+          const maxRequired = attr.max_required ? attr.max_required : attr["max_required_" + getCharacterType()];
           let value;
 
           // 性能変動値の計算
@@ -299,10 +333,10 @@ $(function () {
     link.closest("div.d-table-row").find(".item-name").removeClass("common rare artifact")
       .addClass(item.rarity)
       .text(" " + item.name);
-    if (item.skill || item["skill_" + $("select.character-class").val()]) {
+    if (item.skill || item["skill_" + getCharacterType()]) {
       link.closest("div.d-table-row").find(".item-skill")
         .removeClass("d-none")
-        .attr("title", (item.skill ? item.skill.description : item["skill_" + $("select.character-class").val()].description));
+        .attr("title", (item.skill ? item.skill.description : item["skill_" + getCharacterType()].description));
     } else {
       link.closest("div.d-table-row").find(".item-skill")
         .addClass("d-none")
@@ -321,7 +355,7 @@ $(function () {
     link.append(img);
     link.closest("div.d-table-row").find(".attr").children().remove();
     link.closest("div.d-table-row").find(".wave").addClass("d-none");
-    const charaClass = $("select.character-class").val();
+    const charaClass = getCharacterType();
     item.attributes.forEach((attr, index, attrs) => {
       if (attr.short_name == "AD") return;
       if (attr.short_name == "MinAD") link.closest("div.d-table-row").find(".wave").removeClass("d-none");
@@ -375,6 +409,7 @@ $(function () {
         setNone($("a.item-slot2").data("item-class", "shield"));
         break;
       case "axe":
+      case "princess":
         setNone($("a.item-slot1").data("item-class", "axe"));
         setNone($("a.item-slot2").data("item-class", "mantle"));
         break;
@@ -437,7 +472,7 @@ $(function () {
     });
 
     const attrName = $(this).data("attr");
-    const charaClass = $("select.character-class").val();
+    const charaClass = getCharacterType();
     modalItemIndex = 0;
     modalItems.shift();
 
@@ -608,7 +643,7 @@ $(function () {
         }
 
         setItem(targetSlot, modalItem);
-        if (modalItem.skill || modalItem["skill_" + $("select.character-class").val()]) {
+        if (modalItem.skill || modalItem["skill_" + getCharacterType()]) {
           const skill = targetSlot.closest("div.d-table-row").find(".item-skill");
           const newSkill = $(skill.prop("outerHTML"));
           skill.remove();
@@ -629,7 +664,7 @@ $(function () {
   $(".table-item-slot a.item-img").on("click", function () {
     target = $(this);
     const rarity = [];
-    const charaClass = $("select.character-class").val();
+    const charaClass = getCharacterType();
 
     if ($("#modal-items").hasClass("show")) {
       if ($("#search-rarity-common").prop("checked")) rarity.push("common");

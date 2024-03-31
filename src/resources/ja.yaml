@@ -74,6 +74,8 @@ character_class:
   axe_full: 'アックスマスター'
   dagger: 'D'
   dagger_full: 'ダガーマスター'
+  princess: 'P'
+  princess_full: '東の国のプリンセス'
 
 common_header:
   triglav_indexes: 'TRIGLAV Indexes'

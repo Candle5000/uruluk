@@ -74,6 +74,8 @@ character_class:
   axe_full: 'Mestre de Machado'
   dagger: 'D'
   dagger_full: 'Mestre de Adaga'
+  princess: 'P'
+  princess_full: 'Eastern Princess'
 
 common_header:
   triglav_indexes: 'TRIGLAV Indexes'
