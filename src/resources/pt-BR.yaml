@@ -138,13 +138,13 @@ items_detail:
 creatures:
   creatures: 'Criaturas'
   floors_all: 'Todos os Andares'
-  tb_creature: 'Criatura da Fronteira'
+  tb_creature: 'Criatura The Boundary'
 
 creatures_detail:
   items: 'Itens'
   floors: 'Andares'
-  tb_phase: 'Fase da Fronteira'
-  tb_phase_boosts: 'Bônus por Fase da Fronteira'
+  tb_phase: 'Fase The Boundary'
+  tb_phase_boosts: 'Bônus por Fase The Boundary'
 
 floors:
   floors: 'Andares'
