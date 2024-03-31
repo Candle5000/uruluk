@@ -32,7 +32,7 @@ return function (App $app) {
     // i18n
     $container['i18n'] = function ($c) {
         $defaultLanguage = 'en';
-        $knownLanguages = ['en', 'ja', 'zh-CN', 'zh-TW'];
+        $knownLanguages = ['en', 'ja', 'zh-CN', 'zh-TW', 'pt-BR'];
         $currentLangVersion = '00086';
         $langVersion = array_key_exists('langVersion', $_COOKIE) ? $_COOKIE['langVersion'] : null;
         $language = $currentLangVersion == $langVersion && array_key_exists('language', $_COOKIE) ? $_COOKIE['language'] : null;
