@@ -735,7 +735,7 @@ $(function () {
     });
 
     slotItems.forEach((item, index) => {
-      if (item.item_id) {
+      if (item && item.item_id) {
         $("#table-current-build li.item-slot-" + index + " img")
           .attr("src", "/img/item/" + item.image_name)
           .attr("alt", item.name);
@@ -777,7 +777,7 @@ $(function () {
     const buildName = $("#modal-save input.text-save-name").val();
     const images = [];
     slotItems.forEach((item) => {
-      if (item.item_id) {
+      if (item && item.item_id) {
         images.push(item.image_name);
       } else {
         images.push(null);
