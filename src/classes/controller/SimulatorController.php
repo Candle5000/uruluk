@@ -22,7 +22,7 @@ class SimulatorController extends Controller
 
     public function index(Request $request, Response $response)
     {
-        $this->title = 'シミュレータ';
+        $this->title = $this->i18n->s('page_title.simulator');
         $this->scripts[] = '/js/simulator.js?id=00087';
         $item = new ItemModel($this->db, $this->logger, $this->i18n);
         $getParam = $request->getQueryParams();

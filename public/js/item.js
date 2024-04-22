@@ -30,7 +30,7 @@ $(function () {
 
   $("#modal-item").on('hide.bs.modal', function () {
     if (!autoTransition && location.pathname.split('/').length != 4) {
-      history.pushState(null, null,
+      history.pushState(null, document.title,
         '/items/' + location.pathname.split('/')[2]
         + '/' + location.pathname.split('/')[3]);
     }
@@ -223,7 +223,7 @@ $(function () {
       });
 
       if (!at && location.pathname.split('/').length != 5) {
-        history.pushState(null, null,
+        history.pushState(null, document.title,
           '/items/' + location.pathname.split('/')[2]
           + '/' + location.pathname.split('/')[3] + '/' + itemId);
       }

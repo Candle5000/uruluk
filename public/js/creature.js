@@ -132,7 +132,7 @@ $(function () {
 
   $("#modal-creature").on('hide.bs.modal', function () {
     if (!autoTransition && location.pathname.split('/').length != 2) {
-      history.pushState(null, null, '/creatures');
+      history.pushState(null, document.title, '/creatures');
     }
     autoTransition = false;
   });
@@ -278,7 +278,7 @@ $(function () {
         floorList.find("a.floor-description").tooltip();
 
         if (!at && location.pathname.split('/').length != 3) {
-          history.pushState(null, null, '/creatures/' + creatureId);
+          history.pushState(null, document.title, '/creatures/' + creatureId);
         }
 
         $("select.tb-phase").trigger('change');
