@@ -15,7 +15,7 @@ class NewsController extends Controller
 
     public function index(Request $request, Response $response)
     {
-        $this->title = '更新情報';
+        $this->title = $this->i18n->s('page_title.news');
         $getParam = $request->getQueryParams();
         $page = 0;
         if (isset($getParam['page']) && is_numeric($getParam['page'])) {

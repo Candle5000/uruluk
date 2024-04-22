@@ -17,7 +17,7 @@ class TagController extends Controller
 
     public function index(Request $request, Response $response, array $args)
     {
-        $this->title = 'タグ';
+        $this->title = $this->i18n->s('page_title.tags');
 
         try {
             $this->db->beginTransaction();
@@ -51,7 +51,7 @@ class TagController extends Controller
 
             if ($detail == null) throw new NotFoundException($request, $response);
 
-            $this->title = 'タグ:' . $detail['tag_name'];
+            $this->title = $this->i18n->s('page_title.tags') . ' - ' . $detail['tag_name'];
 
             $args = [
                 'header' => $this->getHeaderInfo(),
