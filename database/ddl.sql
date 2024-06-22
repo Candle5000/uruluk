@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2024/03/18 4:06:59
+-- Date/Time    : 2024/06/12 14:23:31
 -- Author       : candl
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -438,8 +438,12 @@ create table `news` (
   `post_date` DATETIME not null comment '投稿日時'
   , `subject` VARCHAR(256) comment '件名'
   , `subject_en` VARCHAR(256) comment '件名(英語)'
+  , `subject_zh_cn` VARCHAR(256) comment '件名(簡体中文)'
+  , `subject_zh_tw` VARCHAR(256) comment '件名(繫體中文)'
   , `content` TEXT comment '本文'
   , `content_en` TEXT comment '本文(英語)'
+  , `content_zh_cn` TEXT comment '本文(簡体中文)'
+  , `content_zh_tw` TEXT comment '本文(繫體中文)'
   , constraint `news_PKC` primary key (`post_date`)
 ) comment 'お知らせ' ;
 

@@ -28,8 +28,12 @@ class NewsModel extends Model
                 post_date
                 , subject
                 , subject_en
+                , subject_zh_cn
+                , subject_zh_tw
                 , content
                 , content_en
+                , content_zh_cn
+                , content_zh_tw
             FROM
                 news
             ORDER BY
@@ -45,13 +49,25 @@ class NewsModel extends Model
         $newsList = [];
         while ($result = $stmt->fetch()) {
             switch ($this->i18n->getLangCode()) {
-                case 'en':
-                    $subject = empty($result['subject_en']) ? $result['subject'] : $result['subject_en'];
-                    $content = empty($result['content_en']) ? $result['content'] : $result['content_en'];
-                    break;
-                default:
+                case 'ja':
                     $subject = $result['subject'];
                     $content = $result['content'];
+                    break;
+                case 'zh-CN':
+                    $subject = $result['subject_zh_cn'];
+                    $content = $result['content_zh_cn'];
+                    break;
+                case 'zh-TW':
+                    $subject = $result['subject_zh_tw'];
+                    $content = $result['content_zh_tw'];
+                    break;
+                default:
+                    $subject = $result['subject_en'];
+                    $content = $result['content_en'];
+            }
+            if (empty($subject) || empty($content)) {
+                $subject = empty($result['subject_en']) ? $result['subject'] : $result['subject_en'];
+                $content = empty($result['content_en']) ? $result['content'] : $result['content_en'];
             }
             $newsList[] = [
                 'post_date' => $result['post_date'],
