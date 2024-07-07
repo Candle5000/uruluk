@@ -77,7 +77,7 @@ $(function () {
     }
     if (baseTagId == "#detail-as") {
       const boostedAS = Math.round(base.data("base-val") * (1 - boostVal * level / 100) - 0.0000005);
-      base.text(boostedAS > 0 ? boostedAS : 0);
+      base.text(boostedAS > 5 ? boostedAS : 5);
     } else {
       base.text(Math.round(base.data("base-val") * (1 + boostVal * level / 100) - 0.0000005) + (isPercentage ? '%' : ''));
     }
