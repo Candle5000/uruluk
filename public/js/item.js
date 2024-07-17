@@ -238,5 +238,6 @@ $(function () {
   }
 
   $("#tooltip-class-stats-description").tooltip();
+  $("#tooltip-obtained-items").tooltip();
 
 });

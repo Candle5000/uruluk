@@ -907,4 +907,7 @@ $(function () {
   // スタッツ略称説明のツールチップ
   $("#tooltip-short-stats-description").tooltip();
 
+  // 所持済みアイテムのツールチップ
+  $("#tooltip-obtained-items").tooltip();
+
 });

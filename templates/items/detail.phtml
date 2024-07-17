@@ -25,6 +25,16 @@
           </div>
         </div>
         <div class="row">
+          <div class="col-12 mb-3 small">
+            <div class="form-check form-check-inline">
+              <label class="form-check-label pr-1" for="obtained-item-1"><?= $l->s('items_detail.obtained') ?></label>
+              <input id="obtained-item-1" class="form-check-input checkbox-obtained-item" type="checkbox" />
+              <input id="obtained-item-2" class="form-check-input checkbox-obtained-item" type="checkbox" />
+              <a href="javascript:void(0);" id="tooltip-obtained-items" class="text-light pl-1" data-toggle="tooltip" data-placement="top" data-html="true" title="<?= $this->fetch('common/tooltipObtainedItems.phtml', ['l' => $l]) ?>"><i class="fas fa-question-circle"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="row">
           <div class="col-12 mb-3">
             <div><?= $l->s('items_detail.floors') ?></div>
             <ul class="list-inline m-0 pl-1 small" id="detail-floors">
