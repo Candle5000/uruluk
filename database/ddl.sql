@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2024/07/20 2:47:22
+-- Date/Time    : 2024/07/20 3:21:50
 -- Author       : candl
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -324,7 +324,7 @@ create table `item` (
   , `comment_ja` VARCHAR(64) comment 'コメント(日本語)'
   , `note` TEXT comment '説明'
   , `price` INT comment '売却価格'
-  , `storable_counrt` INT default 1 comment '倉庫保管数'
+  , `storable_count` INT default 1 comment '倉庫保管数'
   , `image_name` VARCHAR(64) comment '画像名称'
   , `sort_key` VARCHAR(16) not null comment 'ソート順'
   , constraint `item_PKC` primary key (`item_id`)
