@@ -24,14 +24,15 @@
             <div><?= $l->s('items_detail.sell_price') ?>&nbsp;:&nbsp;<span id="sell-price">?</span>&nbsp;<?= $l->s('common.currency_unit_full') ?></div>
           </div>
         </div>
-        <div class="row">
+        <div id="detail-obtained-item-row" class="row">
           <div class="col-12 mb-3 small">
             <div class="form-check form-check-inline">
-              <label class="form-check-label pr-1" for="obtained-item-1"><?= $l->s('items_detail.obtained') ?></label>
-              <input id="obtained-item-1" class="form-check-input checkbox-obtained-item" type="checkbox" />
-              <input id="obtained-item-2" class="form-check-input checkbox-obtained-item" type="checkbox" />
+              <label id="obtained-item-checkbox-label" class="form-check-label pr-1" for="obtained-item-1"><?= $l->s('items_detail.obtained') ?></label>
               <a href="javascript:void(0);" id="tooltip-obtained-items" class="text-light pl-1" data-toggle="tooltip" data-placement="top" data-html="true" title="<?= $this->fetch('common/tooltipObtainedItems.phtml', ['l' => $l]) ?>"><i class="fas fa-question-circle"></i></a>
             </div>
+            <template id="obtained-item-checkbox-input">
+              <input id="obtained-item" class="form-check-input checkbox-obtained-item" type="checkbox" />
+            </template>
           </div>
         </div>
         <div class="row">

@@ -2,6 +2,18 @@ $(function () {
 
   let autoTransition = false;
 
+  // ローカルストレージから所持済みアイテムを取得する
+  const loadObtainedItemsObjectFromLocalStorage = function () {
+    let savedItemsStr = window.localStorage.getItem("obtained-items");
+    if (savedItemsStr == null) savedItemsStr = JSON.stringify({ "items": {} });
+    return $.parseJSON(savedItemsStr);
+  }
+
+  // ローカルストレージに所持済みアイテムを保存する
+  const saveObtainedItemsToLocalStorage = function (items) {
+    window.localStorage.setItem("obtained-items", JSON.stringify(items));
+  }
+
   $(".collapse").on('show.bs.collapse', function () {
     $("[aria-controls='" + $(this).attr('id') + "'] svg")
       .removeClass('fa-chevron-circle-down')
@@ -41,6 +53,8 @@ $(function () {
     const at = autoTransition;
     autoTransition = false;
     const itemId = $(this).data('itemid');
+    const storableItemId = $(this).data('item-class-flactuable') ?
+      $(this).data('item-class-flactuable-id') : itemId;
     $("#detail-image").children().remove();
     $("#detail-image").append($(this).find("img.item-detail").clone());
     $("#detail-name").removeClass("common rare artifact");
@@ -55,6 +69,26 @@ $(function () {
     $("#detail-main").children().remove();
     $("#detail-main").append($(this).find("ul.detail-main").clone());
     $("#sell-price").text($(this).data('price') !== '' ? $(this).data('price') : '?');
+    $('#detail-obtained-item-row .form-check input.checkbox-obtained-item').remove();
+    if ($(this).data('storable-count') > 0) {
+      $('#detail-obtained-item-row').removeClass('d-none');
+      const obtainedItemsCount = loadObtainedItemsObjectFromLocalStorage().items[storableItemId] ?? 0;
+      for (let i = 1; i <= $(this).data('storable-count'); i++) {
+        $($('#obtained-item-checkbox-input').html()).attr('id', 'obtained-item-' + i)
+          .on('change', function () {
+            const obtainedItems = loadObtainedItemsObjectFromLocalStorage();
+            const itemCount = $('#detail-obtained-item-row input.checkbox-obtained-item:checked').length;
+            if (itemCount > 0) {
+              obtainedItems.items[storableItemId] = itemCount;
+            } else {
+              delete obtainedItems.items[storableItemId];
+            }
+            saveObtainedItemsToLocalStorage(obtainedItems);
+          }).insertBefore('#tooltip-obtained-items').prop('checked', i <= obtainedItemsCount);
+      }
+    } else {
+      $('#detail-obtained-item-row').addClass('d-none');
+    }
     $.ajax({
       url: '/items/detail/' + itemId,
       type: 'GET',
