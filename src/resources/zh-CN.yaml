@@ -8,6 +8,7 @@ common:
   unit_sec: '秒'
   tooltip_class_stats_description: '每位大师的缩写'
   tooltip_stats_short_name_description: '素质的缩写'
+  tooltip_item_obtained: '透过将项目注册为已获得的物品，您可以在模拟器中搜寻已获得的物品。'
   loading: '加载中...'
   currency_unit: 'G'
   currency_unit_full: '黄金'
@@ -127,6 +128,7 @@ items:
 
 items_detail:
   sell_price: '售价'
+  obtained: '已获得'
   floors: '稀有物品'
   banana_trade: '香蕉换'
   floor_treasures: '宝箱'
@@ -187,6 +189,7 @@ simulator_item_modal:
   rarity_common: '普通物品'
   rarity_rare: '稀有物品'
   rarity_artifact: '魔物特制'
+  obtained_items: '已获得物品'
   search_submit: '提交'
 
 simulator_save_modal:
