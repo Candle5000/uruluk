@@ -26,7 +26,7 @@
                 <input id="search-rarity-artifact" class="form-check-input" type="checkbox" value="true" />
                 <label class="form-check-label small artifact" for="search-rarity-artifact"><?= $l->s('simulator_item_modal.rarity_artifact') ?></label>
               </div>
-              <div class="form-check form-check-inline">
+              <div id="search-obtained-items-form" class="form-check form-check-inline">
                 <input id="search-obtained-items" class="form-check-input" type="checkbox" value="true" />
                 <label class="form-check-label small" for="search-obtained-items"><?= $l->s('simulator_item_modal.obtained_items') ?></label>
                 <a href="javascript:void(0);" id="tooltip-obtained-items" class="text-light pl-1" data-toggle="tooltip" data-placement="top" data-html="true" title="<?= $this->fetch('common/tooltipObtainedItems.phtml', ['l' => $l]) ?>"><i class="fas fa-question-circle"></i></a>

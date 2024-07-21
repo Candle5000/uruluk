@@ -631,20 +631,37 @@ $(function () {
     const rarity = [];
     const charaClass = $("select.character-class").val();
 
-    if ($("#modal-items").hasClass("show")) {
-      if ($("#search-rarity-common").prop("checked")) rarity.push("common");
-      if ($("#search-rarity-rare").prop("checked")) rarity.push("rare");
-      if ($("#search-rarity-artifact").prop("checked")) rarity.push("artifact");
-    } else {
-      rarity.push("rare", "artifact");
-      $("#search-rarity-rare").prop("checked", true);
-      $("#search-rarity-artifact").prop("checked", true);
-      if (target.data("item-class") == "freshy") {
-        rarity.push("common");
-        $("#search-rarity-common").prop("checked", true);
+    // 検索条件の設定
+    if (target.data("item-class") == "freshy" || target.data("item-class") == "puppet") {
+      if ($("#modal-items").hasClass("show")) {
+        if ($("#search-rarity-common").prop("checked")) rarity.push("common");
+        if ($("#search-rarity-rare").prop("checked")) rarity.push("rare");
+        if ($("#search-rarity-artifact").prop("checked")) rarity.push("artifact");
       } else {
-        $("#search-rarity-common").prop("checked", false);
+        rarity.push("common", "rare", "artifact");
+        $("#search-rarity-common").prop("checked", true);
+        $("#search-rarity-rare").prop("checked", true);
+        $("#search-rarity-artifact").prop("checked", true);
+        $("#search-obtained-items").prop("checked", false);
+        $("#search-obtained-items-form").addClass("d-none");
       }
+    } else {
+      const searchConditions = loadSearchConditionsFromLocalStorage();
+      if ($("#modal-items").hasClass("show")) {
+        searchConditions.conditions.common = $("#search-rarity-common").prop("checked");
+        searchConditions.conditions.rare = $("#search-rarity-rare").prop("checked");
+        searchConditions.conditions.artifact = $("#search-rarity-artifact").prop("checked");
+        searchConditions.conditions.obtained = $("#search-obtained-items").prop("checked");
+        saveSearchConditionsToLocalStorage(searchConditions);
+      }
+      $("#search-rarity-common").prop("checked", searchConditions.conditions.common);
+      $("#search-rarity-rare").prop("checked", searchConditions.conditions.rare);
+      $("#search-rarity-artifact").prop("checked", searchConditions.conditions.artifact);
+      $("#search-obtained-items").prop("checked", searchConditions.conditions.obtained);
+      $("#search-obtained-items-form").removeClass("d-none");
+      if (searchConditions.conditions.common) rarity.push("common");
+      if (searchConditions.conditions.rare) rarity.push("rare");
+      if (searchConditions.conditions.artifact) rarity.push("artifact");
     }
     $("#link-search-submit").data("item-slot", target.data("slot-index"));
     $("#collapse-search").collapse('show');
@@ -659,11 +676,49 @@ $(function () {
       modalItemIndex = 0;
       modalItems = target.data("slot-index") == 0 ? [] : [null];
       currentSortAttr = '';
+      const obtainedItems = loadObtainedItemsObjectFromLocalStorage();
       // HTMLエスケープをデコード
       data.items.forEach(item => {
         item.name = $("<div/>").html(item.name).text();
       });
-      Array.prototype.push.apply(modalItems, data.items);
+      Array.prototype.push.apply(modalItems, data.items.filter(item => {
+        // 入手済みアイテムをフィルタ
+        if ($("#search-obtained-items").prop("checked")) {
+          const storableItemId = item.class_flactuable > 0 ? item.class_flactuable_base_id : item.item_id;
+          const targetItemClass = target.data("item-class");
+          if (!obtainedItems.items[storableItemId]) return false;
+          if (targetItemClass == "all") {
+            let targetSlotIndex;
+            const targetSlots = $(".table-item-slot a").toArray().filter(link => {
+              return $(link).data("item-class") == item.item_class_name;
+            });
+            for (let i = 0; i < targetSlots.length; i++) {
+              if (slotItems[$(targetSlots[i]).data("slot-index")] === undefined
+                || slotItems[$(targetSlots[i]).data("slot-index")].item_id === undefined) {
+                targetSlotIndex = $(targetSlots[i]).data("slot-index");
+                break;
+              }
+              if (i + 1 == targetSlots.length) {
+                targetSlotIndex = $(targetSlots[i]).data("slot-index");
+              }
+            }
+            return slotItems.filter((slotItem, slotIndex) => {
+              if (slotItem === undefined || slotItem.item_id === undefined) return false;
+              const slotItemStorableItemId = slotItem.class_flactuable > 0 ? slotItem.class_flactuable_base_id : slotItem.item_id;
+              return targetSlotIndex != slotIndex && storableItemId == slotItemStorableItemId;
+            }).length < obtainedItems.items[storableItemId];
+          } else if (targetItemClass == "dagger" || targetItemClass == "ring") {
+            return slotItems.filter((slotItem, slotIndex) => {
+              if (slotItem === undefined || slotItem.item_id === undefined) return false;
+              const slotItemStorableItemId = slotItem.class_flactuable > 0 ? slotItem.class_flactuable_base_id : slotItem.item_id;
+              return target.data('slot-index') != slotIndex && storableItemId == slotItemStorableItemId;
+            }).length < obtainedItems.items[storableItemId];
+          }
+          return obtainedItems.items[storableItemId] > 0;
+        } else {
+          return true;
+        }
+      }));
       $("#scroll-loading").removeClass("d-none").addClass("d-flex");
 
       // アイテムリストを削除
@@ -752,6 +807,32 @@ $(function () {
     // ロード完了
     $.LoadingOverlay("hide", true);
   });
+
+  // ローカルストレージから所持済みアイテムを取得する
+  const loadObtainedItemsObjectFromLocalStorage = function () {
+    let savedItemsStr = window.localStorage.getItem("obtained-items");
+    if (savedItemsStr == null) savedItemsStr = JSON.stringify({ "items": {} });
+    return $.parseJSON(savedItemsStr);
+  }
+
+  // ローカルストレージから検索条件を取得する
+  const loadSearchConditionsFromLocalStorage = function () {
+    let savedSearchConditionsStr = window.localStorage.getItem("simulator-search-conditions");
+    if (savedSearchConditionsStr == null) savedSearchConditionsStr = JSON.stringify({
+      "conditions": {
+        "common": false,
+        "rare": true,
+        "artifact": true,
+        "obtained": false
+      }
+    });
+    return $.parseJSON(savedSearchConditionsStr);
+  }
+
+  // ローカルストレージに検索条件を保存する
+  const saveSearchConditionsToLocalStorage = function (conditions) {
+    window.localStorage.setItem("simulator-search-conditions", JSON.stringify(conditions));
+  }
 
   // ローカルストレージからビルドを取得する
   const loadSavedBuildsObjectFromLocalStorage = function () {
