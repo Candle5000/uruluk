@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2024/07/20 3:21:50
+-- Date/Time    : 2025/02/24 1:47:48
 -- Author       : candl
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -84,6 +84,7 @@ create table `creature` (
   , `voh` INT comment '生命力吸収'
   , `dr` INT comment 'ダメージ反射'
   , `xp` INT comment '経験値'
+  , `vot` INT default 0 comment '自動回復'
   , `tb` BIT(1) default FALSE not null comment '結界地出現'
   , `tb_ad` DECIMAL(10,1) comment '結界地補正 攻撃力'
   , `tb_as` DECIMAL(10,1) comment '結界地補正 攻撃速度'
@@ -556,7 +557,16 @@ create table `special_attack` (
   `special_attack_id` INT not null AUTO_INCREMENT comment 'スペシャルアタックID'
   , `name` VARCHAR(32) comment '名称'
   , `cooldown` INT comment '再使用'
-  , `note` TEXT comment '説明'
+  , `name_key` VARCHAR(128) comment '名称キー'
+  , `ad_multiplier` DECIMAL(10,2) comment '攻撃力倍率'
+  , `ad_relative` DECIMAL(10,2) comment '相対値ダメージ'
+  , `ad_actual` INT comment '実数値ダメージ'
+  , `replace_melee` BIT(1) comment '通常攻撃置き換え'
+  , `as` INT comment '攻撃速度'
+  , `attack_count` INT comment '攻撃回数'
+  , `voh_dr_enabled` BIT(1) default 1 not null comment '吸収反射有効'
+  , `image_name` VARCHAR(32) comment '画像名称'
+  , `sort_key` INT not null comment 'ソート順'
   , constraint `special_attack_PKC` primary key (`special_attack_id`)
 ) comment 'スペシャルアタック' ;
 
