@@ -41,6 +41,7 @@ $(function () {
   });
 
   $("#modal-item").on('hide.bs.modal', function () {
+    document.activeElement.blur();
     if (!autoTransition && location.pathname.split('/').length != 4) {
       history.pushState(null, document.title,
         '/items/' + location.pathname.split('/')[2]

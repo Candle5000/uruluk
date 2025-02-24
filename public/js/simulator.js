@@ -985,6 +985,14 @@ $(function () {
     $.LoadingOverlay("hide", true);
   }
 
+  $("#modal-items").on('hide.bs.modal', function () {
+    document.activeElement.blur();
+  });
+
+  $("#modal-save").on('hide.bs.modal', function () {
+    document.activeElement.blur();
+  });
+
   // スタッツ略称説明のツールチップ
   $("#tooltip-short-stats-description").tooltip();
 

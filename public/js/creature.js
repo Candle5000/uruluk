@@ -154,6 +154,7 @@ $(function () {
   });
 
   $("#modal-creature").on('hide.bs.modal', function () {
+    document.activeElement.blur();
     if (!autoTransition && location.pathname.split('/').length != 2) {
       history.pushState(null, document.title, '/creatures');
     }
