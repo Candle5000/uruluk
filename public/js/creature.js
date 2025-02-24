@@ -90,6 +90,28 @@ $(function () {
     }
   }
 
+  const setPhaseBoostVoT = function (baseVitTagId, boostVal, baseVotTagId, level) {
+    const baseVit = $(baseVitTagId);
+    const baseVot = $(baseVotTagId);
+    if (!baseVot.data("base-val") || !boostVal) {
+      baseVot.parent().removeClass('yellow');
+      baseVot.parent().removeClass('red');
+      return;
+    }
+    const votVal = Math.round((baseVit.data("base-val") * (1 + boostVal * level / 100) - 0.0000005) * 10 / baseVot.data("base-val")) / 10;
+    baseVot.text(votVal);
+    if (level == 0) {
+      baseVot.parent().removeClass('yellow');
+      baseVot.parent().removeClass('red');
+    } else if (baseVot.data("base-val") > 0) {
+      baseVot.parent().removeClass('red');
+      baseVot.parent().addClass('yellow');
+    } else {
+      baseVot.parent().removeClass('yellow');
+      baseVot.parent().addClass('red');
+    }
+  }
+
   const setAdPhaseBoost = function (baseTagId, adBoostVal, strBoostVal, level, isMinAd) {
     const base = $(baseTagId);
     const baseTd1 = $("td" + baseTagId);
@@ -188,6 +210,14 @@ $(function () {
           .data("base-val", creature.dr);
         $("#detail-xp").text(creature.xp ? creature.xp : '?')
           .data("base-val", creature.xp);
+        if (creature.vot != 0) {
+          $("tr.row-vot").removeClass("d-none");
+          $("#detail-vot").text(Math.round(creature.vit * 10 / creature.vot) / 10)
+            .data("base-val", creature.vot);
+        } else {
+          $("tr.row-vot").addClass("d-none");
+          $("#detail-vot").data("base-val", creature.vot);
+        }
         $("#tb-ad").text(creature.tb_ad ? creature.tb_ad + '%' : '-')
           .data("val", creature.tb_ad);
         $("#tb-as").text(creature.tb_as ? creature.tb_as + '%' : '-')
@@ -311,6 +341,7 @@ $(function () {
     setPhaseBoost("#detail-voh", $("#tb-voh").data("val"), level, true);
     setPhaseBoost("#detail-dr", $("#tb-dr").data("val"), level, true);
     setPhaseBoost("#detail-xp", $("#tb-xp").data("val"), level, false);
+    setPhaseBoostVoT("#detail-vit", $("#tb-vit").data("val"), "#detail-vot", level);
   });
 
   if (location.pathname.split('/').length == 3) {

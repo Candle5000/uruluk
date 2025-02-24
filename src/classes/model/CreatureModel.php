@@ -26,6 +26,7 @@ class CreatureModel extends Model
                 , c.vit
                 , c.voh
                 , c.dr
+                , c.vot
                 , c.tb
                 , c.tb_ad
                 , c.tb_as
@@ -75,6 +76,7 @@ class CreatureModel extends Model
                     'vit' => $this->getFormattedStats($result['vit'], false),
                     'voh' => $this->getFormattedStats($result['voh'], false),
                     'dr' => $this->getFormattedStats($result['dr'], false),
+                    'vot' => $result['vot'],
                     'tb' => $result['tb'],
                     'tb_ad' => $result['tb_ad'],
                     'tb_as' => $result['tb_as'],
@@ -121,6 +123,7 @@ class CreatureModel extends Model
                 , voh
                 , dr
                 , xp
+                , vot
                 , tb
                 , tb_ad
                 , tb_as
@@ -162,6 +165,7 @@ class CreatureModel extends Model
                 'voh' => $result['voh'],
                 'dr' => $result['dr'],
                 'xp' => $result['xp'],
+                'vot' => $result['vot'],
                 'tb' => $result['tb'],
                 'tb_ad' => $result['tb_ad'],
                 'tb_as' => $result['tb_as'],
@@ -283,7 +287,6 @@ class CreatureModel extends Model
                 SA.special_attack_id
                 , SA.name
                 , SA.cooldown
-                , SA.note
             FROM
                 creature_special_attack CSA
                 INNER JOIN special_attack SA

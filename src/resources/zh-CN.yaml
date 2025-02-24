@@ -67,6 +67,8 @@ stats:
   kills_full: '击杀数'
   based_on_xp: '依据经验'
   based_on_kills: '依据击杀数'
+  vot: 'VoT'
+  vot_full: '持续恢复'
 
 character_class:
   sword: 'S'

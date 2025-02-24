@@ -67,6 +67,8 @@ stats:
   kills_full: 'Kills'
   based_on_xp: 'Based on XP'
   based_on_kills: 'Based on Kills'
+  vot: 'VoT'
+  vot_full: 'Restores Vitaliry over Time'
 
 character_class:
   sword: 'S'
