@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2025/02/24 1:47:48
+-- Date/Time    : 2025/02/25 2:28:32
 -- Author       : candl
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -84,6 +84,7 @@ create table `creature` (
   , `voh` INT comment '生命力吸収'
   , `dr` INT comment 'ダメージ反射'
   , `xp` INT comment '経験値'
+  , `sad` INT comment 'スペシャルアタックダメージ'
   , `vot` INT default 0 comment '自動回復'
   , `tb` BIT(1) default FALSE not null comment '結界地出現'
   , `tb_ad` DECIMAL(10,1) comment '結界地補正 攻撃力'
@@ -556,9 +557,10 @@ drop table if exists `special_attack` cascade;
 create table `special_attack` (
   `special_attack_id` INT not null AUTO_INCREMENT comment 'スペシャルアタックID'
   , `name` VARCHAR(32) comment '名称'
-  , `cooldown` INT comment '再使用'
   , `name_key` VARCHAR(128) comment '名称キー'
-  , `ad_multiplier` DECIMAL(10,2) comment '攻撃力倍率'
+  , `cooldown` INT comment '再使用'
+  , `damage_type` ENUM('normal', 'relative', 'actual', 'composite') default 'normal' not null comment 'ダメージ種別'
+  , `sad_enabled` BIT(1) default 0 comment 'SAD有効'
   , `ad_relative` DECIMAL(10,2) comment '相対値ダメージ'
   , `ad_actual` INT comment '実数値ダメージ'
   , `replace_melee` BIT(1) comment '通常攻撃置き換え'

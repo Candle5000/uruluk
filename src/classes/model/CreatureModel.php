@@ -26,6 +26,7 @@ class CreatureModel extends Model
                 , c.vit
                 , c.voh
                 , c.dr
+                , c.sad
                 , c.vot
                 , c.tb
                 , c.tb_ad
@@ -76,6 +77,7 @@ class CreatureModel extends Model
                     'vit' => $this->getFormattedStats($result['vit'], false),
                     'voh' => $this->getFormattedStats($result['voh'], false),
                     'dr' => $this->getFormattedStats($result['dr'], false),
+                    'sad' => $this->getFormattedStats($result['sad'], true),
                     'vot' => $result['vot'],
                     'tb' => $result['tb'],
                     'tb_ad' => $result['tb_ad'],
@@ -123,6 +125,7 @@ class CreatureModel extends Model
                 , voh
                 , dr
                 , xp
+                , sad
                 , vot
                 , tb
                 , tb_ad
@@ -165,6 +168,7 @@ class CreatureModel extends Model
                 'voh' => $result['voh'],
                 'dr' => $result['dr'],
                 'xp' => $result['xp'],
+                'sad' => $result['sad'],
                 'vot' => $result['vot'],
                 'tb' => $result['tb'],
                 'tb_ad' => $result['tb_ad'],
