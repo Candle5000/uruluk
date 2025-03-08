@@ -250,17 +250,35 @@ $(function () {
           $("#detail-tb-boosts,#detail-row-tb-phase").addClass("d-none");
         }
 
-        const saTbody = $("#detail-sa");
+        const saTbody = $("#detail-attacks");
         saTbody.children('tr.row-data').remove();
         if (creature.special_attacks.length == 0) {
-          saTbody.find('tr.row-none').removeClass('d-none');
-        } else {
-          saTbody.find('tr.row-none').addClass('d-none');
+          const row = $($("#modal-attacks-none-row").html());
+          saTbody.append(row);
         }
         creature.special_attacks.forEach(sa => {
-          const row = $($("#modal-sa-row").html());
+          const row = $($("#modal-attacks-row").html());
+          row.data('damage-type', sa.damage_type)
+            .data('sad-enabled', sa.sad_enabled);
+          const img = sa.image_name ? sa.image_name : 'blank.png';
+          row.find('img.item-icon')
+            .attr('src', '/img/sa/' + img).attr('alt', sa.name);
           row.find(".sa-name").text(sa.name);
-          row.find(".sa-note").attr('title', sa.note);
+          const saMinAd = Math.round(minAd * (sa.sad_enabled ? creature.sad : 100) / 100);
+          const saMaxAd = Math.round(maxAd * (sa.sad_enabled ? creature.sad : 100) / 100);
+          row.find(".sa-ad").text(saMinAd + '～' + saMaxAd);
+          if (sa.attack_count > 1) {
+            row.find(".sa-attack-count-val").text(sa.attack_count);
+          } else {
+            row.find(".sa-attack-count").addClass("d-none");
+          }
+          if (sa.cooldown == null && sa.replace_melee && sa.damage_type == "normal") {
+            const avg = (minAd + maxAd) * (sa.sad_enabled ? creature.sad : 100) / 2 / 100;
+            const dps = (Math.round(avg * 30 * 1000 / creature.as) / 1000).toFixed(3);
+            row.find(".sa-dps").text(dps);
+          } else {
+            row.find(".sa-dps").text("-");
+          }
           saTbody.append(row);
         });
         saTbody.find("a.sa-note").tooltip();

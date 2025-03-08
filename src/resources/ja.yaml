@@ -145,6 +145,7 @@ creatures:
   tb_creature: '結界地のみ'
 
 creatures_detail:
+  attacks_and_skills: '攻撃・スキル'
   items: '固有ドロップ'
   floors: '出現フロア'
   tb_phase: '結界地フェーズ'

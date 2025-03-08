@@ -145,6 +145,7 @@ creatures:
   tb_creature: 'TB Creature'
 
 creatures_detail:
+  attacks_and_skills: 'Attacks and Skills'
   items: 'Items'
   floors: 'Floors'
   tb_phase: 'TB Phase'

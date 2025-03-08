@@ -290,15 +290,33 @@ class CreatureModel extends Model
             SELECT
                 SA.special_attack_id
                 , SA.name
+                , SA.name_key
                 , SA.cooldown
+                , SA.replace_melee
+                , SA.trigger_on_vit
+                , SA.trigger_on_vit_revert
+                , SA.is_once
+                , SA.is_long_range
+                , SA.damage_type
+                , SA.is_movement
+                , SA.is_random_summon
+                , SA.summon_limit
+                , SA.sad_enabled
+                , SA.ad_relative
+                , SA.ad_actual
+                , SA.attack_count
+                , SA.voh_dr_enabled
+                , SA.image_name
             FROM
                 creature_special_attack CSA
                 INNER JOIN special_attack SA
                 ON CSA.special_attack_id = SA.special_attack_id
             WHERE
                 CSA.creature_id = :id
+                AND SA.visible_in_list = 1
             ORDER BY
-                SA.special_attack_id
+                SA.sort_key
+                , SA.special_attack_id
             SQL;
         $this->logger->debug($sql);
         $stmt = $this->db->prepare($sql);
@@ -308,9 +326,24 @@ class CreatureModel extends Model
         while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $sa[] = [
                 'special_attack_id' => $result['special_attack_id'],
-                'name' => $result['name'],
+                'name_i' => $result['name'],
+                'name' => $this->i18n->s($result['name_key']),
                 'cooldown' => $result['cooldown'],
-                'note' => $result['note'],
+                'replace_melee' => $result['replace_melee'] ? true : false,
+                'trigger_on_vit' => $result['trigger_on_vit'],
+                'trigger_on_vit_revert' => $result['trigger_on_vit_revert'] ? true : false,
+                'is_once' => $result['is_once'] ? true : false,
+                'is_long_range' => $result['is_long_range'] ? true : false,
+                'damage_type' => $result['damage_type'],
+                'is_movement' => $result['is_movement'] ? true : false,
+                'is_random_summon' => $result['is_random_summon'] ? true : false,
+                'summon_limit' => $result['summon_limit'],
+                'sad_enabled' => $result['sad_enabled'] ? true : false,
+                'ad_relative' => $result['ad_relative'],
+                'ad_actual' => $result['ad_actual'],
+                'attack_count' => $result['attack_count'],
+                'voh_dr_enabled' => $result['voh_dr_enabled'],
+                'image_name' => $result['image_name'],
             ];
         }
         return $sa;
