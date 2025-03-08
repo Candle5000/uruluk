@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2025/02/25 2:28:32
+-- Date/Time    : 2025/03/09 1:20:43
 -- Author       : candl
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -451,6 +451,17 @@ create table `news` (
   , constraint `news_PKC` primary key (`post_date`)
 ) comment 'お知らせ' ;
 
+-- SAオブジェクト設置
+-- * BackupToTempTable
+drop table if exists `place_sa_object` cascade;
+
+-- * RestoreFromTempTable
+create table `place_sa_object` (
+  `special_attack_id` INT not null comment 'スペシャルアタックID'
+  , `sa_object_id` INT not null comment 'SAオブジェクトID'
+  , constraint `place_sa_object_PKC` primary key (`special_attack_id`,`sa_object_id`)
+) comment 'SAオブジェクト設置' ;
+
 -- クエスト
 -- * BackupToTempTable
 drop table if exists `quest` cascade;
@@ -506,6 +517,46 @@ create table `quest_reward_item` (
   , constraint `quest_reward_item_PKC` primary key (`quest_id`,`item_id`)
 ) comment 'クエスト報酬アイテム' ;
 
+-- スペシャルアタックオブジェクト
+-- * BackupToTempTable
+drop table if exists `sa_object` cascade;
+
+-- * RestoreFromTempTable
+create table `sa_object` (
+  `sa_object_id` INT not null AUTO_INCREMENT comment 'SAオブジェクトID'
+  , `name` VARCHAR(32) comment '名称'
+  , `as` INT comment '攻撃速度'
+  , `duration` DECIMAL(10,2) comment '効果時間'
+  , `sort_key` INT not null comment 'ソート順'
+  , constraint `sa_object_PKC` primary key (`sa_object_id`)
+) comment 'スペシャルアタックオブジェクト' ;
+
+create unique index `sa_object_IX1`
+  on `sa_object`(`sort_key`);
+
+-- オブジェクトのSA
+-- * BackupToTempTable
+drop table if exists `sa_object_special_attack` cascade;
+
+-- * RestoreFromTempTable
+create table `sa_object_special_attack` (
+  `sa_object_id` INT not null comment 'SAオブジェクトID'
+  , `special_attack_id` INT not null comment 'スペシャルアタックID'
+  , constraint `sa_object_special_attack_PKC` primary key (`sa_object_id`,`special_attack_id`)
+) comment 'オブジェクトのSA' ;
+
+-- 召喚
+-- * BackupToTempTable
+drop table if exists `sa_summoning` cascade;
+
+-- * RestoreFromTempTable
+create table `sa_summoning` (
+  `special_attack_id` INT not null comment 'スペシャルアタックID'
+  , `creature_id` INT not null comment 'クリーチャーID'
+  , `summon_count` INT default 1 not null comment '召喚数'
+  , constraint `sa_summoning_PKC` primary key (`special_attack_id`,`creature_id`)
+) comment '召喚' ;
+
 -- ショップ
 -- * BackupToTempTable
 drop table if exists `shop` cascade;
@@ -558,19 +609,29 @@ create table `special_attack` (
   `special_attack_id` INT not null AUTO_INCREMENT comment 'スペシャルアタックID'
   , `name` VARCHAR(32) comment '名称'
   , `name_key` VARCHAR(128) comment '名称キー'
+  , `visible_in_list` BIT(1) default 1 not null comment 'リスト表示'
   , `cooldown` INT comment '再使用'
-  , `damage_type` ENUM('normal', 'relative', 'actual', 'composite') default 'normal' not null comment 'ダメージ種別'
-  , `sad_enabled` BIT(1) default 0 comment 'SAD有効'
+  , `replace_melee` BIT(1) default 1 not null comment '通常攻撃置き換え'
+  , `trigger_on_vit` INT comment '残生命力トリガー'
+  , `trigger_on_vit_revert` BIT(1) default 0 not null comment '残生命力トリガー(条件逆転)'
+  , `is_once` BIT(1) default 0 not null comment '1回のみ'
+  , `is_long_range` BIT(1) default 0 not null comment '遠距離のみ'
+  , `damage_type` ENUM('normal', 'relative', 'actual', 'composite', 'none') default 'normal' not null comment 'ダメージ種別'
+  , `is_movement` BIT(1) default 0 not null comment '移動'
+  , `is_random_summon` BIT(1) default 0 not null comment 'ランダム召喚'
+  , `summon_limit` INT comment '召喚上限'
+  , `sad_enabled` BIT(1) default 0 not null comment 'SAD適用'
   , `ad_relative` DECIMAL(10,2) comment '相対値ダメージ'
   , `ad_actual` INT comment '実数値ダメージ'
-  , `replace_melee` BIT(1) comment '通常攻撃置き換え'
-  , `as` INT comment '攻撃速度'
   , `attack_count` INT comment '攻撃回数'
   , `voh_dr_enabled` BIT(1) default 1 not null comment '吸収反射有効'
   , `image_name` VARCHAR(32) comment '画像名称'
   , `sort_key` INT not null comment 'ソート順'
   , constraint `special_attack_PKC` primary key (`special_attack_id`)
 ) comment 'スペシャルアタック' ;
+
+create unique index `special_attack_IX1`
+  on `special_attack`(`sort_key`);
 
 -- タグ
 -- * BackupToTempTable
