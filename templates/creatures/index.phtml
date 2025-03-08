@@ -151,11 +151,13 @@
                     </td>
                   </tr>
                 </template>
-                <tr class="row-none d-none">
-                  <td class="pl-2">
-                    <?= $l->s('common.none') ?>
-                  </td>
-                </tr>
+                <template id="modal-item-none-row">
+                  <tr class="row-data">
+                    <td class="pl-2">
+                      <?= $l->s('common.none') ?>
+                    </td>
+                  </tr>
+                </template>
               </tbody>
             </table>
             <table class="table-dark table-striped table-bordered w-100 mb-2">

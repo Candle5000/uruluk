@@ -268,9 +268,8 @@ $(function () {
         const itemTbody = $("#detail-items");
         itemTbody.children('tr.row-data').remove();
         if (items.length == 0) {
-          itemTbody.find('tr.row-none').removeClass('d-none');
-        } else {
-          itemTbody.find('tr.row-none').addClass('d-none');
+          const row = $($("#modal-item-none-row").html());
+          itemTbody.append(row);
         }
         items.forEach(item => {
           item.name = $('<div/>').html(item.name).text();
