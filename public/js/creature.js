@@ -76,10 +76,12 @@ $(function () {
       return;
     }
     if (baseTagId == "#detail-as") {
-      const boostedAS = Math.round(base.data("base-val") * (1 - boostVal * level / 100) - 0.0000005);
-      base.text(boostedAS > 5 ? boostedAS : 5);
+      const boostedAS = base.data("base-val") * (1 - boostVal * level / 100);
+      const currentVal = boostedAS < 5 ? 5 : boostedAS;
+      base.data("current-val", currentVal).text(Math.round(currentVal - 0.0000005));
     } else {
-      base.text(Math.round(base.data("base-val") * (1 + boostVal * level / 100) - 0.0000005) + (isPercentage ? '%' : ''));
+      const currentVal = base.data("base-val") * (1 + boostVal * level / 100);
+      base.data("current-val", currentVal).text(Math.round(currentVal - 0.0000005) + (isPercentage ? '%' : ''));
     }
     if (level > 0) {
       baseTd1.addClass('yellow');
@@ -90,25 +92,24 @@ $(function () {
     }
   }
 
-  const setPhaseBoostVoT = function (baseVitTagId, boostVal, baseVotTagId, level) {
-    const baseVit = $(baseVitTagId);
-    const baseVot = $(baseVotTagId);
-    if (!baseVot.data("base-val") || !boostVal) {
-      baseVot.parent().removeClass('yellow');
-      baseVot.parent().removeClass('red');
+  const setVoT = function (level) {
+    const baseVot = $("#detail-vot");
+    const vot = baseVot.data("base-val");
+    const vit = $("#detail-vit").data("current-val");
+    if (vot == 0) {
+      $("tr.row-vot").addClass("d-none");
       return;
     }
-    const votVal = Math.round((baseVit.data("base-val") * (1 + boostVal * level / 100) - 0.0000005) * 10 / baseVot.data("base-val")) / 10;
-    baseVot.text(votVal);
-    if (level == 0) {
-      baseVot.parent().removeClass('yellow');
-      baseVot.parent().removeClass('red');
-    } else if (baseVot.data("base-val") > 0) {
-      baseVot.parent().removeClass('red');
-      baseVot.parent().addClass('yellow');
-    } else {
-      baseVot.parent().removeClass('yellow');
-      baseVot.parent().addClass('red');
+    $("tr.row-vot").removeClass("d-none");
+    $("#detail-vot").text(Math.round(vit * 10 / vot) / 10);
+    baseVot.parent().removeClass('yellow');
+    baseVot.parent().removeClass('red');
+    if (level > 0) {
+      if (baseVot.data("base-val") > 0) {
+        baseVot.parent().addClass('yellow');
+      } else if (baseVot.data("base-val") < 0) {
+        baseVot.parent().addClass('red');
+      }
     }
   }
 
@@ -127,7 +128,8 @@ $(function () {
         ? Number(strBaseVal) * (1 + strBoostVal * level / 100)
         : Number(strBaseVal)
       : 0;
-    base.text(Math.round(base.data("base-val") * (1 + adBoostVal * level / 100) + (isMinAd ? strVal / 2 : strVal) - 0.0000005));
+    const currentVal = base.data("base-val") * (1 + adBoostVal * level / 100) + (isMinAd ? strVal / 2 : strVal);
+    base.data("current-val", currentVal).text(Math.round(currentVal - 0.0000005));
     if (level > 0) {
       baseTd1.addClass('yellow');
       baseTd2.addClass('yellow');
@@ -135,6 +137,43 @@ $(function () {
       baseTd1.removeClass('yellow');
       baseTd2.removeClass('yellow');
     }
+  }
+
+  const setSkillAd = function () {
+    const minAd = $("#detail-min-ad").data("current-val");
+    const maxAd = $("#detail-max-ad").data("current-val");
+    const as = $("#detail-as").data("current-val");
+    const sad = $("#detail-sad").data("base-val");
+    const isAdBoosted = maxAd > $("#detail-max-ad").data("base-val");
+    const isAsBoosted = $("#detail-as").data("base-val") > as;
+    $("#detail-attacks").children("tr").each(function () {
+      const row = $(this);
+      const cooldown = row.data("cooldown");
+      const replaceMelee = row.data("replace-melee");
+      const damageType = row.data("damage-type");
+      const sadEnabled = row.data("sad-enabled");
+      const attackCount = row.data("attack-count");
+      const saAd = row.find(".sa-ad").removeClass("yellow");
+      const saDps = row.find(".sa-dps").removeClass("yellow");
+      if (damageType != "normal") return true;
+      const saMinAd = Math.round(minAd * (sadEnabled ? sad : 100) / 100 - 0.0000005);
+      const saMaxAd = Math.round(maxAd * (sadEnabled ? sad : 100) / 100 - 0.0000005);
+      saAd.text(saMinAd + '～' + saMaxAd);
+      if (isAdBoosted) saAd.addClass("yellow");
+      if (attackCount > 1) {
+        row.find(".sa-attack-count-val").text(attackCount);
+      } else {
+        row.find(".sa-attack-count").addClass("d-none");
+      }
+      if (cooldown == null && replaceMelee && damageType == "normal") {
+        const avg = (minAd + maxAd) * (sadEnabled ? sad : 100) * attackCount / 2 / 100;
+        const dps = (Math.round(avg * 30 * 1000 / as) / 1000).toFixed(3);
+        saDps.text(dps);
+        if (isAdBoosted || isAsBoosted) saDps.addClass("yellow");
+      } else {
+        saDps.text("-");
+      }
+    });
   }
 
   let autoTransition = false;
@@ -178,7 +217,7 @@ $(function () {
           creature.image_name : 'creature_noimg.png';
         const minAd = creature.min_ad
           ? creature.str
-            ? Number(creature.min_ad) + Math.floor(Number(creature.str) / 2)
+            ? Number(creature.min_ad) + Number(creature.str) / 2
             : creature.min_ad
           : '?';
         const maxAd = creature.max_ad
@@ -189,36 +228,44 @@ $(function () {
         const as = creature.as ? creature.as == 0 ? '-' : creature.as : '?';
         $("#detail-image").attr('src', '/img/creature/' + imgName);
         $("#detail-creature-name").text(creature.name);
-        $("#detail-min-ad").text(minAd)
+        $("#detail-min-ad").text(Math.round(minAd - 0.0000005))
+          .data("current-val", minAd)
           .data("base-val", creature.min_ad);
         $("#detail-max-ad").text(maxAd)
+          .data("current-val", maxAd)
           .data("base-val", creature.max_ad);
         $("#detail-as").text(as)
+          .data("current-val", creature.as)
           .data("base-val", creature.as);
         $("#detail-str").text(creature.str ? creature.str : '?')
+          .data("current-val", creature.str)
           .data("base-val", creature.str);
         $("#detail-def").text(creature.def ? creature.def : '?')
+          .data("current-val", creature.def)
           .data("base-val", creature.def);
         $("#detail-dex").text(creature.dex ? creature.dex : '?')
+          .data("current-val", creature.dex)
           .data("base-val", creature.dex);
         $("#detail-vit").text(creature.vit ? creature.vit : '?')
+          .data("current-val", creature.vit)
           .data("base-val", creature.vit);
         $("#detail-ws").text(creature.ws ? creature.ws : '?')
+          .data("current-val", creature.ws)
           .data("base-val", creature.ws);
         $("#detail-voh").text((creature.voh ? creature.voh : '?') + '%')
+          .data("current-val", creature.voh)
           .data("base-val", creature.voh);
         $("#detail-dr").text((creature.dr ? creature.dr : '?') + '%')
+          .data("current-val", creature.dr)
           .data("base-val", creature.dr);
         $("#detail-xp").text(creature.xp ? creature.xp : '?')
+          .data("current-val", creature.xp)
           .data("base-val", creature.xp);
-        if (creature.vot != 0) {
-          $("tr.row-vot").removeClass("d-none");
-          $("#detail-vot").text(Math.round(creature.vit * 10 / creature.vot) / 10)
-            .data("base-val", creature.vot);
-        } else {
-          $("tr.row-vot").addClass("d-none");
-          $("#detail-vot").data("base-val", creature.vot);
-        }
+        $("#detail-sad").text(creature.sad ? creature.sad > 0 ? creature.sad + '%' : '-' : '?')
+          .data("current-val", creature.sad)
+          .data("base-val", creature.sad);
+        $("#detail-vot").data("base-val", creature.vot);
+        setVoT(0);
         $("#tb-ad").text(creature.tb_ad ? creature.tb_ad + '%' : '-')
           .data("val", creature.tb_ad);
         $("#tb-as").text(creature.tb_as ? creature.tb_as + '%' : '-')
@@ -258,30 +305,20 @@ $(function () {
         }
         creature.special_attacks.forEach(sa => {
           const row = $($("#modal-attacks-row").html());
-          row.data('damage-type', sa.damage_type)
-            .data('sad-enabled', sa.sad_enabled);
+          row.data('cooldown', sa.cooldown)
+            .data('replace-melee', sa.replace_melee)
+            .data('damage-type', sa.damage_type)
+            .data('sad-enabled', sa.sad_enabled)
+            .data('ad-relative', sa.ad_relative)
+            .data('ad-actual', sa.ad_actual)
+            .data('attack-count', sa.attack_count);
           const img = sa.image_name ? sa.image_name : 'blank.png';
           row.find('img.item-icon')
             .attr('src', '/img/sa/' + img).attr('alt', sa.name);
           row.find(".sa-name").text(sa.name);
-          const saMinAd = Math.round(minAd * (sa.sad_enabled ? creature.sad : 100) / 100);
-          const saMaxAd = Math.round(maxAd * (sa.sad_enabled ? creature.sad : 100) / 100);
-          row.find(".sa-ad").text(saMinAd + '～' + saMaxAd);
-          if (sa.attack_count > 1) {
-            row.find(".sa-attack-count-val").text(sa.attack_count);
-          } else {
-            row.find(".sa-attack-count").addClass("d-none");
-          }
-          if (sa.cooldown == null && sa.replace_melee && sa.damage_type == "normal") {
-            const avg = (minAd + maxAd) * (sa.sad_enabled ? creature.sad : 100) / 2 / 100;
-            const dps = (Math.round(avg * 30 * 1000 / creature.as) / 1000).toFixed(3);
-            row.find(".sa-dps").text(dps);
-          } else {
-            row.find(".sa-dps").text("-");
-          }
           saTbody.append(row);
         });
-        saTbody.find("a.sa-note").tooltip();
+        setSkillAd();
 
         const itemTbody = $("#detail-items");
         itemTbody.children('tr.row-data').remove();
@@ -359,7 +396,8 @@ $(function () {
     setPhaseBoost("#detail-voh", $("#tb-voh").data("val"), level, true);
     setPhaseBoost("#detail-dr", $("#tb-dr").data("val"), level, true);
     setPhaseBoost("#detail-xp", $("#tb-xp").data("val"), level, false);
-    setPhaseBoostVoT("#detail-vit", $("#tb-vit").data("val"), "#detail-vot", level);
+    setVoT(level);
+    setSkillAd();
   });
 
   if (location.pathname.split('/').length == 3) {
