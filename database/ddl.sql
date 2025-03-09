@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2025/03/09 1:20:43
+-- Date/Time    : 2025/03/10 5:26:53
 -- Author       : candl
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -624,6 +624,7 @@ create table `special_attack` (
   , `ad_relative` DECIMAL(10,2) comment '相対値ダメージ'
   , `ad_actual` INT comment '実数値ダメージ'
   , `attack_count` INT comment '攻撃回数'
+  , `is_spread` BIT(1) default 0 not null comment '拡散'
   , `voh_dr_enabled` BIT(1) default 1 not null comment '吸収反射有効'
   , `image_name` VARCHAR(32) comment '画像名称'
   , `sort_key` INT not null comment 'ソート順'
