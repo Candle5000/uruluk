@@ -316,6 +316,27 @@ $(function () {
           row.find('img.item-icon')
             .attr('src', '/img/sa/' + img).attr('alt', sa.name);
           row.find(".sa-name").text(sa.name);
+          if (sa.damage_type != "normal") {
+            if (sa.attack_count > 1) {
+              row.find(".sa-attack-count-val").text(sa.attack_count);
+            } else {
+              row.find(".sa-attack-count").addClass("d-none");
+            }
+            row.find(".sa-dps").text("-");
+          }
+          switch (sa.damage_type) {
+            case 'relative':
+              row.find(".sa-ad").addClass("rare").text(sa.ad_relative + "%");
+              break;
+            case 'actual':
+              row.find(".sa-ad").addClass("rare").text(sa.ad_actual);
+              break;
+            case 'composite':
+              row.find(".sa-ad").addClass("rare").text(sa.ad_actual + " + " + sa.ad_relative + "%");
+              break;
+            default:
+              row.find(".sa-ad").text("-");
+          }
           saTbody.append(row);
         });
         setSkillAd();

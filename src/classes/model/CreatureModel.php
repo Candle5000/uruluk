@@ -307,16 +307,54 @@ class CreatureModel extends Model
                 , SA.attack_count
                 , SA.voh_dr_enabled
                 , SA.image_name
+                , SA.sort_key
             FROM
                 creature_special_attack CSA
-                INNER JOIN special_attack SA
-                ON CSA.special_attack_id = SA.special_attack_id
+                JOIN special_attack SA
+                    ON CSA.special_attack_id = SA.special_attack_id
             WHERE
                 CSA.creature_id = :id
                 AND SA.visible_in_list = 1
+            UNION ALL
+            SELECT
+                SA2.special_attack_id
+                , SA2.name
+                , SA2.name_key
+                , SA2.cooldown
+                , SA2.replace_melee
+                , SA2.trigger_on_vit
+                , SA2.trigger_on_vit_revert
+                , SA2.is_once
+                , SA2.is_long_range
+                , SA2.damage_type
+                , SA2.is_movement
+                , SA2.is_random_summon
+                , SA2.summon_limit
+                , SA2.sad_enabled
+                , SA2.ad_relative
+                , SA2.ad_actual
+                , SA2.attack_count
+                , SA2.voh_dr_enabled
+                , SA2.image_name
+                , SA2.sort_key
+            FROM
+                creature_special_attack CSA
+                JOIN special_attack SA1
+                    ON CSA.special_attack_id = SA1.special_attack_id
+                JOIN place_sa_object PO
+                    ON SA1.special_attack_id = PO.special_attack_id
+                JOIN sa_object SO
+                    ON PO.sa_object_id = SO.sa_object_id
+                JOIN sa_object_special_attack OSA
+                    ON SO.sa_object_id = OSA.sa_object_id
+                JOIN special_attack SA2
+                    ON OSA.special_attack_id = SA2.special_attack_id
+            WHERE
+                CSA.creature_id = :id
+                AND SA2.visible_in_list = 1
             ORDER BY
-                SA.sort_key
-                , SA.special_attack_id
+                sort_key
+                , special_attack_id
             SQL;
         $this->logger->debug($sql);
         $stmt = $this->db->prepare($sql);
