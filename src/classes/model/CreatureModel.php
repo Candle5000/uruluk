@@ -17,27 +17,31 @@ class CreatureModel extends Model
                 , c.name_en
                 , c.name_ja
                 , c.image_name
+                , c.str
                 , c.min_ad
                 , c.max_ad
-                , c.`as`
-                , c.str
                 , c.def
                 , c.dex
                 , c.vit
                 , c.voh
                 , c.dr
+                , c.ws
+                , c.`as`
                 , c.sad
                 , c.vot
-                , c.tb
-                , c.tb_ad
-                , c.tb_as
                 , c.tb_str
+                , c.tb_ad
                 , c.tb_def
                 , c.tb_dex
                 , c.tb_vit
-                , c.tb_ws
                 , c.tb_voh
                 , c.tb_dr
+                , c.tb_ws
+                , c.tb_as
+                , c.ad_enabled
+                , c.as_enabled
+                , c.sad_enabled
+                , c.tb
                 , c.sort_key
                 , fc.floor_id
                 , fc.event_id
@@ -68,26 +72,31 @@ class CreatureModel extends Model
                     'name_en' => $result['name_en'],
                     'name_ja' => $result['name_ja'],
                     'image_name' => $result['image_name'],
+                    'str' => $this->getFormattedStats($result['str'], true),
                     'min_ad' => $this->getFormattedStats($result['min_ad'], false),
                     'max_ad' => $this->getFormattedStats($result['max_ad'], false),
-                    'as' => $this->getFormattedStats($result['as'], true),
-                    'str' => $this->getFormattedStats($result['str'], true),
                     'def' => $this->getFormattedStats($result['def'], false),
                     'dex' => $this->getFormattedStats($result['dex'], false),
                     'vit' => $this->getFormattedStats($result['vit'], false),
                     'voh' => $this->getFormattedStats($result['voh'], false),
                     'dr' => $this->getFormattedStats($result['dr'], false),
+                    'ws' => $this->getFormattedStats($result['ws'], false),
+                    'as' => $this->getFormattedStats($result['as'], true),
                     'sad' => $this->getFormattedStats($result['sad'], true),
                     'vot' => $result['vot'],
-                    'tb' => $result['tb'],
-                    'tb_ad' => $result['tb_ad'],
-                    'tb_as' => $result['tb_as'],
                     'tb_str' => $result['tb_str'],
+                    'tb_ad' => $result['tb_ad'],
                     'tb_def' => $result['tb_def'],
                     'tb_dex' => $result['tb_dex'],
                     'tb_vit' => $result['tb_vit'],
                     'tb_voh' => $result['tb_voh'],
                     'tb_dr' => $result['tb_dr'],
+                    'tb_ws' => $result['tb_ws'],
+                    'tb_as' => $result['tb_as'],
+                    'ad_enabled' => $result['ad_enabled'],
+                    'as_enabled' => $result['as_enabled'],
+                    'sad_enabled' => $result['sad_enabled'],
+                    'tb' => $result['tb'],
                     'floors' => [
                         [
                             'floor_id' => $result['floor_id'],
@@ -114,30 +123,33 @@ class CreatureModel extends Model
                 , name_key
                 , name_en
                 , name_ja
+                , str
                 , min_ad
                 , max_ad
-                , `as`
-                , str
                 , def
                 , dex
                 , vit
-                , ws
                 , voh
                 , dr
-                , xp
+                , ws
+                , `as`
                 , sad
                 , vot
-                , tb
-                , tb_ad
-                , tb_as
+                , xp
                 , tb_str
+                , tb_ad
                 , tb_def
                 , tb_dex
                 , tb_vit
-                , tb_ws
                 , tb_voh
                 , tb_dr
+                , tb_ws
+                , tb_as
                 , tb_xp
+                , ad_enabled
+                , as_enabled
+                , sad_enabled
+                , tb
                 , note
                 , image_name
             FROM
@@ -157,30 +169,33 @@ class CreatureModel extends Model
                 'name_en' => $result['name_en'],
                 'name_ja' => $result['name_ja'],
                 'image_name' => $result['image_name'],
+                'str' => $result['str'],
                 'min_ad' => $result['min_ad'],
                 'max_ad' => $result['max_ad'],
-                'as' => $result['as'],
-                'str' => $result['str'],
                 'def' => $result['def'],
                 'dex' => $result['dex'],
                 'vit' => $result['vit'],
-                'ws' => $result['ws'],
                 'voh' => $result['voh'],
                 'dr' => $result['dr'],
-                'xp' => $result['xp'],
                 'sad' => $result['sad'],
                 'vot' => $result['vot'],
-                'tb' => $result['tb'],
-                'tb_ad' => $result['tb_ad'],
-                'tb_as' => $result['tb_as'],
+                'ws' => $result['ws'],
+                'as' => $result['as'],
+                'xp' => $result['xp'],
                 'tb_str' => $result['tb_str'],
+                'tb_ad' => $result['tb_ad'],
                 'tb_def' => $result['tb_def'],
                 'tb_dex' => $result['tb_dex'],
                 'tb_vit' => $result['tb_vit'],
-                'tb_ws' => $result['tb_ws'],
                 'tb_voh' => $result['tb_voh'],
                 'tb_dr' => $result['tb_dr'],
+                'tb_ws' => $result['tb_ws'],
+                'tb_as' => $result['tb_as'],
                 'tb_xp' => $result['tb_xp'],
+                'ad_enabled' => $result['ad_enabled'],
+                'as_enabled' => $result['as_enabled'],
+                'sad_enabled' => $result['sad_enabled'],
+                'tb' => $result['tb'],
                 'special_attacks' => $this->getSpecialAttacksByCreatureId($creatureId),
                 'note' => $result['note'],
             ];
@@ -293,6 +308,7 @@ class CreatureModel extends Model
                 , SA.name_key
                 , SA.cooldown
                 , SA.replace_melee
+                , SA.effect_delay
                 , SA.trigger_on_vit
                 , SA.trigger_on_vit_revert
                 , SA.is_once
@@ -305,9 +321,13 @@ class CreatureModel extends Model
                 , SA.ad_relative
                 , SA.ad_actual
                 , SA.attack_count
+                , SA.double_attack
+                , SA.is_spread
+                , SA.dps_enabled
                 , SA.voh_dr_enabled
                 , SA.image_name
                 , SA.sort_key
+                , null as `as`
             FROM
                 creature_special_attack CSA
                 JOIN special_attack SA
@@ -322,6 +342,7 @@ class CreatureModel extends Model
                 , SA2.name_key
                 , SA2.cooldown
                 , SA2.replace_melee
+                , SA2.effect_delay
                 , SA2.trigger_on_vit
                 , SA2.trigger_on_vit_revert
                 , SA2.is_once
@@ -334,9 +355,13 @@ class CreatureModel extends Model
                 , SA2.ad_relative
                 , SA2.ad_actual
                 , SA2.attack_count
+                , SA2.double_attack
+                , SA2.is_spread
+                , SA2.dps_enabled
                 , SA2.voh_dr_enabled
                 , SA2.image_name
                 , SA2.sort_key
+                , SO.`as`
             FROM
                 creature_special_attack CSA
                 JOIN special_attack SA1
@@ -368,6 +393,7 @@ class CreatureModel extends Model
                 'name' => $this->i18n->s($result['name_key']),
                 'cooldown' => $result['cooldown'],
                 'replace_melee' => $result['replace_melee'] ? true : false,
+                'effect_delay' => $result['effect_delay'],
                 'trigger_on_vit' => $result['trigger_on_vit'],
                 'trigger_on_vit_revert' => $result['trigger_on_vit_revert'] ? true : false,
                 'is_once' => $result['is_once'] ? true : false,
@@ -380,8 +406,12 @@ class CreatureModel extends Model
                 'ad_relative' => $result['ad_relative'],
                 'ad_actual' => $result['ad_actual'],
                 'attack_count' => $result['attack_count'],
-                'voh_dr_enabled' => $result['voh_dr_enabled'],
+                'double_attack' => $result['double_attack'] ? true : false,
+                'is_spread' => $result['is_spread'] ? true : false,
+                'dps_enabled' => $result['dps_enabled'] ? true : false,
+                'voh_dr_enabled' => $result['voh_dr_enabled'] ? true : false,
                 'image_name' => $result['image_name'],
+                'as' => $result['as'],
             ];
         }
         return $sa;

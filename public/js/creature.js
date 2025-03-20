@@ -148,26 +148,35 @@ $(function () {
     const isAsBoosted = $("#detail-as").data("base-val") > as;
     $("#detail-attacks").children("tr").each(function () {
       const row = $(this);
-      const cooldown = row.data("cooldown");
-      const replaceMelee = row.data("replace-melee");
       const damageType = row.data("damage-type");
       const sadEnabled = row.data("sad-enabled");
       const attackCount = row.data("attack-count");
+      const doubleAttack = row.data("double-attack");
+      const dpsEnabled = row.data("dps-enabled");
+      const saAs = row.data("as") == null ? as : row.data("as");
       const saAd = row.find(".sa-ad").removeClass("yellow");
       const saDps = row.find(".sa-dps").removeClass("yellow");
-      if (damageType != "normal") return true;
-      const saMinAd = Math.round(minAd * (sadEnabled ? sad : 100) / 100 - 0.0000005);
-      const saMaxAd = Math.round(maxAd * (sadEnabled ? sad : 100) / 100 - 0.0000005);
-      saAd.text(saMinAd + '～' + saMaxAd);
+      let avgAD;
+      if (damageType == "normal") {
+        const saMinAd = Math.round(minAd * (sadEnabled ? sad : 100) / 100 - 0.0000005);
+        const saMaxAd = Math.round(maxAd * (sadEnabled ? sad : 100) / 100 - 0.0000005);
+        saAd.text(saMinAd + '～' + saMaxAd);
+        avgAD = (minAd + maxAd) * (sadEnabled ? sad : 100) * (doubleAttack ? 2 : 1) / 2 / 100;
+      } else if (damageType == "actual") {
+        avgAD = row.data("ad-actual");
+      } else {
+        return true;
+      }
       if (isAdBoosted) saAd.addClass("yellow");
       if (attackCount > 1) {
         row.find(".sa-attack-count-val").text(attackCount);
+      } else if (doubleAttack) {
+        row.find(".sa-attack-count-val").text(2);
       } else {
         row.find(".sa-attack-count").addClass("d-none");
       }
-      if (cooldown == null && replaceMelee && damageType == "normal") {
-        const avg = (minAd + maxAd) * (sadEnabled ? sad : 100) * attackCount / 2 / 100;
-        const dps = (Math.round(avg * 30 * 1000 / as) / 1000).toFixed(3);
+      if (dpsEnabled) {
+        const dps = (Math.round(avgAD * 30 * 1000 / saAs) / 1000).toFixed(3);
         saDps.text(dps);
         if (isAdBoosted || isAsBoosted) saDps.addClass("yellow");
       } else {
@@ -311,7 +320,11 @@ $(function () {
             .data('sad-enabled', sa.sad_enabled)
             .data('ad-relative', sa.ad_relative)
             .data('ad-actual', sa.ad_actual)
-            .data('attack-count', sa.attack_count);
+            .data('attack-count', sa.attack_count)
+            .data('double-attack', sa.double_attack)
+            .data('is-spread', sa.is_spread)
+            .data('dps-enabled', sa.dps_enabled)
+            .data('as', sa.as);
           const img = sa.image_name ? sa.image_name : 'blank.png';
           row.find('img.item-icon')
             .attr('src', '/img/sa/' + img).attr('alt', sa.name);
