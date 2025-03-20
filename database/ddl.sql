@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2025/03/10 5:26:53
+-- Date/Time    : 2025/03/20 16:29:24
 -- Author       : candl
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -73,20 +73,19 @@ create table `creature` (
   , `name_key` VARCHAR(128) comment '名称キー'
   , `name_en` VARCHAR(32) comment '名称(英語)'
   , `name_ja` VARCHAR(32) comment '名称(日本語)'
+  , `str` INT comment '筋力'
   , `min_ad` INT comment '最小攻撃力'
   , `max_ad` INT comment '最大攻撃力'
-  , `as` INT comment '攻撃速度'
-  , `str` INT comment '筋力'
   , `def` INT comment '防御力'
   , `dex` INT comment '技量'
   , `vit` INT comment '生命力'
-  , `ws` INT comment '移動速度'
   , `voh` INT comment '生命力吸収'
   , `dr` INT comment 'ダメージ反射'
-  , `xp` INT comment '経験値'
+  , `ws` INT comment '移動速度'
+  , `as` INT comment '攻撃速度'
   , `sad` INT comment 'スペシャルアタックダメージ'
   , `vot` INT default 0 comment '自動回復'
-  , `tb` BIT(1) default FALSE not null comment '結界地出現'
+  , `xp` INT comment '経験値'
   , `tb_ad` DECIMAL(10,1) comment '結界地補正 攻撃力'
   , `tb_as` DECIMAL(10,1) comment '結界地補正 攻撃速度'
   , `tb_str` DECIMAL(10,1) comment '結界地補正 筋力'
@@ -97,6 +96,10 @@ create table `creature` (
   , `tb_voh` DECIMAL(10,1) comment '結界地補正 生命力吸収'
   , `tb_dr` DECIMAL(10,1) comment '結界地補正 ダメージ反射'
   , `tb_xp` DECIMAL(10,1) comment '結界地補正 経験値'
+  , `ad_enabled` BIT(1) default 1 not null comment '攻撃力有効'
+  , `as_enabled` BIT(1) default 1 not null comment '攻撃速度有効'
+  , `sad_enabled` BIT(1) default 1 not null comment 'SAD有効'
+  , `tb` BIT(1) default FALSE not null comment '結界地出現'
   , `note` TEXT comment '説明'
   , `image_name` VARCHAR(32) comment '画像名称'
   , `sort_key` INT not null comment 'ソート順'
@@ -525,7 +528,7 @@ drop table if exists `sa_object` cascade;
 create table `sa_object` (
   `sa_object_id` INT not null AUTO_INCREMENT comment 'SAオブジェクトID'
   , `name` VARCHAR(32) comment '名称'
-  , `as` INT comment '攻撃速度'
+  , `as` DECIMAL(10,2) comment '攻撃速度'
   , `duration` DECIMAL(10,2) comment '効果時間'
   , `sort_key` INT not null comment 'ソート順'
   , constraint `sa_object_PKC` primary key (`sa_object_id`)
@@ -610,8 +613,9 @@ create table `special_attack` (
   , `name` VARCHAR(32) comment '名称'
   , `name_key` VARCHAR(128) comment '名称キー'
   , `visible_in_list` BIT(1) default 1 not null comment 'リスト表示'
-  , `cooldown` INT comment '再使用'
+  , `cooldown` DECIMAL(10,2) comment '再使用'
   , `replace_melee` BIT(1) default 1 not null comment '通常攻撃置き換え'
+  , `effect_delay` INT comment '遅延発動'
   , `trigger_on_vit` INT comment '残生命力トリガー'
   , `trigger_on_vit_revert` BIT(1) default 0 not null comment '残生命力トリガー(条件逆転)'
   , `is_once` BIT(1) default 0 not null comment '1回のみ'
@@ -624,6 +628,7 @@ create table `special_attack` (
   , `ad_relative` DECIMAL(10,2) comment '相対値ダメージ'
   , `ad_actual` INT comment '実数値ダメージ'
   , `attack_count` INT comment '攻撃回数'
+  , `double_attack` BIT(1) default 0 not null comment '2回攻撃'
   , `is_spread` BIT(1) default 0 not null comment '拡散'
   , `voh_dr_enabled` BIT(1) default 1 not null comment '吸収反射有効'
   , `image_name` VARCHAR(32) comment '画像名称'
