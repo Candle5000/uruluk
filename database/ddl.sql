@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2025/03/20 16:29:24
+-- Date/Time    : 2025/03/20 18:25:37
 -- Author       : candl
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -86,15 +86,15 @@ create table `creature` (
   , `sad` INT comment 'スペシャルアタックダメージ'
   , `vot` INT default 0 comment '自動回復'
   , `xp` INT comment '経験値'
-  , `tb_ad` DECIMAL(10,1) comment '結界地補正 攻撃力'
-  , `tb_as` DECIMAL(10,1) comment '結界地補正 攻撃速度'
   , `tb_str` DECIMAL(10,1) comment '結界地補正 筋力'
+  , `tb_ad` DECIMAL(10,1) comment '結界地補正 攻撃力'
   , `tb_def` DECIMAL(10,1) comment '結界地補正 防御力'
   , `tb_dex` DECIMAL(10,1) comment '結界地補正 技量'
   , `tb_vit` DECIMAL(10,1) comment '結界地補正 生命力'
-  , `tb_ws` DECIMAL(10,1) comment '結界地補正 移動速度'
   , `tb_voh` DECIMAL(10,1) comment '結界地補正 生命力吸収'
   , `tb_dr` DECIMAL(10,1) comment '結界地補正 ダメージ反射'
+  , `tb_ws` DECIMAL(10,1) comment '結界地補正 移動速度'
+  , `tb_as` DECIMAL(10,1) comment '結界地補正 攻撃速度'
   , `tb_xp` DECIMAL(10,1) comment '結界地補正 経験値'
   , `ad_enabled` BIT(1) default 1 not null comment '攻撃力有効'
   , `as_enabled` BIT(1) default 1 not null comment '攻撃速度有効'
@@ -630,6 +630,7 @@ create table `special_attack` (
   , `attack_count` INT comment '攻撃回数'
   , `double_attack` BIT(1) default 0 not null comment '2回攻撃'
   , `is_spread` BIT(1) default 0 not null comment '拡散'
+  , `dps_enabled` BIT(1) default 0 not null comment 'DPS有効'
   , `voh_dr_enabled` BIT(1) default 1 not null comment '吸収反射有効'
   , `image_name` VARCHAR(32) comment '画像名称'
   , `sort_key` INT not null comment 'ソート順'
