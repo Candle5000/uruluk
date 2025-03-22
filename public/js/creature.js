@@ -144,8 +144,9 @@ $(function () {
     const maxAd = $("#detail-max-ad").data("current-val");
     const as = $("#detail-as").data("current-val");
     const sad = $("#detail-sad").data("base-val");
-    const isAdBoosted = maxAd > $("#detail-max-ad").data("base-val");
-    const isAsBoosted = $("#detail-as").data("base-val") > as;
+    const tbEnabled = $("#detail-tb-boosts").data("tb");
+    const isAdBoosted = tbEnabled && maxAd > $("#detail-max-ad").data("base-val");
+    const isAsBoosted = tbEnabled && $("#detail-as").data("base-val") > as;
     $("#detail-attacks").children("tr").each(function () {
       const row = $(this);
       const damageType = row.data("damage-type");
@@ -300,7 +301,8 @@ $(function () {
         } else {
           $("#detail-name").removeClass("boss");
         }
-        if (creature.tb == 1) {
+        $("#detail-tb-boosts").data("tb", creature.tb);
+        if (creature.tb) {
           $("#detail-tb-boosts,#detail-row-tb-phase").removeClass("d-none");
         } else {
           $("#detail-tb-boosts,#detail-row-tb-phase").addClass("d-none");
