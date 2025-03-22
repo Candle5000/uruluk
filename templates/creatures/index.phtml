@@ -51,7 +51,10 @@
               </tr>
               <tr>
                 <td class="text-center" colspan="2">
-                  <span id="detail-min-ad"></span>～<span id="detail-max-ad"></span>
+                  <div id="detail-ad">
+                    <span id="detail-min-ad"></span>～<span id="detail-max-ad"></span>
+                  </div>
+                  <div id="detail-ad-disabled">-</div>
                 </td>
                 <td class="text-center" id="detail-as"></td>
                 <td class="text-center" id="detail-str"></td>
@@ -336,10 +339,14 @@
             <div class="d-table w-100 table-item-attrs">
               <div class="d-table-row">
                 <div class="d-table-cell border border-black text-right w-16">
-                  &nbsp;<?= $creature['min_ad'] + floor($creature['str'] / 2) ?>~<?= $creature['max_ad'] + $creature['str'] ?>
+                  <?php if ($creature['ad_enabled']) : ?>
+                    &nbsp;<?= $creature['min_ad'] + floor($creature['str'] / 2) ?>~<?= $creature['max_ad'] + $creature['str'] ?>
+                  <?php else : ?>
+                    -
+                  <?php endif; ?>
                 </div>
                 <div class="d-table-cell border border-black text-right w-14">
-                  <?= $creature['as'] ?>
+                  <?= $creature['as_enabled'] ? $creature['as'] : '-' ?>
                 </div>
                 <div class="d-table-cell border border-black text-right w-14">
                   <?= $creature['def'] ?>
@@ -351,7 +358,7 @@
                   <?= $creature['vit'] ?>
                 </div>
                 <div class="d-table-cell border border-black text-right w-14">
-                  <?= $creature['voh'] ?>
+                  <?= $creature['ad_enabled'] ? $creature['voh'] : '-' ?>
                 </div>
                 <div class="d-table-cell border border-black text-right w-14">
                   <?= $creature['dr'] ?>

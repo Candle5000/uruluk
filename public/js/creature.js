@@ -70,6 +70,7 @@ $(function () {
     const base = $(baseTagId);
     const baseTd1 = $("td" + baseTagId);
     const baseTd2 = $("span" + baseTagId).closest("td");
+    if (base.data("enabled") !== undefined && !base.data("enabled")) return;
     if (!base.data("base-val") || base.data("base-val") == 0 || !boostVal) {
       baseTd1.removeClass('yellow');
       baseTd2.removeClass('yellow');
@@ -235,18 +236,26 @@ $(function () {
             ? Number(creature.max_ad) + Number(creature.str)
             : creature.max_ad
           : '?';
-        const as = creature.as ? creature.as == 0 ? '-' : creature.as : '?';
         $("#detail-image").attr('src', '/img/creature/' + imgName);
         $("#detail-creature-name").text(creature.name);
+        $("#detail-ad").addClass("d-none")
+          .data("enabled", creature.ad_enabled);
+        $("#detail-ad-disabled").addClass("d-none");
+        if (creature.ad_enabled) {
+          $("#detail-ad").removeClass("d-none");
+        } else {
+          $("#detail-ad-disabled").removeClass("d-none");
+        }
         $("#detail-min-ad").text(Math.round(minAd - 0.0000005))
           .data("current-val", minAd)
           .data("base-val", creature.min_ad);
         $("#detail-max-ad").text(maxAd)
           .data("current-val", maxAd)
           .data("base-val", creature.max_ad);
-        $("#detail-as").text(as)
+        $("#detail-as").text(creature.as_enabled ? creature.as : '-')
           .data("current-val", creature.as)
-          .data("base-val", creature.as);
+          .data("base-val", creature.as)
+          .data("enabled", creature.as_enabled);
         $("#detail-str").text(creature.str ? creature.str : '?')
           .data("current-val", creature.str)
           .data("base-val", creature.str);
@@ -262,23 +271,24 @@ $(function () {
         $("#detail-ws").text(creature.ws ? creature.ws : '?')
           .data("current-val", creature.ws)
           .data("base-val", creature.ws);
-        $("#detail-voh").text((creature.voh ? creature.voh : '?') + '%')
+        $("#detail-voh").text(creature.ad_enabled ? (creature.voh ? creature.voh : '?') + '%' : '-')
           .data("current-val", creature.voh)
-          .data("base-val", creature.voh);
+          .data("base-val", creature.voh)
+          .data("enabled", creature.ad_enabled);
         $("#detail-dr").text((creature.dr ? creature.dr : '?') + '%')
           .data("current-val", creature.dr)
           .data("base-val", creature.dr);
         $("#detail-xp").text(creature.xp ? creature.xp : '?')
           .data("current-val", creature.xp)
           .data("base-val", creature.xp);
-        $("#detail-sad").text(creature.sad ? creature.sad > 0 ? creature.sad + '%' : '-' : '?')
+        $("#detail-sad").text(creature.sad ? creature.sad_enabled && creature.sad > 0 ? creature.sad + '%' : '-' : '?')
           .data("current-val", creature.sad)
           .data("base-val", creature.sad);
         $("#detail-vot").data("base-val", creature.vot);
         setVoT(0);
-        $("#tb-ad").text(creature.tb_ad ? creature.tb_ad + '%' : '-')
+        $("#tb-ad").text(creature.ad_enabled && creature.tb_ad ? creature.tb_ad + '%' : '-')
           .data("val", creature.tb_ad);
-        $("#tb-as").text(creature.tb_as ? creature.tb_as + '%' : '-')
+        $("#tb-as").text(creature.as_enabled && creature.tb_as ? creature.tb_as + '%' : '-')
           .data("val", creature.tb_as);
         $("#tb-str").text(creature.tb_str ? creature.tb_str + '%' : '-')
           .data("val", creature.tb_str);
@@ -290,7 +300,7 @@ $(function () {
           .data("val", creature.tb_vit);
         $("#tb-ws").text(creature.tb_ws ? creature.tb_ws + '%' : '-')
           .data("val", creature.tb_ws);
-        $("#tb-voh").text(creature.tb_voh ? creature.tb_voh + '%' : '-')
+        $("#tb-voh").text(creature.ad_enabled && creature.tb_voh ? creature.tb_voh + '%' : '-')
           .data("val", creature.tb_voh);
         $("#tb-dr").text(creature.tb_dr ? creature.tb_dr + '%' : '-')
           .data("val", creature.tb_dr);
