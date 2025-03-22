@@ -143,10 +143,12 @@ $(function () {
   const setSkillAd = function () {
     const minAd = $("#detail-min-ad").data("current-val");
     const maxAd = $("#detail-max-ad").data("current-val");
+    const baseMaxAd = $("#detail-max-ad").data("base-val");
+    const baseStr = $("#detail-str").data("base-val");
     const as = $("#detail-as").data("current-val");
     const sad = $("#detail-sad").data("base-val");
     const tbEnabled = $("#detail-tb-boosts").data("tb");
-    const isAdBoosted = tbEnabled && maxAd > $("#detail-max-ad").data("base-val");
+    const isAdBoosted = tbEnabled && maxAd > baseMaxAd + baseStr;
     const isAsBoosted = tbEnabled && $("#detail-as").data("base-val") > as;
     $("#detail-attacks").children("tr").each(function () {
       const row = $(this);
@@ -180,7 +182,7 @@ $(function () {
       if (dpsEnabled) {
         const dps = (Math.round(avgAD * 30 * 1000 / saAs) / 1000).toFixed(3);
         saDps.text(dps);
-        if (isAdBoosted || isAsBoosted) saDps.addClass("yellow");
+        if (damageType == "normal" && (isAdBoosted || isAsBoosted)) saDps.addClass("yellow");
       } else {
         saDps.text("-");
       }
@@ -361,6 +363,11 @@ $(function () {
               break;
             default:
               row.find(".sa-ad").text("-");
+          }
+          if (sa.as != null && sa.as > 0) {
+            row.find(".sa-as").text(Math.floor(sa.as));
+          } else {
+            row.find(".sa-as").parent().removeClass("d-table-cell").addClass("d-none");
           }
           saTbody.append(row);
         });
