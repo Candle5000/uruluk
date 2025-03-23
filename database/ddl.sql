@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2025/03/20 18:25:37
+-- Date/Time    : 2025/03/24 0:04:50
 -- Author       : candl
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -528,7 +528,16 @@ drop table if exists `sa_object` cascade;
 create table `sa_object` (
   `sa_object_id` INT not null AUTO_INCREMENT comment 'SAオブジェクトID'
   , `name` VARCHAR(32) comment '名称'
+  , `stats_enabled` BIT(1) default 0 not null comment 'オブジェクトスタッツ有効'
+  , `str` INT comment '筋力'
+  , `min_ad` INT comment '最小攻撃力'
+  , `max_ad` INT comment '最大攻撃力'
+  , `dex` INT comment '技量'
   , `as` DECIMAL(10,2) comment '攻撃速度'
+  , `tb_str` DECIMAL(10,2) comment '結界地補正 筋力'
+  , `tb_ad` DECIMAL(10,2)  comment '結界地補正 攻撃力'
+  , `tb_dex` DECIMAL(10,2) comment '結界地補正 技量'
+  , `tb_as` DECIMAL(10,2) comment '結界地補正 攻撃速度'
   , `duration` DECIMAL(10,2) comment '効果時間'
   , `sort_key` INT not null comment 'ソート順'
   , constraint `sa_object_PKC` primary key (`sa_object_id`)
