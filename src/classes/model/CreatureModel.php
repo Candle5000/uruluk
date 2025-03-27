@@ -327,7 +327,16 @@ class CreatureModel extends Model
                 , SA.voh_dr_enabled
                 , SA.image_name
                 , SA.sort_key
+                , false as stats_enabled
+                , null as str
+                , null as min_ad
+                , null as max_ad
+                , null as dex
                 , null as `as`
+                , null as tb_str
+                , null as tb_ad
+                , null as tb_dex
+                , null as tb_as
             FROM
                 creature_special_attack CSA
                 JOIN special_attack SA
@@ -361,7 +370,16 @@ class CreatureModel extends Model
                 , SA2.voh_dr_enabled
                 , SA2.image_name
                 , SA2.sort_key
+                , SO.stats_enabled
+                , SO.str
+                , SO.min_ad
+                , SO.max_ad
+                , SO.dex
                 , SO.`as`
+                , SO.tb_str
+                , SO.tb_ad
+                , SO.tb_dex
+                , SO.tb_as
             FROM
                 creature_special_attack CSA
                 JOIN special_attack SA1
@@ -411,7 +429,16 @@ class CreatureModel extends Model
                 'dps_enabled' => $result['dps_enabled'] ? true : false,
                 'voh_dr_enabled' => $result['voh_dr_enabled'] ? true : false,
                 'image_name' => $result['image_name'],
+                'stats_enabled' => $result['stats_enabled'] ? true : false,
+                'str' => $result['str'],
+                'min_ad' => $result['min_ad'],
+                'max_ad' => $result['max_ad'],
+                'dex' => $result['dex'],
                 'as' => $result['as'],
+                'tb_str' => $result['tb_str'],
+                'tb_ad' => $result['tb_ad'],
+                'tb_dex' => $result['tb_dex'],
+                'tb_as' => $result['tb_as'],
             ];
         }
         return $sa;
