@@ -410,8 +410,8 @@ $(function () {
         break;
       case "axe":
       case "princess":
-        setNone($("a.item-slot1").data("item-class", "axe"));
-        setNone($("a.item-slot2").data("item-class", "mantle"));
+        setNone($("a.item-slot1").data("item-class", "sword"));
+        setNone($("a.item-slot2").data("item-class", "shield"));
         break;
       case "dagger":
         setNone($("a.item-slot1").data("item-class", "dagger"));
