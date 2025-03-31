@@ -28,11 +28,14 @@ class ItemModel extends Model
         , IC.name_key item_class_name_key
         , IC.name_en item_class_name
         , I.base_item_id
+        , I.class_flactuable
+        , I.class_flactuable_base_id
         , I.image_name
         , I.name_key
         , I.name_en
         , I.name_ja
         , I.rarity
+        , I.storable_count
         , I.skill_en
         , I.skill_axe_en
         , I.skill_sword_en
@@ -125,10 +128,12 @@ class ItemModel extends Model
         , IC.name_en item_class
         , I.base_item_id
         , I.class_flactuable
+        , I.class_flactuable_base_id
         , I.name_key
         , I.name_en
         , I.name_ja
         , I.rarity
+        , I.storable_count
         , I.image_name
         SQL;
 
@@ -603,10 +608,12 @@ class ItemModel extends Model
                 'item_class' => $result['item_class'],
                 'base_item_id' => $result['base_item_id'],
                 'class_flactuable' => $result['class_flactuable'],
+                'class_flactuable_base_id' => $result['class_flactuable_base_id'],
                 'name' => $this->i18n->s($result['name_key']),
                 'name_en' => $result['name_en'],
                 'name_ja' => $result['name_ja'],
                 'rarity' => $result['rarity'],
+                'storable_count' => $result['storable_count'],
                 'image_name' => $result['image_name'],
                 'description' => $this->i18n->s($result['description_key']),
                 'note' => $result['note'],
@@ -690,10 +697,12 @@ class ItemModel extends Model
                 'item_class' => $result['item_class'],
                 'base_item_id' => $result['base_item_id'],
                 'class_flactuable' => $result['class_flactuable'],
+                'class_flactuable_base_id' => $result['class_flactuable_base_id'],
                 'name' => $this->i18n->s($result['name_key']),
                 'name_en' => $result['name_en'],
                 'name_ja' => $result['name_ja'],
                 'rarity' => $result['rarity'],
+                'storable_count' => $result['storable_count'],
                 'image_name' => $result['image_name'],
                 'price' => $result['price'],
             ];
@@ -732,12 +741,15 @@ class ItemModel extends Model
                 $item['item_class_id'] = $result['item_class_id'];
                 $item['item_class_name'] = strtolower($result['item_class_name']);
                 $item['base_item_id'] = $result['base_item_id'];
+                $item['class_flactuable'] = $result['class_flactuable'];
+                $item['class_flactuable_base_id'] = $result['class_flactuable_base_id'];
                 $item['image_name'] = ($result['image_name'] === null)
                     ? "item_noimg.png" : $result['image_name'];
                 $item['name'] = $this->i18n->s($result['name_key']);
                 $item['name_en'] = $result['name_en'];
                 $item['name_ja'] = $result['name_ja'];
                 $item['rarity'] = $result['rarity'];
+                $item['storable_count'] = $result['storable_count'];
                 $item['skill_en'] = $result['skill_en'];
                 $item['skill_axe_en'] = $result['skill_axe_en'];
                 $item['skill_sword_en'] = $result['skill_sword_en'];
@@ -948,10 +960,12 @@ class ItemModel extends Model
                 'item_class' => $result['item_class'],
                 'base_item_id' => $result['base_item_id'],
                 'class_flactuable' => $result['class_flactuable'],
+                'class_flactuable_base_id' => $result['class_flactuable_base_id'],
                 'name' => $this->i18n->s($result['name_key']),
                 'name_en' => $result['name_en'],
                 'name_ja' => $result['name_ja'],
                 'rarity' => $result['rarity'],
+                'storable_count' => $result['storable_count'],
                 'image_name' => $result['image_name'],
             ];
         }

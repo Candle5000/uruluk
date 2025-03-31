@@ -8,6 +8,7 @@ common:
   unit_sec: '秒'
   tooltip_class_stats_description: 'クラス別スタッツの表記'
   tooltip_stats_short_name_description: 'スタッツの略称表記'
+  tooltip_item_obtained: '所持済みアイテムに登録することで、シミュレータで所持済みアイテムを検索できます。'
   loading: '読み込み中…'
   currency_unit: 'G'
   currency_unit_full: 'ゴールド'
@@ -129,6 +130,7 @@ items:
 
 items_detail:
   sell_price: '売却価格'
+  obtained: '所持済み'
   floors: 'レアドロップ'
   banana_trade: 'バナナ交換'
   floor_treasures: '宝箱'
@@ -189,6 +191,7 @@ simulator_item_modal:
   rarity_common: 'ノーマル'
   rarity_rare: 'レア'
   rarity_artifact: 'アーティファクト'
+  obtained_items: '所持済みのみ'
   search_submit: '決定'
 
 simulator_save_modal:

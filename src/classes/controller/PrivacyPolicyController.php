@@ -16,7 +16,7 @@ class PrivacyPolicyController extends Controller
 
     public function index(Request $request, Response $response)
     {
-        $this->title = 'プライバシーポリシー';
+        $this->title = $this->i18n->s('page_title.privacy_policy');
 
         try {
             $this->db->beginTransaction();

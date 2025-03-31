@@ -8,6 +8,7 @@ common:
   unit_sec: 'seg'
   tooltip_class_stats_description: 'Abreviação da classe de personagem'
   tooltip_stats_short_name_description: 'Abreviação do atributo'
+  tooltip_item_obtained: 'By registering an item as obtained, you will be able to filter obtained items within the simulator.'
   loading: 'Carregando...'
   currency_unit: 'G'
   currency_unit_full: 'Ouro'
@@ -129,6 +130,7 @@ items:
 
 items_detail:
   sell_price: 'Preço de Venda'
+  obtained: 'Obtained'
   floors: 'Pisos'
   banana_trade: 'Troca por Banana'
   floor_treasures: 'Tesouros do Andar'
@@ -189,6 +191,7 @@ simulator_item_modal:
   rarity_common: 'Comum'
   rarity_rare: 'Raro'
   rarity_artifact: 'Artefato'
+  obtained_items: 'Obtained Items'
   search_submit: 'Submeter'
 
 simulator_save_modal:

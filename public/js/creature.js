@@ -76,7 +76,8 @@ $(function () {
       return;
     }
     if (baseTagId == "#detail-as") {
-      base.text(Math.round(base.data("base-val") / (1 + boostVal * level / 100) - 0.0000005));
+      const boostedAS = Math.round(base.data("base-val") * (1 - boostVal * level / 100) - 0.0000005);
+      base.text(boostedAS > 5 ? boostedAS : 5);
     } else {
       base.text(Math.round(base.data("base-val") * (1 + boostVal * level / 100) - 0.0000005) + (isPercentage ? '%' : ''));
     }
@@ -132,7 +133,7 @@ $(function () {
 
   $("#modal-creature").on('hide.bs.modal', function () {
     if (!autoTransition && location.pathname.split('/').length != 2) {
-      history.pushState(null, null, '/creatures');
+      history.pushState(null, document.title, '/creatures');
     }
     autoTransition = false;
   });
@@ -278,7 +279,7 @@ $(function () {
         floorList.find("a.floor-description").tooltip();
 
         if (!at && location.pathname.split('/').length != 3) {
-          history.pushState(null, null, '/creatures/' + creatureId);
+          history.pushState(null, document.title, '/creatures/' + creatureId);
         }
 
         $("select.tb-phase").trigger('change');

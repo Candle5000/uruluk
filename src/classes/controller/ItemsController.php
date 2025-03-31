@@ -21,7 +21,7 @@ class ItemsController extends Controller
 
     public function index(Request $request, Response $response)
     {
-        $this->title = 'アイテムデータ';
+        $this->title = $this->i18n->s('page_title.items');
 
         try {
             $this->db->beginTransaction();
@@ -45,8 +45,8 @@ class ItemsController extends Controller
 
     public function rareItem(Request $request, Response $response, array $args)
     {
-        $this->title = ucfirst($args['itemClassName']) . ' レアアイテム';
-        $this->scripts[] = '/js/item.js?id=00081';
+        $this->title = ucfirst($args['itemClassName']) . ' ' . $this->i18n->s('page_title.items_rare');
+        $this->scripts[] = '/js/item.js?id=00092';
 
         try {
             $this->db->beginTransaction();
@@ -77,8 +77,8 @@ class ItemsController extends Controller
 
     public function commonItem(Request $request, Response $response, array $args)
     {
-        $this->title = ucfirst($args['itemClassName']) . ' ノーマルアイテム';
-        $this->scripts[] = '/js/item.js?id=00081';
+        $this->title = ucfirst($args['itemClassName']) . ' ' . $this->i18n->s('page_title.items_common');
+        $this->scripts[] = '/js/item.js?id=00092';
 
         try {
             $this->db->beginTransaction();

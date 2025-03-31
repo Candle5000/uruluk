@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2024/03/18 4:06:59
+-- Date/Time    : 2024/07/20 3:21:50
 -- Author       : candl
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -305,6 +305,7 @@ create table `item` (
   , `base_item_id` INT comment 'ベースアイテムID'
   , `brand_id` INT comment 'ブランドID'
   , `class_flactuable` BIT(1) default 0 not null comment 'クラス変動'
+  , `class_flactuable_base_id` INT comment 'クラス変動ベースID'
   , `name_key` VARCHAR(128) comment '名称キー'
   , `name_en` VARCHAR(64) comment '名称(英語)'
   , `name_ja` VARCHAR(64) comment '名称(日本語)'
@@ -323,6 +324,7 @@ create table `item` (
   , `comment_ja` VARCHAR(64) comment 'コメント(日本語)'
   , `note` TEXT comment '説明'
   , `price` INT comment '売却価格'
+  , `storable_count` INT default 1 comment '倉庫保管数'
   , `image_name` VARCHAR(64) comment '画像名称'
   , `sort_key` VARCHAR(16) not null comment 'ソート順'
   , constraint `item_PKC` primary key (`item_id`)
@@ -398,7 +400,7 @@ drop table if exists `item_skill` cascade;
 create table `item_skill` (
   `skill_id` INT AUTO_INCREMENT comment 'アイテムスキルID'
   , `name` VARCHAR(64) not null comment 'スキル名'
-  , `trigger_type` ENUM('attack', 'kill', 'damage') not null comment 'トリガー種別'
+  , `trigger_type` ENUM('attack', 'kill', 'damage', 'sa') not null comment 'トリガー種別'
   , `kill_trigger_type` ENUM('any', 'dr', 'sa') comment '討伐トリガー種別'
   , `activation_rate` INT not null comment '発動率(%)'
   , `trigger_charge` INT not null comment 'トリガーチャージ'
@@ -438,8 +440,12 @@ create table `news` (
   `post_date` DATETIME not null comment '投稿日時'
   , `subject` VARCHAR(256) comment '件名'
   , `subject_en` VARCHAR(256) comment '件名(英語)'
+  , `subject_zh_cn` VARCHAR(256) comment '件名(簡体中文)'
+  , `subject_zh_tw` VARCHAR(256) comment '件名(繫體中文)'
   , `content` TEXT comment '本文'
   , `content_en` TEXT comment '本文(英語)'
+  , `content_zh_cn` TEXT comment '本文(簡体中文)'
+  , `content_zh_tw` TEXT comment '本文(繫體中文)'
   , constraint `news_PKC` primary key (`post_date`)
 ) comment 'お知らせ' ;
 
