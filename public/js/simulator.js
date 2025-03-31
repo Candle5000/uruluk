@@ -83,22 +83,22 @@ $(function () {
       "xpg": 0
     },
     "princess": {
-      "type": "axe",
-      "minad": 7,
-      "maxad": 50,
+      "type": "sword",
+      "minad": 0,
+      "maxad": 0,
       "as": 20,
-      "ar": 120,
-      "str": 40,
-      "def": 66,
-      "dex": 30,
-      "vit": 1450,
-      "ws": 64.55,
+      "ar": 38,
+      "str": 3,
+      "def": 2,
+      "dex": 3,
+      "vit": 125,
+      "ws": 51.55,
       "sa": 30,
-      "sad": 200,
+      "sad": 150,
       "minsad": 0,
       "maxsad": 0,
-      "voh": 5,
-      "dr": 3,
+      "voh": 0,
+      "dr": 0,
       "xpg": 0
     }
   };
@@ -124,10 +124,10 @@ $(function () {
       "vit": 10
     },
     "princess": {
-      "str": 6,
+      "str": 2,
       "def": 2,
       "dex": 2,
-      "vit": 22
+      "vit": 18
     }
   };
 
