@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2025/03/24 0:04:50
+-- Date/Time    : 2025/07/19 2:17:41
 -- Author       : candl
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -142,6 +142,7 @@ drop table if exists `creature_special_attack` cascade;
 create table `creature_special_attack` (
   `creature_id` INT not null comment 'クリーチャーID'
   , `special_attack_id` INT not null comment 'スペシャルアタックID'
+  , `cooldown` DECIMAL(10,2) comment '再使用'
   , constraint `creature_special_attack_PKC` primary key (`creature_id`,`special_attack_id`)
 ) comment 'クリーチャースペシャルアタック' ;
 
@@ -554,6 +555,7 @@ drop table if exists `sa_object_special_attack` cascade;
 create table `sa_object_special_attack` (
   `sa_object_id` INT not null comment 'SAオブジェクトID'
   , `special_attack_id` INT not null comment 'スペシャルアタックID'
+  , `cooldown` DECIMAL(10,2) comment '再使用'
   , constraint `sa_object_special_attack_PKC` primary key (`sa_object_id`,`special_attack_id`)
 ) comment 'オブジェクトのSA' ;
 
@@ -622,7 +624,6 @@ create table `special_attack` (
   , `name` VARCHAR(32) comment '名称'
   , `name_key` VARCHAR(128) comment '名称キー'
   , `visible_in_list` BIT(1) default 1 not null comment 'リスト表示'
-  , `cooldown` DECIMAL(10,2) comment '再使用'
   , `replace_melee` BIT(1) default 1 not null comment '通常攻撃置き換え'
   , `effect_delay` INT comment '遅延発動'
   , `trigger_on_vit` INT comment '残生命力トリガー'
