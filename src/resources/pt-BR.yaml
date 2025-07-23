@@ -145,7 +145,7 @@ creatures:
   tb_creature: 'Criatura The Boundary'
 
 creatures_detail:
-  attacks_and_skills: 'Ataques e Habilidades'
+  attacks_and_skills: 'Habilidades'
   items: 'Itens'
   floors: 'Andares'
   tb_phase: 'Fase The Boundary'

@@ -72,7 +72,7 @@ class CreatureModel extends Model
                     'name_en' => $result['name_en'],
                     'name_ja' => $result['name_ja'],
                     'image_name' => $result['image_name'],
-                    'str' => $this->getFormattedStats($result['str'], true),
+                    'str' => $result['str'],
                     'min_ad' => $this->getFormattedStats($result['min_ad'], false),
                     'max_ad' => $this->getFormattedStats($result['max_ad'], false),
                     'def' => $this->getFormattedStats($result['def'], false),
@@ -97,6 +97,7 @@ class CreatureModel extends Model
                     'as_enabled' => $result['as_enabled'],
                     'sad_enabled' => $result['sad_enabled'],
                     'tb' => $result['tb'],
+                    'sort_key' => $result['sort_key'],
                     'floors' => [
                         [
                             'floor_id' => $result['floor_id'],
@@ -306,7 +307,7 @@ class CreatureModel extends Model
                 SA.special_attack_id
                 , SA.name
                 , SA.name_key
-                , SA.cooldown
+                , CSA.cooldown
                 , SA.replace_melee
                 , SA.effect_delay
                 , SA.trigger_on_vit
@@ -349,7 +350,7 @@ class CreatureModel extends Model
                 SA2.special_attack_id
                 , SA2.name
                 , SA2.name_key
-                , SA2.cooldown
+                , OSA.cooldown
                 , SA2.replace_melee
                 , SA2.effect_delay
                 , SA2.trigger_on_vit

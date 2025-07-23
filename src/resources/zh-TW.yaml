@@ -145,7 +145,7 @@ creatures:
   tb_creature: '結界地生物'
 
 creatures_detail:
-  attacks_and_skills: '攻擊和技能'
+  abilities: '技能'
   items: '物品'
   floors: '樓層'
   tb_phase: '結界地階層'
