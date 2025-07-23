@@ -141,11 +141,11 @@ $(function () {
   }
 
   const setSkillAd = function () {
-    const minAd = $("#detail-min-ad").data("current-val");
-    const maxAd = $("#detail-max-ad").data("current-val");
-    const baseMaxAd = $("#detail-max-ad").data("base-val");
-    const baseStr = $("#detail-str").data("base-val");
-    const as = $("#detail-as").data("current-val");
+    const minAd = Number($("#detail-min-ad").data("current-val"));
+    const maxAd = Number($("#detail-max-ad").data("current-val"));
+    const baseMaxAd = Number($("#detail-max-ad").data("base-val"));
+    const baseStr = Number($("#detail-str").data("base-val"));
+    const as = Number($("#detail-as").data("current-val"));
     const sad = $("#detail-sad").data("base-val");
     const tbEnabled = $("#detail-tb-boosts").data("tb");
     const isAdBoosted = tbEnabled && maxAd > baseMaxAd + baseStr;
