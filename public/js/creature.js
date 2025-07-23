@@ -438,15 +438,19 @@ $(function () {
 
   $("select.tb-phase").on('change', function () {
     const level = $(this).val();
-    setAdPhaseBoost("#detail-min-ad", $("#tb-ad").data("val"), $("#tb-str").data("val"), level, true);
-    setAdPhaseBoost("#detail-max-ad", $("#tb-ad").data("val"), $("#tb-str").data("val"), level, false);
-    setPhaseBoost("#detail-as", $("#tb-as").data("val"), level, false);
-    setPhaseBoost("#detail-str", $("#tb-str").data("val"), level, false);
+    if ($("#detail-ad").data("enabled")) {
+      setAdPhaseBoost("#detail-min-ad", $("#tb-ad").data("val"), $("#tb-str").data("val"), level, true);
+      setAdPhaseBoost("#detail-max-ad", $("#tb-ad").data("val"), $("#tb-str").data("val"), level, false);
+      setPhaseBoost("#detail-str", $("#tb-str").data("val"), level, false);
+      setPhaseBoost("#detail-voh", $("#tb-voh").data("val"), level, true);
+    }
+    if ($("#detail-sd").data("enabled")) {
+      setPhaseBoost("#detail-as", $("#tb-as").data("val"), level, false);
+    }
     setPhaseBoost("#detail-def", $("#tb-def").data("val"), level, false);
     setPhaseBoost("#detail-dex", $("#tb-dex").data("val"), level, false);
     setPhaseBoost("#detail-vit", $("#tb-vit").data("val"), level, false);
     setPhaseBoost("#detail-ws", $("#tb-ws").data("val"), level, false);
-    setPhaseBoost("#detail-voh", $("#tb-voh").data("val"), level, true);
     setPhaseBoost("#detail-dr", $("#tb-dr").data("val"), level, true);
     setPhaseBoost("#detail-xp", $("#tb-xp").data("val"), level, false);
     setVoT(level);
