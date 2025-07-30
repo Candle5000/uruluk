@@ -66,12 +66,11 @@ $(function () {
     showCreatureList();
   }
 
-  const setPhaseBoost = function (baseTagId, boostVal, level, isPercentage) {
+  const setPhaseBoost = function (baseTagId, boostVal, level, isPercentage, enabled) {
     const base = $(baseTagId);
     const baseTd1 = $("td" + baseTagId);
     const baseTd2 = $("span" + baseTagId).closest("td");
-    if (base.data("enabled") !== undefined && !base.data("enabled")) return;
-    if (!base.data("base-val") || base.data("base-val") == 0 || !boostVal) {
+    if (!base.data("base-val") || base.data("base-val") == 0 || !boostVal || !enabled) {
       baseTd1.removeClass('yellow');
       baseTd2.removeClass('yellow');
       return;
@@ -114,11 +113,11 @@ $(function () {
     }
   }
 
-  const setAdPhaseBoost = function (baseTagId, adBoostVal, strBoostVal, level, isMinAd) {
+  const setAdPhaseBoost = function (baseTagId, adBoostVal, strBoostVal, level, isMinAd, enabled) {
     const base = $(baseTagId);
     const baseTd1 = $("td" + baseTagId);
     const baseTd2 = $("span" + baseTagId).closest("td");
-    if (!base.data("base-val") || (base.data("base-val") == 0 && !strBoostVal) || (!adBoostVal && !strBoostVal)) {
+    if (!base.data("base-val") || (base.data("base-val") == 0 && !strBoostVal) || (!adBoostVal && !strBoostVal) || !enabled) {
       baseTd1.removeClass('yellow');
       baseTd2.removeClass('yellow');
       return;
@@ -438,21 +437,19 @@ $(function () {
 
   $("select.tb-phase").on('change', function () {
     const level = $(this).val();
-    if ($("#detail-ad").data("enabled")) {
-      setAdPhaseBoost("#detail-min-ad", $("#tb-ad").data("val"), $("#tb-str").data("val"), level, true);
-      setAdPhaseBoost("#detail-max-ad", $("#tb-ad").data("val"), $("#tb-str").data("val"), level, false);
-      setPhaseBoost("#detail-str", $("#tb-str").data("val"), level, false);
-      setPhaseBoost("#detail-voh", $("#tb-voh").data("val"), level, true);
-    }
-    if ($("#detail-as").data("enabled")) {
-      setPhaseBoost("#detail-as", $("#tb-as").data("val"), level, false);
-    }
-    setPhaseBoost("#detail-def", $("#tb-def").data("val"), level, false);
-    setPhaseBoost("#detail-dex", $("#tb-dex").data("val"), level, false);
-    setPhaseBoost("#detail-vit", $("#tb-vit").data("val"), level, false);
-    setPhaseBoost("#detail-ws", $("#tb-ws").data("val"), level, false);
-    setPhaseBoost("#detail-dr", $("#tb-dr").data("val"), level, true);
-    setPhaseBoost("#detail-xp", $("#tb-xp").data("val"), level, false);
+    const adEnabled = $("#detail-ad").data("enabled");
+    const asEnabled = $("#detail-as").data("enabled");
+    setPhaseBoost("#detail-str", $("#tb-str").data("val"), level, false, adEnabled);
+    setAdPhaseBoost("#detail-min-ad", $("#tb-ad").data("val"), $("#tb-str").data("val"), level, true, adEnabled);
+    setAdPhaseBoost("#detail-max-ad", $("#tb-ad").data("val"), $("#tb-str").data("val"), level, false, adEnabled);
+    setPhaseBoost("#detail-def", $("#tb-def").data("val"), level, false, true);
+    setPhaseBoost("#detail-dex", $("#tb-dex").data("val"), level, false, true);
+    setPhaseBoost("#detail-vit", $("#tb-vit").data("val"), level, false, true);
+    setPhaseBoost("#detail-voh", $("#tb-voh").data("val"), level, true, adEnabled);
+    setPhaseBoost("#detail-dr", $("#tb-dr").data("val"), level, true, true);
+    setPhaseBoost("#detail-ws", $("#tb-ws").data("val"), level, false, true);
+    setPhaseBoost("#detail-as", $("#tb-as").data("val"), level, false, asEnabled);
+    setPhaseBoost("#detail-xp", $("#tb-xp").data("val"), level, false, true);
     setVoT(level);
     setSkillAd();
   });
