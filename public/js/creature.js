@@ -444,7 +444,7 @@ $(function () {
       setPhaseBoost("#detail-str", $("#tb-str").data("val"), level, false);
       setPhaseBoost("#detail-voh", $("#tb-voh").data("val"), level, true);
     }
-    if ($("#detail-sd").data("enabled")) {
+    if ($("#detail-as").data("enabled")) {
       setPhaseBoost("#detail-as", $("#tb-as").data("val"), level, false);
     }
     setPhaseBoost("#detail-def", $("#tb-def").data("val"), level, false);
