@@ -103,7 +103,7 @@ $(function () {
       return;
     }
     $("tr.row-vot").removeClass("d-none");
-    $("#detail-vot").text(Math.round(vit * 10 / vot) / 10);
+    $("#detail-vot").text((Math.round(vit * 1000 / vot) / 1000).toFixed(3));
     baseVot.parent().removeClass('yellow');
     baseVot.parent().removeClass('red');
     if (tbEnabled && level > 0) {
