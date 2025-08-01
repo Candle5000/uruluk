@@ -67,10 +67,11 @@ $(function () {
   }
 
   const setPhaseBoost = function (baseTagId, boostVal, level, isPercentage, enabled) {
+    const tbEnabled = $("#detail-tb-boosts").data("tb");
     const base = $(baseTagId);
     const baseTd1 = $("td" + baseTagId);
     const baseTd2 = $("span" + baseTagId).closest("td");
-    if (!base.data("base-val") || base.data("base-val") == 0 || !boostVal || !enabled) {
+    if (!tbEnabled || !base.data("base-val") || base.data("base-val") == 0 || !boostVal || !enabled) {
       baseTd1.removeClass('yellow');
       baseTd2.removeClass('yellow');
       return;
@@ -93,6 +94,7 @@ $(function () {
   }
 
   const setVoT = function (level) {
+    const tbEnabled = $("#detail-tb-boosts").data("tb");
     const baseVot = $("#detail-vot");
     const vot = baseVot.data("base-val");
     const vit = $("#detail-vit").data("current-val");
@@ -104,7 +106,7 @@ $(function () {
     $("#detail-vot").text(Math.round(vit * 10 / vot) / 10);
     baseVot.parent().removeClass('yellow');
     baseVot.parent().removeClass('red');
-    if (level > 0) {
+    if (tbEnabled && level > 0) {
       if (baseVot.data("base-val") > 0) {
         baseVot.parent().addClass('yellow');
       } else if (baseVot.data("base-val") < 0) {
@@ -114,10 +116,11 @@ $(function () {
   }
 
   const setAdPhaseBoost = function (baseTagId, adBoostVal, strBoostVal, level, isMinAd, enabled) {
+    const tbEnabled = $("#detail-tb-boosts").data("tb");
     const base = $(baseTagId);
     const baseTd1 = $("td" + baseTagId);
     const baseTd2 = $("span" + baseTagId).closest("td");
-    if (!base.data("base-val") || (base.data("base-val") == 0 && !strBoostVal) || (!adBoostVal && !strBoostVal) || !enabled) {
+    if (!tbEnabled || !base.data("base-val") || (base.data("base-val") == 0 && !strBoostVal) || (!adBoostVal && !strBoostVal) || !enabled) {
       baseTd1.removeClass('yellow');
       baseTd2.removeClass('yellow');
       return;
