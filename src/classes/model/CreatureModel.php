@@ -396,6 +396,65 @@ class CreatureModel extends Model
             WHERE
                 CSA.creature_id = :id
                 AND SA2.visible_in_list = 1
+            UNION ALL
+            SELECT
+                SA2.special_attack_id
+                , SA3.name
+                , SA3.name_key
+                , OSA2.cooldown
+                , SA3.replace_melee
+                , SA3.effect_delay
+                , SA3.trigger_on_vit
+                , SA3.trigger_on_vit_revert
+                , SA3.is_once
+                , SA3.is_long_range
+                , SA3.damage_type
+                , SA3.is_movement
+                , SA3.is_random_summon
+                , SA3.summon_limit
+                , SA3.sad_enabled
+                , SA3.ad_relative
+                , SA3.ad_actual
+                , SA3.attack_count
+                , SA3.double_attack
+                , SA3.is_spread
+                , SA3.dps_enabled
+                , SA3.voh_dr_enabled
+                , SA3.image_name
+                , SA3.sort_key
+                , SO2.stats_enabled
+                , SO2.str
+                , SO2.min_ad
+                , SO2.max_ad
+                , SO2.dex
+                , SO2.`as`
+                , SO2.tb_str
+                , SO2.tb_ad
+                , SO2.tb_dex
+                , SO2.tb_as
+            FROM
+                creature_special_attack CSA
+                JOIN special_attack SA1
+                    ON CSA.special_attack_id = SA1.special_attack_id
+                JOIN place_sa_object PO1
+                    ON SA1.special_attack_id = PO1.special_attack_id
+                JOIN sa_object SO1
+                    ON PO1.sa_object_id = SO1.sa_object_id
+                JOIN sa_object_special_attack OSA1
+                    ON SO1.sa_object_id = OSA1.sa_object_id
+                JOIN special_attack SA2
+                    ON OSA1.special_attack_id = SA2.special_attack_id
+                JOIN place_sa_object PO2
+                    ON SA2.special_attack_id = PO2.special_attack_id
+                JOIN sa_object SO2
+                    ON PO2.sa_object_id = SO2.sa_object_id
+                JOIN sa_object_special_attack OSA2
+                    ON SO2.sa_object_id = OSA2.sa_object_id
+                JOIN special_attack SA3
+                    ON OSA2.special_attack_id = SA3.special_attack_id
+            WHERE
+                CSA.creature_id = :id
+                AND SA3.visible_in_list = 1
             ORDER BY
                 sort_key
                 , special_attack_id
