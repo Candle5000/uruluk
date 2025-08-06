@@ -67,6 +67,8 @@ stats:
   kills_full: 'Baixas'
   based_on_xp: 'Baseado em XP'
   based_on_kills: 'Baseado em Baixas'
+  vot: 'VoT'
+  vot_full: 'Restaura a Vitalidade ao longo do tempo'
 
 character_class:
   sword: 'S'
@@ -143,6 +145,8 @@ creatures:
   tb_creature: 'Criatura The Boundary'
 
 creatures_detail:
+  abilities: 'Habilidades'
+  cooldown: 'Esfriar'
   items: 'Itens'
   floors: 'Andares'
   tb_phase: 'Fase The Boundary'

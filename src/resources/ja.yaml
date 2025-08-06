@@ -67,6 +67,8 @@ stats:
   kills_full: '討伐数'
   based_on_xp: 'EXPベース'
   based_on_kills: '討伐数ベース'
+  vot: 'VoT'
+  vot_full: '自動回復'
 
 character_class:
   sword: 'S'
@@ -143,6 +145,8 @@ creatures:
   tb_creature: '結界地のみ'
 
 creatures_detail:
+  abilities: 'アビリティ'
+  cooldown: '再使用'
   items: '固有ドロップ'
   floors: '出現フロア'
   tb_phase: '結界地フェーズ'

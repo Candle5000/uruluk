@@ -67,6 +67,8 @@ stats:
   kills_full: '擊殺數'
   based_on_xp: '依據經驗'
   based_on_kills: '依據擊殺數'
+  vot: 'VoT'
+  vot_full: '持續恢復'
 
 character_class:
   sword: 'S'
@@ -143,6 +145,8 @@ creatures:
   tb_creature: '結界地生物'
 
 creatures_detail:
+  abilities: '技能'
+  cooldown: '冷卻'
   items: '物品'
   floors: '樓層'
   tb_phase: '結界地階層'

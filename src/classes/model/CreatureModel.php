@@ -17,25 +17,31 @@ class CreatureModel extends Model
                 , c.name_en
                 , c.name_ja
                 , c.image_name
+                , c.str
                 , c.min_ad
                 , c.max_ad
-                , c.`as`
-                , c.str
                 , c.def
                 , c.dex
                 , c.vit
                 , c.voh
                 , c.dr
-                , c.tb
-                , c.tb_ad
-                , c.tb_as
+                , c.ws
+                , c.`as`
+                , c.sad
+                , c.vot
                 , c.tb_str
+                , c.tb_ad
                 , c.tb_def
                 , c.tb_dex
                 , c.tb_vit
-                , c.tb_ws
                 , c.tb_voh
                 , c.tb_dr
+                , c.tb_ws
+                , c.tb_as
+                , c.ad_enabled
+                , c.as_enabled
+                , c.sad_enabled
+                , c.tb
                 , c.sort_key
                 , fc.floor_id
                 , fc.event_id
@@ -66,24 +72,32 @@ class CreatureModel extends Model
                     'name_en' => $result['name_en'],
                     'name_ja' => $result['name_ja'],
                     'image_name' => $result['image_name'],
+                    'str' => $result['str'],
                     'min_ad' => $this->getFormattedStats($result['min_ad'], false),
                     'max_ad' => $this->getFormattedStats($result['max_ad'], false),
-                    'as' => $this->getFormattedStats($result['as'], true),
-                    'str' => $this->getFormattedStats($result['str'], true),
                     'def' => $this->getFormattedStats($result['def'], false),
                     'dex' => $this->getFormattedStats($result['dex'], false),
                     'vit' => $this->getFormattedStats($result['vit'], false),
                     'voh' => $this->getFormattedStats($result['voh'], false),
                     'dr' => $this->getFormattedStats($result['dr'], false),
-                    'tb' => $result['tb'],
-                    'tb_ad' => $result['tb_ad'],
-                    'tb_as' => $result['tb_as'],
+                    'ws' => $this->getFormattedStats($result['ws'], false),
+                    'as' => $this->getFormattedStats($result['as'], true),
+                    'sad' => $this->getFormattedStats($result['sad'], true),
+                    'vot' => $result['vot'],
                     'tb_str' => $result['tb_str'],
+                    'tb_ad' => $result['tb_ad'],
                     'tb_def' => $result['tb_def'],
                     'tb_dex' => $result['tb_dex'],
                     'tb_vit' => $result['tb_vit'],
                     'tb_voh' => $result['tb_voh'],
                     'tb_dr' => $result['tb_dr'],
+                    'tb_ws' => $result['tb_ws'],
+                    'tb_as' => $result['tb_as'],
+                    'ad_enabled' => $result['ad_enabled'],
+                    'as_enabled' => $result['as_enabled'],
+                    'sad_enabled' => $result['sad_enabled'],
+                    'tb' => $result['tb'],
+                    'sort_key' => $result['sort_key'],
                     'floors' => [
                         [
                             'floor_id' => $result['floor_id'],
@@ -110,28 +124,33 @@ class CreatureModel extends Model
                 , name_key
                 , name_en
                 , name_ja
+                , str
                 , min_ad
                 , max_ad
-                , `as`
-                , str
                 , def
                 , dex
                 , vit
-                , ws
                 , voh
                 , dr
+                , ws
+                , `as`
+                , sad
+                , vot
                 , xp
-                , tb
-                , tb_ad
-                , tb_as
                 , tb_str
+                , tb_ad
                 , tb_def
                 , tb_dex
                 , tb_vit
-                , tb_ws
                 , tb_voh
                 , tb_dr
+                , tb_ws
+                , tb_as
                 , tb_xp
+                , ad_enabled
+                , as_enabled
+                , sad_enabled
+                , tb
                 , note
                 , image_name
             FROM
@@ -151,28 +170,33 @@ class CreatureModel extends Model
                 'name_en' => $result['name_en'],
                 'name_ja' => $result['name_ja'],
                 'image_name' => $result['image_name'],
+                'str' => $result['str'],
                 'min_ad' => $result['min_ad'],
                 'max_ad' => $result['max_ad'],
-                'as' => $result['as'],
-                'str' => $result['str'],
                 'def' => $result['def'],
                 'dex' => $result['dex'],
                 'vit' => $result['vit'],
-                'ws' => $result['ws'],
                 'voh' => $result['voh'],
                 'dr' => $result['dr'],
+                'sad' => $result['sad'],
+                'vot' => $result['vot'],
+                'ws' => $result['ws'],
+                'as' => $result['as'],
                 'xp' => $result['xp'],
-                'tb' => $result['tb'],
-                'tb_ad' => $result['tb_ad'],
-                'tb_as' => $result['tb_as'],
                 'tb_str' => $result['tb_str'],
+                'tb_ad' => $result['tb_ad'],
                 'tb_def' => $result['tb_def'],
                 'tb_dex' => $result['tb_dex'],
                 'tb_vit' => $result['tb_vit'],
-                'tb_ws' => $result['tb_ws'],
                 'tb_voh' => $result['tb_voh'],
                 'tb_dr' => $result['tb_dr'],
+                'tb_ws' => $result['tb_ws'],
+                'tb_as' => $result['tb_as'],
                 'tb_xp' => $result['tb_xp'],
+                'ad_enabled' => $result['ad_enabled'] ? true : false,
+                'as_enabled' => $result['as_enabled'] ? true : false,
+                'sad_enabled' => $result['sad_enabled'] ? true : false,
+                'tb' => $result['tb'] ? true : false,
                 'special_attacks' => $this->getSpecialAttacksByCreatureId($creatureId),
                 'note' => $result['note'],
             ];
@@ -282,16 +306,161 @@ class CreatureModel extends Model
             SELECT
                 SA.special_attack_id
                 , SA.name
-                , SA.cooldown
-                , SA.note
+                , SA.name_key
+                , CSA.cooldown
+                , SA.replace_melee
+                , SA.effect_delay
+                , SA.trigger_on_vit
+                , SA.trigger_on_vit_revert
+                , SA.is_once
+                , SA.is_long_range
+                , SA.damage_type
+                , SA.is_movement
+                , SA.is_random_summon
+                , SA.summon_limit
+                , SA.sad_enabled
+                , SA.ad_relative
+                , SA.ad_actual
+                , SA.attack_count
+                , SA.double_attack
+                , SA.is_spread
+                , SA.dps_enabled
+                , SA.voh_dr_enabled
+                , SA.image_name
+                , SA.sort_key
+                , false as stats_enabled
+                , null as str
+                , null as min_ad
+                , null as max_ad
+                , null as dex
+                , null as `as`
+                , null as tb_str
+                , null as tb_ad
+                , null as tb_dex
+                , null as tb_as
+                , null as duration
             FROM
                 creature_special_attack CSA
-                INNER JOIN special_attack SA
-                ON CSA.special_attack_id = SA.special_attack_id
+                JOIN special_attack SA
+                    ON CSA.special_attack_id = SA.special_attack_id
             WHERE
                 CSA.creature_id = :id
+                AND SA.visible_in_list = 1
+            UNION ALL
+            SELECT
+                SA2.special_attack_id
+                , SA2.name
+                , SA2.name_key
+                , CASE WHEN SA1.visible_in_list = 1 THEN OSA.cooldown ELSE CSA.cooldown END AS cooldown
+                , SA2.replace_melee
+                , SA2.effect_delay
+                , SA2.trigger_on_vit
+                , SA2.trigger_on_vit_revert
+                , SA2.is_once
+                , SA2.is_long_range
+                , SA2.damage_type
+                , SA2.is_movement
+                , SA2.is_random_summon
+                , SA2.summon_limit
+                , SA2.sad_enabled
+                , SA2.ad_relative
+                , SA2.ad_actual
+                , SA2.attack_count
+                , SA2.double_attack
+                , SA2.is_spread
+                , SA2.dps_enabled
+                , SA2.voh_dr_enabled
+                , SA2.image_name
+                , SA2.sort_key
+                , SO.stats_enabled
+                , SO.str
+                , SO.min_ad
+                , SO.max_ad
+                , SO.dex
+                , SO.`as`
+                , SO.tb_str
+                , SO.tb_ad
+                , SO.tb_dex
+                , SO.tb_as
+                , SO.duration
+            FROM
+                creature_special_attack CSA
+                JOIN special_attack SA1
+                    ON CSA.special_attack_id = SA1.special_attack_id
+                JOIN place_sa_object PO
+                    ON SA1.special_attack_id = PO.special_attack_id
+                JOIN sa_object SO
+                    ON PO.sa_object_id = SO.sa_object_id
+                JOIN sa_object_special_attack OSA
+                    ON SO.sa_object_id = OSA.sa_object_id
+                JOIN special_attack SA2
+                    ON OSA.special_attack_id = SA2.special_attack_id
+            WHERE
+                CSA.creature_id = :id
+                AND SA2.visible_in_list = 1
+            UNION ALL
+            SELECT
+                SA2.special_attack_id
+                , SA3.name
+                , SA3.name_key
+                , CASE WHEN SA2.visible_in_list = 1 THEN OSA1.cooldown ELSE OSA2.cooldown END AS cooldown
+                , SA3.replace_melee
+                , SA3.effect_delay
+                , SA3.trigger_on_vit
+                , SA3.trigger_on_vit_revert
+                , SA3.is_once
+                , SA3.is_long_range
+                , SA3.damage_type
+                , SA3.is_movement
+                , SA3.is_random_summon
+                , SA3.summon_limit
+                , SA3.sad_enabled
+                , SA3.ad_relative
+                , SA3.ad_actual
+                , SA3.attack_count
+                , SA3.double_attack
+                , SA3.is_spread
+                , SA3.dps_enabled
+                , SA3.voh_dr_enabled
+                , SA3.image_name
+                , SA3.sort_key
+                , SO2.stats_enabled
+                , SO2.str
+                , SO2.min_ad
+                , SO2.max_ad
+                , SO2.dex
+                , SO2.`as`
+                , SO2.tb_str
+                , SO2.tb_ad
+                , SO2.tb_dex
+                , SO2.tb_as
+                , SO2.duration
+            FROM
+                creature_special_attack CSA
+                JOIN special_attack SA1
+                    ON CSA.special_attack_id = SA1.special_attack_id
+                JOIN place_sa_object PO1
+                    ON SA1.special_attack_id = PO1.special_attack_id
+                JOIN sa_object SO1
+                    ON PO1.sa_object_id = SO1.sa_object_id
+                JOIN sa_object_special_attack OSA1
+                    ON SO1.sa_object_id = OSA1.sa_object_id
+                JOIN special_attack SA2
+                    ON OSA1.special_attack_id = SA2.special_attack_id
+                JOIN place_sa_object PO2
+                    ON SA2.special_attack_id = PO2.special_attack_id
+                JOIN sa_object SO2
+                    ON PO2.sa_object_id = SO2.sa_object_id
+                JOIN sa_object_special_attack OSA2
+                    ON SO2.sa_object_id = OSA2.sa_object_id
+                JOIN special_attack SA3
+                    ON OSA2.special_attack_id = SA3.special_attack_id
+            WHERE
+                CSA.creature_id = :id
+                AND SA3.visible_in_list = 1
             ORDER BY
-                SA.special_attack_id
+                sort_key
+                , special_attack_id
             SQL;
         $this->logger->debug($sql);
         $stmt = $this->db->prepare($sql);
@@ -301,9 +470,39 @@ class CreatureModel extends Model
         while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $sa[] = [
                 'special_attack_id' => $result['special_attack_id'],
-                'name' => $result['name'],
+                'name_i' => $result['name'],
+                'name' => $this->i18n->s($result['name_key']),
                 'cooldown' => $result['cooldown'],
-                'note' => $result['note'],
+                'replace_melee' => $result['replace_melee'] ? true : false,
+                'effect_delay' => $result['effect_delay'],
+                'trigger_on_vit' => $result['trigger_on_vit'],
+                'trigger_on_vit_revert' => $result['trigger_on_vit_revert'] ? true : false,
+                'is_once' => $result['is_once'] ? true : false,
+                'is_long_range' => $result['is_long_range'] ? true : false,
+                'damage_type' => $result['damage_type'],
+                'is_movement' => $result['is_movement'] ? true : false,
+                'is_random_summon' => $result['is_random_summon'] ? true : false,
+                'summon_limit' => $result['summon_limit'],
+                'sad_enabled' => $result['sad_enabled'] ? true : false,
+                'ad_relative' => $result['ad_relative'],
+                'ad_actual' => $result['ad_actual'],
+                'attack_count' => $result['attack_count'],
+                'double_attack' => $result['double_attack'] ? true : false,
+                'is_spread' => $result['is_spread'] ? true : false,
+                'dps_enabled' => $result['dps_enabled'] ? true : false,
+                'voh_dr_enabled' => $result['voh_dr_enabled'] ? true : false,
+                'image_name' => $result['image_name'],
+                'stats_enabled' => $result['stats_enabled'] ? true : false,
+                'str' => $result['str'],
+                'min_ad' => $result['min_ad'],
+                'max_ad' => $result['max_ad'],
+                'dex' => $result['dex'],
+                'as' => $result['as'],
+                'tb_str' => $result['tb_str'],
+                'tb_ad' => $result['tb_ad'],
+                'tb_dex' => $result['tb_dex'],
+                'tb_as' => $result['tb_as'],
+                'duration' => $result['duration'],
             ];
         }
         return $sa;

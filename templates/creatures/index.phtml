@@ -20,7 +20,7 @@
       </div>
       <div class="modal-body small">
         <div class="row">
-          <div class="col-12 col-sm-6">
+          <div class="col-12 col-lg-6">
             <table class="table-dark table-striped table-bordered w-100 mb-2">
               <colgroup>
                 <col class="w-20" />
@@ -51,7 +51,10 @@
               </tr>
               <tr>
                 <td class="text-center" colspan="2">
-                  <span id="detail-min-ad"></span>～<span id="detail-max-ad"></span>
+                  <div id="detail-ad">
+                    <span id="detail-min-ad"></span>～<span id="detail-max-ad"></span>
+                  </div>
+                  <div id="detail-ad-disabled">-</div>
                 </td>
                 <td class="text-center" id="detail-as"></td>
                 <td class="text-center" id="detail-str"></td>
@@ -64,7 +67,7 @@
                 <td class="text-center"><?= $l->s('stats.voh') ?></td>
                 <td class="text-center"><?= $l->s('stats.dr') ?></td>
                 <td class="text-center"><?= $l->s('stats.xp') ?></td>
-                <td class="text-center"></td>
+                <td class="text-center"><?= $l->s('stats.sad') ?></td>
               </tr>
               <tr>
                 <td class="text-center" id="detail-vit"></td>
@@ -72,7 +75,17 @@
                 <td class="text-center" id="detail-voh"></td>
                 <td class="text-center" id="detail-dr"></td>
                 <td class="text-center" id="detail-xp"></td>
-                <td class="text-center" id="detail-blank"></td>
+                <td class="text-center" id="detail-sad"></td>
+              </tr>
+              <tr class="row-vot">
+                <td class="text-center" colspan="2">VoT</td>
+                <td class="text-center" colspan="4"></td>
+              </tr>
+              <tr class="row-vot">
+                <td class="text-center" colspan="2">
+                  <span id="detail-vot"></span>&nbsp;/&nbsp;<?= $l->s('common.unit_sec') ?>
+                </td>
+                <td class="text-center" colspan="4"></td>
               </tr>
             </table>
             <table class="table-dark table-striped table-bordered w-100 mb-2 d-none" id="detail-tb-boosts">
@@ -123,7 +136,65 @@
               </tbody>
             </table>
           </div>
-          <div class="col-12 col-sm-6">
+          <div class="col-12 col-lg-6">
+            <table class="table-dark table-striped table-bordered w-100 mb-2">
+              <thead>
+                <tr>
+                  <th colspan="2" class="pl-1"><?= $l->s('creatures_detail.abilities') ?></th>
+                </tr>
+              </thead>
+              <tbody id="detail-attacks">
+                <template id="modal-attacks-row">
+                  <tr class="row-data">
+                    <td class="align-middle" style="width: 32px;">
+                      <img class="item-icon" />
+                    </td>
+                    <td>
+                      <div class="d-table w-100">
+                        <div class="d-table-row">
+                          <div class="d-table-cell pl-1 font-weight-bold">
+                            <span class="sa-name"></span>
+                          </div>
+                          <div class="d-table-cell px-1 w-50 text-right">
+                            <?= $l->s('creatures_detail.cooldown') ?>&nbsp;<span class="sa-cooldown"></span>&nbsp;<?= $l->s('common.unit_sec') ?>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="d-table w-100">
+                        <div class="d-table-row">
+                          <div class="d-table-cell pl-1">
+                            <?= $l->s('stats.ad') ?>&nbsp;<span class="sa-ad"></span><span class="sa-attack-count">&nbsp;×<span class="sa-attack-count-val"></span></span>
+                          </div>
+                          <div class="d-table-cell pl-1 w-25">
+                            <?= $l->s('stats.dex') ?>&nbsp;<span class="sa-dex"></span>
+                          </div>
+                          <div class="d-table-cell px-1 w-30 text-right">
+                            <?= $l->s('stats.as') ?>&nbsp;<span class="sa-as"></span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="d-table w-100">
+                        <div class="d-table-row">
+                          <div class="d-table-cell pl-1">
+                            <?= $l->s('stats.dps') ?>&nbsp;<span class="sa-dps"></span>
+                          </div>
+                          <div class="d-table-cell px-1 w-55 text-right">
+                            <?= $l->s('stats.duration_full') ?>&nbsp;<span class="sa-duration"></span>&nbsp;<?= $l->s('common.unit_sec') ?>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </template>
+                <template id="modal-attacks-none-row">
+                  <tr class="row-data">
+                    <td colspan="2" class="pl-2">
+                      <?= $l->s('common.none') ?>
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
             <table class="table-dark table-striped table-bordered w-100 mb-2">
               <thead>
                 <tr>
@@ -141,11 +212,13 @@
                     </td>
                   </tr>
                 </template>
-                <tr class="row-none d-none">
-                  <td class="pl-2">
-                    <?= $l->s('common.none') ?>
-                  </td>
-                </tr>
+                <template id="modal-item-none-row">
+                  <tr class="row-data">
+                    <td class="pl-2">
+                      <?= $l->s('common.none') ?>
+                    </td>
+                  </tr>
+                </template>
               </tbody>
             </table>
             <table class="table-dark table-striped table-bordered w-100 mb-2">
@@ -286,10 +359,14 @@
             <div class="d-table w-100 table-item-attrs">
               <div class="d-table-row">
                 <div class="d-table-cell border border-black text-right w-16">
-                  &nbsp;<?= $creature['min_ad'] + floor($creature['str'] / 2) ?>~<?= $creature['max_ad'] + $creature['str'] ?>
+                  <?php if ($creature['ad_enabled']) : ?>
+                    &nbsp;<?= $creature['min_ad'] + floor($creature['str'] / 2) ?>~<?= $creature['max_ad'] + $creature['str'] ?>
+                  <?php else : ?>
+                    -
+                  <?php endif; ?>
                 </div>
                 <div class="d-table-cell border border-black text-right w-14">
-                  <?= $creature['as'] ?>
+                  <?= $creature['as_enabled'] ? $creature['as'] : '-' ?>
                 </div>
                 <div class="d-table-cell border border-black text-right w-14">
                   <?= $creature['def'] ?>
@@ -301,7 +378,7 @@
                   <?= $creature['vit'] ?>
                 </div>
                 <div class="d-table-cell border border-black text-right w-14">
-                  <?= $creature['voh'] ?>
+                  <?= $creature['ad_enabled'] ? $creature['voh'] : '-' ?>
                 </div>
                 <div class="d-table-cell border border-black text-right w-14">
                   <?= $creature['dr'] ?>
