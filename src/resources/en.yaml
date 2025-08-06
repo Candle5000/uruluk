@@ -146,6 +146,7 @@ creatures:
 
 creatures_detail:
   abilities: 'Abilities'
+  cooldown: 'Cooldown'
   items: 'Items'
   floors: 'Floors'
   tb_phase: 'TB Phase'

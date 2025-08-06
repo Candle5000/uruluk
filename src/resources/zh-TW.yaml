@@ -146,6 +146,7 @@ creatures:
 
 creatures_detail:
   abilities: '技能'
+  cooldown: '冷卻'
   items: '物品'
   floors: '樓層'
   tb_phase: '結界地階層'

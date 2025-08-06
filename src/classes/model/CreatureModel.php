@@ -338,6 +338,7 @@ class CreatureModel extends Model
                 , null as tb_ad
                 , null as tb_dex
                 , null as tb_as
+                , null as duration
             FROM
                 creature_special_attack CSA
                 JOIN special_attack SA
@@ -350,7 +351,7 @@ class CreatureModel extends Model
                 SA2.special_attack_id
                 , SA2.name
                 , SA2.name_key
-                , OSA.cooldown
+                , CASE WHEN SA1.visible_in_list = 1 THEN OSA.cooldown ELSE CSA.cooldown END AS cooldown
                 , SA2.replace_melee
                 , SA2.effect_delay
                 , SA2.trigger_on_vit
@@ -381,6 +382,7 @@ class CreatureModel extends Model
                 , SO.tb_ad
                 , SO.tb_dex
                 , SO.tb_as
+                , SO.duration
             FROM
                 creature_special_attack CSA
                 JOIN special_attack SA1
@@ -401,7 +403,7 @@ class CreatureModel extends Model
                 SA2.special_attack_id
                 , SA3.name
                 , SA3.name_key
-                , OSA2.cooldown
+                , CASE WHEN SA2.visible_in_list = 1 THEN OSA1.cooldown ELSE OSA2.cooldown END AS cooldown
                 , SA3.replace_melee
                 , SA3.effect_delay
                 , SA3.trigger_on_vit
@@ -432,6 +434,7 @@ class CreatureModel extends Model
                 , SO2.tb_ad
                 , SO2.tb_dex
                 , SO2.tb_as
+                , SO2.duration
             FROM
                 creature_special_attack CSA
                 JOIN special_attack SA1
@@ -499,6 +502,7 @@ class CreatureModel extends Model
                 'tb_ad' => $result['tb_ad'],
                 'tb_dex' => $result['tb_dex'],
                 'tb_as' => $result['tb_as'],
+                'duration' => $result['duration'],
             ];
         }
         return $sa;

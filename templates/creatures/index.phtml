@@ -20,7 +20,7 @@
       </div>
       <div class="modal-body small">
         <div class="row">
-          <div class="col-12 col-sm-6">
+          <div class="col-12 col-lg-6">
             <table class="table-dark table-striped table-bordered w-100 mb-2">
               <colgroup>
                 <col class="w-20" />
@@ -136,7 +136,7 @@
               </tbody>
             </table>
           </div>
-          <div class="col-12 col-sm-6">
+          <div class="col-12 col-lg-6">
             <table class="table-dark table-striped table-bordered w-100 mb-2">
               <thead>
                 <tr>
@@ -152,17 +152,34 @@
                     <td>
                       <div class="d-table w-100">
                         <div class="d-table-row">
-                          <div class="d-table-cell pl-1"><span class="sa-name"></span></div>
+                          <div class="d-table-cell pl-1 font-weight-bold">
+                            <span class="sa-name"></span>
+                          </div>
+                          <div class="d-table-cell px-1 w-50 text-right">
+                            <?= $l->s('creatures_detail.cooldown') ?>&nbsp;<span class="sa-cooldown"></span>&nbsp;<?= $l->s('common.unit_sec') ?>
+                          </div>
                         </div>
+                      </div>
+                      <div class="d-table w-100">
                         <div class="d-table-row">
                           <div class="d-table-cell pl-1">
                             <?= $l->s('stats.ad') ?>&nbsp;<span class="sa-ad"></span><span class="sa-attack-count">&nbsp;×<span class="sa-attack-count-val"></span></span>
                           </div>
                           <div class="d-table-cell pl-1 w-25">
+                            <?= $l->s('stats.dex') ?>&nbsp;<span class="sa-dex"></span>
+                          </div>
+                          <div class="d-table-cell px-1 w-30 text-right">
                             <?= $l->s('stats.as') ?>&nbsp;<span class="sa-as"></span>
                           </div>
-                          <div class="d-table-cell pl-1 w-45">
+                        </div>
+                      </div>
+                      <div class="d-table w-100">
+                        <div class="d-table-row">
+                          <div class="d-table-cell pl-1">
                             <?= $l->s('stats.dps') ?>&nbsp;<span class="sa-dps"></span>
+                          </div>
+                          <div class="d-table-cell px-1 w-55 text-right">
+                            <?= $l->s('stats.duration_full') ?>&nbsp;<span class="sa-duration"></span>&nbsp;<?= $l->s('common.unit_sec') ?>
                           </div>
                         </div>
                       </div>

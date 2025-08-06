@@ -150,6 +150,7 @@ $(function () {
     const as = Number($("#detail-as").data("current-val"));
     const sad = $("#detail-sad").data("base-val");
     const tbEnabled = $("#detail-tb-boosts").data("tb");
+    const tbLevel = $("select.tb-phase").val();
     const isAdBoosted = tbEnabled && maxAd > baseMaxAd + baseStr;
     const isAsBoosted = tbEnabled && $("#detail-as").data("base-val") > as;
     $("#detail-attacks").children("tr").each(function () {
@@ -159,21 +160,57 @@ $(function () {
       const attackCount = row.data("attack-count");
       const doubleAttack = row.data("double-attack");
       const dpsEnabled = row.data("dps-enabled");
-      const saAs = row.data("as") == null ? as : row.data("as");
+      const statsEnabled = row.data("stats-enabled");
+      const saStr = Number(row.data("str"));
+      const saMinAd = Number(row.data("min-ad"));
+      const saMaxAd = Number(row.data("max-ad"));
+      const saDex = Number(row.data("dex"));
+      const saAs = Number(row.data("as") ?? 0);
+      const saTbStr = Number(row.data("tb-str") ?? 0);
+      const saTbAd = Number(row.data("tb-ad") ?? 0);
+      const saTbDex = Number(row.data("tb-dex") ?? 0);
+      const saTbAs = Number(row.data("tb-as") ?? 0);
       const saAd = row.find(".sa-ad").removeClass("yellow");
+      const saDexText = row.find(".sa-dex").removeClass("yellow");
+      const saAsText = row.find(".sa-as").removeClass("yellow");
       const saDps = row.find(".sa-dps").removeClass("yellow");
-      let avgAD;
+      const saAdBoosted = statsEnabled && tbEnabled && tbLevel > 0 && (saTbStr > 0 || saTbAd > 0);
+      const saAsEnabled = row.data("as") != null;
+      const saAsBoosted = saAsEnabled && tbEnabled && tbLevel > 0 && saTbAs > 0;
+      let avgAD = 0;
       if (damageType == "normal") {
-        const saMinAd = Math.round(minAd * (sadEnabled ? sad : 100) / 100 - 0.0000005);
-        const saMaxAd = Math.round(maxAd * (sadEnabled ? sad : 100) / 100 - 0.0000005);
-        saAd.text(saMinAd + '～' + saMaxAd);
-        avgAD = (minAd + maxAd) * (sadEnabled ? sad : 100) * (doubleAttack ? 2 : 1) / 2 / 100;
+        const saCurrentMinAd = statsEnabled
+          ? tbEnabled
+            ? (saMinAd * (100 + saTbAd * tbLevel) + saStr * (100 + saTbStr * tbLevel) / 2) / 100
+            : saMinAd + saStr / 2
+          : minAd * (sadEnabled ? sad : 100) / 100;
+        const saCurrentMaxAd = statsEnabled
+          ? tbEnabled
+            ? (saMaxAd * (100 + saTbAd * tbLevel) + saStr * (100 + saTbStr * tbLevel)) / 100
+            : saMaxAd + saStr
+          : maxAd * (sadEnabled ? sad : 100) / 100;
+        saAd.text(Math.round(saCurrentMinAd - 0.0000005) + '～' + Math.round(saCurrentMaxAd - 0.0000005));
+        avgAD = (saCurrentMinAd + saCurrentMaxAd) * (doubleAttack ? 2 : 1) / 2;
       } else if (damageType == "actual") {
         avgAD = row.data("ad-actual");
-      } else {
-        return true;
       }
-      if (isAdBoosted) saAd.addClass("yellow");
+      if (!statsEnabled && isAdBoosted || saAdBoosted) saAd.addClass("yellow");
+      if (statsEnabled) {
+        const saCurrentDex = tbEnabled
+          ? (saDex * (100 + saTbDex * tbLevel)) / 100
+          : saDex;
+        saDexText.text(Math.round(saCurrentDex - 0.0000005));
+        if (tbEnabled && saTbDex > 0 && tbLevel > 0) saDexText.addClass("yellow");
+      }
+      const saCurrentAs = saAsEnabled
+        ? (saAs * (100 - saTbAs * tbLevel)) / 100 > 5
+          ? (saAs * (100 - saTbAs * tbLevel)) / 100
+          : 5
+        : as;
+      saAsText.text(Math.round(saCurrentAs - 0.0000005));
+      if (tbEnabled && saTbAs > 0 && tbLevel > 0) {
+        saAsText.addClass("yellow");
+      }
       if (attackCount > 1) {
         row.find(".sa-attack-count-val").text(attackCount);
       } else if (doubleAttack) {
@@ -182,9 +219,9 @@ $(function () {
         row.find(".sa-attack-count").addClass("d-none");
       }
       if (dpsEnabled) {
-        const dps = (Math.round(avgAD * 30 * 1000 / saAs) / 1000).toFixed(3);
+        const dps = (Math.round(avgAD * 30 * 1000 / saCurrentAs) / 1000).toFixed(3);
         saDps.text(dps);
-        if (damageType == "normal" && (isAdBoosted || isAsBoosted)) saDps.addClass("yellow");
+        if (damageType == "normal" && (!statsEnabled && isAdBoosted || saAdBoosted || !saAsEnabled && isAsBoosted || saAsBoosted)) saDps.addClass("yellow");
       } else {
         saDps.text("-");
       }
@@ -332,6 +369,7 @@ $(function () {
           const row = $($("#modal-attacks-row").html());
           row.data('cooldown', sa.cooldown)
             .data('replace-melee', sa.replace_melee)
+            .data('is-once', sa.is_once)
             .data('damage-type', sa.damage_type)
             .data('sad-enabled', sa.sad_enabled)
             .data('ad-relative', sa.ad_relative)
@@ -340,18 +378,46 @@ $(function () {
             .data('double-attack', sa.double_attack)
             .data('is-spread', sa.is_spread)
             .data('dps-enabled', sa.dps_enabled)
-            .data('as', sa.as);
+            .data('stats-enabled', sa.stats_enabled)
+            .data('str', sa.str)
+            .data('min-ad', sa.min_ad)
+            .data('max-ad', sa.max_ad)
+            .data('dex', sa.dex)
+            .data('as', sa.as)
+            .data('tb-str', sa.tb_str)
+            .data('tb-ad', sa.tb_ad)
+            .data('tb-dex', sa.tb_dex)
+            .data('tb-as', sa.tb_as)
+            .data('duration', sa.duration);
           const img = sa.image_name ? sa.image_name : 'blank.png';
           row.find('img.item-icon')
             .attr('src', '/img/sa/' + img).attr('alt', sa.name);
           row.find(".sa-name").text(sa.name);
+          if (sa.cooldown == null) {
+            row.find(".sa-cooldown").parent().removeClass("d-table-cell").addClass("d-none");
+          } else if (sa.cooldown == 999) {
+            row.find(".sa-cooldown").text("?");
+          } else {
+            row.find(".sa-cooldown").text(Number(sa.cooldown).toLocaleString());
+          }
           if (sa.damage_type != "normal") {
             if (sa.attack_count > 1) {
               row.find(".sa-attack-count-val").text(sa.attack_count);
             } else {
               row.find(".sa-attack-count").addClass("d-none");
             }
-            row.find(".sa-dps").text("-");
+          }
+          if (!sa.dps_enabled && (sa.duration == null || sa.duration < 0) || sa.is_once) {
+            row.find(".sa-dps").closest(".d-table").removeClass("d-table").addClass("d-none");
+          } else {
+            if (!sa.dps_enabled) {
+              row.find(".sa-dps").parent().removeClass("d-table-cell").addClass("d-none");
+            }
+            if (sa.duration == null || sa.duration < 0) {
+              row.find(".sa-duration").parent().removeClass("d-table-cell").addClass("d-none");
+            } else {
+              row.find(".sa-duration").text(Number(sa.duration).toLocaleString());
+            }
           }
           switch (sa.damage_type) {
             case 'relative':
@@ -363,13 +429,16 @@ $(function () {
             case 'composite':
               row.find(".sa-ad").addClass("rare").text(sa.ad_actual + " + " + sa.ad_relative + "%");
               break;
-            default:
-              row.find(".sa-ad").text("-");
+            case 'none':
+              row.find(".sa-ad").closest(".d-table").removeClass("d-table").addClass("d-none");
           }
           if (sa.as != null && sa.as > 0) {
             row.find(".sa-as").text(Math.floor(sa.as));
           } else {
             row.find(".sa-as").parent().removeClass("d-table-cell").addClass("d-none");
+          }
+          if (!sa.stats_enabled) {
+            row.find(".sa-dex").parent().removeClass("d-table-cell").addClass("d-none");
           }
           saTbody.append(row);
         });

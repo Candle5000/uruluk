@@ -146,6 +146,7 @@ creatures:
 
 creatures_detail:
   abilities: 'アビリティ'
+  cooldown: '再使用'
   items: '固有ドロップ'
   floors: '出現フロア'
   tb_phase: '結界地フェーズ'
