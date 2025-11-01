@@ -503,9 +503,50 @@ class CreatureModel extends Model
                 'tb_dex' => $result['tb_dex'],
                 'tb_as' => $result['tb_as'],
                 'duration' => $result['duration'],
+                'summoning_creatures' => $this->getSummonedCreaturesBySpecialAttackId($result['special_attack_id']),
             ];
         }
         return $sa;
+    }
+
+    private function getSummonedCreaturesBySpecialAttackId(int $saId)
+    {
+        $sql = <<<SQL
+            SELECT
+                SS.special_attack_id
+                , SS.summon_count
+                , C.creature_id
+                , C.boss
+                , C.name_key
+                , C.name_en
+                , C.name_ja
+                , C.image_name
+            FROM sa_summoning SS
+                JOIN creature C
+                    ON SS.creature_id = C.creature_id
+            WHERE
+                SS.special_attack_id = :id
+            ORDER BY
+                C.sort_key
+            SQL;
+        $this->logger->debug($sql);
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $saId, PDO::PARAM_INT);
+        $stmt->execute();
+        $creatures = [];
+        while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $creatures[] = [
+                'special_attack_id' => $result['special_attack_id'],
+                'summon_count' => $result['summon_count'],
+                'creature_id' => $result['creature_id'],
+                'boss' => $result['boss'],
+                'name' => $this->i18n->s($result['name_key']),
+                'name_en' => $result['name_en'],
+                'name_ja' => $result['name_ja'],
+                'image_name' => $result['image_name']
+            ];
+        }
+        return $creatures;
     }
 
     private function getFormattedStats($value, bool $enableUndef)
