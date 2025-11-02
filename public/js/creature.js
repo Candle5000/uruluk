@@ -440,6 +440,30 @@ $(function () {
           if (!sa.stats_enabled) {
             row.find(".sa-dex").parent().removeClass("d-table-cell").addClass("d-none");
           }
+          if (sa.summoning_creatures.length > 0) {
+            const summoningCreatures = $($("#modal-attacks-summon-title").html());
+            if (sa.is_random_summon) {
+              summoningCreatures.find(".creature-summon-title").remove();
+            } else {
+              summoningCreatures.find(".creature-summon-random-title").remove();
+            }
+            sa.summoning_creatures.forEach(sc => {
+              const sRow = $($("#modal-attacks-summon-row").html());
+              const imgName = sc.image_name ?? 'creature_noimg.png';
+              sRow.find('.creature-name img').attr('src', '/img/creature/' + imgName);
+              sRow.find('.creature-name span').text($('<div/>').html(sc.name).text());
+              sRow.find('.creature-name')
+                .attr('href', '/creatures/' + sc.creature_id)
+                .addClass(sc.boss == 1 ? 'boss' : 'text-light');
+              if (sc.summon_count > 1) {
+                sRow.find('.sa-summon-count-val').text(sc.summon_count)
+              } else {
+                sRow.find('.sa-summon-count').remove();
+              }
+              summoningCreatures.append(sRow);
+            });
+            row.find(".modal-attacks-detail").append(summoningCreatures);
+          }
           saTbody.append(row);
         });
         setSkillAd();

@@ -149,7 +149,7 @@
                     <td class="align-middle" style="width: 32px;">
                       <img class="item-icon" />
                     </td>
-                    <td>
+                    <td class="modal-attacks-detail">
                       <div class="d-table w-100">
                         <div class="d-table-row">
                           <div class="d-table-cell pl-1 font-weight-bold">
@@ -192,6 +192,28 @@
                       <?= $l->s('common.none') ?>
                     </td>
                   </tr>
+                </template>
+                <template id="modal-attacks-summon-title">
+                  <div class="d-table w-100">
+                    <div class="d-table-row">
+                      <div class="d-table-cell pl-1 creature-summon-title">
+                        <?= $l->s('creatures_detail.summon_creatures') ?>
+                      </div>
+                      <div class="d-table-cell pl-1 creature-summon-random-title">
+                        <?= $l->s('creatures_detail.summon_creatures_random') ?>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+                <template id="modal-attacks-summon-row">
+                  <div class="d-table-row">
+                    <div class="d-table-cell pl-1">
+                      <a class="creature-name">
+                        <img class="item-icon" /><span class="pl-1"></span>
+                      </a>
+                      <span class="sa-summon-count">&nbsp;×<span class="sa-summon-count-val"></span></span>
+                    </div>
+                  </div>
                 </template>
               </tbody>
             </table>

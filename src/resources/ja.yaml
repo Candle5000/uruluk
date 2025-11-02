@@ -147,8 +147,11 @@ creatures:
 creatures_detail:
   abilities: 'アビリティ'
   cooldown: '再使用'
+  summon_creatures: '出現クリーチャー'
+  summon_creatures_random: '出現クリーチャー(ランダム)'
   items: '固有ドロップ'
   floors: '出現フロア'
+  summoned_by_other_creatures: '他のクリーチャーから出現'
   tb_phase: '結界地フェーズ'
   tb_phase_boosts: '結界地フェーズ補正'
 
