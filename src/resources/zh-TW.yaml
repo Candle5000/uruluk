@@ -194,6 +194,7 @@ simulator_item_modal:
   rarity_rare: '稀有物品'
   rarity_artifact: '魔物特製'
   obtained_items: '已獲得物品'
+  item_name: '物品名稱'
   search_submit: '提交'
 
 simulator_save_modal:
