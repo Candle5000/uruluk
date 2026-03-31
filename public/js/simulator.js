@@ -83,18 +83,18 @@ $(function () {
       "xpg": 0
     },
     "princess": {
-      "type": "sword",
+      "type": "axe",
       "minad": 0,
       "maxad": 0,
-      "as": 20,
-      "ar": 38,
-      "str": 3,
-      "def": 2,
-      "dex": 3,
-      "vit": 125,
+      "as": 21,
+      "ar": 46,
+      "str": 6,
+      "def": 0,
+      "dex": 6,
+      "vit": 130,
       "ws": 51.55,
-      "sa": 30,
-      "sad": 150,
+      "sa": 32,
+      "sad": 200,
       "minsad": 0,
       "maxsad": 0,
       "voh": 0,
@@ -124,10 +124,10 @@ $(function () {
       "vit": 10
     },
     "princess": {
-      "str": 2,
-      "def": 2,
+      "str": 3,
+      "def": 1,
       "dex": 2,
-      "vit": 18
+      "vit": 17
     }
   };
 
@@ -409,9 +409,12 @@ $(function () {
         setNone($("a.item-slot2").data("item-class", "shield"));
         break;
       case "axe":
+        setNone($("a.item-slot1").data("item-class", "axe"));
+        setNone($("a.item-slot2").data("item-class", "mantle"));
+        break;
       case "princess":
-        setNone($("a.item-slot1").data("item-class", "sword"));
-        setNone($("a.item-slot2").data("item-class", "shield"));
+        setNone($("a.item-slot1").data("item-class", "axe"));
+        setNone($("a.item-slot2").data("item-class", "axe"));
         break;
       case "dagger":
         setNone($("a.item-slot1").data("item-class", "dagger"));
