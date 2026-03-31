@@ -31,6 +31,9 @@
                 <label class="form-check-label small" for="search-obtained-items"><?= $l->s('simulator_item_modal.obtained_items') ?></label>
                 <a href="javascript:void(0);" id="tooltip-obtained-items" class="text-light pl-1" data-toggle="tooltip" data-placement="top" data-html="true" title="<?= $this->fetch('common/tooltipObtainedItems.phtml', ['l' => $l]) ?>"><i class="fas fa-question-circle"></i></a>
               </div>
+              <div class="form-text">
+                <input id="search-item-name" class="form-control" type="text" maxlength="32" placeholder="<?= $l->s('simulator_item_modal.item_name') ?>" />
+              </div>
               <div class="text-right">
                 <a href="javascript:void(0);" class="lemonchiffon" id="link-search-submit" data-item-slot=""><i class="far fa-check-circle"></i><?= $l->s('simulator_item_modal.search_submit') ?></a>
               </div>

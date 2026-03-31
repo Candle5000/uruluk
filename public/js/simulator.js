@@ -749,10 +749,19 @@ $(function () {
               return target.data('slot-index') != slotIndex && storableItemId == slotItemStorableItemId;
             }).length < obtainedItems.items[storableItemId];
           }
-          return obtainedItems.items[storableItemId] > 0;
-        } else {
-          return true;
+          if (obtainedItems.items[storableItemId] <= 0) {
+            return false;
+          }
         }
+
+        // アイテム名でフィルタ
+        if ($("#search-item-name").val().length > 0) {
+          const itemName = $("#search-item-name").val().toLowerCase();
+          if (item.name.toLowerCase().indexOf(itemName) == -1) {
+            return false;
+          }
+        }
+        return true;
       }));
       $("#scroll-loading").removeClass("d-none").addClass("d-flex");
 
@@ -1019,6 +1028,14 @@ $(function () {
     // ロード完了
     $.LoadingOverlay("hide", true);
   }
+
+  $("#modal-items").on('hide.bs.modal', function () {
+    document.activeElement.blur();
+  });
+
+  $("#modal-save").on('hide.bs.modal', function () {
+    document.activeElement.blur();
+  });
 
   // スタッツ略称説明のツールチップ
   $("#tooltip-short-stats-description").tooltip();

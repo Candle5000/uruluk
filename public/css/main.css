@@ -106,6 +106,10 @@ li.charge-type-skill>input.form-check-input {
   width: 45% !important;
 }
 
+.w-55 {
+  width: 55% !important;
+}
+
 .border-black {
   border-color: #000 !important;
 }

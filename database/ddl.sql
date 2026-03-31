@@ -1,5 +1,5 @@
 -- Project Name : Uruluk
--- Date/Time    : 2024/07/20 3:21:50
+-- Date/Time    : 2025/07/19 2:17:41
 -- Author       : candl
 -- RDBMS Type   : MySQL
 -- Application  : A5:SQL Mk-2
@@ -73,28 +73,33 @@ create table `creature` (
   , `name_key` VARCHAR(128) comment '名称キー'
   , `name_en` VARCHAR(32) comment '名称(英語)'
   , `name_ja` VARCHAR(32) comment '名称(日本語)'
+  , `str` INT comment '筋力'
   , `min_ad` INT comment '最小攻撃力'
   , `max_ad` INT comment '最大攻撃力'
-  , `as` INT comment '攻撃速度'
-  , `str` INT comment '筋力'
   , `def` INT comment '防御力'
   , `dex` INT comment '技量'
   , `vit` INT comment '生命力'
-  , `ws` INT comment '移動速度'
   , `voh` INT comment '生命力吸収'
   , `dr` INT comment 'ダメージ反射'
+  , `ws` INT comment '移動速度'
+  , `as` INT comment '攻撃速度'
+  , `sad` INT comment 'スペシャルアタックダメージ'
+  , `vot` INT default 0 comment '自動回復'
   , `xp` INT comment '経験値'
-  , `tb` BIT(1) default FALSE not null comment '結界地出現'
-  , `tb_ad` DECIMAL(10,1) comment '結界地補正 攻撃力'
-  , `tb_as` DECIMAL(10,1) comment '結界地補正 攻撃速度'
   , `tb_str` DECIMAL(10,1) comment '結界地補正 筋力'
+  , `tb_ad` DECIMAL(10,1) comment '結界地補正 攻撃力'
   , `tb_def` DECIMAL(10,1) comment '結界地補正 防御力'
   , `tb_dex` DECIMAL(10,1) comment '結界地補正 技量'
   , `tb_vit` DECIMAL(10,1) comment '結界地補正 生命力'
-  , `tb_ws` DECIMAL(10,1) comment '結界地補正 移動速度'
   , `tb_voh` DECIMAL(10,1) comment '結界地補正 生命力吸収'
   , `tb_dr` DECIMAL(10,1) comment '結界地補正 ダメージ反射'
+  , `tb_ws` DECIMAL(10,1) comment '結界地補正 移動速度'
+  , `tb_as` DECIMAL(10,1) comment '結界地補正 攻撃速度'
   , `tb_xp` DECIMAL(10,1) comment '結界地補正 経験値'
+  , `ad_enabled` BIT(1) default 1 not null comment '攻撃力有効'
+  , `as_enabled` BIT(1) default 1 not null comment '攻撃速度有効'
+  , `sad_enabled` BIT(1) default 1 not null comment 'SAD有効'
+  , `tb` BIT(1) default FALSE not null comment '結界地出現'
   , `note` TEXT comment '説明'
   , `image_name` VARCHAR(32) comment '画像名称'
   , `sort_key` INT not null comment 'ソート順'
@@ -137,6 +142,7 @@ drop table if exists `creature_special_attack` cascade;
 create table `creature_special_attack` (
   `creature_id` INT not null comment 'クリーチャーID'
   , `special_attack_id` INT not null comment 'スペシャルアタックID'
+  , `cooldown` DECIMAL(10,2) comment '再使用'
   , constraint `creature_special_attack_PKC` primary key (`creature_id`,`special_attack_id`)
 ) comment 'クリーチャースペシャルアタック' ;
 
@@ -449,6 +455,17 @@ create table `news` (
   , constraint `news_PKC` primary key (`post_date`)
 ) comment 'お知らせ' ;
 
+-- SAオブジェクト設置
+-- * BackupToTempTable
+drop table if exists `place_sa_object` cascade;
+
+-- * RestoreFromTempTable
+create table `place_sa_object` (
+  `special_attack_id` INT not null comment 'スペシャルアタックID'
+  , `sa_object_id` INT not null comment 'SAオブジェクトID'
+  , constraint `place_sa_object_PKC` primary key (`special_attack_id`,`sa_object_id`)
+) comment 'SAオブジェクト設置' ;
+
 -- クエスト
 -- * BackupToTempTable
 drop table if exists `quest` cascade;
@@ -504,6 +521,56 @@ create table `quest_reward_item` (
   , constraint `quest_reward_item_PKC` primary key (`quest_id`,`item_id`)
 ) comment 'クエスト報酬アイテム' ;
 
+-- スペシャルアタックオブジェクト
+-- * BackupToTempTable
+drop table if exists `sa_object` cascade;
+
+-- * RestoreFromTempTable
+create table `sa_object` (
+  `sa_object_id` INT not null AUTO_INCREMENT comment 'SAオブジェクトID'
+  , `name` VARCHAR(32) comment '名称'
+  , `stats_enabled` BIT(1) default 0 not null comment 'オブジェクトスタッツ有効'
+  , `str` INT comment '筋力'
+  , `min_ad` INT comment '最小攻撃力'
+  , `max_ad` INT comment '最大攻撃力'
+  , `dex` INT comment '技量'
+  , `as` DECIMAL(10,2) comment '攻撃速度'
+  , `tb_str` DECIMAL(10,2) comment '結界地補正 筋力'
+  , `tb_ad` DECIMAL(10,2)  comment '結界地補正 攻撃力'
+  , `tb_dex` DECIMAL(10,2) comment '結界地補正 技量'
+  , `tb_as` DECIMAL(10,2) comment '結界地補正 攻撃速度'
+  , `duration` DECIMAL(10,2) comment '効果時間'
+  , `sort_key` INT not null comment 'ソート順'
+  , constraint `sa_object_PKC` primary key (`sa_object_id`)
+) comment 'スペシャルアタックオブジェクト' ;
+
+create unique index `sa_object_IX1`
+  on `sa_object`(`sort_key`);
+
+-- オブジェクトのSA
+-- * BackupToTempTable
+drop table if exists `sa_object_special_attack` cascade;
+
+-- * RestoreFromTempTable
+create table `sa_object_special_attack` (
+  `sa_object_id` INT not null comment 'SAオブジェクトID'
+  , `special_attack_id` INT not null comment 'スペシャルアタックID'
+  , `cooldown` DECIMAL(10,2) comment '再使用'
+  , constraint `sa_object_special_attack_PKC` primary key (`sa_object_id`,`special_attack_id`)
+) comment 'オブジェクトのSA' ;
+
+-- 召喚
+-- * BackupToTempTable
+drop table if exists `sa_summoning` cascade;
+
+-- * RestoreFromTempTable
+create table `sa_summoning` (
+  `special_attack_id` INT not null comment 'スペシャルアタックID'
+  , `creature_id` INT not null comment 'クリーチャーID'
+  , `summon_count` INT default 1 not null comment '召喚数'
+  , constraint `sa_summoning_PKC` primary key (`special_attack_id`,`creature_id`)
+) comment '召喚' ;
+
 -- ショップ
 -- * BackupToTempTable
 drop table if exists `shop` cascade;
@@ -555,10 +622,33 @@ drop table if exists `special_attack` cascade;
 create table `special_attack` (
   `special_attack_id` INT not null AUTO_INCREMENT comment 'スペシャルアタックID'
   , `name` VARCHAR(32) comment '名称'
-  , `cooldown` INT comment '再使用'
-  , `note` TEXT comment '説明'
+  , `name_key` VARCHAR(128) comment '名称キー'
+  , `visible_in_list` BIT(1) default 1 not null comment 'リスト表示'
+  , `replace_melee` BIT(1) default 1 not null comment '通常攻撃置き換え'
+  , `effect_delay` INT comment '遅延発動'
+  , `trigger_on_vit` INT comment '残生命力トリガー'
+  , `trigger_on_vit_revert` BIT(1) default 0 not null comment '残生命力トリガー(条件逆転)'
+  , `is_once` BIT(1) default 0 not null comment '1回のみ'
+  , `is_long_range` BIT(1) default 0 not null comment '遠距離のみ'
+  , `damage_type` ENUM('normal', 'relative', 'actual', 'composite', 'none') default 'normal' not null comment 'ダメージ種別'
+  , `is_movement` BIT(1) default 0 not null comment '移動'
+  , `is_random_summon` BIT(1) default 0 not null comment 'ランダム召喚'
+  , `summon_limit` INT comment '召喚上限'
+  , `sad_enabled` BIT(1) default 0 not null comment 'SAD適用'
+  , `ad_relative` DECIMAL(10,2) comment '相対値ダメージ'
+  , `ad_actual` INT comment '実数値ダメージ'
+  , `attack_count` INT comment '攻撃回数'
+  , `double_attack` BIT(1) default 0 not null comment '2回攻撃'
+  , `is_spread` BIT(1) default 0 not null comment '拡散'
+  , `dps_enabled` BIT(1) default 0 not null comment 'DPS有効'
+  , `voh_dr_enabled` BIT(1) default 1 not null comment '吸収反射有効'
+  , `image_name` VARCHAR(32) comment '画像名称'
+  , `sort_key` INT not null comment 'ソート順'
   , constraint `special_attack_PKC` primary key (`special_attack_id`)
 ) comment 'スペシャルアタック' ;
+
+create unique index `special_attack_IX1`
+  on `special_attack`(`sort_key`);
 
 -- タグ
 -- * BackupToTempTable

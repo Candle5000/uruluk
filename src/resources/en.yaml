@@ -67,6 +67,8 @@ stats:
   kills_full: 'Kills'
   based_on_xp: 'Based on XP'
   based_on_kills: 'Based on Kills'
+  vot: 'VoT'
+  vot_full: 'Restores Vitaliry over Time'
 
 character_class:
   sword: 'S'
@@ -145,6 +147,8 @@ creatures:
   tb_creature: 'TB Creature'
 
 creatures_detail:
+  abilities: 'Abilities'
+  cooldown: 'Cooldown'
   items: 'Items'
   floors: 'Floors'
   tb_phase: 'TB Phase'
@@ -192,6 +196,7 @@ simulator_item_modal:
   rarity_rare: 'Rare'
   rarity_artifact: 'Artifact'
   obtained_items: 'Obtained Items'
+  item_name: 'Item Name'
   search_submit: 'Submit'
 
 simulator_save_modal:
