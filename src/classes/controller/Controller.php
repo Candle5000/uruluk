@@ -27,11 +27,11 @@ abstract class Controller
 
     public function __construct(ContainerInterface $container)
     {
-        $this->db = $container['db'];
-        $this->renderer = $container['renderer'];
-        $this->logger = $container['logger'];
-        $this->i18n = $container['i18n'];
-        $this->google = $container['google'];
+        $this->db = $container->get('db');
+        $this->renderer = $container->get('renderer');
+        $this->logger = $container->get('logger');
+        $this->i18n = $container->get('i18n');
+        $this->google = $container->get('google');
     }
 
     protected function getHeaderInfo()

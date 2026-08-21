@@ -3,9 +3,9 @@
 namespace Controller;
 
 use \Exception;
-use Slim\Exception\NotFoundException;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Exception\HttpNotFoundException;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Model\ItemModel;
 
 /**
@@ -84,11 +84,11 @@ class SimulatorController extends Controller
                 $itemClassNames[] = $args['itemClassName'];
             }
         } else {
-            throw new NotFoundException($request, $response);
+            throw new HttpNotFoundException($request);
         }
         $itemClassIds = $item->getItemClassIds($itemClassNames);
         if (empty($itemClassIds)) {
-            throw new NotFoundException($request, $response);
+            throw new HttpNotFoundException($request);
         }
         $rarities = [];
         if (array_key_exists('rarity', $getParam) && is_array($getParam['rarity'])) {
@@ -100,6 +100,7 @@ class SimulatorController extends Controller
             'items' => $item->getItemsByClassAndRarities($itemClassIds, $rarities),
         ];
 
-        return $response->withJson($data);
+        $response->getBody()->write(json_encode($data));
+        return $response->withHeader('Content-Type', 'application/json');
     }
 }

@@ -5,9 +5,9 @@ namespace Controller;
 use \Exception;
 use Model\ItemModel;
 use Model\TagModel;
-use Slim\Exception\NotFoundException;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Exception\HttpNotFoundException;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 
 /**
  * タグ コントローラ.
@@ -49,7 +49,7 @@ class TagController extends Controller
             $item = new ItemModel($this->db, $this->logger, $this->i18n);
             $detail = $tag->getTagByTagurl($args['tagUrl']);
 
-            if ($detail == null) throw new NotFoundException($request, $response);
+            if ($detail == null) throw new HttpNotFoundException($request);
 
             $this->title = $this->i18n->s('page_title.tags') . ' - ' . $detail['tag_name'];
 

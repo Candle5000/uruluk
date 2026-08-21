@@ -3,9 +3,9 @@
 namespace Controller;
 
 use \Exception;
-use Slim\Exception\NotFoundException;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Exception\HttpNotFoundException;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Model\ShortURLModel;
 
 /**
@@ -23,13 +23,13 @@ class ShortURLController extends Controller
                 !array_key_exists('key', $args)
                 || !ctype_alnum($args['key']) || strlen($args['key']) !== 6
             ) {
-                throw new NotFoundException($request, $response);
+                throw new HttpNotFoundException($request);
             }
 
             $shortURL = new ShortURLModel($this->db, $this->logger, $this->i18n);
             $url = $shortURL->getUrlByKey($args['key']);
 
-            if ($url === null) throw new NotFoundException($request, $response);
+            if ($url === null) throw new HttpNotFoundException($request);
 
             $this->db->commit();
         } catch (Exception $e) {
@@ -38,7 +38,9 @@ class ShortURLController extends Controller
         }
 
         $url = (empty($_SERVER["HTTPS"]) ? "http://" : "https://") . $_SERVER["HTTP_HOST"] . $url;
-        return $response->withRedirect($url);
+        return $response
+            ->withHeader('Location', $url)
+            ->withStatus(302);
     }
 
     public function post(Request $request, Response $response)
@@ -51,7 +53,8 @@ class ShortURLController extends Controller
             || !filter_var('http://' . $_SERVER['HTTP_HOST'] . $url, FILTER_VALIDATE_URL)
         ) {
             $data['error'] = ['message' => 'ERROR! invalid parameter [url]'];
-            return $response->withJson($data);
+            $response->getBody()->write(json_encode($data));
+            return $response->withHeader('Content-Type', 'application/json');
         }
 
         try {
@@ -66,6 +69,7 @@ class ShortURLController extends Controller
             throw $e;
         }
 
-        return $response->withJson($data);
+        $response->getBody()->write(json_encode($data));
+        return $response->withHeader('Content-Type', 'application/json');
     }
 }

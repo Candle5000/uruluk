@@ -5,9 +5,9 @@ namespace Controller;
 use \Exception;
 use Model\CreatureModel;
 use Model\FloorModel;
-use Slim\Exception\NotFoundException;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Exception\HttpNotFoundException;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Model\ItemModel;
 use Model\QuestModel;
 use Model\ShopModel;
@@ -53,7 +53,7 @@ class ItemsController extends Controller
 
             $item = new ItemModel($this->db, $this->logger, $this->i18n);
             $itemClassId = $item->getItemClassId($args['itemClassName']);
-            if ($itemClassId === null) throw new NotFoundException($request, $response);
+            if ($itemClassId === null) throw new HttpNotFoundException($request);
             $args = [
                 'header' => $this->getHeaderInfo(),
                 'menu' => $item->getBaseItems(),
@@ -84,11 +84,11 @@ class ItemsController extends Controller
             $this->db->beginTransaction();
 
             $item = new ItemModel($this->db, $this->logger, $this->i18n);
-            if (!is_numeric($args['baseItemId'])) throw new NotFoundException($request, $response);
+            if (!is_numeric($args['baseItemId'])) throw new HttpNotFoundException($request);
             $itemClassId = $item->getItemClassId($args['itemClassName']);
-            if ($itemClassId === null) throw new NotFoundException($request, $response);
+            if ($itemClassId === null) throw new HttpNotFoundException($request);
             $baseItem = $item->getBaseItem($itemClassId, $args['baseItemId']);
-            if ($baseItem === null) throw new NotFoundException($request, $response);
+            if ($baseItem === null) throw new HttpNotFoundException($request);
             $args = [
                 'header' => $this->getHeaderInfo(),
                 'menu' => $item->getBaseItems(),
@@ -124,6 +124,7 @@ class ItemsController extends Controller
             'shops' => $shop->getShopListByItemId($args['itemId']),
             'tags' => $tag->getTagsByItemId($args['itemId'])
         ];
-        return $response->withJson($data);
+        $response->getBody()->write(json_encode($data));
+        return $response->withHeader('Content-Type', 'application/json');
     }
 }

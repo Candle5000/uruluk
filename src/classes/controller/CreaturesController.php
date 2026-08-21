@@ -3,9 +3,9 @@
 namespace Controller;
 
 use \Exception;
-use Slim\Exception\NotFoundException;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Exception\HttpNotFoundException;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Model\CreatureModel;
 use Model\FloorModel;
 use Model\ItemModel;
@@ -29,7 +29,7 @@ class CreaturesController extends Controller
 
             if (array_key_exists('creatureId', $args)) {
                 $detail = $creature->getCreatureDetailById($args['creatureId']);
-                if ($detail == null) throw new NotFoundException($request, $response);
+                if ($detail == null) throw new HttpNotFoundException($request);
             }
 
             $args = [
@@ -55,13 +55,14 @@ class CreaturesController extends Controller
         $item = new ItemModel($this->db, $this->logger, $this->i18n);
         $floor = new FloorModel($this->db, $this->logger, $this->i18n);
         $detail = $creature->getCreatureDetailById($args['creatureId']);
-        if ($detail == null) throw new NotFoundException($request, $response);
+        if ($detail == null) throw new HttpNotFoundException($request);
         $data = [
             'creature' => $detail,
             'items' => $item->getItemsByCreatureId($args['creatureId']),
             'floors' => $floor->getFloorsByCreatureId($args['creatureId'])
         ];
 
-        return $response->withJson($data);
+        $response->getBody()->write(json_encode($data));
+        return $response->withHeader('Content-Type', 'application/json');
     }
 }

@@ -1,36 +1,41 @@
 <?php
 
-use Slim\App;
+use DI\Container;
+use Slim\Factory\AppFactory;
 
-return function (App $app) {
-    $container = $app->getContainer();
+return function (Container $container) {
+
+    // Slim App
+    $container->set('app', function ($c) {
+        return AppFactory::createFromContainer($c);
+    });
 
     // pdo mysql
-    $container['db'] = function ($c) {
-        $db = $c['settings']['db'];
+    $container->set('db', function ($c) {
+        $db = $c->get('settings')['db'];
         $pdo = new PDO('mysql:host=' . $db['host'] . ';dbname=' . $db['dbname'], $db['user'], $db['pass']);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         return $pdo;
-    };
+    });
 
     // view renderer
-    $container['renderer'] = function ($c) {
+    $container->set('renderer', function ($c) {
         $settings = $c->get('settings')['renderer'];
         return new \Slim\Views\PhpRenderer($settings['template_path']);
-    };
+    });
 
     // monolog
-    $container['logger'] = function ($c) {
+    $container->set('logger', function ($c) {
         $settings = $c->get('settings')['logger'];
         $logger = new \Monolog\Logger($settings['name']);
         $logger->pushProcessor(new \Monolog\Processor\UidProcessor());
         $logger->pushHandler(new \Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
         return $logger;
-    };
+    });
 
     // i18n
-    $container['i18n'] = function ($c) {
+    $container->set('i18n', function ($c) {
         $defaultLanguage = 'en';
         $knownLanguages = ['en', 'ja', 'zh-CN', 'zh-TW', 'pt-BR'];
         $currentLangVersion = '00086';
@@ -58,17 +63,17 @@ return function (App $app) {
         $i18nMessageModel = new \Model\I18nMessageModel($c->get('db'), $c->get('logger'), new \I18n\I18n([], $language, $knownLanguages));
         $dbMessages = $i18nMessageModel->getMessagesByLanguageCode($language);
         return new \I18n\I18n(array_merge($yamlMessages, $dbMessages), $language, $knownLanguages);
-    };
+    });
 
     // csrf guard
-    $container['csrf'] = function ($c) {
-        $csrf = new \Slim\Csrf\Guard();
+    $container->set('csrf', function ($c) {
+        $csrf = new \Slim\Csrf\Guard($c->get('app')->getResponseFactory());
         $csrf->setPersistentTokenMode(true);
         return $csrf;
-    };
+    });
 
     // Google Service
-    $container['google'] = function ($c) {
+    $container->set('google', function ($c) {
         $settings = $c->get('settings')['google'];
         $google = [
             'analytics_id' => $settings['analytics_id'],
@@ -77,5 +82,5 @@ return function (App $app) {
             'adsense_enabled' => $settings['adsense_enabled'],
         ];
         return $google;
-    };
+    });
 };

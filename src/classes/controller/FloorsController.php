@@ -4,9 +4,9 @@ namespace Controller;
 
 use \Exception;
 use Model\CreatureModel;
-use Slim\Exception\NotFoundException;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Exception\HttpNotFoundException;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Model\FloorModel;
 use Model\ItemModel;
 use Model\QuestModel;
@@ -60,7 +60,7 @@ class FloorsController extends Controller
             $creature = new CreatureModel($this->db, $this->logger, $this->i18n);
             $detail = $floor->getFloorDetail($args['floorId']);
 
-            if ($detail == null) throw new NotFoundException($request, $response);
+            if ($detail == null) throw new HttpNotFoundException($request);
 
             $quests = [];
             foreach ($quest->getQuestDetailListByFloorId($args['floorId']) as $q) {
