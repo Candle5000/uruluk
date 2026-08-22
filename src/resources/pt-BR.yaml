@@ -194,6 +194,7 @@ simulator_item_modal:
   rarity_rare: 'Raro'
   rarity_artifact: 'Artefato'
   obtained_items: 'Obtained Items'
+  item_name: 'Nome do item'
   search_submit: 'Submeter'
 
 simulator_save_modal:

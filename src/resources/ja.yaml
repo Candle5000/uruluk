@@ -194,6 +194,7 @@ simulator_item_modal:
   rarity_rare: 'レア'
   rarity_artifact: 'アーティファクト'
   obtained_items: '所持済みのみ'
+  item_name: 'アイテム名'
   search_submit: '決定'
 
 simulator_save_modal:

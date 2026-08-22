@@ -194,6 +194,7 @@ simulator_item_modal:
   rarity_rare: 'Rare'
   rarity_artifact: 'Artifact'
   obtained_items: 'Obtained Items'
+  item_name: 'Item Name'
   search_submit: 'Submit'
 
 simulator_save_modal:
