@@ -360,7 +360,7 @@
               <div class="d-table-row">
                 <div class="d-table-cell border border-black text-right w-16">
                   <?php if ($creature['ad_enabled']) : ?>
-                    &nbsp;<?= $creature['min_ad'] + floor($creature['str'] / 2) ?>~<?= $creature['max_ad'] + $creature['str'] ?>
+                    &nbsp;<?= intval($creature['min_ad']) + floor($creature['str'] / 2) ?>~<?= intval($creature['max_ad']) + $creature['str'] ?>
                   <?php else : ?>
                     -
                   <?php endif; ?>
