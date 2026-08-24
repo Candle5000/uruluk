@@ -13,13 +13,18 @@ require __DIR__ . '/../vendor/autoload.php';
 
 session_start();
 
-// Instantiate the app
+// Set up settings
 $settings = require __DIR__ . '/../src/settings.php';
-$app = new \Slim\App($settings);
 
 // Set up dependencies
+$container = new \DI\Container();
+$container->set('settings', $settings['settings']);
+
 $dependencies = require __DIR__ . '/../src/dependencies.php';
-$dependencies($app);
+$dependencies($container);
+
+// Instantiate the app
+$app = $container->get('app');
 
 // Register middleware
 $middleware = require __DIR__ . '/../src/middleware.php';

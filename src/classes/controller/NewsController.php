@@ -3,8 +3,8 @@
 namespace Controller;
 
 use \Exception;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Model\NewsModel;
 
 /**
