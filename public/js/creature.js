@@ -267,12 +267,12 @@ $(function () {
         const floors = data.floors;
         const imgName = creature.image_name ?
           creature.image_name : 'creature_noimg.png';
-        const minAd = creature.min_ad
+        const minAd = creature.min_ad !== null
           ? creature.str
             ? Number(creature.min_ad) + Number(creature.str) / 2
             : creature.min_ad
           : '?';
-        const maxAd = creature.max_ad
+        const maxAd = creature.max_ad !== null
           ? creature.str
             ? Number(creature.max_ad) + Number(creature.str)
             : creature.max_ad
@@ -297,32 +297,32 @@ $(function () {
           .data("current-val", creature.as)
           .data("base-val", creature.as)
           .data("enabled", creature.as_enabled);
-        $("#detail-str").text(creature.str ? creature.str : '?')
+        $("#detail-str").text(creature.str !== null ? creature.str : '?')
           .data("current-val", creature.str)
           .data("base-val", creature.str);
-        $("#detail-def").text(creature.def ? creature.def : '?')
+        $("#detail-def").text(creature.def !== null ? creature.def : '?')
           .data("current-val", creature.def)
           .data("base-val", creature.def);
-        $("#detail-dex").text(creature.dex ? creature.dex : '?')
+        $("#detail-dex").text(creature.dex !== null ? creature.dex : '?')
           .data("current-val", creature.dex)
           .data("base-val", creature.dex);
-        $("#detail-vit").text(creature.vit ? creature.vit : '?')
+        $("#detail-vit").text(creature.vit !== null ? creature.vit : '?')
           .data("current-val", creature.vit)
           .data("base-val", creature.vit);
-        $("#detail-ws").text(creature.ws ? creature.ws : '?')
+        $("#detail-ws").text(creature.ws !== null ? creature.ws : '?')
           .data("current-val", creature.ws)
           .data("base-val", creature.ws);
-        $("#detail-voh").text(creature.ad_enabled ? (creature.voh ? creature.voh : '?') + '%' : '-')
+        $("#detail-voh").text(creature.ad_enabled ? (creature.voh !== null ? creature.voh : '?') + '%' : '-')
           .data("current-val", creature.voh)
           .data("base-val", creature.voh)
           .data("enabled", creature.ad_enabled);
-        $("#detail-dr").text((creature.dr ? creature.dr : '?') + '%')
+        $("#detail-dr").text((creature.dr !== null ? creature.dr : '?') + '%')
           .data("current-val", creature.dr)
           .data("base-val", creature.dr);
-        $("#detail-xp").text(creature.xp ? creature.xp : '?')
+        $("#detail-xp").text(creature.xp !== null ? creature.xp : '?')
           .data("current-val", creature.xp)
           .data("base-val", creature.xp);
-        $("#detail-sad").text(creature.sad ? creature.sad_enabled && creature.sad > 0 ? creature.sad + '%' : '-' : '?')
+        $("#detail-sad").text(creature.sad !== null ? creature.sad_enabled && creature.sad > 0 ? creature.sad + '%' : '-' : '?')
           .data("current-val", creature.sad)
           .data("base-val", creature.sad);
         $("#detail-vot").data("base-val", creature.vot);
