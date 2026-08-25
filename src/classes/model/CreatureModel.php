@@ -510,14 +510,10 @@ class CreatureModel extends Model
 
     private function getFormattedStats($value, bool $enableUndef)
     {
-        switch ($value) {
-            case null:
-                return '?';
-            case 0:
-                if ($enableUndef) return '-';
-                return $value;
-            default:
-                return $value;
-        }
+        return match ($value) {
+            null => '?',
+            0 => $enableUndef ? '-' : $value,
+            default => $value
+        };
     }
 }
